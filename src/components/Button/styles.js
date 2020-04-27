@@ -10,17 +10,19 @@ export default makeStyles(theme => ({
     margin: '1rem 0',
     lineHeight: 1.57,
     borderRadius: '8px',
+    border: '1px solid #fff',
+    color: '#fff'
   },
   secondaryButton: {
-    border: `1px solid ${theme.palette.secondary.main}`,
+    border: `1px solid ${theme.palette.secondary.medium}`,
     color: '#fff',
     '&:hover': {
-      background: `${theme.palette.secondary.main}`,
+      background: `${theme.palette.secondary.medium}`,
       border: '1px solid transparent'
     },
     '&:active': {
       background: `${theme.palette.secondary.greyButtonActive}`,
-      border: `1px solid ${theme.palette.secondary.main}`
+      border: `1px solid ${theme.palette.secondary.medium}`
     },
   },
   primaryButton: {
@@ -38,6 +40,7 @@ export default makeStyles(theme => ({
   },
   filledButton: {
     background: `${theme.palette.primary.main}`,
+    border: `1px solid ${theme.palette.primary.main}`,
     color: `${theme.palette.secondary.black}`,
     '&:hover, &:active': {
       background: `${theme.palette.primary.bright}`

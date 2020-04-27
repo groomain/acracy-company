@@ -57,6 +57,7 @@ const LoginForm = (props) => {
         handleClick={() => handleSubmit({ email, password })}
         loading={loginLoading}
         title={t('loginSubmit')}
+        theme="filledButton"
       />
       {/*<Typography variant={'subtitle2'}>{loginErrorMessage}</Typography>*/}
       <CustomSnackBar message={loginErrorMessage} open={open} setOpen={setOpen} />

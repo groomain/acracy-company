@@ -19,7 +19,9 @@ export const CustomButton = ({ loading, title, theme, rippleDisabled, type, hand
           ? classes.secondaryButton
           : theme === 'primaryButton'
             ? classes.primaryButton
-            : classes.filledButton}`
+            : theme === 'filledButton'
+              ? classes.filledButton
+              : null}`
       }
     >
       {loading ? <CircularProgress color={color || "secondary"} size={28} /> : title}

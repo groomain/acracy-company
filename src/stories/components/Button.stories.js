@@ -13,6 +13,12 @@ export default {
   },
 };
 
+export const withWhiteTheme = () => (
+  ProviderWrapper(
+    <CustomButton title="Nous contacter" />
+  )
+);
+
 export const withGreyTheme = () => (
   ProviderWrapper(
     <CustomButton theme='secondaryButton' title="Sauvegarder et fermer" />
