@@ -1,0 +1,6 @@
+[build]
+    base = './'
+
+    publish = '/build'
+
+    command = 'bash ./build.sh'
