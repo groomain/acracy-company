@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Switch, Route, Redirect } from 'react-router';
-import { useTranslation } from 'react-i18next';
+// import { useTranslation } from 'react-i18next';
 import HomePage from '../../pages/HomePage';
 import PrivateRoute from '../PrivateRoute';
 import PublicRoute from '../PublicRoute';
@@ -18,7 +18,7 @@ function App() {
   const dispatch = useDispatch();
   const isAuthenticating = useSelector(state => state.getIn(['app', 'isAuthenticating']), null);
   const isAuthenticated = useSelector(state => state.getIn(['app', 'isAuthenticated']), null);
-  const { i18n } = useTranslation();
+  // const { i18n } = useTranslation();
 
   useEffect(() => {
     dispatch(getCurrentSessionLaunched({ fromPath: '/' }));
@@ -40,22 +40,22 @@ function App() {
     <div>
       {/*/!* __NavbarStart__ Replace this whit your navbar *!/*/}
       {/*<div>*/}
-        {/*<button*/}
-          {/*type="button"*/}
-          {/*style={{ marginRight: 20 }}*/}
-          {/*onClick={() => { i18n.changeLanguage('fr'); }}*/}
-        {/*>*/}
-          {/*FR*/}
-        {/*</button>*/}
-        {/*<button*/}
-          {/*type="button"*/}
-          {/*onClick={() => { i18n.changeLanguage('en'); }}*/}
-        {/*>*/}
-          {/*ENG*/}
-        {/*</button>*/}
+      {/*<button*/}
+      {/*type="button"*/}
+      {/*style={{ marginRight: 20 }}*/}
+      {/*onClick={() => { i18n.changeLanguage('fr'); }}*/}
+      {/*>*/}
+      {/*FR*/}
+      {/*</button>*/}
+      {/*<button*/}
+      {/*type="button"*/}
+      {/*onClick={() => { i18n.changeLanguage('en'); }}*/}
+      {/*>*/}
+      {/*ENG*/}
+      {/*</button>*/}
       {/*</div>*/}
       {/*/!* __NavbarEnd__ *!/*/}
-      {isAuthenticated && <CustomAppBar/>}
+      {isAuthenticated && <CustomAppBar />}
       {
         isAuthenticating ? 'Loading...' : appSwitch
       }

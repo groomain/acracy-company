@@ -3,7 +3,6 @@ import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { CustomButton } from '../Button/';
 import CustomTextField, { CustomPasswordField } from "../CustomTextField";
-
 import Grid from '@material-ui/core/Grid';
 import Typography from "@material-ui/core/Typography";
 
@@ -31,6 +30,7 @@ const SignUpForm = (props) => {
       justify="center"
       alignItems="center"
     >
+
       <CustomTextField
         name="email"
         type="email"

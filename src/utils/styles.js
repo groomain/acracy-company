@@ -21,7 +21,7 @@ export default makeStyles(theme => ({
   titleConnection: {
     color: '#ffffff',
     fontStyle: 'italic',
-    fontSize: 100,
+    fontSize: 60,
     marginBottom: 20
   },
   link_Connection: {
