@@ -8,32 +8,37 @@ export default {
   component: CustomButton,
   parameters: {
     backgrounds: [
-      { name: 'colored-theme', value: '#26a69a', default: true },
-      { name: 'light-theme', value: '#f5f5f5', default: true },
+      { name: 'colored-theme', value: '#162217', default: true }
     ]
   },
 };
 
-export const withDefault = () => (
+export const withGreyTheme = () => (
   ProviderWrapper(
-    <>
-      <h4>Change Storybook's background color to see the colored theme button color</h4>
-      <CustomButton variant="outlined" color="secondary" title="Envoyer" />
-    </>
+    <CustomButton theme='secondaryButton' title="Sauvegarder et fermer" />
   )
 );
 
-export const withLightBackground = () => (
+export const withColoredBorder = () => (
   ProviderWrapper(
-    <>
-      <h4>Change Storybook's background color to see the light theme button color</h4>
-      <CustomButton variant="outlined" color="primary" title="Envoyer" />
-    </>
+    <CustomButton theme='primaryButton' title="Être rappelé.e." />
+  )
+);
+
+export const withFilled = () => (
+  ProviderWrapper(
+    <CustomButton theme='filledButton' title="Finaliser le brief" />
+  )
+);
+
+export const withDisabledRipple = () => (
+  ProviderWrapper(
+    <CustomButton theme='filledButton' title="Finaliser le brief" rippleDisabled />
   )
 );
 
 export const withLoading = () => (
   ProviderWrapper(
-    <CustomButton variant="outlined" color="primary" loading />
+    <CustomButton color="secondary" loading rippleDisabled />
   )
 );
