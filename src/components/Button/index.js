@@ -8,8 +8,6 @@ export const CustomButton = ({ loading, title, theme, rippleDisabled, type, hand
 
   return (
     <Button
-      variant={variant || "text"}
-      color={color || "secondary"}
       type={type}
       onClick={handleClick}
       disableRipple={rippleDisabled}
