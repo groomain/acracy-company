@@ -13,16 +13,7 @@ export const CustomButton = ({ loading, title, theme, rippleDisabled, type, hand
       type={type}
       onClick={handleClick}
       disableRipple={rippleDisabled}
-      className={
-        `${classes.button} 
-        ${theme === 'secondaryButton'
-          ? classes.secondaryButton
-          : theme === 'primaryButton'
-            ? classes.primaryButton
-            : theme === 'filledButton'
-              ? classes.filledButton
-              : null}`
-      }
+      className={`${classes.button} ${classes[theme]}`}
     >
       {loading ? <CircularProgress color={color || "secondary"} size={28} /> : title}
     </Button >
