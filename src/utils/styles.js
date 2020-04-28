@@ -8,9 +8,10 @@ export default makeStyles(theme => ({
     },
   },
   connectionDiv: {
-    backgroundImage: 'linear-gradient(to left, #18C8B7, #31CAA8)',
+    backgroundColor: '#162217',
     height: '100vh',
-    minHeight: 800
+    minHeight: 800,
+
   },
   Connection: {
     borderRadius: 5,
@@ -24,14 +25,44 @@ export default makeStyles(theme => ({
     fontSize: 60,
     marginBottom: 20
   },
-  link_Connection: {
-    fontSize: 19,
-    color: '#ffffff',
-  },
   titleFormConnection: {
     fontSize: 30,
     color: '#ffffff',
     margin: 30,
     fontWeight: 'bold'
+  },
+  searchedTerms: {
+    fontSize: 21,
+    color: '#ecf805',
+
+  },
+  text: {
+    fontSize: 34,
+    color: '#ffffff',
+
+  },
+  textSmall: {
+    color: '#ffffff',
+    fontSize: 17
+  },
+  textSmallYellow: {
+    fontSize: 17,
+    color: '#ecf805'
+  },
+  textLink: {
+    textDecoration: 'underline'
+  },
+  sidebarDiv: {
+    margin: '0 auto',
+    backgroundColor: '#353f36',
+    height: '100vh'
+  },
+  stepper: {
+    backgroundColor: '#162217'
+
+  },
+  formGridItem: {
+    paddingLeft: '20vh',
+    paddingTop: '10vh'
   }
 }));
