@@ -10,24 +10,6 @@ const useApi = (route, method, body) => {
   const [error, setError] = useState(null);
   const [refetching, setRefetching] = useState(false);
 
-  useEffect(() => {
-    const callMethod = method.toLowerCase();
-    if (callMethod === 'get') {
-      call();
-    } else if (availableMethods.indexOf(callMethod) === -1) {
-      console.warn('useApi: Invalid call method.');
-    }
-  }, [call, refetching]);
-
-  const refetch = () => {
-    const callMethod = method.toLowerCase();
-    if (callMethod === 'get') {
-      setRefetching(true);
-    } else {
-      console.warn('useApi: Refetch only available for GET methods.');
-    }
-  };
-
   const call = useCallback(async () => {
     setLoading(true);
     const callMethod = method.toLowerCase();
@@ -46,6 +28,24 @@ const useApi = (route, method, body) => {
     setRefetching(false);
     setLoading(false);
   }, [route, method, body]);
+
+  useEffect(() => {
+    const callMethod = method.toLowerCase();
+    if (callMethod === 'get') {
+      call();
+    } else if (availableMethods.indexOf(callMethod) === -1) {
+      console.warn('useApi: Invalid call method.');
+    }
+  }, [call, refetching, method]);
+
+  const refetch = () => {
+    const callMethod = method.toLowerCase();
+    if (callMethod === 'get') {
+      setRefetching(true);
+    } else {
+      console.warn('useApi: Refetch only available for GET methods.');
+    }
+  };
 
   return {
     loading,
