@@ -37,6 +37,7 @@ const LoginForm = (props) => {
         id="email"
         type='email'
         label={t('email')}
+        placeholder={t('email')}
         value={email}
         onBlur={handleBlur}
         onChange={handleChange}
@@ -46,6 +47,7 @@ const LoginForm = (props) => {
       <CustomPasswordField
         id="password"
         label={t('password')}
+        placeholder={t('password')}
         value={password}
         onBlur={handleBlur}
         onChange={handleChange}

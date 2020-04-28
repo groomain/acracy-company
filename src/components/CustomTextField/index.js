@@ -13,8 +13,8 @@ import styles from './styles';
 export const CustomTextField = ({ label, placeholder, type, error, helperText, ...props }) => {
   const classes = styles();
   return (
-    <Box>
-      <InputLabel className={classes.label}>{label}*</InputLabel >
+    <Box style={{ height: '140px' }}>
+      <InputLabel className={classes.label} error={error}>{label}*</InputLabel >
       <FilledInput
         type={type}
         placeholder={placeholder}
@@ -52,7 +52,7 @@ export const CustomPasswordField = ({ label, placeholder, error, helperText, ...
     event.preventDefault();
   };
   return (
-    <Box>
+    <Box style={{ height: '140px' }}>
       <InputLabel error={error} htmlFor="filled-adornment-password" className={classes.label}>{label}*</InputLabel>
       <FilledInput
         classes={{ root: classes.root, focused: classes.focused }}
