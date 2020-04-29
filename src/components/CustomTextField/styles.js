@@ -1,22 +1,29 @@
 import makeStyles from '@material-ui/core/styles/makeStyles';
-import {fade} from "@material-ui/core";
 
 export default makeStyles(theme => ({
   root: {
-    width: 400,
-    border: '1px solid #e2e2e1',
+    border: `1px solid ${theme.palette.secondary.medium}`,
+    height: 84,
     overflow: 'hidden',
-    borderRadius: 5,
-    backgroundColor: '#fcfcfb',
-    transition: theme.transitions.create(['border-color', 'box-shadow']),
-    '&:hover': {
-      backgroundColor: '#fff',
-    },
+    borderRadius: 15,
+    backgroundColor: 'rgba(86, 94, 86, 0.1)',
+    transition: theme.transitions.create(['border-color']),
+    caretColor: theme.palette.secondary.main,
+    color: theme.palette.secondary.main,
+    fontWeight: 500,
     '&$focused': {
-      backgroundColor: '#fff',
-      boxShadow: `${fade(theme.palette.primary.main, 0.25)} 0 0 0 2px`,
-      borderColor: theme.palette.primary.main,
+      backgroundColor: 'inherit',
+      borderColor: theme.palette.secondary.main,
     },
+    '& .MuiFilledInput-input': {
+      padding: '0 30px',
+      color: theme.palette.secondary
+    }
   },
   focused: {},
+  label: {
+    fontSize: 17,
+    color: theme.palette.secondary.main,
+    fontWeight: 500
+  }
 }));

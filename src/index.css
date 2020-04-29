@@ -1,5 +1,14 @@
-html, body, #app, #app>div {
+@font-face {
+  font-family: 'Basier Medium';
+  src: url('./assets/fonts/BasierCircleMedium.otf');
+}
+
+html, body, #app, #app> div {
   margin: 0;
   height: 100%;
   width: 100%
+}
+
+html, body, #app, #app> *+*, button {
+  font-family: 'Basier Medium';
 }
