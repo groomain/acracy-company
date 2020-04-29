@@ -1,15 +1,21 @@
 import makeStyles from '@material-ui/core/styles/makeStyles';
 
 export default makeStyles(theme => ({
-  button: {
-    height: 50,
-    // width: 200,
-    paddingLeft: 50,
-    paddingRight: 50,
-    border: '3px solid white',
-    textTransform: 'none',
-    fontSize: 18,
-    fontWeight: 'bold',
-    margin: '1rem 0'
+  root: {
+    top: 0,
+    width: "100%"
+  },
+  snackbar: {
+    display: 'flex',
+    marginTop: 0,
+    paddingRight: 30,
+    paddingTop: 20,
+    paddingBottom: 20,
+    backgroundColor: theme.palette.primary.main,
+    width: '100%',
+    height: 30
+  },
+  typo: {
+    margin: 'auto'
   }
 }));
