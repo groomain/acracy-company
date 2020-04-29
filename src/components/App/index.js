@@ -55,7 +55,7 @@ function App() {
         {/*</button>*/}
       {/*</div>*/}
       {/*/!* __NavbarEnd__ *!/*/}
-      {isAuthenticated && <CustomAppBar/>}
+      {!isAuthenticated && <CustomAppBar/>}
       {
         isAuthenticating ? 'Loading...' : appSwitch
       }
