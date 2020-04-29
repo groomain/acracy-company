@@ -8,6 +8,9 @@ import CustomButton from "../Button";
 import CustomNavLink from "../CustomNavLink";
 import {useSelector} from "react-redux";
 import IconButton from "@material-ui/core/IconButton";
+import profilIcon from '../../assets/icons/profil-roll-out.svg'
+import notifIcon from '../../assets/icons/notificication-passive.svg'
+import CustomIconButton from "../IconButton";
 
 export const CustomAppBar = () => {
   const { t } = useTranslation();
@@ -29,10 +32,8 @@ export const CustomAppBar = () => {
                 :
             <div>
               <CustomButton theme={"filledButton"} title={"Nouveau brief"}/>
-              <IconButton color="secondary" aria-label="add an alarm">
-              </IconButton>
-              <IconButton color="secondary" aria-label="add an alarm">
-              </IconButton>
+              <CustomIconButton icon={profilIcon} />
+              <CustomIconButton icon={notifIcon}/>
             </div>
             }
           </Toolbar>
