@@ -9,7 +9,7 @@ export default {
 
 export const withDefault = () => (
   ProviderWrapper(
-      <CustomSnackBar open={true} message={"Erreur"} />
+      <CustomSnackBar open={true} message={"Ceci est une SnackBar"} />
   )
 );
 

@@ -2,29 +2,39 @@ import React from 'react';
 import Snackbar from "@material-ui/core/Snackbar";
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from '@material-ui/icons/Close';
+import Slide from "@material-ui/core/Slide";
+import styles from './styles';
+import Typography from '@material-ui/core/Typography';
 
-export const CustomSnackBar = ({message, open, setOpen, ...props }) => {
+const SlideTransition = (props) => {
+    return <Slide {...props} direction="down"/>;
+};
 
-  const handleClose = () => {
-    setOpen({open: false});
-  };
+export const CustomSnackBar = ({message, open, setOpen, ...props}) => {
+    const classes = styles();
 
-  return (
-      <Snackbar
-          anchorOrigin={{ vertical: 'bottom', horizontal:'right'}}
-          autoHideDuration={5000}
-          open={open}
-          onClose={handleClose}
-          message={message}
-          action={
-            <React.Fragment>
-              <IconButton size="small" aria-label="close" color="primary" onClick={handleClose}>
-                <CloseIcon fontSize="small" />
-              </IconButton>
-            </React.Fragment>
-          }
-      />
-  );
+    const handleClose = () => {
+        setOpen( false);
+    };
+
+    return (
+        <Snackbar
+            className={classes.root}
+            anchorOrigin={{vertical: 'top', horizontal: 'center'}}
+            autoHideDuration={5000}
+            TransitionComponent={SlideTransition}
+            open={open}
+            onClose={handleClose}
+            children={
+                <div className={classes.snackbar}>
+                    <Typography className={classes.typo}>{message}</Typography>
+                    <IconButton size="small" aria-label="close" color="secondary.medium" onClick={handleClose}>
+                        <CloseIcon fontSize="small"/>
+                    </IconButton>
+                </div>}
+            {...props}
+        />
+    );
 };
 
 export default CustomSnackBar;
