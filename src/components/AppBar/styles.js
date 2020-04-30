@@ -35,7 +35,7 @@ export default makeStyles(theme => ({
     width: 340,
   },
   home: {
-    width: 340,
+    width: 270,
   },
   password: {
     width: 550,

@@ -41,7 +41,6 @@ export const CustomAppBar = (props) => {
             <div className={clsx(classes.div, classes.home)}>
                 <CustomButton theme={"filledButton"} title={"Nouveau brief"}/>
                 <CustomIconButton icon={profilIcon} />
-                <CustomIconButton icon={notifIcon}/>
             </div>
         );
     case '/password':
