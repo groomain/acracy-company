@@ -3,6 +3,7 @@ Vagrant.configure("2") do |config|
 
   # NOTE: This will enable public access to the opened port
   config.vm.network "forwarded_port", guest: 3000, host: 3000
+  config.vm.network "forwarded_port", guest: 42213, host: 42213
 
   # NOTE PUT LINUX BOX ON SAME PUBLIC NETWORK AS HOST
   # config.vm.network "public_network"
