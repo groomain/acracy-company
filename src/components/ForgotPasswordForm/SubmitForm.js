@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { CustomButton } from '../Button/';
 import Grid from '@material-ui/core/Grid';
-import CustomTextField, { CustomPasswordField } from "../CustomTextField";
+import CustomTextField, { CustomPasswordField } from "../Inputs/CustomTextField";
 import Typography from "@material-ui/core/Typography";
 
 const SubmitForm = (props) => {
