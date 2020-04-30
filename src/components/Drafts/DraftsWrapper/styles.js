@@ -7,6 +7,7 @@ export default makeStyles(theme => ({
     padding: '27px 15px',
     minHeight: '256px',
     alignItems: 'center',
+    display: 'block'
   },
   noDrafts: {
     color: theme.palette.secondary.medium,

@@ -32,7 +32,37 @@ const drafts = [{
   title: 'Mon titre de brief très long sur deux lignes',
   target: 'Web design',
   new: false
-}];
+}, {
+  status: 'Status de brief',
+  progress: '30%',
+  date: '22.04',
+  time: '10h12',
+  target: 'Web design',
+  new: true
+}, {
+  status: 'Status de brief',
+  progress: '70%',
+  date: '21.04',
+  time: '12h09',
+  title: 'Mon titre de brief très long sur deux lignes',
+  target: 'Web design',
+  new: false
+}, {
+  status: 'Status de brief',
+  progress: '30%',
+  date: '22.04',
+  time: '10h12',
+  target: 'Web design',
+  new: true
+}, {
+  status: 'Status de brief',
+  progress: '70%',
+  date: '21.04',
+  time: '12h09',
+  title: 'Mon titre de brief très long sur deux lignes',
+  target: 'Web design',
+  new: false
+},];
 
 const draft = {
   status: 'Status de brief',
