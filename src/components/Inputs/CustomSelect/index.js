@@ -11,19 +11,22 @@ export const CustomSelect = ({ label, value, placeholder, type, error, helperTex
   const classes = styles();
 
   const options = [{
-    value: 'Fr : +33'
+    value: 33,
+    title: 'Fr : +33'
   }, {
-    value: 'Blg : +32'
+    value: 32,
+    title: 'Blg : +32'
   }, {
-    value: 'Blg : +34'
+    value: 39,
+    title: 'It : +39'
   }]
 
   const [open, setOpen] = useState(false);
 
-  const [age, setAge] = useState('Fr : +33');
+  const [inputValue, setInputValue] = useState(33);
 
   const handleChange = (event) => {
-    setAge(event.target.value);
+    setInputValue(event.target.value);
   };
 
   return (
@@ -32,7 +35,7 @@ export const CustomSelect = ({ label, value, placeholder, type, error, helperTex
       <Select
         type={type}
         fullWidth
-        value={age}
+        value={inputValue}
         error={error}
         onOpen={() => setOpen(true)}
         onClose={() => setOpen(false)}
@@ -55,7 +58,7 @@ export const CustomSelect = ({ label, value, placeholder, type, error, helperTex
         }}
         {...props}
       >
-        {options.map((option, key) => <MenuItem key={key} value={option.value} classes={{ root: classes.menuItem, selected: classes.selected }}>{option.value}</MenuItem>)}
+        {options.map((option, key) => <MenuItem key={key} value={option.value} classes={{ root: classes.menuItem, selected: classes.selected }}>{option.title}</MenuItem>)}
       </Select>
       <FormHelperText error={error}>{helperText}</FormHelperText>
     </Box >

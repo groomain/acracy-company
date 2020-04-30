@@ -28,13 +28,11 @@ export default makeStyles(theme => ({
     padding: '0 0 0 30px',
     display: 'flex',
     alignItems: 'center',
-    '&:focus': {
+    '&:hover, &:focus': {
       borderRadius: 15,
-    },
-    '&:hover': {
-      background: theme.palette.secondary.dark,
       borderColor: theme.palette.secondary.main,
-    },
+      background: theme.palette.secondary.dark,
+    }
   },
   open: {
     border: `1px solid ${theme.palette.secondary.main}`
@@ -66,7 +64,7 @@ export default makeStyles(theme => ({
     '&:not(:last-of-type)': {
       borderBottom: `1px solid ${theme.palette.secondary.medium}`,
     },
-    '&:hover': {
+    '&:hover, &:focus': {
       background: theme.palette.primary.main,
       color: `${fade(theme.palette.secondary.black, 0.9)}`,
     }
