@@ -12,6 +12,8 @@ export default makeStyles(theme => ({
     caretColor: theme.palette.secondary.main,
     color: theme.palette.secondary.main,
     fontWeight: 500,
+    margin: '.8rem auto 0',
+    boxSizing: 'border-box',
     '&$focused': {
       backgroundColor: 'inherit',
       borderColor: theme.palette.secondary.main,
@@ -21,6 +23,7 @@ export default makeStyles(theme => ({
       color: theme.palette.secondary
     }
   },
+  focused: {},
   input: {
     padding: '0 0 0 30px',
     display: 'flex',
@@ -33,10 +36,16 @@ export default makeStyles(theme => ({
       borderColor: theme.palette.secondary.main,
     },
   },
-  focused: {},
+  open: {
+    border: `1px solid ${theme.palette.secondary.main}`
+  },
   icon: {
     fill: '#fff',
-    transform: 'translate(-30px) scale(1.5)',
+    transform: 'translate(-30px, 7px) scale(1.5)',
+    transition: '.3s'
+  },
+  iconClosed: {
+    transform: 'translate(-30px, 7px) scale(1.5) rotate(180deg)'
   },
   dropdownStyle: {
     background: theme.palette.secondary.dark,

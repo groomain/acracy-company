@@ -18,6 +18,8 @@ export const CustomSelect = ({ label, value, placeholder, type, error, helperTex
     value: 'Blg : +34'
   }]
 
+  const [open, setOpen] = useState(false);
+
   const [age, setAge] = useState('Fr : +33');
 
   const handleChange = (event) => {
@@ -32,11 +34,13 @@ export const CustomSelect = ({ label, value, placeholder, type, error, helperTex
         fullWidth
         value={age}
         error={error}
+        onOpen={() => setOpen(true)}
+        onClose={() => setOpen(false)}
         onChange={handleChange}
-        classes={{ root: classes.root, focused: classes.focused }}
+        classes={{ root: open ? `${classes.root} ${classes.open}` : classes.root, focused: classes.focused }}
         disableUnderline
         IconComponent={KeyboardArrowDownRoundedIcon}
-        inputProps={{ classes: { root: classes.input, icon: classes.icon, focused: classes.focused } }}
+        inputProps={{ classes: { root: classes.input, icon: open ? `${classes.icon} ${classes.iconClosed}` : classes.icon, focused: classes.focused } }}
         MenuProps={{
           classes: { paper: classes.dropdownStyle },
           anchorOrigin: {
