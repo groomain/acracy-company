@@ -44,7 +44,10 @@ i18n
           firstNameRequired: 'Please enter your Firsname',
           lastNameRequired: 'Please enter your Lastname',
           search: 'Search…',
-          refresh: 'Refresh'
+          refresh: 'Refresh',
+          confirmDelete: 'Yes, delete draft',
+          cancel: 'Cancel',
+          noDraft: 'No draft pending',
         }
       },
       fr: {
@@ -80,7 +83,10 @@ i18n
           firstNameRequired: 'Veuillez entrer votre prénom',
           lastNameRequired: 'Veuillez entrer votre nom',
           search: 'Rechercher…',
-          refresh: 'Rafraîchir'
+          refresh: 'Rafraîchir',
+          confirmDelete: 'Confirmer la suppression',
+          cancel: 'Annuler',
+          noDraft: 'Aucun brief en cours. \nCommencez par rechercher un type de profil ou livrable pour démarrer un brief.'
         }
       }
     },
