@@ -5,7 +5,12 @@ import profilIcon from '../../assets/icons/profil-roll-out.svg'
 
 export default {
   title: 'Components|IconButton',
-  component: CustomIconButton
+  component: CustomIconButton,
+  parameters: {
+    backgrounds: [
+      { name: 'colored-theme', value: '#162217', default: true }
+    ]
+  },
 };
 
 export const withDefault = () => (

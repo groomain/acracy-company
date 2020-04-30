@@ -15,7 +15,7 @@ const SignInPage = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const classes = styles();
-  const [open, setOpen] = React.useState(true);
+  const [open, setOpen] = React.useState(false);
 
   // Form data
   const initialValues = {

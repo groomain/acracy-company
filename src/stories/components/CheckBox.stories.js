@@ -4,7 +4,12 @@ import CustomCheckBox from "../../components/CheckBox";
 
 export default {
   title: 'Components|CheckBox',
-  component: CustomCheckBox
+  component: CustomCheckBox,
+  parameters: {
+    backgrounds: [
+      { name: 'colored-theme', value: '#162217', default: true }
+    ]
+  },
 };
 
 export const withDefault = () => (

@@ -20,4 +20,38 @@ export default makeStyles(theme => ({
       display: 'block',
     },
   },
+  div: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignContent: 'center',
+    alignItems: 'center',
+    width: 390,
+  },
+  login: {
+    width: 390,
+  },
+  signup: {
+    width: 340,
+  },
+  home: {
+    width: 340,
+  },
+  password: {
+    width: 550,
+  },
+  div2: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'baseline',
+    width: 340,
+  },
+  div4: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'baseline',
+    width: 550,
+  }
 }));

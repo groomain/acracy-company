@@ -7,37 +7,65 @@ import {useTranslation} from "react-i18next";
 import CustomButton from "../Button";
 import CustomNavLink from "../CustomNavLink";
 import {useSelector} from "react-redux";
-import IconButton from "@material-ui/core/IconButton";
 import profilIcon from '../../assets/icons/profil-roll-out.svg'
 import notifIcon from '../../assets/icons/notificication-passive.svg'
 import CustomIconButton from "../IconButton";
+import {useLocation, withRouter} from "react-router";
+import clsx from "clsx";
 
-export const CustomAppBar = () => {
+export const CustomAppBar = (props) => {
+  let location = useLocation();
   const { t } = useTranslation();
   const classes = styles();
+
   const isAuthenticated = useSelector(state => state.getIn(['app', 'isAuthenticated']), null);
+
+    const renderButtons = () => {
+    switch (props.path || location.pathname) {
+    case '/login':
+        return (
+            <div className={clsx(classes.div, classes.login)}>
+                <CustomButton theme={"filledButton"} title={t('signUp')}/>
+                <CustomButton title={t('contactUs')}/>
+            </div>
+        );
+    case '/signup':
+        return (
+            <div className={clsx(classes.div, classes.signup)}>
+                <CustomNavLink to={'/login'} text={t('login')}/>
+                <CustomButton title={t('contactUs')}/>
+            </div>
+        );
+    case '/home':
+        return (
+            <div className={clsx(classes.div, classes.home)}>
+                <CustomButton theme={"filledButton"} title={"Nouveau brief"}/>
+                <CustomIconButton icon={profilIcon} />
+                <CustomIconButton icon={notifIcon}/>
+            </div>
+        );
+    case '/password':
+        return (
+            <div className={clsx(classes.div, classes.password)}>
+                <CustomNavLink to={'/login'} text={t('login')}/>
+                <CustomButton theme={"filledButton"} title={t('signUp')}/>
+                <CustomButton title={t('contactUs')}/>
+            </div>
+        );
+    default:
+        break;
+    }}
 
   return (
         <AppBar position="fixed" className={classes.appbar}>
           <Toolbar className={classes.toolbar}>
-            <Typography className={classes.title} variant="h6" noWrap>
+            <Typography className={classes.title} variant="h1" noWrap>
               accracy
             </Typography>
             <div className={classes.grow} />
-            {isAuthenticated ?
-            <div>
-            <CustomNavLink to={'/login'} text={"Se Connecter"}/>
-            <CustomButton title={"Nous contacter"}/>
-            </div>
-                :
-            <div>
-              <CustomButton theme={"filledButton"} title={"Nouveau brief"}/>
-              <CustomIconButton icon={profilIcon} />
-              <CustomIconButton icon={notifIcon}/>
-            </div>
-            }
+            {renderButtons()}
           </Toolbar>
         </AppBar>
   );
 };
-export default CustomAppBar;
+export default withRouter(CustomAppBar);

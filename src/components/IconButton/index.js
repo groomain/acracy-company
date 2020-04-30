@@ -5,7 +5,9 @@ import IconButton from "@material-ui/core/IconButton";
 export const CustomIconButton = ({ icon, ...props }) => {
     const classes = styles();
     return (
-        <IconButton color="secondary" aria-label="notif"
+        <IconButton
+                    edge={'end'}
+                    color="secondary" aria-label="notif"
                     children={<span style={{
                         width: 54,
                         height: 54,

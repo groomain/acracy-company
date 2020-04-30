@@ -4,7 +4,12 @@ import CustomSnackBar from "../../components/SnackBar";
 
 export default {
   title: 'Components|SnackBar',
-  component: CustomSnackBar
+  component: CustomSnackBar,
+  parameters: {
+    backgrounds: [
+      { name: 'colored-theme', value: '#162217', default: true }
+    ]
+  },
 };
 
 export const withDefault = () => (
