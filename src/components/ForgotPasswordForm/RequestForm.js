@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { CustomButton } from '../Button';
-import CustomTextField from '../CustomTextField';
+import CustomTextField from '../Inputs/CustomTextField';
 
 const RequestForm = (props) => {
   const { t } = useTranslation();
