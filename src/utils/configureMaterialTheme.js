@@ -41,6 +41,7 @@ export const theme = createMuiTheme({
       mid: '#212A21',
       greyButtonActive: '#737a73',
       black: '#162217',
+      overlay: '#0d110d',
       inputFadeFilter: '#585858' //add a filter that lightens a bg color
     },
   },

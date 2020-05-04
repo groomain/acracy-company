@@ -48,6 +48,10 @@ i18n
           lastNameRequired: 'Please enter your Lastname',
           search: 'Search…',
           refresh: 'Refresh',
+          confirmDelete: 'Yes, delete draft',
+          cancel: 'Cancel',
+          noDraft: 'No draft pending',
+          briefsTitle: 'Briefs',
           newBrief: 'New brief'
         }
       },
@@ -88,6 +92,10 @@ i18n
           lastNameRequired: 'Veuillez entrer votre nom',
           search: 'Rechercher…',
           refresh: 'Rafraîchir',
+          confirmDelete: 'Confirmer la suppression',
+          cancel: 'Annuler',
+          noDraft: 'Aucun brief en cours. \nCommencez par rechercher un type de profil ou livrable pour démarrer un brief.',
+          briefsTitle: 'Brouillons',
           newBrief: 'Nouveau brief'
         }
       }
