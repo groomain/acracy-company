@@ -48,6 +48,7 @@ i18n
           confirmDelete: 'Yes, delete draft',
           cancel: 'Cancel',
           noDraft: 'No draft pending',
+          briefsTitle: '09 Briefs'
         }
       },
       fr: {
@@ -86,7 +87,8 @@ i18n
           refresh: 'Rafraîchir',
           confirmDelete: 'Confirmer la suppression',
           cancel: 'Annuler',
-          noDraft: 'Aucun brief en cours. \nCommencez par rechercher un type de profil ou livrable pour démarrer un brief.'
+          noDraft: 'Aucun brief en cours. \nCommencez par rechercher un type de profil ou livrable pour démarrer un brief.',
+          briefsTitle: '09 Brouillons'
         }
       }
     },
