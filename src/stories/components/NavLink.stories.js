@@ -1,6 +1,5 @@
 import React from 'react';
 import ProviderWrapper from '../../utils/Provider';
-import CustomTextField from "../../components/CustomTextField";
 import CustomNavLink from "../../components/CustomNavLink";
 
 export default {

@@ -1,5 +1,4 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { Formik } from 'formik';
@@ -10,11 +9,13 @@ import LoginForm from '../../components/LoginForm';
 import { loginLaunched } from '../../components/App/reducer';
 import styles from '../../utils/styles';
 import CustomNavLink from "../../components/CustomNavLink";
+import CustomSnackBar from "../../components/SnackBar";
 
 const SignInPage = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const classes = styles();
+  const [open, setOpen] = React.useState(true);
 
   // Form data
   const initialValues = {
@@ -55,6 +56,7 @@ const SignInPage = () => {
       />
       <CustomNavLink to={'/signup'} text={t('signUpButton')}/>
       <CustomNavLink to={'/password'} text={t('forgotPasswordButton')}/>
+      <CustomSnackBar open={open} setOpen={setOpen} message={"Merci pour votre validation, votre compte acracy est maintenant actif"}/>
     </Grid>
   );
 };
