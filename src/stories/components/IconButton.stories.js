@@ -1,10 +1,11 @@
 import React from 'react';
 import ProviderWrapper from '../../utils/Provider';
-import CustomSnackBar from "../../components/SnackBar";
+import CustomIconButton from "../../components/IconButton";
+import profilIcon from '../../assets/icons/profil-roll-out.svg'
 
 export default {
-  title: 'Components|SnackBar',
-  component: CustomSnackBar,
+  title: 'Components|IconButton',
+  component: CustomIconButton,
   parameters: {
     backgrounds: [
       { name: 'colored-theme', value: '#162217', default: true }
@@ -14,7 +15,7 @@ export default {
 
 export const withDefault = () => (
   ProviderWrapper(
-      <CustomSnackBar open={true} message={"Ceci est une SnackBar"} />
+      <CustomIconButton icon={profilIcon}/>
   )
 );
 

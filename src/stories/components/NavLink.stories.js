@@ -5,11 +5,11 @@ import CustomNavLink from "../../components/CustomNavLink";
 export default {
   title: 'Components|NavLink',
   component: CustomNavLink,
-  parameters: {
-    backgrounds: [
-      { name: 'colored-theme', value: '#26a69a', default: true },
-    ]
-  },
+    parameters: {
+        backgrounds: [
+            { name: 'colored-theme', value: '#162217', default: true }
+        ]
+    },
 };
 
 export const withDefault = () => (
