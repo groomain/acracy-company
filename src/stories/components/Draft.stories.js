@@ -14,19 +14,19 @@ export default {
 };
 
 const styles = {
-  padding: '3rem',
+  padding: '3rem'
 }
 
 const drafts = [{
   status: 'Status de brief',
-  progress: '30%',
+  progress: 30,
   date: '22.04',
   time: '10h12',
   target: 'Web design',
   new: true
 }, {
   status: 'Status de brief',
-  progress: '70%',
+  progress: 70,
   date: '21.04',
   time: '12h09',
   title: 'Mon titre de brief très long sur deux lignes',
@@ -34,14 +34,14 @@ const drafts = [{
   new: false
 }, {
   status: 'Status de brief',
-  progress: '30%',
+  progress: 30,
   date: '22.04',
   time: '10h12',
   target: 'Web design',
   new: true
 }, {
   status: 'Status de brief',
-  progress: '70%',
+  progress: 70,
   date: '21.04',
   time: '12h09',
   title: 'Mon titre de brief très long sur deux lignes',
@@ -49,14 +49,14 @@ const drafts = [{
   new: false
 }, {
   status: 'Status de brief',
-  progress: '30%',
+  progress: 30,
   date: '22.04',
   time: '10h12',
   target: 'Web design',
   new: true
 }, {
   status: 'Status de brief',
-  progress: '70%',
+  progress: 70,
   date: '21.04',
   time: '12h09',
   title: 'Mon titre de brief très long sur deux lignes',
@@ -66,7 +66,7 @@ const drafts = [{
 
 const draft = {
   status: 'Status de brief',
-  progress: '30%',
+  progress: 30,
   date: '21.04',
   time: '12h09',
   target: 'Web design',
@@ -85,6 +85,33 @@ export const withList = () => (
   ProviderWrapper(
     <div style={styles}>
       <Drafts drafts={drafts}>
+        <Draft draft={draft} />
+      </Drafts>
+    </div>
+  )
+);
+
+const twoDrafts = [{
+  status: 'Status de brief',
+  progress: 30,
+  date: '22.04',
+  time: '10h12',
+  target: 'Web design',
+  new: true
+}, {
+  status: 'Status de brief',
+  progress: 70,
+  date: '21.04',
+  time: '12h09',
+  title: 'Mon titre de brief très long sur deux lignes',
+  target: 'Web design',
+  new: false
+}];
+
+export const withLessThan3 = () => (
+  ProviderWrapper(
+    <div style={styles}>
+      <Drafts drafts={twoDrafts}>
         <Draft draft={draft} />
       </Drafts>
     </div>

@@ -23,7 +23,7 @@ const Draft = ({ draft }) => {
           <Grid container alignItems="center">
             <Dot />
             <Grid>
-              <Typography variant='h2' className={classes.toUppercase}>{draft.status} ({draft.progress})</Typography>
+              <Typography variant='h2' className={classes.toUppercase}>{draft.status} ({draft.progress} %)</Typography>
               <Typography variant='body2'>Créé le : {draft.date} à {draft.time}</Typography>
             </Grid>
           </Grid>
@@ -56,7 +56,7 @@ const Draft = ({ draft }) => {
           <Grid item>
             <CustomButton
               type="button"
-              handleClick={console.log("Deleted !")}
+              handleClick={() => console.log("Deleted !")}
               title={t('confirmDelete')}
               theme="filledButton"
             />
