@@ -2,17 +2,48 @@ import makeStyles from '@material-ui/core/styles/makeStyles';
 
 export default makeStyles(theme => ({
   button: {
-    height: 50,
-    // width: 200,
-    paddingLeft: 50,
-    paddingRight: 50,
-    border: '3px solid',
+    height: 56,
+    minWidth: 185,
     textTransform: 'none',
-    fontSize: 18,
-    fontWeight: 'bold',
+    fontSize: 14,
+    fontWeight: 500,
     margin: '1rem 0',
+    lineHeight: 1.57,
+    borderRadius: '8px',
+    border: '1px solid #fff',
+    color: '#fff'
+  },
+  secondaryButton: {
+    border: `1px solid ${theme.palette.secondary.medium}`,
+    color: '#fff',
     '&:hover': {
-      border: '3px solid',
+      background: `${theme.palette.secondary.medium}`,
+      border: '1px solid transparent'
     },
-  }
+    '&:active': {
+      background: `${theme.palette.secondary.greyButtonActive}`,
+      border: `1px solid ${theme.palette.secondary.medium}`
+    },
+  },
+  primaryButton: {
+    border: `1px solid ${theme.palette.primary.main}`,
+    color: '#fff',
+    '&:hover': {
+      background: `${theme.palette.primary.main}`,
+      border: '1px solid transparent',
+      color: `${theme.palette.secondary.black}`
+    },
+    '&:active': {
+      background: `${theme.palette.primary.bright}`,
+      border: `1px solid transparent`
+    },
+  },
+  filledButton: {
+    background: `${theme.palette.primary.main}`,
+    border: `1px solid ${theme.palette.primary.main}`,
+    color: `${theme.palette.secondary.black}`,
+    '&:hover, &:active': {
+      background: `${theme.palette.primary.bright}`
+    }
+  },
 }));
