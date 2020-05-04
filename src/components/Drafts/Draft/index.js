@@ -1,13 +1,10 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { CustomButton } from '../../Button';
-import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
-import Typography from "@material-ui/core/Typography";
+import { Grid, Box, Typography, IconButton } from '@material-ui/core';
 import styles from './styles';
-import IconButton from '@material-ui/core/IconButton';
 import ClearIcon from '@material-ui/icons/Clear';
 import SearchIcon from '@material-ui/icons/Search';
-import { useTranslation } from 'react-i18next';
 import Dot from '../../Dot';
 
 const Draft = ({ draft }) => {
