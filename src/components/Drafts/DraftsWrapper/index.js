@@ -65,9 +65,11 @@ const Drafts = ({ drafts, loading, ...props }) => {
     )
   };
 
+  const draftsNumber = ('0' + drafts.length).slice(-2)
+
   return (
     <>
-      <Typography variant='h2'>{t('briefsTitle')}</Typography>
+      <Typography variant='h2'>{draftsNumber} {t('briefsTitle')}</Typography>
       <br />
       {draftsList}
     </>
