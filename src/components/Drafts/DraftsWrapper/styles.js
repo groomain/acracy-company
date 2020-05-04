@@ -3,11 +3,12 @@ import makeStyles from '@material-ui/core/styles/makeStyles';
 export default makeStyles(theme => ({
   draftsWrapper: {
     background: theme.palette.secondary.dark,
+    minHeight: 230,
     borderRadius: 15,
-    padding: '27px 15px',
-    minHeight: '256px',
+    padding: '15px',
+    margin: '1rem 0',
     alignItems: 'center',
-    display: 'block'
+    position: 'relative'
   },
   noDrafts: {
     color: theme.palette.secondary.medium,

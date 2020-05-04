@@ -1,14 +1,12 @@
 import React from 'react';
-import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
-import Typography from "@material-ui/core/Typography";
+import { Grid, Box, Typography, CircularProgress } from '@material-ui/core/';
 import styles from './styles';
 import { useTranslation } from 'react-i18next';
 import Draft from '../Draft';
 import { formatWithLineBreak } from '../../../utils/format';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
+import DraftsPagination from '../DraftsPagination/';
 
 const Drafts = ({ drafts, loading, ...props }) => {
   const classes = styles();
@@ -18,46 +16,61 @@ const Drafts = ({ drafts, loading, ...props }) => {
     desktop: {
       breakpoint: { max: 3000, min: 1200 },
       items: 3,
-      slidesToSlide: 2, // optional, default to 1.
+      partialVisibilityGutter: 30,
     },
     tablet: {
-      breakpoint: { max: 1200, min: 850 },
+      breakpoint: { max: 1200, min: 900 },
       items: 2,
+      partialVisibilityGutter: 30
     },
     mobile: {
-      breakpoint: { max: 850, min: 0 },
+      breakpoint: { max: 900, min: 0 },
       items: 1,
+      partialVisibilityGutter: 30
     }
   };
 
   let draftsList = (
-    <Box textAlign="center" style={{ width: '100%' }}>
-      <Typography variant='h2' className={classes.noDrafts}>{formatWithLineBreak(t('noDraft'))}</Typography>
-    </Box>
+    <Grid
+      container
+      className={classes.draftsWrapper}
+    >
+      {!loading ? (
+        <Box textAlign="center" style={{ width: '100%' }}>
+          <Typography variant='h2' className={classes.noDrafts}>{formatWithLineBreak(t('noDraft'))}</Typography>
+        </Box>
+      ) : (
+          <Box mx='auto'>
+            <CircularProgress color="primary" size={30} />
+          </Box>
+        )
+      }
+    </Grid>
   );
 
-  if (loading) {
-    draftsList = (
-      <Box mx='auto'>
-        <CircularProgress color="primary" size={30} />
-      </Box>
-    )
-  }
-
   if (drafts.length > 0 && !loading) {
-    draftsList = drafts.map((draft, key) => <Draft draft={draft} key={key} />)
+    draftsList = (
+      <Carousel
+        responsive={responsive}
+        className={classes.draftsWrapper}
+        arrows={false}
+        customButtonGroup={<DraftsPagination />}
+        renderButtonGroupOutside
+        partialVisible
+        infinite={false}
+        {...props}
+      >
+        {drafts.map((draft, key) => <Draft draft={draft} key={key} />)}
+      </Carousel>
+    )
   };
 
   return (
-    <Carousel
-      responsive={responsive}
-      className={classes.draftsWrapper}
-      showDots
-      renderDotsOutside
-      {...props}
-    >
+    <>
+      <Typography variant='h2'>{t('briefsTitle')}</Typography>
+      <br />
       {draftsList}
-    </Carousel>
+    </>
   );
 };
 
