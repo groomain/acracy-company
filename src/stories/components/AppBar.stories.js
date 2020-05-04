@@ -4,12 +4,35 @@ import CustomAppBar from "../../components/AppBar";
 
 export default {
   title: 'Components|AppBar',
-  component: CustomAppBar
+  component: CustomAppBar,
+  parameters: {
+    backgrounds: [
+      { name: 'colored-theme', value: '#162217', default: true }
+    ]
+  },
 };
 
-export const withDefault = () => (
+export const withLogin = () => (
   ProviderWrapper(
-      <CustomAppBar/>
+      <CustomAppBar path={"/login"}/>
+  )
+);
+
+export const withSignUp = () => (
+  ProviderWrapper(
+      <CustomAppBar path={"/signup"}/>
+  )
+);
+
+export const withHome = () => (
+  ProviderWrapper(
+      <CustomAppBar path={"/home"}/>
+  )
+);
+
+export const withForgotPassword = () => (
+  ProviderWrapper(
+      <CustomAppBar path={"/password"}/>
   )
 );
 

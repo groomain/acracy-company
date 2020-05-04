@@ -16,6 +16,7 @@ export default makeStyles(theme => ({
     height: 30
   },
   typo: {
-    margin: 'auto'
+    margin: 'auto',
+    color: "black"
   }
 }));
