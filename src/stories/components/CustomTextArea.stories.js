@@ -12,7 +12,7 @@ export default {
     },
 };
 const label = 'Donnez un titre à votre mission'
-const placeholder = 'Ex: Motion design pour stories instagram'
+const placeholder = 'Ex: Motion design pour stories Instagram'
 
 export const withDefault = () => (
     ProviderWrapper(
