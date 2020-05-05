@@ -1,5 +1,5 @@
 import React from 'react';
-import InputLabel from '@material-ui/core/InputLabel';
+import Typography from '@material-ui/core/Typography';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import IconButton from '@material-ui/core/IconButton';
 import { Visibility, VisibilityOff } from '@material-ui/icons';
@@ -12,7 +12,7 @@ export const CustomTextField = ({ label, placeholder, type, error, helperText, .
   const classes = styles();
   return (
     <Box style={{ height: '140px' }}>
-      <InputLabel variant='body1' error={error}>{label}*</InputLabel >
+      <Typography variant='body1' error={error}>{label}</Typography >
       <FilledInput
         type={type}
         placeholder={placeholder}
@@ -51,7 +51,7 @@ export const CustomPasswordField = ({ label, placeholder, error, helperText, ...
   };
   return (
     <Box style={{ height: '140px' }}>
-      <InputLabel error={error} htmlFor="filled-adornment-password" variant='body1'>{label}*</InputLabel>
+      <Typography error={error} htmlFor="filled-adornment-password" variant='body1'>{label}*</Typography>
       <FilledInput
         classes={{ root: classes.root, focused: classes.focused, select: classes.select }}
         id="filled-adornment-password"
