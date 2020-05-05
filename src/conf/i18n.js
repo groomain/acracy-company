@@ -52,7 +52,8 @@ i18n
           cancel: 'Cancel',
           noDraft: 'No draft pending',
           briefsTitle: 'Briefs',
-          newBrief: 'New brief'
+          newBrief: 'New brief',
+          searchbarPlaceholder: 'What are you looking for ?'
         }
       },
       fr: {
@@ -96,7 +97,8 @@ i18n
           cancel: 'Annuler',
           noDraft: 'Aucun brief en cours. \nCommencez par rechercher un type de profil ou livrable pour démarrer un brief.',
           briefsTitle: 'Brouillons',
-          newBrief: 'Nouveau brief'
+          newBrief: 'Nouveau brief',
+          searchbarPlaceholder: 'Quel profil ou livrable recherchez-vous ?'
         }
       }
     },
