@@ -63,6 +63,7 @@ const SignUpPage = () => {
       <Sidebar>
         <InfoPannel />
       </Sidebar>
+
     </Grid>
   );
 };
