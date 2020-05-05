@@ -1,7 +1,19 @@
+
+@font-face {
+  font-family: 'Basier Regular';
+  src: url('./assets/fonts/BasierCircleRegular.otf');
+}
+
 @font-face {
   font-family: 'Basier Medium';
   src: url('./assets/fonts/BasierCircleMedium.otf');
 }
+
+@font-face {
+  font-family: 'Basier Bold';
+  src: url('./assets/fonts/BasierCircleBold.otf');
+}
+
 
 html, body, #app, #app> div {
   margin: 0;
@@ -9,6 +21,15 @@ html, body, #app, #app> div {
   width: 100%
 }
 
-html, body, #app, #app> *+*, button {
+* {
+  box-sizing: border-box;
+}
+
+html, body, #app, #app> *+*, button, input {
   font-family: 'Basier Medium';
+}
+
+mark {
+  background-color: transparent;
+  font-family: 'Basier Bold';
 }
