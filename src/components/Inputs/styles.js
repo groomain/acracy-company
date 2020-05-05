@@ -51,7 +51,7 @@ export default makeStyles(theme => ({
     borderRadius: 15,
     border: `1px solid ${theme.palette.secondary.medium}`,
     boxShadow: 'none',
-    margin: '.5rem -1rem',
+    margin: '.5rem 0',
     '& .MuiList-root': {
       padding: 0,
     }
