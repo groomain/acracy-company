@@ -40,7 +40,8 @@ export const theme = createMuiTheme({
       light: '#2B362C',
       mid: '#212A21',
       greyButtonActive: '#737a73',
-      black: '#162217'
+      black: '#162217',
+      sidebarGreen: '#353f36'
     },
   },
   typography: {
