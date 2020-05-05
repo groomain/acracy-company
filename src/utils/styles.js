@@ -8,61 +8,61 @@ export default makeStyles(theme => ({
     },
   },
   connectionDiv: {
-    backgroundColor: '#162217',
-    height: '100vh',
-    minHeight: 800,
-
+    backgroundColor: theme.palette.secondary.black,
+    minHeight: '100vh',
+    paddingBottom: '20vh'
   },
   Connection: {
     borderRadius: 5,
     width: 450,
-    borderColor: '#ffffff',
-    backgroundColor: '#ffffff',
+    borderColor: theme.palette.secondary.main,
+    backgroundColor: theme.palette.secondary.main,
   },
   titleConnection: {
-    color: '#ffffff',
+    color: theme.palette.secondary.main,
     fontStyle: 'italic',
     fontSize: 60,
     marginBottom: 20
   },
   titleFormConnection: {
     fontSize: 30,
-    color: '#ffffff',
+    color: theme.palette.secondary.main,
     margin: 30,
     fontWeight: 'bold'
   },
   searchedTerms: {
     fontSize: 21,
-    color: '#ecf805',
+    color: theme.palette.primary.main,
 
   },
   text: {
     fontSize: 34,
-    color: '#ffffff',
+    color: theme.palette.secondary.main,
 
   },
   textSmall: {
-    color: '#ffffff',
+    color: theme.palette.secondary.main,
     fontSize: 17
   },
   textSmallYellow: {
     fontSize: 17,
-    color: '#ecf805'
+    color: theme.palette.primary.main
   },
   textLink: {
     textDecoration: 'underline'
   },
   sidebarDiv: {
     margin: '0 auto',
-    backgroundColor: '#353f36',
+    backgroundColor: theme.palette.secondary.sidebarGreen,
     height: '100vh'
   },
-  stepper: {
-    backgroundColor: '#162217'
-
-  },
   formGridItem: {
-    paddingLeft: '20vh',
     paddingTop: '10vh'
+  },
+  stepper: {
+    backgroundColor: theme.palette.secondary.black,
+  },
+  step: {
+    color: theme.palette.secondary.main
   }
 }));
