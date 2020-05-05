@@ -21,7 +21,10 @@ i18n
           emailRequired: 'Please enter your email',
           passwordRequired: 'Please enter your password',
           loginSubmit: 'Login',
+          login: 'Login',
           signUpSubmit: 'Sign Up',
+          signUp: 'Sign Up',
+          contactUs: 'Contact us',
           signUpPageTitle: 'Sign Up',
           confirmPasswordRequired: 'Please confirm your password',
           passwordMismatch: 'Passwords do not match',
@@ -44,7 +47,12 @@ i18n
           firstNameRequired: 'Please enter your Firsname',
           lastNameRequired: 'Please enter your Lastname',
           search: 'Search…',
-          refresh: 'Refresh'
+          refresh: 'Refresh',
+          confirmDelete: 'Yes, delete draft',
+          cancel: 'Cancel',
+          noDraft: 'No draft pending',
+          briefsTitle: 'Briefs',
+          newBrief: 'New brief'
         }
       },
       fr: {
@@ -57,7 +65,10 @@ i18n
           emailRequired: 'Veuillez saisir votre email',
           passwordRequired: 'Veuillez saisir votre mot de passe',
           loginSubmit: 'Se connecter',
+          login: 'Se connecter',
           signUpSubmit: 'S\'inscrire',
+          signUp: 'S\'inscrire',
+          contactUs: 'Nous contacter',
           signUpPageTitle: 'Inscription',
           confirmPasswordRequired: 'Veuillez confirmer votre mot de passe',
           passwordMismatch: 'Les mot de passes ne correspondent pas',
@@ -99,6 +110,11 @@ i18n
           loginLinkMsg: 'Je me connecte.',
           accountCreation: 'Création de compte',
           personnalInfos: 'Informations Personnelles',
+          confirmDelete: 'Confirmer la suppression',
+          cancel: 'Annuler',
+          noDraft: 'Aucun brief en cours. \nCommencez par rechercher un type de profil ou livrable pour démarrer un brief.',
+          briefsTitle: 'Brouillons',
+          newBrief: 'Nouveau brief'
         }
       }
     },
