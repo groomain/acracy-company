@@ -4,9 +4,9 @@ import { useDispatch } from 'react-redux';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import SignUpForm from '../../components/SignUpForm';
-import CustomNavLink from "../../components/CustomNavLink";
 import { signupLaunched } from '../../components/App/reducer';
 import Sidebar from '../../components/Sidebar';
+import Main from '../../components/Main';
 import InfoPannel from '../../components/InfoPannel';
 import Grid from '@material-ui/core/Grid';
 import styles from '../../utils/styles';
@@ -49,19 +49,16 @@ const SignUpPage = () => {
       container
       direction="row"
       justify="center"
-      // alignItems="center"
       className={classes.connectionDiv}
     >
-      <Grid item xs={7} className={classes.formGridItem}>
-
+      <Main>
         <Formik
           render={props => <SignUpForm {...props} />}
           initialValues={initialValues}
           validationSchema={ValidationSchema}
           onSubmit={signup}
         />
-        <CustomNavLink to={"/login"} text={t('loginButton')} />
-      </Grid>
+      </Main>
 
       <Sidebar>
         <InfoPannel />
