@@ -2,11 +2,17 @@ import makeStyles from '@material-ui/core/styles/makeStyles';
 import { fade } from '@material-ui/core';
 
 export default makeStyles(theme => ({
+  appbar: {
+    backgroundColor: 'transparent',
+    boxShadow: 'none'
+  },
+  toolbar: {
+    height: 104,
+    paddingLeft: 40,
+    paddingRight: 40
+  },
   grow: {
     flexGrow: 1,
-  },
-  menuButton: {
-    marginRight: theme.spacing(2),
   },
   title: {
     display: 'none',
@@ -14,54 +20,38 @@ export default makeStyles(theme => ({
       display: 'block',
     },
   },
-  search: {
-    borderRadius: theme.shape.borderRadius,
-    marginRight: theme.spacing(2),
-    marginLeft: '20%',
-    marginBottom: 10,
-    width: '100%',
-    [theme.breakpoints.up('sm')]: {
-      marginLeft: theme.spacing(3),
-      width: 'auto',
-    },
-  },
-  searchIcon: {
-    zIndex: 2,
-    padding: theme.spacing(0, 2),
-    height: '100%',
-    position: 'absolute',
-    pointerEvents: 'none',
+  div: {
     display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignContent: 'center',
     alignItems: 'center',
-    justifyContent: 'center',
+    width: 390,
   },
-  inputRoot: {
-    color: 'inherit',
+  login: {
+    width: 390,
   },
-  inputInput: {
-    backgroundColor: 'white',
-    borderRadius: 5,
-    border: '1px solid white',
-    color: '#26a69a',
-    padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
-    paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
-    transition: theme.transitions.create('width'),
-    width: '100%',
-    [theme.breakpoints.up('md')]: {
-      width: '20ch',
-    },
+  signup: {
+    width: 340,
   },
-  sectionDesktop: {
-    display: 'none',
-    [theme.breakpoints.up('md')]: {
-      display: 'flex',
-    },
+  home: {
+    width: 270,
   },
-  sectionMobile: {
+  password: {
+    width: 550,
+  },
+  div2: {
     display: 'flex',
-    [theme.breakpoints.up('md')]: {
-      display: 'none',
-    },
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'baseline',
+    width: 340,
   },
+  div4: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'baseline',
+    width: 550,
+  }
 }));

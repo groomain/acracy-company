@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import HomePage from '../../pages/HomePage';
 import PrivateRoute from '../PrivateRoute';
 import PublicRoute from '../PublicRoute';
-import {getCurrentSessionLaunched} from './reducer';
+import { getCurrentSessionLaunched } from './reducer';
 import SignInPage from '../../pages/SignIn';
 import SignUpPage from '../../pages/SignUp';
 import ForgotPassword from '../../pages/ForgotPassword';
@@ -20,7 +20,7 @@ function App() {
   const isAuthenticated = useSelector(state => state.getIn(['app', 'isAuthenticated']), null);
   const { i18n } = useTranslation();
 
-    useEffect(() => {
+  useEffect(() => {
     dispatch(getCurrentSessionLaunched({ fromPath: '/' }));
   }, [dispatch]);
 
@@ -36,7 +36,7 @@ function App() {
     </Switch>
   );
 
-    return (
+  return (
     <div>
       {/*/!* __NavbarStart__ Replace this whit your navbar *!/*/}
       {/*<div>*/}
@@ -55,9 +55,9 @@ function App() {
         {/*</button>*/}
       {/*</div>*/}
       {/*/!* __NavbarEnd__ *!/*/}
-      <CustomAppBar/>
-      <ProgressBar/>
-      {
+      {isAuthenticated && <CustomAppBar/>}
+        <ProgressBar/>
+        {
         isAuthenticating ? 'Loading...' : appSwitch
       }
     </div>

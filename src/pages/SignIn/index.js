@@ -1,12 +1,12 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import {useDispatch} from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import LoginForm from '../../components/LoginForm';
-import {loginLaunched} from '../../components/App/reducer';
+import { loginLaunched } from '../../components/App/reducer';
 import styles from '../../utils/styles';
 import CustomNavLink from "../../components/CustomNavLink";
 import CustomSnackBar from "../../components/SnackBar";
@@ -15,7 +15,8 @@ const SignInPage = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const classes = styles();
-  const [open, setOpen] = React.useState(true);
+  const [open, setOpen] = React.useState(false);
+
   // Form data
   const initialValues = {
     email: '',
