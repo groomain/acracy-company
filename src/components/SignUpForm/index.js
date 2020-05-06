@@ -2,11 +2,12 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { CustomButton } from '../Button/';
-import CustomTextField from "../Inputs/CustomTextField";
+import { CustomTextField, CustomPasswordField } from "../Inputs/CustomTextField";
 import CustomSelect from "../Inputs/CustomSelect";
 import CustomNavLink from "../CustomNavLink";
+import CustomCheckbox from '../CheckBox';
 import { Typography, Grid, Stepper, Step, StepLabel, StepButton, Box } from "@material-ui/core";
-import styles from '../../utils/styles';
+import styles from './styles';
 
 const SignUpForm = (props) => {
   const { t } = useTranslation();
@@ -18,9 +19,8 @@ const SignUpForm = (props) => {
   const { values, errors, touched, handleBlur, handleChange, handleSubmit } = props;
   const { companyName, firstName, lastName, role, phoneNumber, email, password, confirmPassword } = values;
   const [activeStep, setActiveStep] = React.useState(0);
-  const steps = getSteps();
 
-  function getSteps() {
+  const getSteps = () => {
     return [t('personnalInfos'), t('password')];
   }
 
@@ -36,12 +36,10 @@ const SignUpForm = (props) => {
   }
 
   const handleBack = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep - 1);////////////////////////////////////////////////
+    setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
   const handleStep = (step) => () => {
-    console.log('handle step, step :', step);
-
     setActiveStep(step);
   };
 
@@ -76,7 +74,7 @@ const SignUpForm = (props) => {
             />
           </Grid>
 
-          <Grid container item spacing={2} className={classes.signupRows}>
+          <Grid container item spacing={2} className={classes.signupRows, classes.marginTop}>
             <Grid item xs={6}>
               <CustomTextField
                 name="firstName"
@@ -105,7 +103,7 @@ const SignUpForm = (props) => {
               />
             </Grid>
           </Grid>
-          <Grid item xs={12} className={classes.signupRows}>
+          <Grid item xs={12} className={classes.signupRows, classes.marginTop}>
             <CustomTextField
               name="role"
               type="role"
@@ -119,7 +117,7 @@ const SignUpForm = (props) => {
             />
           </Grid>
 
-          <Grid item xs={12} className={classes.signupRows}>
+          <Grid item xs={12} className={classes.signupRows, classes.marginTop}>
             <CustomTextField
               name="email"
               type="email"
@@ -130,10 +128,11 @@ const SignUpForm = (props) => {
               label={t('emailPro') + '*'}
               error={!!touched.email && !!errors.email}
               helperText={touched.email && errors.email ? t('emailRequired') : ''}
+            //ajouter un verification en bdd pour voir si l'adresse email existe déjà
             />
           </Grid>
 
-          <Grid container item direction='column'>
+          <Grid container item direction='column' className={classes.marginTop}>
 
             <Box>
               <Typography variant={'body1'} >{t('phoneNumber') + '*'}</Typography>
@@ -167,7 +166,8 @@ const SignUpForm = (props) => {
           <CustomButton
             type="button"
             theme="filledButton"
-            handleClick={() => setActiveStep(1)}
+            handleClick={handleStep(1)}
+            // handleClick={() => setActiveStep(1)}
             loading={signupLoading}
             title={t('nextButton')}
           >
@@ -187,38 +187,52 @@ const SignUpForm = (props) => {
         <br />
 
         <Grid container>
-          <Grid item xs={12} className={classes.signupRows}>
-            <CustomTextField
+          <Grid item xs={12} className={classes.signupRows, classes.marginTop}>
+            <CustomPasswordField
               name="password"
-              type="password"
-              value={companyName}
+              value={password}
               onBlur={handleBlur}
               onChange={handleChange}
               placeholder={t('passwordPlaceholder')}
-              label={t('password') + '*'}
-              error={!!touched.companyName && !!errors.companyName}
-              helperText={touched.companyName && errors.companyName ? t('passwordRequired') : ''}
+              label={t('password')}
+              error={!!touched.password && !!errors.password}
+              helperText={touched.password && errors.password ? t('passwordRequired') : ''}
             />
           </Grid>
 
-          <Grid item xs={12} className={classes.signupRows}>
-            <CustomTextField
+          <Grid item xs={12} className={classes.signupRows, classes.marginTop}>
+            <CustomPasswordField
               name="confirmPassword"
-              type="confirmPassword"
-              value={companyName}
+              value={confirmPassword}
               onBlur={handleBlur}
               onChange={handleChange}
               placeholder={t('confirmPasswordPlaceholder')}
-              label={t('confirmPassword') + '*'}
-              error={!!touched.companyName && !!errors.companyName}
-              helperText={touched.companyName && errors.companyName ? t('passwordRequired') : ''}
+              label={t('confirmPassword')}
+              error={!!touched.confirmPassword && !!errors.confirmPassword}
+              helperText={touched.confirmPassword && errors.confirmPassword ? t('confirmPasswordRequired') : ''}
             />
           </Grid>
-          <Grid container justify='space-between'>
+
+          <Grid container justify='space-between' alignItems='center' className={classes.marginTop}>
+            <Grid item xs={2}>
+              <CustomCheckbox></CustomCheckbox>
+            </Grid>
+            <Grid item xs={10}>
+              <Typography variant={"h4"}>
+                J'ai lu et j'accepte les&nbsp;
+                <span>
+                  <CustomNavLink to="/conditions" text={t('termsAndConditions')} theme='yellowLink'></CustomNavLink>
+                </span>
+                &nbsp;du site et des missions acracy
+              </Typography>
+            </Grid>
+          </Grid>
+
+          <Grid container justify='space-between' className={classes.marginTop}>
             <Grid item>
               <CustomButton
                 type="button"
-                handleClick={() => handleStep(1)}
+                handleClick={handleBack}
                 loading={signupLoading}
                 title={t('backButton')}
               >
@@ -233,6 +247,7 @@ const SignUpForm = (props) => {
                 title={t('createAccountButton')}
               >
               </CustomButton>
+              <Typography variant={'subtitle2'}>{signupErrorMessage}</Typography>
             </Grid>
           </Grid>
 
@@ -241,13 +256,8 @@ const SignUpForm = (props) => {
     );
   }
 
-  {/* <Grid
-      container
-      direction="column"
-      justify="center"
-      alignItems="left"
-    > */}
-  {/* </Grid> */ }
+  const steps = getSteps();
+
   return (
     <Grid item className={classes.formGridItem}>
       <Stepper nonLinear connector={false} activeStep={activeStep} className={classes.stepper}>
