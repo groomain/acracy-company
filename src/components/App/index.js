@@ -12,7 +12,7 @@ import ForgotPassword from '../../pages/ForgotPassword';
 import FirstLoginPage from '../../pages/FirstLogin';
 import MyAccount from "../../pages/MyAccount";
 import CustomAppBar from "../AppBar";
-
+import ProgressBar from "../ProgressBar";
 
 function App() {
   const dispatch = useDispatch();
@@ -55,8 +55,9 @@ function App() {
         {/*</button>*/}
       {/*</div>*/}
       {/*/!* __NavbarEnd__ *!/*/}
-      {!isAuthenticated && <CustomAppBar/>}
-      {
+      {isAuthenticated && <CustomAppBar/>}
+        <ProgressBar/>
+        {
         isAuthenticating ? 'Loading...' : appSwitch
       }
     </div>
