@@ -1,7 +1,8 @@
-import Immutable from 'immutable';
+import Immutable, {fromJS} from 'immutable';
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = Immutable.Map({
+  activeStep: 0,
   isAuthenticated: false,
   isAuthenticating: false,
   userDynamo: null,
@@ -97,9 +98,10 @@ const { actions, reducer } = createSlice({
     updateUserSuccess: (state, action) => state
       .set('updateUserLoading', false)
       .set('updateUserErrorMessage', null),
-    updateUserFailure: (state, action) => state
-      .set('updateUserLoading', false)
-      .set('updateUserErrorMessage', action.payload),
+    handleNextStep: (state, action) => state
+      .set('activeStep', action.payload + 1),
+    handlePreviousStep: (state, action) => state
+      .set('activeStep', action.payload - 1 ),
   }
 });
 
@@ -124,7 +126,9 @@ export const {
   submitNewPasswordFaliure,
   updateUserLaunched,
   updateUserSuccess,
-  updateUserFailure
+  updateUserFailure,
+  handleNextStep,
+  handlePreviousStep
 } = actions;
 
 export default reducer;
