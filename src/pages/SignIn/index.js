@@ -43,20 +43,20 @@ const SignInPage = () => {
       container
       direction="column"
       justify="center"
-      alignItems="center"
       className={classes.connectionDiv}
     >
-      <Typography className={classes.titleConnection}>La Pilule Rouge</Typography>
-      <Typography className={classes.titleFormConnection}>Connectez-vous à votre espace</Typography>
-      <Formik
-        render={props => <LoginForm {...props} />}
-        initialValues={initialValues}
-        validationSchema={ValidationSchema}
-        onSubmit={login}
-      />
-      {}
-      <CustomNavLink to={'/signup'} text={t('signUpButton')}/>
-      <CustomNavLink to={'/password'} text={t('forgotPasswordButton')}/>
+      <Grid container direction="column" style={{paddingLeft: "20%", width: "50%"}}>
+        <Typography variant="h2">acracy entreprise</Typography>
+        <Typography variant="h1" style={{paddingBottom: 20}}>Je m'identifie</Typography>
+        <Formik
+            render={props => <LoginForm {...props} />}
+            initialValues={initialValues}
+            validationSchema={ValidationSchema}
+            onSubmit={login}
+        />
+        <CustomNavLink to={'/signup'} text={t('signUpButton')}/>
+        <CustomNavLink to={'/password'} text={t('forgotPasswordButton')}/>
+      </Grid>
       <CustomSnackBar open={open} setOpen={setOpen} message={"Merci pour votre validation, votre compte acracy est maintenant actif"}/>
     </Grid>
   );

@@ -40,18 +40,8 @@ export default makeStyles(theme => ({
   password: {
     width: 550,
   },
-  div2: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'baseline',
-    width: 340,
-  },
-  div4: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'baseline',
-    width: 550,
+  navlink: {
+    paddingLeft: 25,
+    paddingRight: 25,
   }
 }));

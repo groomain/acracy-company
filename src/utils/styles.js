@@ -8,7 +8,7 @@ export default makeStyles(theme => ({
     },
   },
   connectionDiv: {
-    backgroundImage: 'linear-gradient(to left, #18C8B7, #31CAA8)',
+    backgroundColor: `${theme.palette.secondary.black}`,
     height: '100vh',
     minHeight: 800
   },

@@ -4,7 +4,6 @@ import { useTranslation } from 'react-i18next';
 import { CustomButton } from '../Button/';
 import Grid from '@material-ui/core/Grid';
 import CustomTextField, { CustomPasswordField } from "../Inputs/CustomTextField";
-import Typography from "@material-ui/core/Typography";
 import CustomSnackBar from "../SnackBar";
 
 const LoginForm = (props) => {
@@ -31,13 +30,12 @@ const LoginForm = (props) => {
       container
       direction="column"
       justify="center"
-      alignItems="center"
     >
       <CustomTextField
         id="email"
         type='email'
         label={t('email')}
-        placeholder={t('email')}
+        placeholder={t('yourEmail')}
         value={email}
         onBlur={handleBlur}
         onChange={handleChange}
@@ -47,7 +45,7 @@ const LoginForm = (props) => {
       <CustomPasswordField
         id="password"
         label={t('password')}
-        placeholder={t('password')}
+        placeholder={t('yourPassword')}
         value={password}
         onBlur={handleBlur}
         onChange={handleChange}
