@@ -29,7 +29,7 @@ export default makeStyles(theme => ({
     width: 390,
   },
   login: {
-    width: 390,
+    width: 360,
   },
   signup: {
     width: 340,
@@ -38,10 +38,6 @@ export default makeStyles(theme => ({
     width: 270,
   },
   password: {
-    width: 550,
-  },
-  navlink: {
-    paddingLeft: 25,
-    paddingRight: 25,
+    width: 480,
   }
 }));

@@ -32,7 +32,7 @@ export const CustomAppBar = (props) => {
     case '/signup':
         return (
             <div className={clsx(classes.div, classes.signup)}>
-                <CustomNavLink className={classes.navlink} to={'/login'} text={t('login')}/>
+                <CustomNavLink to={'/login'} text={t('login')}/>
                 <CustomButton title={t('contactUs')}/>
             </div>
         );
