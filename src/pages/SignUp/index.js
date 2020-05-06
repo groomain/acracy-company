@@ -3,12 +3,13 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
-import SignUpForm from '../../components/SignUpForm';
 import { signupLaunched } from '../../components/App/reducer';
+import Grid from '@material-ui/core/Grid';
 import Sidebar from '../../components/Sidebar';
 import Main from '../../components/Main';
-import InfoPannel from '../../components/InfoPannel';
-import Grid from '@material-ui/core/Grid';
+import SignUpForm from '../../components/SignUpForm';
+import SearchResultPannel from '../../components/SearchResultPannel';
+import CustomAppBar from '../../components/AppBar';
 import styles from '../../utils/styles';
 
 const SignUpPage = () => {
@@ -45,26 +46,27 @@ const SignUpPage = () => {
   });
 
   return (
-    <Grid
-      container
-      direction="row"
-      justify="center"
-      className={classes.connectionDiv}
-    >
-      <Main>
-        <Formik
-          render={props => <SignUpForm {...props} />}
-          initialValues={initialValues}
-          validationSchema={ValidationSchema}
-          onSubmit={signup}
-        />
-      </Main>
-
-      <Sidebar>
-        <InfoPannel />
-      </Sidebar>
-
-    </Grid>
+    <>
+      <CustomAppBar />
+      <Grid
+        container
+        direction="row"
+        justify="center"
+        className={classes.connectionDiv}
+      >
+        <Main>
+          <Formik
+            render={props => <SignUpForm {...props} />}
+            initialValues={initialValues}
+            validationSchema={ValidationSchema}
+            onSubmit={signup}
+          />
+        </Main>
+        <Sidebar>
+          <SearchResultPannel />
+        </Sidebar>
+      </Grid>
+    </>
   );
 };
 
