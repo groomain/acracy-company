@@ -1,12 +1,16 @@
 import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import InputAdornment from '@material-ui/core/InputAdornment';
+import Icon from '@material-ui/core/Icon';
 import IconButton from '@material-ui/core/IconButton';
 import { Visibility, VisibilityOff } from '@material-ui/icons';
 import FilledInput from '@material-ui/core/FilledInput';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import Box from '@material-ui/core/Box';
 import styles from '../styles';
+import CustomIconButton from '../../IconButton';
+import eyeOpened from '../../../assets/icons/eye-opened.svg';
+import eyeClosed from '../../../assets/icons/eye-closed.svg';
 
 export const CustomTextField = ({ label, placeholder, type, error, helperText, ...props }) => {
   const classes = styles();
@@ -72,6 +76,8 @@ export const CustomPasswordField = ({ label, placeholder, error, helperText, ...
               edge="end"
               color="secondary"
             >
+              {/* {values.showPassword ? <CustomIconButton icon={eyeOpened} />
+                : <CustomIconButton icon={eyeClosed} />}          */}
               {values.showPassword ? <Visibility /> : <VisibilityOff />}
             </IconButton>
           </InputAdornment>

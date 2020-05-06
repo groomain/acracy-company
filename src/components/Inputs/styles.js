@@ -72,5 +72,11 @@ export default makeStyles(theme => ({
   selected: {
     background: `${theme.palette.primary.main} !important`,
     color: `${fade(theme.palette.secondary.black, 0.9)}`,
+  },
+  imageIcon: {
+    height: '100%'
+  },
+  iconRoot: {
+    textAlign: 'center'
   }
 }));
