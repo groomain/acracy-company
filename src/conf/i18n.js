@@ -120,6 +120,7 @@ i18n
           confirmPasswordPlaceholder: 'Confirmez votre mot de passe',
           backButton: 'Retour',
           createAccountButton: 'Créer mon compte',
+          termsAndConditions: 'conditions générales',
         }
       }
     },
