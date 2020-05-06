@@ -2,7 +2,7 @@ import React from 'react';
 import styles from './styles'
 import {useSelector} from "react-redux";
 
-// utiliser les actions handleNextStep et handlePreviousStep de l'App reducer avec l'activeStep en props  pour faire évoluer la bar
+// utiliser les actions handleNextStep et handlePreviousStep de l'App reducer pour faire évoluer la bar
 
 const getWidth = (activeStep) => {
     switch (activeStep) {
@@ -19,10 +19,10 @@ const getWidth = (activeStep) => {
     }
 };
 
-export const ProgressBar = () => {
+export const ProgressBar = ({step}) => {
     const activeStep = useSelector(state => state.getIn(['app', 'activeStep']), null);
 
-    const classes = styles(getWidth(activeStep));
+    const classes = styles(getWidth(step ? step : activeStep));
     return (
         <div className={classes.progressBar}/>
     );
