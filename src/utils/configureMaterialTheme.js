@@ -3,7 +3,7 @@ import BasierCircleRegular from '../assets/fonts/BasierCircleRegular.otf';
 import BasierCircleMedium from '../assets/fonts/BasierCircleRegular.otf';
 import BasierCircleBold from '../assets/fonts/BasierCircleRegular.otf';
 
-const basierRegular = {
+export const basierRegular = {
   fontFamily: 'BasierRegular',
   fontStyle: 'normal',
   fontDisplay: 'swap',
@@ -11,7 +11,7 @@ const basierRegular = {
   src: `url(${BasierCircleRegular})`
 };
 
-const basierMedium = {
+export const basierMedium = {
   fontFamily: 'BasierMedium',
   fontStyle: 'normal',
   fontDisplay: 'swap',

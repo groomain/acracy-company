@@ -56,7 +56,7 @@ export const CustomAppBar = (props) => {
     }}
 
   return (
-        <AppBar position="fixed" className={classes.appbar}>
+        <AppBar position="absolute" className={classes.appbar}>
           <Toolbar className={classes.toolbar}>
             <Typography className={classes.title} variant="h1" noWrap>
               accracy

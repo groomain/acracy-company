@@ -10,6 +10,7 @@ import { loginLaunched } from '../../components/App/reducer';
 import styles from '../../utils/styles';
 import CustomNavLink from "../../components/CustomNavLink";
 import CustomSnackBar from "../../components/SnackBar";
+import Mission from "../../components/Mission";
 
 const SignInPage = () => {
   const dispatch = useDispatch();
