@@ -1,6 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import {useDispatch} from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import Typography from '@material-ui/core/Typography';
@@ -55,7 +55,6 @@ const SignInPage = () => {
         validationSchema={ValidationSchema}
         onSubmit={login}
       />
-      {}
       <CustomNavLink to={'/signup'} text={t('signUpButton')}/>
       <CustomNavLink to={'/password'} text={t('forgotPasswordButton')}/>
       <CustomSnackBar open={open} setOpen={setOpen} message={"Merci pour votre validation, votre compte acracy est maintenant actif"}/>
