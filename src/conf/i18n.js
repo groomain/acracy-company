@@ -53,7 +53,8 @@ i18n
           noDraft: 'No draft pending',
           briefsTitle: 'Briefs',
           newBrief: 'New brief',
-          searchbarPlaceholder: 'What are you looking for ?'
+          searchbarPlaceholder: 'What are you looking for ?',
+          noOptions: 'No results.'
         }
       },
       fr: {
@@ -98,7 +99,8 @@ i18n
           noDraft: 'Aucun brief en cours. \nCommencez par rechercher un type de profil ou livrable pour démarrer un brief.',
           briefsTitle: 'Brouillons',
           newBrief: 'Nouveau brief',
-          searchbarPlaceholder: 'Quel profil ou livrable recherchez-vous ?'
+          searchbarPlaceholder: 'Quel profil ou livrable recherchez-vous ?',
+          noOptions: 'Aucun résultat ne répond à votre recherche.'
         }
       }
     },

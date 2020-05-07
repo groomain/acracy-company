@@ -1,58 +1,114 @@
-import React, { useState } from 'react';
+import React from 'react';
 import algoliasearch from 'algoliasearch/lite';
 import {
   InstantSearch,
-  Configure,
+  Configure
 } from 'react-instantsearch-dom';
-import Autocomplete from './Autocomplete';
+import { useTranslation } from 'react-i18next';
+import { connectStateResults } from 'react-instantsearch-dom';
+import parse from 'autosuggest-highlight/parse';
+import match from 'autosuggest-highlight/match';
 
+import { Grid, InputAdornment } from '@material-ui/core';
+import { Search } from '@material-ui/icons';
+
+import TextField from "@material-ui/core/TextField";
+import Autocomplete from "@material-ui/lab/Autocomplete";
 import styles from './styles';
-import { environment } from '../../environment';
 
-const searchClient = algoliasearch(
-  environment.ALGOSEARCH_TEST,
-  environment.ALGOSEARCH_TEST_KEY
-);
+const Searchbar = () => {
 
-const Searchbar = ({ items }) => {
-  const classes = styles();
-  const [state, setState] = useState({
-    query: '',
-    categories: []
-  });
-
-  const onSuggestionSelected = (_, { suggestion }) => {
-    const [category] = suggestion.instant_search.facets.exact_matches.categories;
-
-    setState({
-      query: suggestion.query,
-      categories: category && category.value !== 'ALL_CATEGORIES' ? [category.value] : [],
-    });
-  };
-
-  const onSuggestionCleared = () => {
-    setState({
-      query: '',
-      categories: [],
-    });
-  };
-
-  const { query, categories } = state;
+  const searchClient = algoliasearch(
+    process.env.REACT_APP_ALGOLIA,
+    process.env.REACT_APP_ALGOLIA_KEY
+  );
 
   return (
     <InstantSearch
       searchClient={searchClient}
-      indexName="instant_search_demo_query_suggestions"
-      className={classes.root}
+      indexName={process.env.REACT_APP_ALGOLIA_INDEX_NAME}
     >
       <Configure hitsPerPage={12} />
-      <Autocomplete
-        items={items}
-        onSuggestionSelected={onSuggestionSelected}
-        onSuggestionCleared={onSuggestionCleared}
-      />
+      <CustomSearchbar />
     </InstantSearch>
   );
 }
+
+const StateResults = ({ searchResults, ...props }) => {
+  const classes = styles();
+  const { t } = useTranslation();
+
+  const results = searchResults && searchResults.hits;
+
+  const group = results && results.map((option, key) => {
+    const category = option.title;
+    const tags = option.tags;
+    return {
+      category,
+      tags,
+      ...option,
+    };
+  });
+
+  return (
+    <Autocomplete
+      id="searchbar"
+      options={group}
+      getOptionLabel={(option) => option.name}
+      freeSolo
+      groupBy={(option) => option.category}
+      noOptionsText={t('noOptions')}
+      classes={{ input: classes.input, paper: classes.root, listbox: classes.listbox, inputRoot: classes.root, paper: classes.paper, option: classes.option, groupLabel: classes.groupLabel }}
+      renderInput={(params) => {
+        return (
+          <TextField
+            {...params}
+            InputProps={{
+              ...params.InputProps,
+              disableUnderline: true,
+              startAdornment: (
+                <InputAdornment position="start">
+                  <Search />
+                </InputAdornment>
+              ),
+            }}
+          />
+        )
+      }}
+      {...props}
+      renderOption={(option, { inputValue }) => {
+        const matches = match(option.name, inputValue);
+        const parts = parse(option.name, matches);
+
+        return (
+          <Grid container>
+            <Grid item xs={4}>
+              {parts.map((part, index) => {
+                return (
+                  <span key={index}
+                    style={{
+                      fontWeight: part.highlight ? 600 : 400,
+                      color: part.highlight ? '#151D15' : 'inherit'
+                    }}>
+                    {part.text}
+                  </span>
+                )
+              })}
+            </Grid>
+            {option.tags && (
+              <Grid item xs={8}>
+                <small>
+                  {`#${option.tags}`.toLowerCase().replace(',', ' #')}
+                </small>
+              </Grid>
+            )}
+          </Grid>
+        );
+      }}
+    />
+  )
+}
+
+const CustomSearchbar = connectStateResults(StateResults)
 
 export default Searchbar;
