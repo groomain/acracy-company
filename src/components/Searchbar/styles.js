@@ -35,10 +35,10 @@ export default makeStyles(theme => ({
     scrollbarColor: 'transparent transparent', // Firefox scrollbar
   },
   listbox: {
-    minHeight: 400,
+    minHeight: 400
   },
   option: {
-    height: 60,
+    minHeight: 60,
     transition: '.2s',
     color: theme.palette.secondary.medium,
     '&:not(:last-of-type)': {
@@ -49,14 +49,12 @@ export default makeStyles(theme => ({
     }
   },
   groupLabel: {
+    position: 'relative',
     color: theme.palette.secondary.black,
     fontSize: 17,
     padding: '.7rem 3rem',
-
-    '&:nth-of-type(odd)': {
-      backgroundImage: `url(${projectIcon})`,
-      backgroundRepeat: 'no-repeat',
-      backgroundPosition: '0 45%'
-    }
+    backgroundImage: `url(${projectIcon})`,
+    backgroundRepeat: 'no-repeat',
+    backgroundPosition: '0 45%'
   }
 }));

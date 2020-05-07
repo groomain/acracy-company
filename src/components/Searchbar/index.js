@@ -58,7 +58,15 @@ const StateResults = ({ searchResults, ...props }) => {
       freeSolo
       groupBy={(option) => option.category}
       noOptionsText={t('noOptions')}
-      classes={{ input: classes.input, paper: classes.root, listbox: classes.listbox, inputRoot: classes.root, paper: classes.paper, option: classes.option, groupLabel: classes.groupLabel }}
+      classes={{
+        input: classes.input,
+        paper: classes.root,
+        listbox: classes.listbox,
+        inputRoot: classes.root,
+        paper: classes.paper,
+        option: classes.option,
+        groupLabel: classes.groupLabel
+      }}
       renderInput={(params) => {
         return (
           <TextField
@@ -95,13 +103,15 @@ const StateResults = ({ searchResults, ...props }) => {
                 )
               })}
             </Grid>
-            {option.tags && (
-              <Grid item xs={8}>
-                <small>
-                  {`#${option.tags}`.toLowerCase().replace(',', ' #')}
-                </small>
-              </Grid>
-            )}
+            <Grid item container xs={8}>
+              {option.tags && (
+                option.tags.map(tag => (
+                  <Grid item xs={4}>
+                    <small>#{tag}</small>
+                  </Grid>
+                ))
+              )}
+            </Grid>
           </Grid>
         );
       }}
