@@ -9,6 +9,9 @@ export default makeStyles(theme => ({
       background: theme.palette.primary.main
     }
   },
+  optionValue: {
+    fontFamily: "Basier Medium"
+  },
   img: {
     height: 40
   },
@@ -21,7 +24,8 @@ export default makeStyles(theme => ({
   },
   highlight: {
     background: 'none',
-    fontWeight: 600
+    fontWeight: 600,
+    color: theme.palette.secondary.black
   }
 }));
 
@@ -76,7 +80,8 @@ const reactSelectStyles = {
   valueContainer: styles => {
     return {
       ...styles,
-      borderRadius: 15
+      borderRadius: 15,
+      fontFamily: 'Basier Medium'
     }
   },
   menu: styles => {
@@ -94,7 +99,7 @@ const reactSelectStyles = {
   menuList: styles => {
     return {
       ...styles,
-      borderRadius: 15,
+      borderRadius: 15
     }
   },
   option: styles => {

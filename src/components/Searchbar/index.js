@@ -58,8 +58,7 @@ const SearchResults = ({ searchResults, ...props }) => {
   }, [searchResults]);
 
   const filterConfig = {
-    trim: true,
-    matchFromStart: true,
+    trim: true
   };
 
   const formatGroupLabel = data => (
@@ -80,9 +79,10 @@ const SearchResults = ({ searchResults, ...props }) => {
             item
             xs={4}
             alignContent="center"
+            className={classes.optionValue}
           >
             <Highlighter
-              searchWords={[inputValue]}
+              searchWords={[inputValue.trim()]}
               textToHighlight={label}
               highlightClassName={classes.highlight}
             />
