@@ -24,12 +24,3 @@ html, body, #app, #app> div {
 * {
   box-sizing: border-box;
 }
-
-html, body, #app, #app> *+*, button, input {
-  font-family: 'Basier Medium';
-}
-
-mark {
-  background-color: transparent;
-  font-family: 'Basier Bold';
-}
