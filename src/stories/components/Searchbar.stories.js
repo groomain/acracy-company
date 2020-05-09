@@ -4,12 +4,7 @@ import Searchbar from "../../components/Searchbar";
 
 export default {
   title: 'Components|Searchbar',
-  component: Searchbar,
-  parameters: {
-    backgrounds: [
-      { name: 'colored-theme', value: '#162217', default: true }
-    ]
-  },
+  component: Searchbar
 };
 
 const styles = {

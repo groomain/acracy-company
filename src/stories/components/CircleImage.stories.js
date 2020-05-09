@@ -4,36 +4,44 @@ import ProviderWrapper from '../../utils/Provider';
 import { CircleImage } from '../../components/CircleImage/';
 
 export default {
-    title: 'Components|CircleImage',
-    component: CircleImage,
-    parameters: {
-        backgrounds: [
-            { name: 'colored-theme', value: '#283028', default: true }
-        ]
-    },
+  title: 'Components|CircleImage',
+  component: CircleImage
 };
 const photoLink = 'https://cdn-media.rtl.fr/cache/p0NFoli1OBEqRtMwTbdztw/880v587-0/online/image/2015/0403/loveok_141338438169183900.jpg';
 
+const styles = {
+  padding: '3rem',
+  background: '#283028'
+};
+
 export const avatarSmallWithPlaceHolder = () => (
-    ProviderWrapper(
-        <CircleImage src='' alt='?' theme='avatarSmall' />
-    )
+  ProviderWrapper(
+    <div style={styles}>
+      <CircleImage src='' alt='?' theme='avatarSmall' />
+    </div>
+  )
 );
 
 export const avatarLargeWithPlaceHolder = () => (
-    ProviderWrapper(
-        <CircleImage src='' alt='?' theme='avatarLarge' />
-    )
+  ProviderWrapper(
+    <div style={styles}>
+      <CircleImage src='' alt='?' theme='avatarLarge' />
+    </div>
+  )
 );
 
 export const avatarSmallSize = () => (
-    ProviderWrapper(
-        <CircleImage src={photoLink} alt="avatar" theme='avatarSmall' />
-    )
+  ProviderWrapper(
+    <div style={styles}>
+      <CircleImage src={photoLink} alt="avatar" theme='avatarSmall' />
+    </div>
+  )
 );
 
 export const avatarLargeSize = () => (
-    ProviderWrapper(
-        <CircleImage src={photoLink} alt="avatar" theme='avatarLarge' />
-    )
+  ProviderWrapper(
+    <div style={styles}>
+      <CircleImage src={photoLink} alt="avatar" theme='avatarLarge' />
+    </div>
+  )
 );

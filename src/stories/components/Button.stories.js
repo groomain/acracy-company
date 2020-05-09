@@ -5,12 +5,7 @@ import { CustomButton } from '../../components/Button/';
 
 export default {
   title: 'Components|Button',
-  component: CustomButton,
-  parameters: {
-    backgrounds: [
-      { name: 'colored-theme', value: '#162217', default: true }
-    ]
-  },
+  component: CustomButton
 };
 
 export const withWhiteTheme = () => (
