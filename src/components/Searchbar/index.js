@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import algoliasearch from 'algoliasearch/lite';
 import {
   InstantSearch,
@@ -6,15 +6,16 @@ import {
 } from 'react-instantsearch-dom';
 import { useTranslation } from 'react-i18next';
 import { connectStateResults } from 'react-instantsearch-dom';
-import parse from 'autosuggest-highlight/parse';
-import match from 'autosuggest-highlight/match';
+import Select, { components, createFilter } from 'react-select'
+import Highlighter from 'react-highlight-words';
 
-import { Grid, InputAdornment } from '@material-ui/core';
-import { Search } from '@material-ui/icons';
+import { Grid } from '@material-ui/core';
+import SearchIcon from '../../assets/icons/searchIcon';
 
-import TextField from "@material-ui/core/TextField";
-import Autocomplete from "@material-ui/lab/Autocomplete";
-import styles from './styles';
+import styles, { reactSelectStyles } from './styles';
+
+import profilIcon from '../../assets/icons/profil-roll-out-black.svg';
+import projectIcon from '../../assets/icons/livrable-black.svg';
 
 const Searchbar = () => {
 
@@ -34,91 +35,122 @@ const Searchbar = () => {
   );
 }
 
-const StateResults = ({ searchResults, ...props }) => {
+const SearchResults = ({ searchResults, ...props }) => {
   const classes = styles();
   const { t } = useTranslation();
 
-  const results = searchResults && searchResults.hits;
+  const [resultsList, setResultsList] = useState([]);
+  const [loading, setIsLoading] = useState(true)
 
-  const group = results && results.map((option, key) => {
-    const category = option.title;
-    const tags = option.tags;
-    return {
-      category,
-      tags,
-      ...option,
-    };
-  });
+  useEffect(() => {
+    if (searchResults) {
+      const { hits } = searchResults;
+      const groupedOptions = [{
+        label: (t('searchbar.profileLabel')),
+        options: hits.filter(x => x.title === 'Profils'),
+      }, {
+        label: (t('searchbar.briefsLabel')),
+        options: hits.filter(x => x.title === 'Livrables'),
+      }];
+      setResultsList(groupedOptions);
+      setIsLoading(false);
+    }
+  }, [searchResults]);
+
+  const filterConfig = {
+    trim: true,
+    matchFromStart: true,
+  };
+
+  const formatGroupLabel = data => (
+    <Grid container alignItems="center">
+      {data.label === 'Profils'
+        ? <img src={profilIcon} alt={(t('searchbar.profileLabel'))} className={classes.img} />
+        : <img src={projectIcon} al={(t('searchbar.briefsLabel'))} className={classes.img} />}
+      <span>{data.label}</span>
+    </Grid>
+  );
+
+  const formatOptionLabel = ({ label, tags }, { inputValue }) => {
+    return (
+      <>
+        <Grid container>
+          <Grid
+            container
+            item
+            xs={4}
+            alignContent="center"
+          >
+            <Highlighter
+              searchWords={[inputValue]}
+              textToHighlight={label}
+              highlightClassName={classes.highlight}
+            />
+          </Grid>
+          <Grid item container xs={8}>
+            {tags && (
+              tags.map((tag, key) => (
+                <Grid item xs={4} key={key}>
+                  <small>#{tag.toLowerCase()}</small>
+                </Grid>
+              ))
+            )}
+          </Grid>
+        </Grid>
+      </>
+    );
+  }
+
+  const ValueContainer = ({ children, ...props }) => {
+    return (
+      components.ValueContainer && (
+        <components.ValueContainer {...props}>
+          <SearchIcon color={'#000'} className={classes.searchImg} />
+          <Grid>{children}</Grid>
+        </components.ValueContainer>
+      )
+    );
+  };
+
+  const SingleValue = props => {
+    return (
+      <components.SingleValue {...props} className={classes.value}>
+        {props.data.label}
+      </components.SingleValue>
+    )
+  };
+
+  const ref = useRef();
+
+  useEffect(() => {
+    ref.current.select.getNextFocusedOption = () => null;
+  }, []);
+
 
   return (
-    <Autocomplete
-      id="searchbar"
-      options={group}
-      getOptionLabel={(option) => option.name}
-      freeSolo
-      groupBy={(option) => option.category}
-      noOptionsText={t('noOptions')}
-      classes={{
-        input: classes.input,
-        paper: classes.root,
-        listbox: classes.listbox,
-        inputRoot: classes.root,
-        paper: classes.paper,
-        option: classes.option,
-        groupLabel: classes.groupLabel
+    <Select
+      ref={ref}
+      placeholder={t('searchbar.placeholder')}
+      options={resultsList}
+      formatOptionLabel={formatOptionLabel}
+      formatGroupLabel={formatGroupLabel}
+      isClearable
+      classNamePrefix="react-select"
+      className={classes.searchbar}
+      maxMenuHeight={400}
+      filterOption={createFilter(filterConfig)}
+      noOptionsMessage={() => t('searchbar.noOptions')}
+      components={{
+        DropdownIndicator: () => null,
+        IndicatorSeparator: () => null,
+        ValueContainer,
+        SingleValue
       }}
-      renderInput={(params) => {
-        return (
-          <TextField
-            {...params}
-            InputProps={{
-              ...params.InputProps,
-              disableUnderline: true,
-              startAdornment: (
-                <InputAdornment position="start">
-                  <Search />
-                </InputAdornment>
-              ),
-            }}
-          />
-        )
-      }}
-      {...props}
-      renderOption={(option, { inputValue }) => {
-        const matches = match(option.name, inputValue);
-        const parts = parse(option.name, matches);
-
-        return (
-          <Grid container>
-            <Grid item xs={4}>
-              {parts.map((part, index) => {
-                return (
-                  <span key={index}
-                    style={{
-                      fontWeight: part.highlight ? 600 : 400,
-                      color: part.highlight ? '#151D15' : 'inherit'
-                    }}>
-                    {part.text}
-                  </span>
-                )
-              })}
-            </Grid>
-            <Grid item container xs={8}>
-              {option.tags && (
-                option.tags.map(tag => (
-                  <Grid item xs={4}>
-                    <small>#{tag}</small>
-                  </Grid>
-                ))
-              )}
-            </Grid>
-          </Grid>
-        );
-      }}
+      styles={reactSelectStyles}
     />
   )
 }
 
-const CustomSearchbar = connectStateResults(StateResults)
+const CustomSearchbar = connectStateResults(SearchResults)
 
 export default Searchbar;

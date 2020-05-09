@@ -54,7 +54,13 @@ i18n
           briefsTitle: 'Briefs',
           newBrief: 'New brief',
           searchbarPlaceholder: 'What are you looking for ?',
-          noOptions: 'No results.'
+          noOptions: 'No results.',
+          searchbar: {
+            placeholder: 'What are you looking for ?',
+            noOptions: 'No results.',
+            profileLabel: 'Profiles',
+            briefsLabel: 'Missions'
+          }
         }
       },
       fr: {
@@ -99,8 +105,12 @@ i18n
           noDraft: 'Aucun brief en cours. \nCommencez par rechercher un type de profil ou livrable pour démarrer un brief.',
           briefsTitle: 'Brouillons',
           newBrief: 'Nouveau brief',
-          searchbarPlaceholder: 'Quel profil ou livrable recherchez-vous ?',
-          noOptions: 'Aucun résultat ne répond à votre recherche.'
+          searchbar: {
+            placeholder: 'Quel profil ou livrable recherchez-vous ?',
+            noOptions: 'Aucun résultat ne correspond à votre recherche.',
+            profileLabel: 'Profils',
+            briefsLabel: 'Livrables'
+          }
         }
       }
     },
