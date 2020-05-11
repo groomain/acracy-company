@@ -68,12 +68,18 @@ export default makeStyles(theme => ({
       borderBottom: `1px solid ${theme.palette.secondary.medium}`,
     },
     '&:hover': {
-      background: theme.palette.primary.main,
+      background: `${theme.palette.primary.main} !important`,
       color: `${fade(theme.palette.secondary.black, 0.9)}`,
     },
     '&:hover div span': {
       color: `${fade(theme.palette.secondary.black, 0.9)}`,
-    }
+    },
+  },
+  menutItemWithFocus: {
+    '&:hover, &:focus': {
+      background: `${theme.palette.primary.main} !important`,
+      color: `${fade(theme.palette.secondary.black, 0.9)}`,
+    },
   },
   selected: {
     background: `${theme.palette.primary.main} !important`,
