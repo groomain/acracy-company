@@ -53,8 +53,6 @@ i18n
           noDraft: 'No draft pending',
           briefsTitle: 'Briefs',
           newBrief: 'New brief',
-          searchbarPlaceholder: 'What are you looking for ?',
-          noOptions: 'No results.',
           searchbar: {
             placeholder: 'What are you looking for ?',
             noOptions: 'No results.',

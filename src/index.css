@@ -1,4 +1,3 @@
-
 @font-face {
   font-family: 'Basier Regular';
   src: url('./assets/fonts/BasierCircleRegular.otf');
@@ -14,13 +13,8 @@
   src: url('./assets/fonts/BasierCircleBold.otf');
 }
 
-
 html, body, #app, #app> div {
   margin: 0;
   height: 100%;
   width: 100%
-}
-
-* {
-  box-sizing: border-box;
 }

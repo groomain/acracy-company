@@ -139,7 +139,6 @@ const SearchResults = ({ searchResults, ...props }) => {
       </Box>
       <Select
         ref={ref}
-        menuIsOpen
         onChange={handleOnChange}
         placeholder={t('searchbar.placeholder')}
         options={resultsList}
