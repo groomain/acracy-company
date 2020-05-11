@@ -1,4 +1,31 @@
 import { createMuiTheme } from '@material-ui/core/styles';
+import BasierCircleRegular from '../assets/fonts/BasierCircleRegular.otf';
+import BasierCircleMedium from '../assets/fonts/BasierCircleRegular.otf';
+import BasierCircleBold from '../assets/fonts/BasierCircleRegular.otf';
+
+export const basierRegular = {
+  fontFamily: 'BasierRegular',
+  fontStyle: 'normal',
+  fontDisplay: 'swap',
+  fontWeight: 500,
+  src: `url(${BasierCircleRegular})`
+};
+
+export const basierMedium = {
+  fontFamily: 'BasierMedium',
+  fontStyle: 'normal',
+  fontDisplay: 'swap',
+  fontWeight: 500,
+  src: `url(${BasierCircleMedium})`
+};
+
+export const basierBold = {
+  fontFamily: 'BasierBold',
+  fontStyle: 'normal',
+  fontDisplay: 'swap',
+  fontWeight: 500,
+  src: `url(${BasierCircleBold})`
+};
 
 export const theme = createMuiTheme({
   palette: {
