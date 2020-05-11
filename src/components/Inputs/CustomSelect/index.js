@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import InputLabel from '@material-ui/core/InputLabel';
+import Typography from '@material-ui/core/Typography';
 import Select from '@material-ui/core/Select';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import Box from '@material-ui/core/Box';
@@ -31,7 +31,7 @@ export const CustomSelect = ({ label, value, placeholder, type, error, helperTex
 
   return (
     <Box style={{ height: '140px' }}>
-      <InputLabel variant='body1' error={error}>{label}*</InputLabel >
+      <Typography variant='body1' error={error}>{label}</Typography >
       <Select
         type={type}
         fullWidth

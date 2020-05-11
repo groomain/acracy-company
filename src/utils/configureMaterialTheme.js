@@ -16,6 +16,7 @@ export const theme = createMuiTheme({
       mid: '#212A21',
       greyButtonActive: '#737a73',
       black: '#162217',
+      sidebarGreen: '#353f36',
       overlay: '#0d110d',
       inputFadeFilter: '#585858' //add a filter that lightens a bg color
     },
@@ -54,6 +55,12 @@ export const theme = createMuiTheme({
       fontFamily: 'Basier Medium',
       color: '#fff',
       letterSpacing: '-0.45px',
+    },
+    subtitle1: {
+      fontSize: 21,
+      fontFamily: 'basierMedium',
+      letterSpacing: '-0.75px',
+      color: '#ecf805'
     },
     body1: {
       fontSize: 17,

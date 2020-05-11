@@ -13297,7 +13297,7 @@ react-instantsearch-core@^6.4.0:
     prop-types "^15.5.10"
     react-fast-compare "^3.0.0"
 
-react-instantsearch-dom@^6.4.0:
+react-instantsearch-dom@6.4.0:
   version "6.4.0"
   resolved "https://registry.yarnpkg.com/react-instantsearch-dom/-/react-instantsearch-dom-6.4.0.tgz#61c7e453652136ebc549e6427e2dab7d57519f07"
   integrity sha512-FyJaD+jVNt59KOd8Nt6nQrmueEEJNH0VmS9IlSwWbQz2NrkQniaCFm+k8G13LsAASOCq4vQ8ULG2up+WpJeS8w==

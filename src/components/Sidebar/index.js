@@ -6,9 +6,12 @@ const Sidebar = ({ children }) => {
     const classes = styles();
 
     return (
-        <Grid item xs={5} className={classes.sidebarDiv}>
-
-            {children}
+        <Grid item xs={5} container className={classes.sidebarDiv}>
+            <Grid item xs={2}></Grid>
+            <Grid item xs={7}>
+                {children}
+            </Grid>
+            <Grid item xs={3}></Grid>
         </Grid>
     );
 };
