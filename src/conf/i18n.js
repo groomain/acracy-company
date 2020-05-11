@@ -57,7 +57,8 @@ i18n
             placeholder: 'What are you looking for ?',
             noOptions: 'No results.',
             profileLabel: 'Profiles',
-            briefsLabel: 'Missions'
+            briefsLabel: 'Missions',
+            loading: 'Loading...'
           }
         }
       },
@@ -107,7 +108,8 @@ i18n
             placeholder: 'Quel profil ou livrable recherchez-vous ?',
             noOptions: 'Aucun résultat ne correspond à votre recherche.',
             profileLabel: 'Profils',
-            briefsLabel: 'Livrables'
+            briefsLabel: 'Livrables',
+            loading: 'Chargement...'
           }
         }
       }

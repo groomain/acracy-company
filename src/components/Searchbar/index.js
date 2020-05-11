@@ -149,7 +149,7 @@ const SearchResults = ({ searchResults, ...props }) => {
         className={classes.searchbar}
         maxMenuHeight={400}
         filterOption={createFilter(filterConfig)}
-        noOptionsMessage={() => loading ? "Loading..." : t('searchbar.noOptions')}
+        noOptionsMessage={() => loading ? t('searchbar.loading') : t('searchbar.noOptions')}
         components={{
           DropdownIndicator: () => null,
           IndicatorSeparator: () => null,
