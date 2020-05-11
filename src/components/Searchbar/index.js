@@ -41,7 +41,7 @@ const SearchResults = ({ searchResults, ...props }) => {
 
   const [resultsList, setResultsList] = useState([]);
   const [loading, setIsLoading] = useState(true);
-  const [category, setCategory] = useState();
+  const [searchValue, setSearchValue] = useState();
 
   useEffect(() => {
     if (searchResults) {
@@ -128,14 +128,13 @@ const SearchResults = ({ searchResults, ...props }) => {
   }, []);
 
   const handleOnChange = (option) => {
-    const value = option === null ? '' : option.title;
-    setCategory(value);
+    setSearchValue(option || null)
   }
 
   return (
     <>
       <Box my={2} style={{ height: 30 }}>
-        <Typography variant="h2">{category || " "}</Typography>
+        <Typography variant="h2">{searchValue && searchValue.title || " "}</Typography>
       </Box>
       <Select
         ref={ref}
