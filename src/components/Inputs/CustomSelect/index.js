@@ -7,7 +7,7 @@ import CustomCheckbox from '../../CheckBox';
 export const CustomSelect = ({ label, value, optionsValues, placeholder, type, error, helperText, isMulti, ...props }) => {
   const classes = styles();
 
-  const [options, setOptions] = useState([optionsValues[0]]);
+  const [options, setOptions] = useState([]);
 
   const [open, setOpen] = useState(false);
 
@@ -48,7 +48,7 @@ export const CustomSelect = ({ label, value, optionsValues, placeholder, type, e
       >
         {!isMulti && optionsValues.map((option) => <MenuItem key={option}
           value={option}
-          classes={{ root: classes.menuItem, selected: classes.selected }}
+          classes={{ root: classes.menuItem }}
         >
           {option}
         </MenuItem>

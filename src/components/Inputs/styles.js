@@ -23,6 +23,9 @@ export default makeStyles(theme => ({
       color: theme.palette.secondary
     }
   },
+  error: {
+    borderColor: theme.palette.primary.danger
+  },
   focused: {},
   input: {
     padding: '0 0 0 30px',
@@ -64,13 +67,18 @@ export default makeStyles(theme => ({
     '&:not(:last-of-type)': {
       borderBottom: `1px solid ${theme.palette.secondary.medium}`,
     },
-    '&:hover, &:focus': {
+    '&:hover': {
       background: theme.palette.primary.main,
+      color: `${fade(theme.palette.secondary.black, 0.9)}`,
+    },
+    '&:hover div span': {
       color: `${fade(theme.palette.secondary.black, 0.9)}`,
     }
   },
   selected: {
     background: `${theme.palette.primary.main} !important`,
-    color: `${fade(theme.palette.secondary.black, 0.9)}`,
+    '& div span': {
+      color: `${fade(theme.palette.secondary.black, 0.9)}`,
+    }
   }
 }));
