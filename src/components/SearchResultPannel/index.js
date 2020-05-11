@@ -59,6 +59,10 @@ const SearchResultPannel = (props) => {
                         )
                     })}
                 </Grid>
+                <Grid container style={{ marginTop: 40 }}>
+                    <Grid item xs={2} style={{ height: 2, backgroundColor: '#ecf805' }}></Grid>
+                    <Grid item xs={6} style={{ height: 1, backgroundColor: '#565e56' }}></Grid>
+                </Grid>
             </Grid>
         </Grid >
     );

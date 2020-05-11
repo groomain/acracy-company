@@ -4,12 +4,7 @@ import CustomTextField, { CustomPasswordField } from "../../components/Inputs/Cu
 import CustomSelect from '../../components/Inputs/CustomSelect';
 
 export default {
-  title: 'Components|Inputs',
-  parameters: {
-    backgrounds: [
-      { name: 'colored-theme', value: '#162217', default: true },
-    ]
-  },
+  title: 'Components|Inputs'
 };
 
 export const withDefault = () => (

@@ -29,7 +29,7 @@ i18n
           confirmPasswordRequired: 'Please confirm your password',
           passwordMismatch: 'Passwords do not match',
           loginButton: 'Login',
-          signUpButton: 'New ? Create an account !',
+          signUpButton: 'SignUp',
           logoutButton: 'Logout',
           homePageTitle: 'Home Page',
           requestCodeButton: 'Send',
@@ -52,7 +52,17 @@ i18n
           cancel: 'Cancel',
           noDraft: 'No draft pending',
           briefsTitle: 'Briefs',
-          newBrief: 'New brief'
+          newBrief: 'New brief',
+          searchbar: {
+            placeholder: 'What are you looking for ?',
+            noOptions: 'No results.',
+            profileLabel: 'Profiles',
+            briefsLabel: 'Missions',
+            loading: 'Loading...'
+          },
+          yourEmail: 'Your email',
+          yourPassword: 'Your password',
+          haveAccount: 'I don\'t have accracy entreprise account'
         }
       },
       fr: {
@@ -73,7 +83,7 @@ i18n
           confirmPasswordRequired: 'Veuillez confirmer votre mot de passe',
           passwordMismatch: 'Les mot de passes ne correspondent pas',
           loginButton: 'Se Connecter',
-          signUpButton: 'Nouveau ? Créez un compte !',
+          signUpButton: 'Créer mon compte',
           logoutButton: 'Se Deconnecter',
           homePageTitle: 'Page d\'acceuil',
           requestCodeButton: 'Envoyer',
@@ -122,7 +132,17 @@ i18n
           createAccountButton: 'Créer mon compte',
           termsAndConditions: 'conditions générales',
           savedResearch: 'Votre recherche a bien été sauvegardée',
-          collaborators: 'Ils collaborent déjà avec nous'
+          collaborators: 'Ils collaborent déjà avec nous',
+          searchbar: {
+            placeholder: 'Quel profil ou livrable recherchez-vous ?',
+            noOptions: 'Aucun résultat ne correspond à votre recherche.',
+            profileLabel: 'Profils',
+            briefsLabel: 'Livrables',
+            loading: 'Chargement...'
+          },
+          yourEmail: 'Votre email',
+          yourPassword: 'Votre mot de passe',
+          haveAccount: 'Je n\'ai pas de compte acracy entreprise'
         }
       }
     },

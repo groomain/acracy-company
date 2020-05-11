@@ -7,12 +7,7 @@ import eyeClosed from '../../assets/icons/eye-closed.svg';
 
 export default {
   title: 'Components|IconButton',
-  component: CustomIconButton,
-  parameters: {
-    backgrounds: [
-      { name: 'colored-theme', value: '#162217', default: true }
-    ]
-  },
+  component: CustomIconButton
 };
 
 export const withDefault = () => (
