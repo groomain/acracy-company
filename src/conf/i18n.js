@@ -53,6 +53,13 @@ i18n
           noDraft: 'No draft pending',
           briefsTitle: 'Briefs',
           newBrief: 'New brief',
+          searchbar: {
+            placeholder: 'What are you looking for ?',
+            noOptions: 'No results.',
+            profileLabel: 'Profiles',
+            briefsLabel: 'Missions',
+            loading: 'Loading...'
+          },
           yourEmail: 'Your email',
           yourPassword: 'Your password',
           haveAccount: 'I don\'t have accracy entreprise account'
@@ -100,6 +107,13 @@ i18n
           noDraft: 'Aucun brief en cours. \nCommencez par rechercher un type de profil ou livrable pour démarrer un brief.',
           briefsTitle: 'Brouillons',
           newBrief: 'Nouveau brief',
+          searchbar: {
+            placeholder: 'Quel profil ou livrable recherchez-vous ?',
+            noOptions: 'Aucun résultat ne correspond à votre recherche.',
+            profileLabel: 'Profils',
+            briefsLabel: 'Livrables',
+            loading: 'Chargement...'
+          },
           yourEmail: 'Votre email',
           yourPassword: 'Votre mot de passe',
           haveAccount: 'Je n\'ai pas de compte acracy entreprise'
