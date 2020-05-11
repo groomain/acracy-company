@@ -58,7 +58,7 @@ export const theme = createMuiTheme({
     },
     subtitle1: {
       fontSize: 21,
-      fontFamily: 'basierMedium',
+      fontFamily: 'Basier Medium',
       letterSpacing: '-0.75px',
       color: '#ecf805'
     },
