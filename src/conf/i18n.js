@@ -29,7 +29,7 @@ i18n
           confirmPasswordRequired: 'Please confirm your password',
           passwordMismatch: 'Passwords do not match',
           loginButton: 'Login',
-          signUpButton: 'New ? Create an account !',
+          signUpButton: 'SignUp',
           logoutButton: 'Logout',
           homePageTitle: 'Home Page',
           requestCodeButton: 'Send',
@@ -59,7 +59,10 @@ i18n
             profileLabel: 'Profiles',
             briefsLabel: 'Missions',
             loading: 'Loading...'
-          }
+          },
+          yourEmail: 'Your email',
+          yourPassword: 'Your password',
+          haveAccount: 'I don\'t have accracy entreprise account'
         }
       },
       fr: {
@@ -80,7 +83,7 @@ i18n
           confirmPasswordRequired: 'Veuillez confirmer votre mot de passe',
           passwordMismatch: 'Les mot de passes ne correspondent pas',
           loginButton: 'Se Connecter',
-          signUpButton: 'Nouveau ? Créez un compte !',
+          signUpButton: 'Créer mon compte',
           logoutButton: 'Se Deconnecter',
           homePageTitle: 'Page d\'acceuil',
           requestCodeButton: 'Envoyer',
@@ -110,7 +113,10 @@ i18n
             profileLabel: 'Profils',
             briefsLabel: 'Livrables',
             loading: 'Chargement...'
-          }
+          },
+          yourEmail: 'Votre email',
+          yourPassword: 'Votre mot de passe',
+          haveAccount: 'Je n\'ai pas de compte acracy entreprise'
         }
       }
     },
