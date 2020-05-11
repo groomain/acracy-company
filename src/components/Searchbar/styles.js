@@ -45,7 +45,6 @@ const reactSelectStyles = {
     cursor: 'text',
     boxShadow: 'none',
     border: 'none',
-    fontFamily: "Basier Medium",
     color: theme.palette.secondary.medium,
     fontSize: 17,
   }),

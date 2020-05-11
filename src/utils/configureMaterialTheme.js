@@ -25,6 +25,7 @@ export const theme = createMuiTheme({
       '@global': {
         body: {
           backgroundColor: '#162217',
+          fontFamily: "Basier Medium"
         },
       },
     },

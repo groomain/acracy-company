@@ -9,7 +9,7 @@ import { connectStateResults } from 'react-instantsearch-dom';
 import Select, { components, createFilter } from 'react-select'
 import Highlighter from 'react-highlight-words';
 
-import { Grid } from '@material-ui/core';
+import { Grid, Typography, Box } from '@material-ui/core';
 import SearchIcon from '../../assets/icons/searchIcon';
 
 import styles, { reactSelectStyles } from './styles';
@@ -40,7 +40,8 @@ const SearchResults = ({ searchResults, ...props }) => {
   const { t } = useTranslation();
 
   const [resultsList, setResultsList] = useState([]);
-  const [loading, setIsLoading] = useState(true)
+  const [loading, setIsLoading] = useState(true);
+  const [category, setCategory] = useState();
 
   useEffect(() => {
     if (searchResults) {
@@ -126,28 +127,39 @@ const SearchResults = ({ searchResults, ...props }) => {
     ref.current.select.getNextFocusedOption = () => null;
   }, []);
 
+  const handleOnChange = (option) => {
+    const value = option === null ? '' : option.title;
+    setCategory(value);
+  }
 
   return (
-    <Select
-      ref={ref}
-      placeholder={t('searchbar.placeholder')}
-      options={resultsList}
-      formatOptionLabel={formatOptionLabel}
-      formatGroupLabel={formatGroupLabel}
-      isClearable
-      classNamePrefix="react-select"
-      className={classes.searchbar}
-      maxMenuHeight={400}
-      filterOption={createFilter(filterConfig)}
-      noOptionsMessage={() => t('searchbar.noOptions')}
-      components={{
-        DropdownIndicator: () => null,
-        IndicatorSeparator: () => null,
-        ValueContainer,
-        SingleValue
-      }}
-      styles={reactSelectStyles}
-    />
+    <>
+      <Box my={2} style={{ height: 30 }}>
+        <Typography variant="h2">{category || " "}</Typography>
+      </Box>
+      <Select
+        ref={ref}
+        menuIsOpen
+        onChange={handleOnChange}
+        placeholder={t('searchbar.placeholder')}
+        options={resultsList}
+        formatOptionLabel={formatOptionLabel}
+        formatGroupLabel={formatGroupLabel}
+        isClearable
+        classNamePrefix="react-select"
+        className={classes.searchbar}
+        maxMenuHeight={400}
+        filterOption={createFilter(filterConfig)}
+        noOptionsMessage={() => loading ? "Loading..." : t('searchbar.noOptions')}
+        components={{
+          DropdownIndicator: () => null,
+          IndicatorSeparator: () => null,
+          ValueContainer,
+          SingleValue
+        }}
+        styles={reactSelectStyles}
+      />
+    </>
   )
 }
 
