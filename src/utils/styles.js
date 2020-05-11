@@ -30,11 +30,6 @@ export default makeStyles(theme => ({
     margin: 30,
     fontWeight: 'bold'
   },
-  searchedTerms: {
-    fontSize: 21,
-    color: theme.palette.primary.main,
-
-  },
   sidebarDiv: {
     margin: '0 auto',
     backgroundColor: theme.palette.secondary.sidebarGreen,

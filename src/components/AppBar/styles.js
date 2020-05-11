@@ -1,5 +1,4 @@
 import makeStyles from '@material-ui/core/styles/makeStyles';
-// import { fade } from '@material-ui/core';
 
 export default makeStyles(theme => ({
   appbar: {

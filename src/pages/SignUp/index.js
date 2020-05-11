@@ -47,7 +47,6 @@ const SignUpPage = () => {
 
   return (
     <>
-      <CustomAppBar />
       <Grid
         container
         direction="row"

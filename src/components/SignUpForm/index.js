@@ -7,6 +7,7 @@ import CustomSelect from "../Inputs/CustomSelect";
 import CustomNavLink from "../CustomNavLink";
 import CustomCheckbox from '../CheckBox';
 import { Typography, Grid, Stepper, Step, StepLabel, StepButton, Box } from "@material-ui/core";
+import clsx from 'clsx';
 import styles from './styles';
 
 const SignUpForm = (props) => {
@@ -45,7 +46,7 @@ const SignUpForm = (props) => {
 
   const setPersonnalInfos = () => {
     return (
-      <>
+      <Box className={classes.stepContent}>
         <Typography variant={"h1"} >{t('createAccount')}</Typography>
         <br />
         <br />
@@ -74,7 +75,7 @@ const SignUpForm = (props) => {
             />
           </Grid>
 
-          <Grid container item spacing={2} className={classes.signupRows, classes.marginTop}>
+          <Grid container item spacing={2} className={`${classes.signupRows} ${classes.marginTop}`}>
             <Grid item xs={6}>
               <CustomTextField
                 name="firstName"
@@ -103,7 +104,7 @@ const SignUpForm = (props) => {
               />
             </Grid>
           </Grid>
-          <Grid item xs={12} className={classes.signupRows, classes.marginTop}>
+          <Grid item xs={12} className={`${classes.signupRows} ${classes.marginTop}`}>
             <CustomTextField
               name="role"
               type="role"
@@ -174,13 +175,13 @@ const SignUpForm = (props) => {
           </CustomButton>
         </Grid>
 
-      </>
+      </Box>
     );
   }
 
   const setPassword = () => {
     return (
-      <>
+      <Box className={classes.stepContent}>
         <Typography variant={"h2"} >{t('accountCreation')}</Typography>
         <Typography variant={"h1"} >{t('yourPassword')}</Typography>
         <br />
@@ -252,28 +253,38 @@ const SignUpForm = (props) => {
           </Grid>
 
         </Grid>
-      </>
+      </Box>
     );
   }
+
+  const CustomIcon = (props) => {
+    const { active, completed } = props;
+    return (
+      <div
+        className={clsx(
+          classes.icon, {
+          [classes.completed]: completed,
+          [classes.active]: active
+        })}
+      >
+        {props.icon}
+      </div>
+    )
+  };
 
   const steps = getSteps();
 
   return (
     <Grid item className={classes.formGridItem}>
       <Stepper nonLinear connector={false} activeStep={activeStep} className={classes.stepper}>
-        {console.log('active', activeStep)}
-
         {steps.map((label, index) => {
           return (
-            <Step key={label} className={classes.step} inactive={classes.inactiveStep}>
+            <Step key={label} className={classes.step}>
               <StepButton onClick={handleStep(index)} className={classes.stepButton}>
-                <StepLabel justify="center"
-                  classes={{
-                    stepIcon: classes.stepIcon,
-                    iconContainer: classes.iconContainer,
-                    iconRoot: classes.icon,
-                    circle: classes.circle
-                  }}
+                <StepLabel
+                  style={{ textAlign: "left" }}
+                  StepIconComponent={CustomIcon}
+                  classes={activeStep === index ? null : classes.inactiveLabel}
                 >
                   <Typography variant={"h4"}>
                     {label}
@@ -284,9 +295,9 @@ const SignUpForm = (props) => {
           );
         })}
       </Stepper>
+      {/* <br />
       <br />
-      <br />
-      <br />
+      <br /> */}
       {getStepContent(activeStep)}
 
     </Grid >

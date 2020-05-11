@@ -1,43 +1,60 @@
 import React from 'react';
 import Grid from '@material-ui/core/Grid';
+import { useTranslation } from 'react-i18next';
 import Typography from '@material-ui/core/Typography';
 import SearchIcon from '@material-ui/icons/Search';
 import CustomIconButton from '../IconButton';
-import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
-import styles from '../../utils/styles';
+import CircleImage from '../CircleImage';
+import styles from './styles';
 
 const SearchResultPannel = (props) => {
     const classes = styles();
-    const logos = [{ src: AddCircleOutlineIcon }, { src: AddCircleOutlineIcon }, { src: AddCircleOutlineIcon }, { src: AddCircleOutlineIcon }, { src: AddCircleOutlineIcon }, { src: AddCircleOutlineIcon }];
+    const { t } = useTranslation();
 
-    const searchedTerms = "Social Media Strategist";
+    const logos = [{ src: '' }, { src: '' }, { src: '' }, { src: '' }, { src: '' }, { src: '' }];
+
+    // const queryString = windows.location.search;
+    // const urlParams = new URLSearchParams(queryString);
+    // const searchType = urlParams.get('searchType');
+    // const searchValue = urlParams.get('searchValue'); 
+    //                                             =>  TO BE USED INSTEAD OF THE CURRENT VALUE OF {searchValue} 
+    const searchValue = 'Social Media Strategist'; /// USED AS A PLACEHOLDER FOR NOW
 
     return (
         <Grid container direction="column"
-            justify="center"
+            justify='space-between' className={classes.pannel}
         >
-            <Grid item>
-                <Typography className={classes.title}>
-                    Votre recherche a bien été sauvegardée
-                </Typography>
-            </Grid>
-            <Grid item>
-                <Typography className={classes.searchedTerms}>
-                    <SearchIcon />{searchedTerms}
-                </Typography>
-            </Grid>
-            <Grid item>
-                <Typography className={classes.title}>
-                    Ils collaborent déjà avec nous
+            {searchValue && (
+                <>
+                    <Grid item>
+                        <Typography variant={"h1"}>
+                            {t('savedResearch')}
+                        </Typography>
+                    </Grid>
+                    <Grid item className={classes.researchGridItem} container>
+                        <Grid item>
+                            <SearchIcon className={classes.searchIcon} /> &nbsp;
+                        </Grid>
+                        <Grid item>
+                            <Typography variant={"subtitle1"}>
+                                {searchValue}
+                            </Typography>
+                        </Grid>
+                    </Grid>
+                </>
+            )}
+            <Grid item className={classes.collaboratorsGridItem}>
+                <Typography variant={"h1"}>
+                    {t('collaborators')}
                 </Typography>
             </Grid>
             <br />
-            <Grid item>
-                <Grid container>
+            <Grid item >
+                <Grid container className={classes.iconContainer}>
                     {logos.map((logo, i) => {
                         return (
                             < Grid key={i} item xs={4} >
-                                <CustomIconButton icon={logo.src} />
+                                <CircleImage theme='partner' alt='partner' />
                             </Grid>
                         )
                     })}

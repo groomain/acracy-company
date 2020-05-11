@@ -13,51 +13,52 @@ export default makeStyles(theme => ({
         minHeight: '100vh'
     },
     formGridItem: {
-        paddingTop: '10vh'
+        paddingTop: '7rem'
     },
     marginTop: {
         marginTop: 30
     },
     stepper: {
         backgroundColor: theme.palette.secondary.black,
-        padding: '16px 0'
+        paddingLeft: ".5rem",
     },
-    // step: {
-    //   color: theme.palette.secondary.main
-    // },
+    step: {
+        width: '40%',
+        '&:not(:first-child)': {
+            marginLeft: '2rem'
+        }
+    },
     stepButton: {
-        width: '160px',
-        '&inactive': {
-            color: 'orange',
-            backgroundColor: 'orange'
-        },
+        padding: 0
     },
-    // stepIcon: {
-    //   border: 'solid 1px red',
-    //   padding: 0,
-    //   // width: '22px',
-    //   // height: '30px',
-    //   justifyContent: 'center',
-    //   alignItems: 'center',
-    // },
-    iconContainer: {
-        border: 'solid 1px white',
+    stepContent: {
+        paddingTop: '4rem',
     },
-    //   borderRadius: '50%',
-    //   padding: 0,
-    //   // width: '22px',
-    //   // height: '30px',
-    //   justifyContent: 'center',
-    //   alignItems: 'center',
-    // },
-    // circle: {
-    //   width: 49,
-    //   height: 49,
-    //   borderRadius: '50%',
-    //   outlineOffset: '4px solid red',
-    //   outline: 10,
-    // },
     signupRows: {
         paddingTop: theme.spacing(2)
-    }
+    },
+    icon: {
+        background: theme.palette.secondary.medium,
+        width: 49,
+        height: 49,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        color: theme.palette.secondary.black,
+        borderRadius: '50%',
+        border: '1px solid',
+        borderColor: 'transparent',
+        backgroundClip: 'content-box',
+        fontFamily: "Basier Bold"
+    },
+    active: {
+        background: theme.palette.secondary.main,
+        color: theme.palette.secondary.medium,
+        borderColor: theme.palette.secondary.main,
+        backgroundClip: 'content-box',
+        padding: '.3rem'
+    },
+    inactiveLabel: {
+        color: theme.palette.secondary.medium
+    },
 }));

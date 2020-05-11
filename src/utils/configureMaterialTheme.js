@@ -70,6 +70,12 @@ export const theme = createMuiTheme({
       color: '#fff',
       letterSpacing: '-0.45px',
     },
+    subtitle1: {
+      fontSize: 21,
+      fontFamily: basierMedium,
+      letterSpacing: '-0.75px',
+      color: '#ecf805'
+    },
     body1: {
       fontSize: 17,
       fontFamily: basierRegular,

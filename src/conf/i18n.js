@@ -121,6 +121,8 @@ i18n
           backButton: 'Retour',
           createAccountButton: 'Créer mon compte',
           termsAndConditions: 'conditions générales',
+          savedResearch: 'Votre recherche a bien été sauvegardée',
+          collaborators: 'Ils collaborent déjà avec nous'
         }
       }
     },
