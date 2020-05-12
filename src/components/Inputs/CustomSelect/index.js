@@ -4,7 +4,7 @@ import styles from '../styles';
 import KeyboardArrowDownRoundedIcon from '@material-ui/icons/KeyboardArrowDownRounded';
 import CustomCheckbox from '../../CheckBox';
 
-export const CustomSelect = ({ label, value, optionsValues, placeholder, type, error, helperText, isMulti, ...props }) => {
+export const CustomSelect = ({ label, value, placeholder, type, error, isMulti, optionsValues, ...props }) => {
   const classes = styles();
 
   const [options, setOptions] = useState([]);
@@ -17,7 +17,7 @@ export const CustomSelect = ({ label, value, optionsValues, placeholder, type, e
 
   return (
     <Box style={{ height: '140px' }}>
-      <Typography variant='h4' error={error}>{label}</Typography >
+      <Typography variant='h4'>{label}</Typography >
       <Select
         type={type}
         fullWidth
@@ -31,7 +31,7 @@ export const CustomSelect = ({ label, value, optionsValues, placeholder, type, e
         classes={{ root: open ? `${classes.root} ${classes.open}` : classes.root }}
         disableUnderline
         IconComponent={KeyboardArrowDownRoundedIcon}
-        inputProps={{ classes: { root: classes.input, icon: open ? `${classes.icon} ${classes.iconClosed}` : classes.icon } }}
+        inputProps={{ classes: { root: `${classes.input} ${error ? classes.error : null}`, icon: open ? `${classes.icon} ${classes.iconClosed}` : classes.icon } }}
         MenuProps={{
           classes: { paper: classes.dropdownStyle },
           anchorOrigin: {
