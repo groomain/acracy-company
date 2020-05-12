@@ -3,20 +3,20 @@ import React from "react";
 import styles from './styles';
 import clsx from 'clsx';
 
-export const  CustomCheckBox = (props) => {
-    const classes = styles();
+export const CustomCheckBox = ({ size, ...props }) => {
+  const classes = styles();
 
-    return (
-        <Checkbox
-            className={classes.root}
-            disableRipple
-            color="default"
-            checkedIcon={<span className={clsx(classes.icon, classes.checkedIcon)}/>}
-            icon={<span className={classes.icon}/>}
-            inputProps={{'aria-label': 'decorative checkbox'}}
-            {...props}
-        />
-    );
+  return (
+    <Checkbox
+      className={classes.root}
+      disableRipple
+      color="default"
+      checkedIcon={<span className={clsx(classes.icon, classes.checkedIcon, classes[size])} />}
+      icon={<span className={clsx(classes.icon, classes[size])} />}
+      inputProps={{ 'aria-label': 'decorative checkbox' }}
+      {...props}
+    />
+  );
 };
 
 export default CustomCheckBox;
