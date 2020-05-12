@@ -1,49 +1,37 @@
 import React, { useState } from 'react';
-import Typography from '@material-ui/core/Typography';
-import Select from '@material-ui/core/Select';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import Box from '@material-ui/core/Box';
+import { Typography, Select, FormHelperText, Box, MenuItem, ListItemText } from '@material-ui/core';
 import styles from '../styles';
-import MenuItem from '@material-ui/core/MenuItem';
 import KeyboardArrowDownRoundedIcon from '@material-ui/icons/KeyboardArrowDownRounded';
+import CustomCheckbox from '../../CheckBox';
 
-export const CustomSelect = ({ label, value, placeholder, type, error, helperText, ...props }) => {
+export const CustomSelect = ({ label, value, optionsValues, placeholder, type, error, helperText, isMulti, ...props }) => {
   const classes = styles();
 
-  const options = [{
-    value: 33,
-    title: 'Fr : +33'
-  }, {
-    value: 32,
-    title: 'Blg : +32'
-  }, {
-    value: 39,
-    title: 'It : +39'
-  }]
+  const [options, setOptions] = useState([]);
 
   const [open, setOpen] = useState(false);
 
-  const [inputValue, setInputValue] = useState(33);
-
   const handleChange = (event) => {
-    setInputValue(event.target.value);
+    setOptions(event.target.value);
   };
 
   return (
     <Box style={{ height: '140px' }}>
-      <Typography variant='body1' error={error}>{label}</Typography >
+      <Typography variant='h4' error={error}>{label}</Typography >
       <Select
         type={type}
         fullWidth
-        value={inputValue}
+        multiple={isMulti}
+        renderValue={isMulti && ((selected) => selected.join(' '))}
+        value={options}
         error={error}
         onOpen={() => setOpen(true)}
         onClose={() => setOpen(false)}
         onChange={handleChange}
-        classes={{ root: open ? `${classes.root} ${classes.open}` : classes.root, focused: classes.focused }}
+        classes={{ root: open ? `${classes.root} ${classes.open}` : classes.root }}
         disableUnderline
         IconComponent={KeyboardArrowDownRoundedIcon}
-        inputProps={{ classes: { root: classes.input, icon: open ? `${classes.icon} ${classes.iconClosed}` : classes.icon, focused: classes.focused } }}
+        inputProps={{ classes: { root: classes.input, icon: open ? `${classes.icon} ${classes.iconClosed}` : classes.icon } }}
         MenuProps={{
           classes: { paper: classes.dropdownStyle },
           anchorOrigin: {
@@ -58,9 +46,27 @@ export const CustomSelect = ({ label, value, placeholder, type, error, helperTex
         }}
         {...props}
       >
-        {options.map((option, key) => <MenuItem key={key} value={option.value} classes={{ root: classes.menuItem, selected: classes.selected }}>{option.title}</MenuItem>)}
+        {!isMulti && optionsValues.map((option) => <MenuItem key={option}
+          value={option}
+          classes={{ root: `${classes.menuItem} ${classes.menutItemWithFocus}` }}
+        >
+          {option}
+        </MenuItem>
+        )}
+        {isMulti && (
+          optionsValues.map((option) => (
+            <MenuItem key={option} value={option}
+              classes={{ root: classes.menuItem, selected: classes.selected }}
+            >
+              <ListItemText primary={option} />
+              <CustomCheckbox
+                checked={options.indexOf(option) > -1}
+                size="small"
+              />
+            </MenuItem>
+          ))
+        )}
       </Select>
-      <FormHelperText error={error}>{helperText}</FormHelperText>
     </Box >
   );
 };
