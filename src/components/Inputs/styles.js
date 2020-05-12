@@ -31,6 +31,7 @@ export default makeStyles(theme => ({
     padding: '0 0 0 30px',
     display: 'flex',
     alignItems: 'center',
+    fontFamily: "Basier Medium",
     '&:hover, &:focus': {
       borderRadius: 15,
       borderColor: theme.palette.secondary.main,
@@ -64,6 +65,10 @@ export default makeStyles(theme => ({
     height: 61,
     fontSize: 17,
     padding: '0 30px',
+    fontFamily: "Basier Medium",
+    '& div span': {
+      fontFamily: "Basier Medium",
+    },
     '&:not(:last-of-type)': {
       borderBottom: `1px solid ${theme.palette.secondary.medium}`,
     },
