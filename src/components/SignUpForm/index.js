@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { CustomButton } from '../Button/';
@@ -22,9 +22,16 @@ const SignUpForm = (props) => {
   const { companyName, firstName, lastName, role, phoneNumber, email, password, confirmPassword } = values;
   const [activeStep, setActiveStep] = React.useState(0);
 
+  const [optionsValues] = useState([
+    'Fr : +33',
+    'Blg : +32',
+    'It : +39'
+  ]);
+
+
   const getSteps = () => {
     return [t('personnalInfos'), t('password')];
-  }
+  };
 
   function getStepContent(step) {
     switch (step) {
@@ -145,7 +152,7 @@ const SignUpForm = (props) => {
             <Grid container spacing={2}>
 
               <Grid item xs={5}>
-                <CustomSelect></CustomSelect>
+                <CustomSelect optionsValues={optionsValues} />
               </Grid>
 
               <Grid item xs={7}>
@@ -277,6 +284,7 @@ const SignUpForm = (props) => {
   };
 
   const steps = getSteps();
+  console.log('CustomIcon -> steps', steps)
 
   return (
     <Grid item className={classes.formGridItem}>
