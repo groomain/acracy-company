@@ -2,10 +2,11 @@ import React from 'react';
 import { Grid, Box, Typography, CircularProgress } from '@material-ui/core/';
 import styles from './styles';
 import { useTranslation } from 'react-i18next';
-import Draft from '../Draft';
-import { formatWithLineBreak } from '../../../utils/format';
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
+
+import FirstDraft from '../Draft/FirstDraft';
+import Draft from '../Draft';
 import DraftsPagination from '../DraftsPagination/';
 
 const Drafts = ({ drafts, loading, ...props }) => {
@@ -36,9 +37,7 @@ const Drafts = ({ drafts, loading, ...props }) => {
       className={classes.draftsWrapper}
     >
       {!loading ? (
-        <Box textAlign="center" style={{ width: '100%' }}>
-          <Typography variant='h2' className={classes.noDrafts}>{formatWithLineBreak(t('noDraft'))}</Typography>
-        </Box>
+        <FirstDraft />
       ) : (
           <Box mx='auto'>
             <CircularProgress color="primary" size={30} />
@@ -69,7 +68,7 @@ const Drafts = ({ drafts, loading, ...props }) => {
 
   return (
     <>
-      <Typography variant='h2'>{draftsNumber} {t('briefsTitle')}</Typography>
+      <Typography variant='h2'>{draftsNumber} {t('draft.briefsTitle')}</Typography>
       <br />
       {draftsList}
     </>
