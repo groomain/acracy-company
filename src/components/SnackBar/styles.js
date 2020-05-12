@@ -9,14 +9,16 @@ export default makeStyles(theme => ({
     display: 'flex',
     marginTop: 0,
     paddingRight: 30,
-    paddingTop: 20,
-    paddingBottom: 20,
     backgroundColor: theme.palette.primary.main,
     width: '100%',
-    height: 30
+    height: 70
   },
   typo: {
     margin: 'auto',
     color: "black"
+  },
+  iconButton: {
+    marginTop: "auto",
+    marginBottom: 'auto'
   }
 }));
