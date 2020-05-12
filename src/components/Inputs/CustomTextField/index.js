@@ -1,5 +1,5 @@
 import React from 'react';
-import { InputAdornment, Typography, FilledInput, FormHelperText, Box, IconButton } from '@material-ui/core';
+import { InputAdornment, Typography, FilledInput, Box, IconButton } from '@material-ui/core';
 import { Visibility, VisibilityOff } from '@material-ui/icons';
 import styles from '../styles';
 import CustomIconButton from '../../IconButton';
@@ -50,7 +50,7 @@ export const CustomPasswordField = ({ label, placeholder, error, helperText, ...
     <Box style={{ height: '140px' }}>
       <Typography htmlFor="filled-adornment-password" variant='h4'>{label}</Typography>
       <FilledInput
-        classes={{ root: classes.root, focused: classes.focused, select: classes.select }}
+        classes={{ root: `${classes.root} ${error ? classes.error : null}`, focused: classes.focused, select: classes.select }}
         id="filled-adornment-password"
         placeholder={placeholder}
         fullWidth

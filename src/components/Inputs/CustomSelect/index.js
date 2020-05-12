@@ -31,7 +31,7 @@ export const CustomSelect = ({ label, value, placeholder, type, error, isMulti, 
         classes={{ root: open ? `${classes.root} ${classes.open}` : classes.root }}
         disableUnderline
         IconComponent={KeyboardArrowDownRoundedIcon}
-        inputProps={{ classes: { root: classes.input, icon: open ? `${classes.icon} ${classes.iconClosed}` : classes.icon } }}
+        inputProps={{ classes: { root: `${classes.input} ${error ? classes.error : null}`, icon: open ? `${classes.icon} ${classes.iconClosed}` : classes.icon } }}
         MenuProps={{
           classes: { paper: classes.dropdownStyle },
           anchorOrigin: {

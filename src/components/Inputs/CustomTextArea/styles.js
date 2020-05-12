@@ -20,5 +20,8 @@ export default makeStyles(theme => ({
     fontSize: 17,
     color: theme.palette.secondary.main,
     fontWeight: 500
-  }
+  },
+  error: {
+    borderColor: theme.palette.primary.danger
+  },
 }));

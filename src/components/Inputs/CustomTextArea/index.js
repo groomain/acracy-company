@@ -20,7 +20,7 @@ export const CustomTextArea = ({ label, placeholder, error, helperText, ...props
     <Box>
       <InputLabel className={classes.label}>{label}</InputLabel>
       <FilledInput
-        classes={{ root: classes.root, input: classes.input }}
+        classes={{ root: `${classes.root} ${error ? classes.error : null}`, input: classes.input }}
         label={label}
         placeholder={placeholder}
         shrink={false}
