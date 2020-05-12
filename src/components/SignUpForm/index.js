@@ -284,7 +284,6 @@ const SignUpForm = (props) => {
   };
 
   const steps = getSteps();
-  console.log('CustomIcon -> steps', steps)
 
   return (
     <Grid item className={classes.formGridItem}>
