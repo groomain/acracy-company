@@ -13,7 +13,7 @@ export default makeStyles(theme => ({
         minHeight: '100vh'
     },
     formGridItem: {
-        paddingTop: '7rem'
+        padding: '7rem 0'
     },
     marginTop: {
         marginTop: 30
