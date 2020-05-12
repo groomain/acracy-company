@@ -6,16 +6,22 @@ export default makeStyles(theme => ({
     background: theme.palette.secondary.mid,
     borderRadius: 15,
     width: 339,
-    maxHeight: 202,
+    height: 200,
     padding: '10px 20px',
     position: 'relative',
-    margin: 15
+    margin: 15,
   },
   titleBox: {
     margin: '27px 50px 20px 0',
     '& h3': {
       lineHeight: 1.55
     }
+  },
+  iconBox: {
+    marginRight: '.8rem',
+    display: 'flex',
+    height: '3rem',
+    alignItems: 'center',
   },
   overlay: {
     position: 'absolute',
@@ -33,5 +39,8 @@ export default makeStyles(theme => ({
   },
   toUppercase: {
     textTransform: 'uppercase'
+  },
+  firstBriefTitle: {
+    lineHeight: .5
   }
 }));
