@@ -28,8 +28,8 @@ export const CustomSnackBar = ({message, open, setOpen, ...props}) => {
             children={
                 <div className={classes.snackbar}>
                     <Typography className={classes.typo}>{message}</Typography>
-                    <IconButton size="small" aria-label="close" color="secondary.medium" onClick={handleClose}>
-                        <CloseIcon fontSize="small"/>
+                    <IconButton size="small" className={classes.iconButton} aria-label="close" color="secondary.medium" onClick={handleClose}>
+                        <CloseIcon fontSize="small" />
                     </IconButton>
                 </div>}
             {...props}

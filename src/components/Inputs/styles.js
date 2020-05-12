@@ -23,11 +23,15 @@ export default makeStyles(theme => ({
       color: theme.palette.secondary
     }
   },
+  error: {
+    borderColor: theme.palette.primary.danger
+  },
   focused: {},
   input: {
     padding: '0 0 0 30px',
     display: 'flex',
     alignItems: 'center',
+    fontFamily: "Basier Medium",
     '&:hover, &:focus': {
       borderRadius: 15,
       borderColor: theme.palette.secondary.main,
@@ -61,22 +65,31 @@ export default makeStyles(theme => ({
     height: 61,
     fontSize: 17,
     padding: '0 30px',
+    fontFamily: "Basier Medium",
+    '& div span': {
+      fontFamily: "Basier Medium",
+    },
     '&:not(:last-of-type)': {
       borderBottom: `1px solid ${theme.palette.secondary.medium}`,
     },
-    '&:hover, &:focus': {
-      background: theme.palette.primary.main,
+    '&:hover': {
+      background: `${theme.palette.primary.main} !important`,
       color: `${fade(theme.palette.secondary.black, 0.9)}`,
-    }
+    },
+    '&:hover div span': {
+      color: `${fade(theme.palette.secondary.black, 0.9)}`,
+    },
+  },
+  menutItemWithFocus: {
+    '&:hover, &:focus': {
+      background: `${theme.palette.primary.main} !important`,
+      color: `${fade(theme.palette.secondary.black, 0.9)}`,
+    },
   },
   selected: {
     background: `${theme.palette.primary.main} !important`,
-    color: `${fade(theme.palette.secondary.black, 0.9)}`,
-  },
-  imageIcon: {
-    height: '100%'
-  },
-  iconRoot: {
-    textAlign: 'center'
+    '& div span': {
+      color: `${fade(theme.palette.secondary.black, 0.9)}`,
+    }
   }
 }));

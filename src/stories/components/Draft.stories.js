@@ -13,59 +13,66 @@ const styles = {
 }
 
 const drafts = [{
-  status: 'Status de brief',
+  title: 'Status de brief',
   progress: 30,
   date: '22.04',
   time: '10h12',
   target: 'Web design',
-  new: true
+  new: true,
+  status: 'Start'
 }, {
-  status: 'Status de brief',
+  title: 'Status de brief',
   progress: 70,
   date: '21.04',
   time: '12h09',
-  title: 'Mon titre de brief très long sur deux lignes',
+  content: 'Mon titre de brief très long sur deux lignes',
   target: 'Web design',
-  new: false
+  new: false,
+  status: 'Pending'
 }, {
-  status: 'Status de brief',
+  title: 'Status de brief',
   progress: 30,
   date: '22.04',
   time: '10h12',
   target: 'Web design',
-  new: true
+  new: true,
+  status: 'To Validate'
 }, {
-  status: 'Status de brief',
+  title: 'Status de brief',
   progress: 70,
   date: '21.04',
   time: '12h09',
-  title: 'Mon titre de brief très long sur deux lignes',
+  content: 'Mon titre de brief très long sur deux lignes',
   target: 'Web design',
-  new: false
+  new: false,
+  status: 'To Validate'
 }, {
-  status: 'Status de brief',
+  title: 'Status de brief',
   progress: 30,
   date: '22.04',
   time: '10h12',
   target: 'Web design',
-  new: true
+  new: true,
+  status: 'To Validate'
 }, {
-  status: 'Status de brief',
+  title: 'Status de brief',
   progress: 70,
   date: '21.04',
   time: '12h09',
-  title: 'Mon titre de brief très long sur deux lignes',
+  content: 'Mon titre de brief très long sur deux lignes',
   target: 'Web design',
-  new: false
+  new: false,
+  status: 'To Validate'
 },];
 
 const draft = {
-  status: 'Status de brief',
+  title: 'Status de brief',
   progress: 30,
   date: '21.04',
   time: '12h09',
   target: 'Web design',
-  new: true
+  new: true,
+  status: 'Pending'
 };
 
 export const withDefault = () => (
@@ -87,20 +94,22 @@ export const withList = () => (
 );
 
 const twoDrafts = [{
-  status: 'Status de brief',
+  title: 'Status de brief',
   progress: 30,
   date: '22.04',
   time: '10h12',
   target: 'Web design',
-  new: true
+  new: true,
+  status: 'Pending'
 }, {
-  status: 'Status de brief',
+  title: 'Status de brief',
   progress: 70,
   date: '21.04',
   time: '12h09',
-  title: 'Mon titre de brief très long sur deux lignes',
+  content: 'Mon titre de brief très long sur deux lignes',
   target: 'Web design',
-  new: false
+  new: false,
+  status: 'To Validate'
 }];
 
 export const withLessThan3 = () => (
