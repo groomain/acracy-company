@@ -6,7 +6,7 @@ export default makeStyles(theme => ({
     background: theme.palette.secondary.mid,
     borderRadius: 15,
     width: 339,
-    height: 190,
+    height: 200,
     padding: '10px 20px',
     position: 'relative',
     margin: 15,
@@ -39,9 +39,6 @@ export default makeStyles(theme => ({
   },
   toUppercase: {
     textTransform: 'uppercase'
-  },
-  firstBriefWrapper: {
-    margin: '1rem 0'
   },
   firstBriefTitle: {
     lineHeight: .5

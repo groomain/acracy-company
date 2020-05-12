@@ -17,7 +17,6 @@ const FirstDraft = () => {
         container
         direction='column'
         justify="center"
-        className={classes.firstBriefWrapper}
       >
         <Typography variant='h3' color='primary' className={classes.firstBriefTitle}>
           {formatWithLineBreak(t('draft.firstBriefTitle'))}
