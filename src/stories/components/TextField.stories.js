@@ -4,12 +4,7 @@ import CustomTextField, { CustomPasswordField } from "../../components/Inputs/Cu
 import CustomSelect from '../../components/Inputs/CustomSelect';
 
 export default {
-  title: 'Components|Inputs',
-  parameters: {
-    backgrounds: [
-      { name: 'colored-theme', value: '#162217', default: true },
-    ]
-  },
+  title: 'Components|Inputs'
 };
 
 export const withDefault = () => (
@@ -33,7 +28,21 @@ export const withPassword = () => (
 export const withSelect = () => (
   ProviderWrapper(
     <div style={{ width: '200px' }}>
-      <CustomSelect label="Numéro de téléphone" />
+      <CustomSelect label="Numéro de téléphone" optionsValues={optionsValues} />
+    </div>
+  )
+);
+
+const optionsValues = [
+  'Fr : +33',
+  'Blg : +32',
+  'It : +39'
+];
+
+export const selectWithMulti = () => (
+  ProviderWrapper(
+    <div style={{ width: '50%' }}>
+      <CustomSelect label="Numéro de téléphone" isMulti optionsValues={optionsValues} />
     </div>
   )
 );

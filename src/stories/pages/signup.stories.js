@@ -1,5 +1,6 @@
 import React from 'react';
 import SignUpPage from '../../pages/SignUp';
+import CustomAppBar from '../../components/AppBar'
 import ProviderWrapper from '../../utils/Provider';
 
 export default {
@@ -8,5 +9,10 @@ export default {
 };
 
 export const SignUp = () => (
-  ProviderWrapper(<SignUpPage state="signup" />)
+  ProviderWrapper(
+    <>
+      <CustomAppBar path="/signup"></CustomAppBar>
+      <SignUpPage state="signup"
+      />
+    </>)
 );
