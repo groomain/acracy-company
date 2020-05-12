@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
 import Typography from '@material-ui/core/Typography';
 import Select from '@material-ui/core/Select';
-import FormHelperText from '@material-ui/core/FormHelperText';
 import Box from '@material-ui/core/Box';
 import styles from '../styles';
 import MenuItem from '@material-ui/core/MenuItem';
 import KeyboardArrowDownRoundedIcon from '@material-ui/icons/KeyboardArrowDownRounded';
 
-export const CustomSelect = ({ label, value, placeholder, type, error, helperText, ...props }) => {
+export const CustomSelect = ({ label, value, placeholder, type, error, ...props }) => {
   const classes = styles();
 
   const options = [{
@@ -31,7 +30,7 @@ export const CustomSelect = ({ label, value, placeholder, type, error, helperTex
 
   return (
     <Box style={{ height: '140px' }}>
-      <Typography variant='body1' error={error}>{label}</Typography >
+      <Typography variant='h4'>{label}</Typography >
       <Select
         type={type}
         fullWidth
@@ -60,7 +59,6 @@ export const CustomSelect = ({ label, value, placeholder, type, error, helperTex
       >
         {options.map((option, key) => <MenuItem key={key} value={option.value} classes={{ root: classes.menuItem, selected: classes.selected }}>{option.title}</MenuItem>)}
       </Select>
-      <FormHelperText error={error}>{helperText}</FormHelperText>
     </Box >
   );
 };
