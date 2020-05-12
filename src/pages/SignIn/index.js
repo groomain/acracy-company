@@ -10,6 +10,9 @@ import { loginLaunched } from '../../components/App/reducer';
 import styles from '../../utils/styles';
 import CustomNavLink from "../../components/CustomNavLink";
 import CustomSnackBar from "../../components/SnackBar";
+import { NavLink } from "react-router-dom";
+import Main from "../../components/Main";
+import Divider from "@material-ui/core/Divider";
 
 const SignInPage = () => {
   const dispatch = useDispatch();
@@ -43,20 +46,25 @@ const SignInPage = () => {
       container
       direction="column"
       justify="center"
-      alignItems="center"
       className={classes.connectionDiv}
     >
-      <Typography className={classes.titleConnection}>La Pilule Rouge</Typography>
-      <Typography className={classes.titleFormConnection}>Connectez-vous à votre espace</Typography>
-      <Formik
-        render={props => <LoginForm {...props} />}
-        initialValues={initialValues}
-        validationSchema={ValidationSchema}
-        onSubmit={login}
-      />
-      <CustomNavLink to={'/signup'} text={t('signUpButton')}/>
-      <CustomNavLink to={'/password'} text={t('forgotPasswordButton')}/>
-      <CustomSnackBar open={open} setOpen={setOpen} message={"Merci pour votre validation, votre compte acracy est maintenant actif"}/>
+      <Grid item xs={7} container>
+        <Grid item xs={3} />
+        <Grid item xs={7} >
+          <Typography variant="h2">acracy entreprise</Typography>
+          <Typography variant="h1" className={classes.titleSignIn}>Je m'identifie</Typography>
+          <Formik
+            render={props => <LoginForm {...props} />}
+            initialValues={initialValues}
+            validationSchema={ValidationSchema}
+            onSubmit={login}
+          />
+          <Divider className={classes.divider} />
+          <Typography variant={'body1'} className={classes.typo} >{t('haveAccount')}</Typography>
+          <NavLink to={'/password'} className={classes.navLink}>{t('signUpButton')}</NavLink>
+        </Grid>
+      </Grid>
+      <CustomSnackBar open={open} setOpen={setOpen} message={"Merci pour votre validation, votre compte acracy est maintenant actif"} />
     </Grid>
   );
 };

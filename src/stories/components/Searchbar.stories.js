@@ -1,20 +1,20 @@
 import React from 'react';
 import ProviderWrapper from '../../utils/Provider';
-import CustomNavLink from "../../components/CustomNavLink";
+import Searchbar from "../../components/Searchbar";
 
 export default {
-  title: 'Components|NavLink',
-  component: CustomNavLink
+  title: 'Components|Searchbar',
+  component: Searchbar
 };
 
 const styles = {
   padding: '3rem'
-};
+}
 
 export const withDefault = () => (
   ProviderWrapper(
     <div style={styles}>
-      <CustomNavLink to={'/'} text={"Clique ici"} />
+      <Searchbar />
     </div>
   )
 );

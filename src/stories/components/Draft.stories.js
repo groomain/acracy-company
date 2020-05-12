@@ -5,12 +5,7 @@ import Drafts from '../../components/Drafts/DraftsWrapper';
 
 export default {
   title: 'Components|Drafts',
-  component: Drafts,
-  parameters: {
-    backgrounds: [
-      { name: 'colored-theme', value: '#283028', default: true }
-    ]
-  },
+  component: Drafts
 };
 
 const styles = {

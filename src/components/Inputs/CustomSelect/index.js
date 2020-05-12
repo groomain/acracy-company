@@ -17,7 +17,7 @@ export const CustomSelect = ({ label, value, optionsValues, placeholder, type, e
 
   return (
     <Box style={{ height: '140px' }}>
-      <Typography variant='h4'>{label}*</Typography >
+      <Typography variant='h4' error={error}>{label}</Typography >
       <Select
         type={type}
         fullWidth

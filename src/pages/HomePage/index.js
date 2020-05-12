@@ -43,11 +43,11 @@ export const HomePage = (props) => {
       alignItems="center"
     >
       <Typography>{t('homePageTitle')}</Typography>
-      {data.results.map((item, key) => (
+      {/* {data.results.map((item, key) => (
         <ul key={key}>
           <li>{item.title}</li>
         </ul>
-      ))}
+      ))} */}
       <CustomButton onClick={() => refetch()} title={t('refresh')} />
       <CustomButton onClick={logout} title={t('logoutButton')} />
     </Grid>
