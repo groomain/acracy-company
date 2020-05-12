@@ -1,7 +1,7 @@
 import { createMuiTheme } from '@material-ui/core/styles';
 import BasierCircleRegular from '../assets/fonts/BasierCircleRegular.otf';
-import BasierCircleMedium from '../assets/fonts/BasierCircleRegular.otf';
-import BasierCircleBold from '../assets/fonts/BasierCircleRegular.otf';
+import BasierCircleMedium from '../assets/fonts/BasierCircleMedium.otf';
+import BasierCircleBold from '../assets/fonts/BasierCircleBold.otf';
 
 export const basierRegular = {
   fontFamily: 'BasierRegular',
