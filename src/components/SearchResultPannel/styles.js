@@ -8,7 +8,9 @@ export default makeStyles(theme => ({
         },
     },
     pannel: {
-        paddingTop: '15.3rem'
+        padding: '15.3rem 0 5rem 0',
+        position: 'sticky',
+        top: 0,
     },
     researchGridItem: {
         padding: '30px 0',

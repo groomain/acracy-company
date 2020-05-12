@@ -6,6 +6,7 @@ import { CustomTextField, CustomPasswordField } from "../Inputs/CustomTextField"
 import CustomSelect from "../Inputs/CustomSelect";
 import CustomNavLink from "../CustomNavLink";
 import CustomCheckbox from '../CheckBox';
+import backToTop from '../../utils/backToTop';
 import { Typography, Grid, Stepper, Step, StepLabel, StepButton, Box } from "@material-ui/core";
 import clsx from 'clsx';
 import styles from './styles';
@@ -38,10 +39,13 @@ const SignUpForm = (props) => {
 
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
+    backToTop();
+
   };
 
   const handleStep = (step) => () => {
     setActiveStep(step);
+    backToTop();
   };
 
   const setPersonnalInfos = () => {
