@@ -13,6 +13,7 @@ import CustomSnackBar from "../../components/SnackBar";
 import { NavLink } from "react-router-dom";
 import Main from "../../components/Main";
 import Divider from "@material-ui/core/Divider";
+import Mission from "../../components/Mission";
 
 const SignInPage = () => {
   const dispatch = useDispatch();
