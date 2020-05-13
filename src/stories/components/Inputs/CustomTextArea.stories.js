@@ -1,6 +1,6 @@
 import React from 'react';
-import ProviderWrapper from '../../utils/Provider';
-import { CustomTextArea } from "../../components/Inputs/CustomTextArea";
+import ProviderWrapper from '../../../utils/Provider';
+import { CustomTextArea } from "../../../components/Inputs/CustomTextArea";
 
 export default {
   title: 'Components|TextArea',
