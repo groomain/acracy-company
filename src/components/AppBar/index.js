@@ -11,7 +11,7 @@ import CustomIconButton from "../IconButton";
 import { useLocation, withRouter } from "react-router";
 import clsx from "clsx";
 import CustomSnackBar from "../SnackBar";
-import MenuBoutonIcon from "../ProfilMenu";
+import ProfilMenu from "../ProfilMenu";
 
 export const CustomAppBar = (props) => {
     let location = useLocation();
@@ -40,7 +40,7 @@ export const CustomAppBar = (props) => {
                 return (
                     <div className={clsx(classes.div, classes.home)}>
                         <CustomButton theme={"filledButton"} title={"Nouveau brief"} />
-                        <MenuBoutonIcon />
+                        <ProfilMenu />
                     </div>
                 );
             case '/password':
