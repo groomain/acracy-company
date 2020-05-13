@@ -2,9 +2,9 @@ import React from 'react';
 import { InputAdornment, Typography, FilledInput, Box, IconButton } from '@material-ui/core';
 import { Visibility, VisibilityOff } from '@material-ui/icons';
 import styles from '../styles';
-import CustomIconButton from '../../IconButton';
-import eyeOpened from '../../../assets/icons/eye-opened.svg';
-import eyeClosed from '../../../assets/icons/eye-closed.svg';
+// import CustomIconButton from '../../IconButton';
+// import eyeOpened from '../../../assets/icons/eye-opened.svg';
+// import eyeClosed from '../../../assets/icons/eye-closed.svg';
 
 export const CustomTextField = ({ label, placeholder, type, error, helperText, ...props }) => {
   const classes = styles();

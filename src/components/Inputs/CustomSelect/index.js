@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Typography, Select, FormHelperText, Box, MenuItem, ListItemText } from '@material-ui/core';
+import { Typography, Select, Box, MenuItem, ListItemText } from '@material-ui/core';
 import styles from '../styles';
 import KeyboardArrowDownRoundedIcon from '@material-ui/icons/KeyboardArrowDownRounded';
 import CustomCheckbox from '../../CheckBox';

@@ -9,7 +9,6 @@ import Sidebar from '../../components/Sidebar';
 import Main from '../../components/Main';
 import SignUpForm from '../../components/SignUpForm';
 import SearchResultPannel from '../../components/SearchResultPannel';
-import CustomAppBar from '../../components/AppBar';
 import styles from '../../utils/styles';
 
 const SignUpPage = () => {

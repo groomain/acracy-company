@@ -1,7 +1,7 @@
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import { fade } from "@material-ui/core";
 
-import { theme, basierRegular, basierMedium, basierBold } from '../../utils/configureMaterialTheme';
+import { theme } from '../../utils/configureMaterialTheme';
 
 export default makeStyles(theme => ({
   searchbar: {

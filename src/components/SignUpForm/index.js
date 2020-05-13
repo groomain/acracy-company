@@ -129,7 +129,7 @@ const SignUpForm = (props) => {
             />
           </Grid>
 
-          <Grid item xs={12} className={classes.signupRows, classes.marginTop}>
+          <Grid item xs={12} className={`${classes.signupRows} ${classes.marginTop}`} >
             <CustomTextField
               name="email"
               type="email"
@@ -199,7 +199,7 @@ const SignUpForm = (props) => {
         <br />
 
         <Grid container>
-          <Grid item xs={12} className={classes.signupRows, classes.marginTop}>
+          <Grid item xs={12} className={`${classes.signupRows} ${classes.marginTop}`}>
             <CustomPasswordField
               name="password"
               value={password}
@@ -212,7 +212,7 @@ const SignUpForm = (props) => {
             />
           </Grid>
 
-          <Grid item xs={12} className={classes.signupRows, classes.marginTop}>
+          <Grid item xs={12} className={`${classes.signupRows} ${classes.marginTop}`}>
             <CustomPasswordField
               name="confirmPassword"
               value={confirmPassword}
