@@ -8,6 +8,8 @@ export default makeStyles(theme => ({
     maxWidth: 1195,
     minWidth: 1195,
     flexGrow: 1,
+    backgroundColor: "#283028",
+    borderRadius: 15,
   },
   gridLeft: {
     borderRadius: '15px 0 0 15px',

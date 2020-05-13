@@ -50,23 +50,20 @@ const SignInPage = () => {
       className={classes.connectionDiv}
     >
       <Grid item xs={7} container>
-        {/*<Grid item xs={3} />*/}
-        {/*<Grid item xs={7} >*/}
-          {/*<Typography variant="h2">acracy entreprise</Typography>*/}
-          {/*<Typography variant="h1" className={classes.titleSignIn}>Je m'identifie</Typography>*/}
-          {/*<Formik*/}
-            {/*render={props => <LoginForm {...props} />}*/}
-            {/*initialValues={initialValues}*/}
-            {/*validationSchema={ValidationSchema}*/}
-            {/*onSubmit={login}*/}
-          {/*/>*/}
-          <Mission status={0}/>
-          <Mission status={5}/>
-
-          {/*<Divider className={classes.divider} />*/}
-          {/*<Typography variant={'body1'} className={classes.typo} >{t('haveAccount')}</Typography>*/}
-          {/*<NavLink to={'/password'} className={classes.navLink}>{t('signUpButton')}</NavLink>*/}
-        {/*</Grid>*/}
+        <Grid item xs={3} />
+        <Grid item xs={7} >
+          <Typography variant="h2">acracy entreprise</Typography>
+          <Typography variant="h1" className={classes.titleSignIn}>Je m'identifie</Typography>
+          <Formik
+            render={props => <LoginForm {...props} />}
+            initialValues={initialValues}
+            validationSchema={ValidationSchema}
+            onSubmit={login}
+          />
+          <Divider className={classes.divider} />
+          <Typography variant={'body1'} className={classes.typo} >{t('haveAccount')}</Typography>
+          <NavLink to={'/password'} className={classes.navLink}>{t('signUpButton')}</NavLink>
+        </Grid>
       </Grid>
       <CustomSnackBar open={open} setOpen={setOpen} message={"Merci pour votre validation, votre compte acracy est maintenant actif"} />
     </Grid>
