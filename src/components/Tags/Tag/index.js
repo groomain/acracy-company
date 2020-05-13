@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { Typography, Grid } from '@material-ui/core';
+import { Typography, Grid, FormControlLabel, Checkbox } from '@material-ui/core';
 import clsx from "clsx";
 
 import styles from './styles';
+import CustomCheckbox from '../../CheckBox';
 
-const Tag = ({ title, isPrimaryColor, isWithInput, placeholder, ...props }) => {
+const Tag = ({ title, isPrimaryColor, isWithInput, placeholder, isWithCheckbox, tagType, ...props }) => {
   const classes = styles();
 
   const [value, setValue] = useState();
@@ -13,27 +14,52 @@ const Tag = ({ title, isPrimaryColor, isWithInput, placeholder, ...props }) => {
     setValue(event.target.value);
   };
 
-  let content = title;
+  let content = (
+    <div style={{ margin: '.5rem 1rem' }}>{title}</div>
+  );
+
   if (isWithInput) {
     content = (
-      <input
-        id="tagInput"
-        placeholder={placeholder}
-        value={value}
-        autoFocus
-        onChange={handleChange}
-      />
+      <div style={{ margin: '.5rem 1rem' }}>
+        <input
+          id="tagInput"
+          placeholder={placeholder}
+          value={value}
+          autoFocus
+          onChange={handleChange}
+        />
+      </div>
     );
+  };
+
+  if (isWithCheckbox) {
+    content = (
+      <div className={classes.checkboxTagContainer}>
+        <span>{title}</span>
+        <span className={clsx(classes.tag, classes.checkboxTagContent)}>
+          {tagType}
+          <FormControlLabel
+            control={
+              <Checkbox
+                icon={
+                  <CustomCheckbox
+                    size="small"
+                    shape="rounded"
+                  />
+                }
+              />
+            }
+          />
+        </span>
+      </div>
+    )
   };
 
   return (
     <Grid container {...props}>
-      <Typography
-        variant={"body2"}
-        className={clsx(classes.tag, isPrimaryColor && classes.primaryColor, isWithInput && classes.withInput)}
-      >
+      <div className={clsx(classes.tag, isPrimaryColor && classes.primaryColor, isWithInput && classes.withInput)} >
         {content}
-      </Typography>
+      </div>
     </Grid>
   )
 };

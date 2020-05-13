@@ -3,10 +3,11 @@ import makeStyles from '@material-ui/core/styles/makeStyles';
 export default makeStyles(theme => ({
   tag: {
     background: theme.palette.secondary.main,
-    color: theme.palette.secondary.dark,
-    padding: '.5rem 1rem',
+    color: theme.palette.secondary.medium,
     borderRadius: 50,
-    cursor: 'default'
+    cursor: 'default',
+    fontFamily: "Basier Regular",
+    fontSize: 14
   },
   primaryColor: {
     background: theme.palette.primary.main
@@ -21,5 +22,13 @@ export default makeStyles(theme => ({
         outline: 'none'
       }
     }
+  },
+  checkboxTagContainer: {
+    color: theme.palette.secondary.medium,
+    padding: '0 3px 0 1rem',
+  },
+  checkboxTagContent: {
+    padding: '.3rem 1rem',
+    marginLeft: '1rem'
   }
 }));

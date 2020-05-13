@@ -32,6 +32,14 @@ export const withInput = () => (
   )
 );
 
+export const withCheckbox = () => (
+  ProviderWrapper(
+    <div style={{ margin: '3rem' }}>
+      <Tag title="Checkbox" isPrimaryColor tagType="Prioritaire" isWithCheckbox />
+    </div>
+  )
+);
+
 export const withCheckableTag = () => (
   ProviderWrapper(
     <div style={{ margin: '3rem' }}>

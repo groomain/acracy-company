@@ -46,5 +46,8 @@ export default makeStyles(theme => ({
     'input:hover ~ &': {
       borderColor: theme.palette.secondary.black,
     }
+  },
+  rounded: {
+    borderRadius: 50
   }
 }));
