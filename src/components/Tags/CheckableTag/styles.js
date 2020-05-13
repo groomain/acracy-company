@@ -32,6 +32,14 @@ export default makeStyles(theme => ({
       background: theme.palette.secondary.main,
     }
   },
+  greyTag: {
+    backgroundColor: theme.palette.secondary.light,
+    'input:disabled ~ &': {
+      boxShadow: 'none',
+      color: 'inherit',
+      background: theme.palette.secondary.light,
+    }
+  },
   input: {
     textAlign: 'left'
   },
