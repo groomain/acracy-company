@@ -7,9 +7,15 @@ import {AccountCircle} from "@material-ui/icons";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import ProfilIcon from "../../assets/icons/ProfilIcon";
+import {CloseIcon} from "../../assets/icons/CloseIcon";
+import {DecoIcon} from "../../assets/icons/DecoIcon";
+import {ContactIcon} from "../../assets/icons/ContactIcon";
+import {AdministratifIcon} from "../../assets/icons/AdministratifIcon";
+import profilIcon from "../../assets/icons/profil-roll-out.svg";
+import CustomIconButton from "../IconButton";
 // import {CloseIcon} from "../../assets/icons/CloseIcon";
 
-export const MenuBoutonIcon = (props) => {
+export const ProfilMenu = (props) => {
     const classes = styles();
     const [anchorEl, setAnchorEl] = React.useState(null);
     const isMenuOpen = Boolean(anchorEl);
@@ -41,40 +47,40 @@ export const MenuBoutonIcon = (props) => {
         >
             <Grid container item className={classes.container} direction={'column'} justify={'center'}>
                 <Grid item container direction={'row'} justify={"flex-end"}>
-                    {/*<CloseIcon hovered={hovered6} className={classes.closeIcon} onClick={() => props.setOpen(false)}*/}
-                    {/*onMouseEnter={() => setOvered6(true)}*/}
-                    {/*onMouseLeave={() => setOvered6(false)}/>*/}
+                    <CloseIcon hovered={hovered6} className={classes.closeIcon} onClick={handleMenuClose}
+                    onMouseEnter={() => setOvered6(true)}
+                    onMouseLeave={() => setOvered6(false)}/>
                 </Grid>
                 <Grid item container direction={'row'} className={classes.row}>
                     <NavLink className={classes.navLink} to={'/'}
                              onMouseEnter={() => setOvered1(true)}
                              onMouseLeave={() => setOvered1(false)}>
                         <ProfilIcon hovered={hovered1}/>
-                        Déclarer un incident
+                        Mon profil
                     </NavLink>
                 </Grid>
                 <Grid item container direction={'row'} className={classes.row}>
                     <NavLink className={classes.navLink} to={'/'}
                              onMouseEnter={() => setOvered2(true)}
                              onMouseLeave={() => setOvered2(false)}>
-                        {/*<AdresseIcon hovered={hovered2} className={classes.icon}/>*/}
-                        Voir coordonées freelence
+                        <AdministratifIcon hovered={hovered2} className={classes.icon}/>
+                        L'administratif
                     </NavLink>
                 </Grid>
                 <Grid item container direction={'row'} className={classes.row}>
                     <NavLink className={classes.navLink} to={'/'}
                              onMouseEnter={() => setOvered3(true)}
                              onMouseLeave={() => setOvered3(false)}>
-                        {/*<DownloadIcon hovered={hovered3} className={classes.icon}/>*/}
-                        Télécharger facture
+                        <ContactIcon hovered={hovered3} className={classes.icon}/>
+                        Contacter acracy
                     </NavLink>
                 </Grid>
                 <Grid item container direction={'row'} className={classes.row}>
                     <NavLink className={classes.navLink} to={'/'}
                              onMouseEnter={() => setOvered4(true)}
                              onMouseLeave={() => setOvered4(false)}>
-                        {/*<DownloadIcon hovered={hovered4} className={classes.icon}/>*/}
-                        Télécharger facture
+                        <DecoIcon hovered={hovered4} className={classes.icon}/>
+                        Se déconnecter
                     </NavLink>
                 </Grid>
             </Grid>
@@ -83,18 +89,16 @@ export const MenuBoutonIcon = (props) => {
 
     return (
         <div>
-            <IconButton
+            <CustomIconButton
+                icon={profilIcon}
                 edge="end"
-                aria-label="account of current user"
                 aria-controls={menuId}
                 aria-haspopup="true"
                 onClick={handleProfileMenuOpen}
-                color="inherit"           >
-                <AccountCircle />
-            </IconButton>
+            />
             {anchorEl && renderMenu}
         </div>
     )
 };
 
-export default MenuBoutonIcon;
+export default ProfilMenu;

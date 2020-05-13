@@ -1,7 +1,7 @@
 import React from 'react';
-import ProviderWrapper from '../../utils/Provider';
-import CustomTextField, { CustomPasswordField } from "../../components/Inputs/CustomTextField";
-import CustomSelect from '../../components/Inputs/CustomSelect';
+import ProviderWrapper from '../../../utils/Provider';
+import CustomTextField, { CustomPasswordField } from "../../../components/Inputs/CustomTextField";
+import CustomSelect from '../../../components/Inputs/CustomSelect';
 
 export default {
   title: 'Components|Inputs'

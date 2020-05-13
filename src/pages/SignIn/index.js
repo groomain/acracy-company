@@ -8,17 +8,14 @@ import Grid from '@material-ui/core/Grid';
 import LoginForm from '../../components/LoginForm';
 import { loginLaunched } from '../../components/App/reducer';
 import styles from '../../utils/styles';
-import CustomNavLink from "../../components/CustomNavLink";
-import CustomSnackBar from "../../components/SnackBar";
 import { NavLink } from "react-router-dom";
-import Main from "../../components/Main";
 import Divider from "@material-ui/core/Divider";
+import Mission from "../../components/Mission";
 
 const SignInPage = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const classes = styles();
-  const [open, setOpen] = React.useState(false);
 
   // Form data
   const initialValues = {
@@ -64,7 +61,6 @@ const SignInPage = () => {
           <NavLink to={'/password'} className={classes.navLink}>{t('signUpButton')}</NavLink>
         </Grid>
       </Grid>
-      <CustomSnackBar open={open} setOpen={setOpen} message={"Merci pour votre validation, votre compte acracy est maintenant actif"} />
     </Grid>
   );
 };
