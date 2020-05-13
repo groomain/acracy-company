@@ -13,6 +13,9 @@ export default makeStyles(theme => ({
     width: '100%',
     height: 70
   },
+  redSnack: {
+    backgroundColor: theme.palette.primary.danger,
+  },
   typo: {
     margin: 'auto',
     color: "black"
