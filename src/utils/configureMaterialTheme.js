@@ -71,7 +71,6 @@ export const theme = createMuiTheme({
     h2: {
       fontSize: 17,
       fontFamily: 'Basier Medium',
-
       color: '#ecf805',
       letterSpacing: '-0.45px',
     },
