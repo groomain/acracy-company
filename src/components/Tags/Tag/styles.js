@@ -10,5 +10,16 @@ export default makeStyles(theme => ({
   },
   primaryColor: {
     background: theme.palette.primary.main
+  },
+  withInput: {
+    background: theme.palette.secondary.light,
+    '& input': {
+      border: 'none',
+      boxShadow: 'none',
+      background: 'transparent',
+      '&:focus': {
+        outline: 'none'
+      }
+    }
   }
 }));

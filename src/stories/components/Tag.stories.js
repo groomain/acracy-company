@@ -24,6 +24,14 @@ export const withPrimaryColor = () => (
   )
 );
 
+export const withInput = () => (
+  ProviderWrapper(
+    <div style={{ margin: '3rem' }}>
+      <Tag placeholder="Placeholder.. " isWithInput />
+    </div>
+  )
+);
+
 export const withCheckableTag = () => (
   ProviderWrapper(
     <div style={{ margin: '3rem' }}>
