@@ -92,6 +92,12 @@ export const theme = createMuiTheme({
       letterSpacing: '-0.75px',
       color: '#ecf805'
     },
+    subtitle2: {
+      fontSize: 21,
+      fontFamily: 'Basier Regular',
+      letterSpacing: '-0.75px',
+      color: '#fff'
+    },
     body1: {
       fontSize: 17,
       fontFamily: 'Basier Regular',
