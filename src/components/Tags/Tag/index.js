@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Typography, Grid, FormControlLabel, Checkbox } from '@material-ui/core';
+import { Grid } from '@material-ui/core';
 import clsx from "clsx";
 
 import styles from './styles';
@@ -15,12 +15,12 @@ const Tag = ({ title, isPrimaryColor, isWithInput, placeholder, isWithCheckbox, 
   };
 
   let content = (
-    <div style={{ margin: '.5rem 1rem' }}>{title}</div>
+    <div className={classes.contentBox}>{title}</div>
   );
 
   if (isWithInput) {
     content = (
-      <div style={{ margin: '.5rem 1rem' }}>
+      <div className={classes.contentBox}>
         <input
           id="tagInput"
           placeholder={placeholder}
@@ -41,7 +41,7 @@ const Tag = ({ title, isPrimaryColor, isWithInput, placeholder, isWithCheckbox, 
           <CustomCheckbox
             size="small"
             shape="rounded"
-            style={{ padding: 0, marginLeft: '1rem' }}
+            className={classes.checkbox}
           />
         </span>
       </div>

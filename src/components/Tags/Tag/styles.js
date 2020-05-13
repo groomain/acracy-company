@@ -12,6 +12,9 @@ export default makeStyles(theme => ({
   primaryColor: {
     background: theme.palette.primary.main
   },
+  contentBox: {
+    margin: '.5rem 1rem'
+  },
   withInput: {
     background: theme.palette.secondary.light,
     '& input': {
@@ -30,5 +33,9 @@ export default makeStyles(theme => ({
   checkboxTagContent: {
     padding: '.3rem 0 .3rem 1rem',
     marginLeft: '1rem',
+  },
+  checkbox: {
+    padding: 0,
+    marginLeft: '1rem'
   }
 }));
