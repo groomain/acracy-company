@@ -10,7 +10,6 @@ import { loginLaunched } from '../../components/App/reducer';
 import styles from '../../utils/styles';
 import { NavLink } from "react-router-dom";
 import Divider from "@material-ui/core/Divider";
-import Mission from "../../components/Mission";
 
 const SignInPage = () => {
   const dispatch = useDispatch();
