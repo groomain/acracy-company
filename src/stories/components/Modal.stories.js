@@ -12,12 +12,8 @@ export const WithDefault = () => (
     <div style={{ margin: '3rem' }}>
       <CustomModal
         title='Validez vos informations entreprise'
-        // text='Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
-        // buttonTitle=''
         open="true"
-
       />
     </div>
-
   )
 );
