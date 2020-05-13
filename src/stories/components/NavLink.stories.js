@@ -14,7 +14,15 @@ const styles = {
 export const withDefault = () => (
   ProviderWrapper(
     <div style={styles}>
-      <CustomNavLink to={'/'} text={"Clique ici"} />
+      <CustomNavLink to={'/'} text={"Clique ici"} theme="navLink" />
+    </div>
+  )
+);
+
+export const withinPageLink = () => (
+  ProviderWrapper(
+    <div style={styles}>
+      <CustomNavLink to={'/'} text={"Clique ici"} theme="yellowLink" />
     </div>
   )
 );
