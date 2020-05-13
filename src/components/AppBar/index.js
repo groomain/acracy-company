@@ -8,17 +8,27 @@ import CustomButton from "../Button";
 import CustomNavLink from "../CustomNavLink";
 import { useSelector } from "react-redux";
 import profilIcon from '../../assets/icons/profil-roll-out.svg'
-import notifIcon from '../../assets/icons/notificication-passive.svg'
 import CustomIconButton from "../IconButton";
 import { useLocation, withRouter } from "react-router";
 import clsx from "clsx";
+import IconButton from "@material-ui/core/IconButton";
+import CloseIcon from '@material-ui/icons/Close';
+import {Collapse} from "@material-ui/core";
 
 export const CustomAppBar = (props) => {
     let location = useLocation();
     const { t } = useTranslation();
     const classes = styles();
+    const [open, setOpen] = React.useState(true);
 
-    const isAuthenticated = useSelector(state => state.getIn(['app', 'isAuthenticated']), null);
+    const handleClose = () => {
+        setOpen(false);
+    };
+
+    const handleOpen = () => {
+        setOpen(true);
+        setTimeout(() => setOpen(false), 5000)
+    };
 
     const renderButtons = () => {
         switch (props.path || location.pathname) {
@@ -54,10 +64,18 @@ export const CustomAppBar = (props) => {
             default:
                 break;
         }
-    }
+    };
 
     return (
         <AppBar position="fixed" className={classes.appbar}>
+            <Collapse in={open}>
+            <div className={classes.snackbar}>
+                <Typography className={classes.typo}>Test de snackbar</Typography>
+                <IconButton size="small" className={classes.iconButton} aria-label="close" color="secondary.medium" onClick={handleClose}>
+                    <CloseIcon fontSize="small" />
+                </IconButton>
+            </div>
+            </Collapse>
             <Toolbar className={classes.toolbar}>
                 <Typography className={classes.title} variant="h1" noWrap>
                     acracy
