@@ -20,6 +20,9 @@ export default makeStyles(theme => ({
       transform: 'rotate(0)'
     }
   },
+  details: {
+    borderTop: `1px solid ${theme.palette.secondary.medium}`,
+  },
   arrowIcon: {
     border: `1px solid ${theme.palette.secondary.medium}`,
     padding: '.2rem',

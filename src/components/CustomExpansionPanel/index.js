@@ -15,14 +15,15 @@ const CustomExpansionPanel = ({ isTag, panelTitle, panelText, ...props }) => {
           className={classes.header}
           expandIcon={
             isTag
-              ? (<ExpandMoreIcon className={classes.arrowIcon} />)
-              : (<AddIcon className={classes.addIcon} />)}
+              ? (<AddIcon className={classes.addIcon} />)
+              : (<ExpandMoreIcon className={classes.arrowIcon} />)
+          }
           aria-controls="panel1a-content"
           id="panel1a-header"
         >
           <Typography variant="h4">{panelTitle}</Typography>
         </ExpansionPanelSummary>
-        <ExpansionPanelDetails>
+        <ExpansionPanelDetails className={isTag && classes.details}>
           <Typography>
             {panelText}
           </Typography>
