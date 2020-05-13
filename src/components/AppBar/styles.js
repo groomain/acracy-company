@@ -1,5 +1,4 @@
 import makeStyles from '@material-ui/core/styles/makeStyles';
-import { fade } from '@material-ui/core';
 
 export default makeStyles(theme => ({
   appbar: {
@@ -29,7 +28,7 @@ export default makeStyles(theme => ({
     width: 390,
   },
   login: {
-    width: 390,
+    width: 360,
   },
   signup: {
     width: 340,
@@ -38,20 +37,6 @@ export default makeStyles(theme => ({
     width: 270,
   },
   password: {
-    width: 550,
-  },
-  div2: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'baseline',
-    width: 340,
-  },
-  div4: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'baseline',
-    width: 550,
+    width: 480,
   }
 }));

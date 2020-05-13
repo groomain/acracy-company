@@ -1,4 +1,5 @@
 import makeStyles from '@material-ui/core/styles/makeStyles';
+import { basierRegular } from "./configureMaterialTheme";
 
 export default makeStyles(theme => ({
   root: {
@@ -8,30 +9,46 @@ export default makeStyles(theme => ({
     },
   },
   connectionDiv: {
-    backgroundImage: 'linear-gradient(to left, #18C8B7, #31CAA8)',
+    backgroundColor: `${theme.palette.secondary.black}`,
     height: '100vh',
     minHeight: 800
   },
   Connection: {
     borderRadius: 5,
     width: 450,
-    borderColor: '#ffffff',
-    backgroundColor: '#ffffff',
+    borderColor: theme.palette.secondary.main,
+    backgroundColor: theme.palette.secondary.main,
   },
   titleConnection: {
-    color: '#ffffff',
+    color: theme.palette.secondary.main,
     fontStyle: 'italic',
-    fontSize: 100,
+    fontSize: 60,
     marginBottom: 20
-  },
-  link_Connection: {
-    fontSize: 19,
-    color: '#ffffff',
   },
   titleFormConnection: {
     fontSize: 30,
-    color: '#ffffff',
+    color: theme.palette.secondary.main,
     margin: 30,
     fontWeight: 'bold'
+  },
+  sidebarDiv: {
+    margin: '0 auto',
+    backgroundColor: theme.palette.secondary.sidebarGreen,
+  },
+  navLink: {
+    color: `${theme.palette.primary.main}`,
+    fontFamily: basierRegular,
+  },
+  typo: {
+    fontSize: 17,
+    height: 30
+  },
+  titleSignIn: {
+    paddingBottom: 20
+  },
+  divider: {
+    marginTop: 40,
+    marginBottom: 40,
+    backgroundColor: `${theme.palette.secondary.medium}`,
   }
 }));

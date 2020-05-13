@@ -10,7 +10,7 @@ export const CircleImage = ({ theme, variant, src, alt, ...props }) => {
         <Avatar
             alt={alt}
             src={src ? src : PersonIcon}
-            className={`${classes.avatar} ${classes[theme]}`}
+            className={`${classes.icon} ${classes[theme]}`}
         >
         </Avatar >
     );

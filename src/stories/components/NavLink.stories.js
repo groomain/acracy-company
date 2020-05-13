@@ -4,20 +4,18 @@ import CustomNavLink from "../../components/CustomNavLink";
 
 export default {
   title: 'Components|NavLink',
-  component: CustomNavLink,
-    parameters: {
-        backgrounds: [
-            { name: 'colored-theme', value: '#162217', default: true }
-        ]
-    },
+  component: CustomNavLink
+};
+
+const styles = {
+  padding: '3rem'
 };
 
 export const withDefault = () => (
   ProviderWrapper(
-      <>
-        <h4>Change Storybook's background color to see the colored theme button color</h4>
-    <CustomNavLink to={'/'} text={"Clique ici"} />
-    </>
+    <div style={styles}>
+      <CustomNavLink to={'/'} text={"Clique ici"} />
+    </div>
   )
 );
 

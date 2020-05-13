@@ -4,41 +4,64 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import CircleImage from "../CircleImage";
 import IconButton from "@material-ui/core/IconButton";
-import MoreIcon from '@material-ui/icons/MoreVert';
-import {basierMedium, basierRegular} from "../../utils/configureMaterialTheme";
-import {IncidentIcon} from "../../assets/icons/IncidentIcon";
-import {AdresseIcon} from "../../assets/icons/AdresseIcon";
-import {DownloadIcon} from "../../assets/icons/DownloadIcon";
-import {NavLink} from "react-router-dom";
 import LeftOverlay from "./LeftOverlay";
-import {CloseIcon} from "../../assets/icons/CloseIcon";
+import {MenuIcon} from "../../assets/icons/MenuIcon";
+import {AValiderIcon} from "../../assets/icons/AValiderIcon";
+import {MatchingIcon} from "../../assets/icons/MatchingIcon";
+import {DemarreIcon} from "../../assets/icons/DemarreIcon";
+import {EnCoursIcon} from "../../assets/icons/EnCoursIcon";
+import {TravailIcon} from "../../assets/icons/TravailIcon";
+import {RetardIcon} from "../../assets/icons/RetardIcon";
+import {MissionHistoIcon} from "../../assets/icons/MissionHistoIcon";
+import clsx from "clsx";
 
 export const Mission = ({...props}) => {
     const classes = styles();
     const [open, setOpen] = React.useState(false);
+    const [hoveredMenu, setOveredMenu] = React.useState(false);
+
+    const getStatusIcon = (status) => {
+        switch (status) {
+            case 0:
+                return <AValiderIcon className={classes.icon}/>;
+            case 1:
+                return <MatchingIcon className={classes.icon}/>;
+            case 2:
+                return <DemarreIcon className={classes.icon}/>;
+            case 3:
+                return <EnCoursIcon className={classes.icon}/>;
+            case 4:
+                return <TravailIcon className={classes.icon}/>;
+            case 5:
+                return <RetardIcon className={classes.icon}/>;
+            case 6:
+                return <MissionHistoIcon className={classes.icon}/>;
+        }
+    };
 
     return (
+        <Grid container direction={'column'}>
         <Grid container direction={'row'} className={classes.container}>
-            <Grid container className={classes.gridLeft} direction={'column'}>
-                <Grid container item style={{height: '14%', padding: 12}} direction={'row'}>
-                    <Typography
-                        style={{fontSize: 14, fontFamily: basierRegular, color: '#ecf805',}}>Mission</Typography>
-                    <div style={{flexGrow: 1,}}/>
-                    <IconButton style={{width: 25, height: 25, marginRight: 5}} aria-label="display more actions"
+            <Grid container className={clsx(classes.gridLeft, {[classes.gridLeftFinished]: props.status === 6})} direction={'column'}>
+                <Grid container item className={classes.statusContainer} direction={'row'}>
+                    {getStatusIcon(props.status)}
+                    <Typography className={clsx(classes.statusTitle, {[classes.statusTitleRed]: props.status === 5})}>MISSION EN COURS</Typography>
+                    <div style={{flexGrow: 1}}/>
+                    <IconButton className={classes.buttonIcon} aria-label="display more actions"
                                 onClick={() => setOpen(true)} color="secondary">
-                        <MoreIcon/>
+                        <MenuIcon className={classes.menuIcon} hovered={hoveredMenu} onMouseEnter={() => setOveredMenu(true)} onMouseLeave={() => setOveredMenu(false)}/>
                     </IconButton>
                 </Grid>
-                <Grid item style={{height: '43%', paddingTop: '13%', paddingLeft: 30, paddingRight: 38}}>
-                    <Typography>Mon titre décrivant ma mission en trois lignes et lorem ipsum</Typography>
+                <Grid item className={classes.titleContainer}>
+                    <Typography className={classes.title}>Mon titre décrivant ma mission en trois lignes et lorem ipsum</Typography>
                 </Grid>
-                <Grid item style={{height: '43%', paddingLeft: 30, paddingRight: 38}}>
-                    <Typography>Livrable 01 - Livrable 02 Lorem ipsum dolor sit amet, consectetur adipisicing
+                <Grid item className={classes.description}>
+                    <Typography variant="body2">Livrable 01 - Livrable 02 Lorem ipsum dolor sit amet, consectetur adipisicing
                         elit.</Typography>
                 </Grid>
                 {open && <LeftOverlay setOpen={setOpen}/>}
             </Grid>
-            <Grid container direction={'row'} className={classes.gridCenter}>
+            <Grid container direction={'row'} className={clsx(classes.gridCenter, {[classes.gridCenterFinished]: props.status === 6})}>
                 <Grid container item xs={4} direction={'column'} alignItems={'center'}>
                     <Grid item className={classes.blocAvatar}>
                         <CircleImage theme={'avatarLarge'}/>
@@ -70,12 +93,21 @@ export const Mission = ({...props}) => {
                     </Grid>
                 </Grid>
             </Grid>
-            <Grid container className={classes.gridRight} alignItems={'center'} justify={'center'}>
-                <Grid item>
-                    <Typography className={classes.button}>Confirmer la fin de la mission</Typography>
-                </Grid>
+            <Grid container
+                  className={clsx(classes.gridRight, {[classes.withoutButton]: props.status === 6}, {[classes.rightRed]: props.status === 5})}
+                  alignItems={'center'} justify={'center'}>
+                {props.status !== 6 &&
+                    <Grid item>
+                        <Typography className={classes.button}>Confirmer la fin de la mission</Typography>
+                    </Grid>
+                }
             </Grid>
         </Grid>
+            <Grid container direction={'row'} alignItems={'center'} className={classes.outsideContainer}>
+                <CircleImage/>
+                <Typography variant="body2" className={classes.outsideTypo}>Severine est en charge de votre dossier</Typography>
+            </Grid>
+            </Grid>
     )
 };
 

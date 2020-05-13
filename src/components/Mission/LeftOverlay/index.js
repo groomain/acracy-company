@@ -15,8 +15,6 @@ export const LeftOverlay = (props) => {
     const [hovered5, setOvered5] = React.useState(false);
     const [hovered6, setOvered6] = React.useState(false);
 
-    console.log("hovered1", hovered1);
-    console.log("hovered2", hovered2);
     return (
         <Grid container item className={classes.container} direction={'column'} justify={'center'}>
             <Grid item container direction={'row'} justify={"flex-end"}>

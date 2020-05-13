@@ -1,11 +1,12 @@
 import makeStyles from '@material-ui/core/styles/makeStyles';
-import {basierMedium, basierRegular} from "../../utils/configureMaterialTheme";
+import {basierRegular} from "../../utils/configureMaterialTheme";
 
 export default makeStyles(theme => ({
   container: {
     height: 323,
     maxHeight: 323,
     maxWidth: 1195,
+    minWidth: 1195,
     flexGrow: 1,
   },
   gridLeft: {
@@ -20,6 +21,12 @@ export default makeStyles(theme => ({
     width: '62%',
     backgroundColor: "#283028"
   },
+  gridCenterFinished: {
+    backgroundColor: "#151d15"
+  },
+  gridLeftFinished: {
+    backgroundColor: "#111711"
+  },
   gridRight: {
     borderRadius: '0 15px 15px 0',
     width: '10%',
@@ -28,11 +35,20 @@ export default makeStyles(theme => ({
       cursor: 'pointer',
     },
   },
+  withoutButton: {
+    backgroundColor: "#151d15",
+    '&:hover': {
+      cursor: 'initial'
+    },
+  },
+  rightRed: {
+    backgroundColor: "#ff565c",
+  },
   button: {
     padding: 20,
     textAlign: 'center',
     fontSize: 14,
-    fontFamily: basierRegular,
+    fontFamily: 'Basier Medium',
     color: `${theme.palette.secondary.black}`,
     letterSpacing: '0px',
   },
@@ -58,4 +74,54 @@ export default makeStyles(theme => ({
     marginTop: '3%',
     width: '100%',
   },
+  icon: {
+    width: 40,
+    position: 'relative',
+    top: 11
+  },
+  statusTitle: {
+    fontSize: 14,
+    fontFamily: basierRegular,
+    color: '#ecf805',
+    paddingTop: 7
+  },
+  statusTitleRed: {
+    color: '#ff565c',
+  },
+  buttonIcon: {
+    width: 25,
+    height: 25,
+    marginTop: 6
+  },
+  statusContainer: {
+    height: '12%',
+    padding: 5,
+    paddingLeft: 15
+  },
+  titleContainer: {
+    height: '47%',
+    paddingTop: '8%',
+    paddingLeft: 30,
+    paddingRight: 38
+  },
+  title: {
+    fontSize: 22,
+    fontFamily: 'Basier Medium'
+  },
+  description: {
+    height: '41%',
+    paddingLeft: 30,
+    paddingRight: 38
+  },
+  menuIcon: {
+    position: 'absolute',
+    top: 6,
+    left: 10
+  },
+  outsideContainer: {
+    marginTop: 8
+  },
+  outsideTypo: {
+    marginLeft: 10
+  }
 }));

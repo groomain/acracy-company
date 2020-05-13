@@ -3,7 +3,7 @@ import makeStyles from '@material-ui/core/styles/makeStyles';
 export default makeStyles(theme => ({
   button: {
     height: 56,
-    minWidth: 185,
+    minWidth: 165,
     textTransform: 'none',
     fontSize: 14,
     fontWeight: 500,
