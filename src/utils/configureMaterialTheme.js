@@ -47,6 +47,8 @@ export const theme = createMuiTheme({
       overlay: '#0d110d',
       inputFadeFilter: '#585858', //add a filter that lightens a bg color
       modalGreen: '#283028',
+      switchGreen: '#333d34',
+      switchThumb: '#c5cab3'
     },
   },
   overrides: {
