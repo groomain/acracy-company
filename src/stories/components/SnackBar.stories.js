@@ -7,9 +7,13 @@ export default {
   component: CustomSnackBar
 };
 
-export const withDefault = () => (
-  ProviderWrapper(
-    <CustomSnackBar open={true} message={"Ceci est une SnackBar"} />
-  )
-);
+export const withDefault = () => {
+  const [open, setOpen] = React.useState(true);
+
+  return (
+
+ProviderWrapper(
+    <CustomSnackBar open={open} setOpen={setOpen} message={"Ceci est une SnackBar"} />
+  ))
+};
 

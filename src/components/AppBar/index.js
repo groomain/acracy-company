@@ -6,29 +6,17 @@ import styles from "./styles";
 import { useTranslation } from "react-i18next";
 import CustomButton from "../Button";
 import CustomNavLink from "../CustomNavLink";
-import { useSelector } from "react-redux";
 import profilIcon from '../../assets/icons/profil-roll-out.svg'
 import CustomIconButton from "../IconButton";
 import { useLocation, withRouter } from "react-router";
 import clsx from "clsx";
-import IconButton from "@material-ui/core/IconButton";
-import CloseIcon from '@material-ui/icons/Close';
-import {Collapse} from "@material-ui/core";
+import CustomSnackBar from "../SnackBar";
 
 export const CustomAppBar = (props) => {
     let location = useLocation();
     const { t } = useTranslation();
     const classes = styles();
     const [open, setOpen] = React.useState(true);
-
-    const handleClose = () => {
-        setOpen(false);
-    };
-
-    const handleOpen = () => {
-        setOpen(true);
-        setTimeout(() => setOpen(false), 5000)
-    };
 
     const renderButtons = () => {
         switch (props.path || location.pathname) {
@@ -68,14 +56,7 @@ export const CustomAppBar = (props) => {
 
     return (
         <AppBar position="fixed" className={classes.appbar}>
-            <Collapse in={open}>
-            <div className={classes.snackbar}>
-                <Typography className={classes.typo}>Test de snackbar</Typography>
-                <IconButton size="small" className={classes.iconButton} aria-label="close" color="secondary.medium" onClick={handleClose}>
-                    <CloseIcon fontSize="small" />
-                </IconButton>
-            </div>
-            </Collapse>
+            <CustomSnackBar message={"Test de snackBar"} open={open} setOpen={setOpen}/>
             <Toolbar className={classes.toolbar}>
                 <Typography className={classes.title} variant="h1" noWrap>
                     acracy
