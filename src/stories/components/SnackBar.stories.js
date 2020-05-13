@@ -17,3 +17,13 @@ ProviderWrapper(
   ))
 };
 
+export const withError = () => {
+  const [open, setOpen] = React.useState(true);
+
+  return (
+
+ProviderWrapper(
+    <CustomSnackBar open={open} error setOpen={setOpen} message={"Ceci est une SnackBar"} />
+  ))
+};
+

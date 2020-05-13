@@ -4,8 +4,9 @@ import CloseIcon from '@material-ui/icons/Close';
 import styles from './styles';
 import Typography from '@material-ui/core/Typography';
 import {Collapse} from "@material-ui/core";
+import clsx from "clsx";
 
-export const CustomSnackBar = ({message, open, setOpen, ...props}) => {
+export const CustomSnackBar = ({message, open, setOpen, error, ...props}) => {
     const classes = styles();
 
     const handleClose = () => {
@@ -19,7 +20,7 @@ export const CustomSnackBar = ({message, open, setOpen, ...props}) => {
 
     return (
         <Collapse in={open}>
-            <div className={classes.snackbar}>
+            <div className={clsx(classes.snackbar, {[classes.redSnack] : error})}>
                 <Typography className={classes.typo}>{message}</Typography>
                 <IconButton size="small" className={classes.iconButton} aria-label="close" color="secondary.medium" onClick={handleClose}>
                     <CloseIcon fontSize="small" />
