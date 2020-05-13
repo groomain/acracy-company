@@ -12,6 +12,7 @@ import notifIcon from '../../assets/icons/notificication-passive.svg'
 import CustomIconButton from "../IconButton";
 import { useLocation, withRouter } from "react-router";
 import clsx from "clsx";
+import MenuBoutonIcon from "../Menu";
 
 export const CustomAppBar = (props) => {
     let location = useLocation();
@@ -39,6 +40,8 @@ export const CustomAppBar = (props) => {
             case '/home':
                 return (
                     <div className={clsx(classes.div, classes.home)}>
+                        <MenuBoutonIcon />
+
                         <CustomButton theme={"filledButton"} title={"Nouveau brief"} />
                         <CustomIconButton icon={profilIcon} />
                     </div>
