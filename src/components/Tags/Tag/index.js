@@ -38,17 +38,10 @@ const Tag = ({ title, isPrimaryColor, isWithInput, placeholder, isWithCheckbox, 
         <span>{title}</span>
         <span className={clsx(classes.tag, classes.checkboxTagContent)}>
           {tagType}
-          <FormControlLabel
-            control={
-              <Checkbox
-                icon={
-                  <CustomCheckbox
-                    size="small"
-                    shape="rounded"
-                  />
-                }
-              />
-            }
+          <CustomCheckbox
+            size="small"
+            shape="rounded"
+            style={{ padding: 0, marginLeft: '1rem' }}
           />
         </span>
       </div>

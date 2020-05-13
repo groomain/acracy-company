@@ -25,10 +25,10 @@ export default makeStyles(theme => ({
   },
   checkboxTagContainer: {
     color: theme.palette.secondary.medium,
-    padding: '0 3px 0 1rem',
+    padding: '4px 3px 2px 1rem',
   },
   checkboxTagContent: {
-    padding: '.3rem 1rem',
-    marginLeft: '1rem'
+    padding: '.3rem 0 .3rem 1rem',
+    marginLeft: '1rem',
   }
 }));
