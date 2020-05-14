@@ -151,7 +151,6 @@ i18n
             loading: 'Chargement...'
           },
           yourEmail: 'Votre email',
-          yourPassword: 'Votre mot de passe',
           haveAccount: 'Je n\'ai pas de compte acracy entreprise'
         }
       }

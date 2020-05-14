@@ -3,7 +3,6 @@ import Grid from '@material-ui/core/Grid';
 import { useTranslation } from 'react-i18next';
 import Typography from '@material-ui/core/Typography';
 import SearchIcon from '@material-ui/icons/Search';
-import CustomIconButton from '../IconButton';
 import CircleImage from '../CircleImage';
 import styles from './styles';
 

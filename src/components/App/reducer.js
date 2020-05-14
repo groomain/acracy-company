@@ -1,4 +1,6 @@
-import Immutable, {fromJS} from 'immutable';
+import Immutable
+  // , {fromJS} 
+  from 'immutable';
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = Immutable.Map({
@@ -101,7 +103,7 @@ const { actions, reducer } = createSlice({
     handleNextStep: (state, action) => state
       .set('activeStep', action.payload + 1),
     handlePreviousStep: (state, action) => state
-      .set('activeStep', action.payload - 1 ),
+      .set('activeStep', action.payload - 1),
   }
 });
 
