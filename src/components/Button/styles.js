@@ -1,5 +1,4 @@
 import makeStyles from '@material-ui/core/styles/makeStyles';
-import { borderRadius } from '../../utils/styles';
 
 export default makeStyles(theme => ({
   button: {
