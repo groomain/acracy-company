@@ -23,7 +23,7 @@ const CustomExpansionPanel = ({ children, isTag, panelTitle, ...props }) => {
         >
           <Typography variant="h4">{panelTitle}</Typography>
         </ExpansionPanelSummary>
-        <ExpansionPanelDetails className={isTag && classes.detailsContainer}>
+        <ExpansionPanelDetails className={isTag ? classes.detailsContainer : null}>
           {children}
         </ExpansionPanelDetails>
       </ExpansionPanel>

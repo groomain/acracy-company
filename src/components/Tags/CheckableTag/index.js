@@ -15,7 +15,7 @@ const CheckableTag = ({ title, isGrey, ...props }) => {
       disableRipple
       color="default"
       checkedIcon={<span className={clsx(classes.icon, classes.checkedIcon)}>{title}</span>}
-      icon={<span className={clsx(classes.icon, isGrey && classes.greyTag)}>{title}</span>}
+      icon={<span className={clsx(classes.icon, isGrey ? classes.greyTag : null)}>{title}</span>}
       inputProps={{ 'aria-label': 'decorative checkbox', value: { title } }}
       {...props}
     />
