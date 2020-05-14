@@ -30,7 +30,7 @@ export default function CustomLoader(props) {
                 value={100}
                 className={classes.top}
                 size={45}
-                thickness={1}
+                thickness={2}
                 {...props}
             />
             <CircularProgress
