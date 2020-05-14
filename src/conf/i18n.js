@@ -72,7 +72,8 @@ i18n
             label: "Key profile expertise",
             fieldTitleStarted: "Change my selection",
             fieldTitleNewSelection: "Start my selection",
-            minMaxInfo: "5 maximum, including 3 high priority"
+            minMaxInfo: "5 maximum, including 3 high priority",
+            button: "Send"
           }
         }
       },
@@ -162,7 +163,8 @@ i18n
             label: "Expertises clés du profil",
             fieldTitleStarted: "Modifier ma sélection",
             fieldTitleNewSelection: "Démarrer ma sélection",
-            minMaxInfo: "5 maximum dont 3 prioritaires"
+            minMaxInfo: "5 maximum dont 3 prioritaires",
+            button: "Valider"
           }
         }
       }
