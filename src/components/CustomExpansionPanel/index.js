@@ -1,13 +1,13 @@
 import React from 'react';
-import { ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails, Typography } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import AddIcon from '@material-ui/icons/Add';
 
+import { ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails, Typography } from '@material-ui/core';
+
 import styles from './styles';
 
-const CustomExpansionPanel = ({ isTag, panelTitle, panelText, ...props }) => {
+const CustomExpansionPanel = ({ children, isTag, panelTitle, ...props }) => {
   const classes = styles();
-
   return (
     <div className={classes.root}>
       <ExpansionPanel TransitionProps={{ unmountOnExit: true }} className={classes.panel} {...props}>
@@ -23,10 +23,8 @@ const CustomExpansionPanel = ({ isTag, panelTitle, panelText, ...props }) => {
         >
           <Typography variant="h4">{panelTitle}</Typography>
         </ExpansionPanelSummary>
-        <ExpansionPanelDetails className={isTag && classes.details}>
-          <Typography>
-            {panelText}
-          </Typography>
+        <ExpansionPanelDetails className={isTag && classes.detailsContainer}>
+          {children}
         </ExpansionPanelDetails>
       </ExpansionPanel>
     </div>
