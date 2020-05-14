@@ -67,6 +67,7 @@ export default makeStyles(theme => ({
     color: theme.palette.primary.main
   },
   customButtonContainer: {
+    width: '100%',
     marginTop: 80
   },
   customButton: {

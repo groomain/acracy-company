@@ -44,15 +44,15 @@ const RevealProfil = () => {
               </Grid>
             </Grid>
           </Grid>
-          <Grid container direction={"row"} justify={'space-between'} alignItems="center" xs={12} className={classes.customButtonContainer}>
-            <Grid xs={4} item container>
-            <CustomButton title={'Voir son CV'} style={{marginRight: 'auto', width: 215}}/>
+          <Grid container direction={"row"} justify={'center'} alignItems="center"  xs={12} className={classes.customButtonContainer}>
+            <Grid xs={4} item container justify={'center'}>
+            <CustomButton xs={4} title={'Voir son CV'} style={{marginRight: 'auto', width: 215}}/>
             </Grid>
-            <Grid xs={4} item container>
-            <CustomButton title={'Voir son Portfolio'} style={{marginRight: 'auto', width: 215}}/>
+            <Grid  xs={4} item container justify={'center'}>
+            <CustomButton title={'Voir son Portfolio'} style={{margin: 'auto', width: 215}}/>
             </Grid>
-            <Grid xs={4} item container>
-            <CustomButton title={'Voir son Site'} style={{marginRight: 'auto', width: 215}}/>
+            <Grid xs={4} item container justify={'center'}>
+            <CustomButton title={'Voir son Site'} style={{marginLeft: 'auto', width: 215}}/>
             </Grid>
           </Grid>
           <Grid item className={classes.textContainer}>
