@@ -11,7 +11,11 @@ export default makeStyles(theme => ({
     lineHeight: 1.57,
     borderRadius: '8px',
     border: '1px solid #fff',
-    color: '#fff'
+    color: '#fff',
+    '&.Mui-disabled': {
+      color: theme.palette.secondary.medium,
+      textDecoration: 'none'
+    }
   },
   secondaryButton: {
     border: `1px solid ${theme.palette.secondary.medium}`,
@@ -46,4 +50,9 @@ export default makeStyles(theme => ({
       background: `${theme.palette.primary.bright}`
     }
   },
+  asLink: {
+    border: 'none',
+    textDecoration: 'underline',
+    margin: 0
+  }
 }));

@@ -22,7 +22,6 @@ export const CustomTextArea = ({ label, placeholder, error, helperText, ...props
         classes={{ root: `${classes.root} ${error ? classes.error : null}`, input: classes.input }}
         label={label}
         placeholder={placeholder}
-        shrink={false}
         disableUnderline
         rowsMin={3}
         fullWidth
