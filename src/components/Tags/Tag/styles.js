@@ -15,6 +15,9 @@ export default makeStyles(theme => ({
   contentBox: {
     margin: '.5rem 1rem'
   },
+  smallTagContentBox: {
+    margin: '.2rem 1rem'
+  },
   withInput: {
     background: theme.palette.secondary.light,
     '& input': {

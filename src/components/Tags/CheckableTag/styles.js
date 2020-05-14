@@ -2,24 +2,25 @@ import makeStyles from '@material-ui/core/styles/makeStyles';
 
 export default makeStyles(theme => ({
   root: {
+    padding: 4,
     '& span': {
       textAlign: 'left',
-      padding: '.5rem 1rem',
       fontSize: 14,
       fontFamily: "Basier Regular",
       color: theme.palette.secondary.medium,
-      border: `2px solid transparent`,
+      border: `2px solid transparent`
     },
     '&:hover': {
       backgroundColor: 'transparent',
     },
     '&:active': {
-      marginTop: 2
+      transform: 'scale(.98)'
     }
   },
   icon: {
     borderRadius: 50,
     backgroundColor: theme.palette.secondary.main,
+    padding: '.5rem 1rem',
     '$root.Mui-focusVisible &': {
       border: `2px solid ${theme.palette.primary.main}`,
     },
