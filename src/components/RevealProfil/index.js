@@ -9,6 +9,7 @@ import styles from './styles'
 import Avatar from "@material-ui/core/Avatar";
 import ProfileElement from "../ProfileElement";
 import langues from "../../assets/icons/langues.svg";
+import star from "../../assets/icons/expertises.svg";
 import checkStatus from "../../assets/icons/check-statut.svg";
 import clsx from "clsx";
 
@@ -73,7 +74,7 @@ const RevealProfil = () => {
 
               <Grid item container xs={6} direction="column" justify={'center'} className={classes.blackCard}>
                 <Grid item className={classes.star}>
-                  <img src={langues} alt="Star" />
+                  <img src={star} alt="Star" />
                 </Grid>
                   <Grid item>
                     <Typography variant='h4'>Expertises</Typography>
