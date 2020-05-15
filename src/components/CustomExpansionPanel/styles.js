@@ -20,7 +20,7 @@ export default makeStyles(theme => ({
       transform: 'rotate(0)'
     }
   },
-  details: {
+  detailsContainer: {
     borderTop: `1px solid ${theme.palette.secondary.medium}`,
   },
   arrowIcon: {

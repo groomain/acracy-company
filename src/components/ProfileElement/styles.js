@@ -3,10 +3,11 @@ import makeStyles from '@material-ui/core/styles/makeStyles';
 export default makeStyles(theme => ({
   root: {
     backgroundColor: theme.palette.secondary.mid,
-    minHeight: 89,
+    height: 89,
     maxWidth: 357,
     borderRadius: 15,
-    padding: 20,
+    padding: 10,
+    paddingLeft: 20,
     alignItems: 'center'
   },
   text: {

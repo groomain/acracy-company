@@ -15,7 +15,7 @@ const Tag = ({ title, isPrimaryColor, isWithInput, placeholder, isWithCheckbox, 
   };
 
   let content = (
-    <div className={classes.contentBox}>{title}</div>
+    <div className={classes.smallTagContentBox}>{title}</div>
   );
 
   if (isWithInput) {

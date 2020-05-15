@@ -4,16 +4,16 @@ import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import styles from './styles';
 
-export const CustomSwitch = ({ switchSize }) => {
+export const CustomSwitch = ({ checked, setChecked, switchSize, ...props }) => {
     const classes = styles();
-    const [checked, setChecked] = React.useState(false);
+    // const [checked, setChecked] = React.useState(false);
 
     const toggleChecked = () => {
         setChecked((prev) => !prev);
     };
 
     return (
-        <FormGroup>
+        <FormGroup {...props}>
             <FormControlLabel
                 control={<Switch
                     classes={{
