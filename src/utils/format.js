@@ -11,3 +11,12 @@ export const formatWithLineBreak = text => {
   });
   return newText;
 };
+
+/**
+ * 
+ * @param {string} text - A string to be capitalized
+ * @returns {string} - The new capitalized text
+ */
+export const capitalize = text => {
+  return text.charAt(0).toUpperCase() + text.slice(1);
+}

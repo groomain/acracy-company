@@ -18,3 +18,12 @@ html, body, #app, #app> div {
   height: 100%;
   width: 100%
 }
+
+.MuiPickersCalendarHeader-switchHeader > div p{
+  color: #151D15;
+  font-family: "Basier Medium"
+}
+
+.MuiPickersToolbar-toolbarLandscape {
+  width: 150px !important;
+}
