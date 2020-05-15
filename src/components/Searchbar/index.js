@@ -134,7 +134,7 @@ const SearchResults = ({ searchResults, ...props }) => {
   return (
     <>
       <Box my={2} style={{ height: 30 }}>
-        <Typography variant="h2">{searchValue && searchValue.title || " "}</Typography>
+        <Typography variant="h2">{searchValue && searchValue.title}</Typography>
       </Box>
       <Select
         ref={ref}
