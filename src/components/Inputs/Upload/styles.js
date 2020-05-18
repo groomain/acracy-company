@@ -24,5 +24,12 @@ export default makeStyles(theme => ({
     '&:hover span svg g': {
       stroke: theme.palette.secondary.main
     }
+  },
+  uploadIconWrapper: {
+    maxWidth: '7rem',
+    textAlign: 'center'
+  },
+  maxedFileSize: {
+    color: theme.palette.primary.danger
   }
 }));

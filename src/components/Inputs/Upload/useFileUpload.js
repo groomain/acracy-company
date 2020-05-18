@@ -1,21 +1,4 @@
-import { useCallback, useEffect, useReducer, useRef } from 'react';
-
-// mock upload func
-const api = {
-  uploadFile({ timeout = 550 }) {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve()
-      }, timeout)
-    })
-  },
-}
-
-const logUploadedFile = (num, color = 'green') => {
-  const msg = `%cUploaded ${num} files.`
-  const style = `color:${color};font-weight:bold;`
-  console.log(msg, style)
-}
+import { useCallback, useEffect, useReducer } from 'react';
 
 // Constants
 const LOADED = 'LOADED'
@@ -57,7 +40,7 @@ const reducer = (state, action) => {
     case 'files-uploaded':
       return { ...state, uploading: false, status: FILES_UPLOADED }
     case 'set-upload-error':
-      return { ...state, uploadError: action.error, status: UPLOAD_ERROR }
+      return { ...state, uploadError: action.error, files: action.files, status: UPLOAD_ERROR }
     default:
       return state
   }
@@ -78,8 +61,10 @@ const useFileUpload = () => {
   )
 
   const onChange = (e) => {
-    if (e.target.files.length && e.target.files[0].size < 5e+6) {
-      const arrFiles = Array.from(e.target.files)
+    const fileList = e.target.files;
+    const arrFiles = Array.from(fileList)
+
+    if (fileList.length && fileList[0].size < 5e+6) {
       const files = arrFiles.map((file, index) => {
         const src = window.URL.createObjectURL(file)
         return { file, id: index, src }
@@ -87,48 +72,21 @@ const useFileUpload = () => {
       dispatch({ type: 'load', files })
     }
     else {
-      console.log("no")
+      const files = arrFiles.map((file, index) => {
+        const src = window.URL.createObjectURL(file)
+        return { file, id: index, src }
+      })
+      dispatch({ type: 'set-upload-error', files })
     }
   }
-
-
-  // Multi upload and rendering the uploaded file
-
-  // Sets the next file when it detects that its ready to go
-  // useEffect(() => {
-  //   if (state.pending.length && state.next == null) {
-  //     const next = state.pending[0]
-  //     dispatch({ type: 'next', next })
-  //   }
-  // }, [state.next, state.pending])
-
-  // const countRef = useRef(0)
-
-  // // Processes the next pending thumbnail when ready
-  // useEffect(() => {
-  //   if (state.pending.length && state.next) {
-  //     const { next } = state
-  //     api
-  //       .uploadFile(next)
-  //       .then(() => {
-  //         const prev = next
-  //         logUploadedFile(++countRef.current)
-  //         const pending = state.pending.slice(1)
-  //         dispatch({ type: 'file-uploaded', prev, pending })
-  //       })
-  //       .catch((error) => {
-  //         console.error(error)
-  //         dispatch({ type: 'set-upload-error', error })
-  //       })
-  //   }
-  // }, [state])
 
   // Ends the upload process
   useEffect(() => {
     if (!state.pending.length && state.uploading) {
       dispatch({ type: 'files-uploaded' })
     }
-  }, [state.pending.length, state.uploading])
+  }, [state.pending.length, state.uploading]);
+
   return {
     ...state,
     onSubmit,
