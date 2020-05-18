@@ -19,6 +19,15 @@ html, body, #app, #app> div {
   width: 100%
 }
 
+.MuiPickersCalendarHeader-switchHeader > div p{
+  color: #151D15;
+  font-family: "Basier Medium"
+}
+
+.MuiPickersToolbar-toolbarLandscape {
+  width: 150px !important;
+}
+
 input[type=file], /* FF, IE7+, chrome (except button) */
 input[type=file]::-webkit-file-upload-button { /* chromes and blink button */
     cursor: pointer; 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Typography, CircularProgress } from '@material-ui/core/';
+import { Box, Typography } from '@material-ui/core/';
 import styles from './styles';
 import { useTranslation } from 'react-i18next';
 import Carousel from 'react-multi-carousel';
@@ -9,6 +9,7 @@ import DarkWrapper from '../../Layout/DarkWrapper/';
 import FirstDraft from '../Draft/FirstDraft';
 import Draft from '../Draft';
 import DraftsPagination from '../DraftsPagination/';
+import CustomLoader from '../../Loader';
 
 const Drafts = ({ drafts, loading, ...props }) => {
   const classes = styles();
@@ -38,7 +39,7 @@ const Drafts = ({ drafts, loading, ...props }) => {
         <FirstDraft />
       ) : (
           <Box mx='auto'>
-            <CircularProgress color="primary" size={30} />
+            <CustomLoader size={70} />
           </Box>
         )
       }
@@ -62,7 +63,7 @@ const Drafts = ({ drafts, loading, ...props }) => {
     )
   };
 
-  const draftsNumber = ('0' + drafts.length).slice(-2)
+  const draftsNumber = drafts.length > 0 ? ('0' + drafts.length).slice(-2) : null
 
   return (
     <>

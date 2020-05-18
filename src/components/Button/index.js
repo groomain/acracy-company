@@ -1,7 +1,8 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
 import styles from './styles';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import CustomLoader from '../Loader';
+
 
 export const CustomButton = ({ loading, title, theme, rippleDisabled, type, handleClick, variant, color, ...props }) => {
   const classes = styles();
@@ -14,7 +15,14 @@ export const CustomButton = ({ loading, title, theme, rippleDisabled, type, hand
       className={`${classes.button} ${classes[theme]}`}
       {...props}
     >
-      {loading ? <CircularProgress color={color || "secondary"} size={28} /> : title}
+      {loading
+        ? (
+          <div style={{ paddingTop: '4%' }}>
+            <CustomLoader size={28} />
+          </div>
+        )
+        : title
+      }
     </Button >
   );
 };
