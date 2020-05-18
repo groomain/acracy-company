@@ -47,7 +47,6 @@ const SignUpForm = (props) => {
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
     backToTop();
-
   };
 
   const handleStep = (step) => () => {
@@ -306,11 +305,7 @@ const SignUpForm = (props) => {
           );
         })}
       </Stepper>
-      {/* <br />
-      <br />
-      <br /> */}
       {getStepContent(activeStep)}
-
     </Grid >
   )
 };

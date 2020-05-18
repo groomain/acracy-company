@@ -7,16 +7,8 @@ export default makeStyles(theme => ({
       width: '25ch',
     },
   },
-  sidebarDiv: {
-    margin: '0 auto',
-    backgroundColor: theme.palette.secondary.sidebarGreen,
-    minHeight: '100vh'
-  },
   formGridItem: {
     padding: '7rem 0'
-  },
-  marginTop: {
-    marginTop: 30
   },
   stepper: {
     backgroundColor: theme.palette.secondary.black,
@@ -34,7 +26,7 @@ export default makeStyles(theme => ({
   stepContent: {
     paddingTop: '4rem',
   },
-  signupRows: {
+  fieldRows: {
     paddingTop: theme.spacing(2)
   },
   icon: {

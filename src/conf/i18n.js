@@ -74,7 +74,8 @@ i18n
             fieldTitleNewSelection: "Start my selection",
             minMaxInfo: "5 maximum, including 3 high priority",
             button: "Send"
-          }
+          },
+
         }
       },
       fr: {
@@ -153,7 +154,7 @@ i18n
           searchbar: {
             placeholder: 'Quel profil ou livrable recherchez-vous ?',
             noOptions: 'Aucun résultat ne correspond à votre recherche.',
-            profileLabel: 'Profils',
+            profileLabel: 'Profil',
             briefsLabel: 'Livrables',
             loading: 'Chargement...'
           },
@@ -165,6 +166,10 @@ i18n
             fieldTitleNewSelection: "Démarrer ma sélection",
             minMaxInfo: "5 maximum dont 3 prioritaires",
             button: "Valider"
+          },
+          leadCreation: {
+            synthesis: 'Synthèse Brief',
+            details: 'Détails Brief'
           }
         }
       }

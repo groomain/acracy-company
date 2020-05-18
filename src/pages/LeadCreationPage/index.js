@@ -1,6 +1,7 @@
 import React from 'react';
 import Sidebar from '../../components/Sidebar';
 import Main from '../../components/Main';
+import LeadCreationForm from '../../components/LeadCreationForm';
 import { Grid, Typography } from '@material-ui/core';
 import phonecall from '../../assets/icons/phone-call.svg';
 import styles from './styles';
@@ -17,7 +18,7 @@ const LeadCreationPage = () => {
       className={classes.root}
     >
       <Main>
-
+        <LeadCreationForm />
       </Main>
 
       <Sidebar>
