@@ -59,6 +59,7 @@ function* doSignIn(action) {
     yield Auth.signIn(email, password);
     yield put(loginSuccess());
   } catch (err) {
+    console.log(err)
     yield put(loginFailure(translateSignInError(err.code)));
   }
   yield put(getCurrentSessionLaunched({ fromPath: from || '/home' }));
