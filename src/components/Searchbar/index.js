@@ -16,6 +16,8 @@ import styles, { reactSelectStyles } from './styles';
 
 import profilIcon from '../../assets/icons/profil-roll-out-black.svg';
 import projectIcon from '../../assets/icons/livrable-black.svg';
+import profilIconYellow from '../../assets/icons/profil-roll-out-yellow.svg';
+import livrableYellow from '../../assets/icons/livrable-yellow.svg';
 
 const Searchbar = () => {
 
@@ -131,10 +133,35 @@ const SearchResults = ({ searchResults, ...props }) => {
     setSearchValue(option || null)
   }
 
+  const displayTitle = (searchValueTitle) => {
+    switch (searchValueTitle) {
+      case 'Profils':
+        return (
+          <Box style={{ display: 'flex', flexDirection: 'row' }}>
+            <img scr={profilIconYellow} alt='profil' />
+            <Typography variant="h2">&nbsp;Profil recherché</Typography>
+          </Box>
+        )
+      case 'Livrables':
+        return (
+          <Box>
+            <img scr={livrableYellow} alt='livrable' />
+            <Typography variant="h2">&nbsp;Livrable recherché</Typography>
+          </Box>
+        )
+      case 'unknown':
+        return (
+          <Typography variant="h2">Vous avez recherché</Typography>
+        )
+      default:
+        return null
+    }
+  }
+
   return (
     <>
       <Box my={2} style={{ height: 30 }}>
-        <Typography variant="h2">{searchValue && searchValue.title}</Typography>
+        {displayTitle(searchValue?.title)}
       </Box>
       <Select
         ref={ref}
