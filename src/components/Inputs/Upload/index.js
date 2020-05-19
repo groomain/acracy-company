@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import useFileUpload from './useFileUpload';
@@ -10,7 +10,6 @@ import { Grid, Typography, Box, IconButton } from '@material-ui/core';
 import styles from './styles';
 
 import CustomSnackBar from '../../SnackBar';
-import { formatLongText } from '../../../utils/format';
 
 const Input = (props) => {
   const classes = styles();
@@ -29,7 +28,7 @@ const Input = (props) => {
   )
 }
 
-export const Upload = ({ children }) => {
+export const Upload = () => {
   const {
     files,
     pending,
@@ -44,7 +43,23 @@ export const Upload = ({ children }) => {
   const classes = styles();
   const { t } = useTranslation();
 
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState();
+  const [uploadedFiles, setUploadedFiles] = useState();
+
+  useEffect(() => {
+    setUploadedFiles(files)
+  }, [files])
+
+  const handleFileDelete = () => {
+    setUploadedFiles([]);
+    setOpen(false)
+  };
+
+  useEffect(() => {
+    if (status === "UPLOAD_ERROR") {
+      setOpen(true)
+    }
+  }, [status])
 
   return (
     <>
@@ -54,17 +69,17 @@ export const Upload = ({ children }) => {
       <Box my={2}>
         <Typography variant="body1">{t('upload.subtitle')}</Typography>
       </Box>
-      <DarkWrapper>
+      <DarkWrapper justify='center'>
         <form className="form" onSubmit={onSubmit}>
           <Grid container>
-            {files.map(({ file, src, id }, index) => {
+            {uploadedFiles?.map(({ file, src, id }, index) => {
               return (
                 <Box mx={2} key={`file-row${index}`}>
-                  <Grid container direction="column" alignItems="center" className={classes.uploadIconWrapper}>
+                  <Grid container direction="column" alignItems="center">
                     <div style={{ position: 'relative' }}>
                       <img src={fileIcon} alt="uploaded file" />
                       <IconButton
-                        onClick={() => console.log("deleted")}
+                        onClick={handleFileDelete}
                         disableRipple
                         className={classes.closeButton}
                       >
@@ -72,18 +87,20 @@ export const Upload = ({ children }) => {
                       </IconButton>
                     </div>
                     <Box my={1}>
-                      <Typography className={status === "UPLOAD_ERROR" ? classes.maxedFileSize : null}>{file.name.length > 12 ? formatLongText(file.name) : file.name}</Typography>
+                      <Typography className={status === "UPLOAD_ERROR" ? classes.maxedFileSize : null}>{file.name}</Typography>
                     </Box>
                   </Grid>
                 </Box>
               )
             })}
-            <Grid container direction="column" alignItems="center" className={classes.uploadIconWrapper}>
-              <Input onChange={onChange} />
-              <Box my={1}>
-                {t('upload.addDocument')}
-              </Box>
-            </Grid>
+            {uploadedFiles?.length < 1 && (
+              <Grid container direction="column" alignItems="center" className={classes.uploadIconWrapper}>
+                <Input onChange={onChange} />
+                <Box my={1}>
+                  {t('upload.addDocument')}
+                </Box>
+              </Grid>
+            )}
           </Grid>
         </form>
       </DarkWrapper>
