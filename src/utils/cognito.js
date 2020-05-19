@@ -32,9 +32,9 @@ const translateConfirmSignUpError = (errorCode) => {
 const translateSignInError = (errorCode) => {
   switch (errorCode) {
     case 'UserNotFoundException':
-      return 'Aucun compte avec cet email n\'existe, veuillez vérifier votre email.';
+      return 'Cet e-mail et ce mot de passe ne correspondent pas.';
     case 'NotAuthorizedException':
-      return 'Mot de passe incorrect.';
+      return 'Cet e-mail et ce mot de passe ne correspondent pas.';
     case 'FormNotComplete':
       return 'Veuillez saisir votre email et mot de passe.';
     default:

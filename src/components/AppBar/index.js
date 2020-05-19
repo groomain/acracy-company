@@ -11,6 +11,9 @@ import CustomIconButton from "../IconButton";
 import { useLocation, withRouter } from "react-router";
 import clsx from "clsx";
 import CustomSnackBar from "../SnackBar";
+import { Link as RouterLink } from 'react-router-dom';
+
+import { useSelector } from 'react-redux';
 
 export const CustomAppBar = (props) => {
   let location = useLocation();
@@ -18,12 +21,18 @@ export const CustomAppBar = (props) => {
   const classes = styles();
   const [open, setOpen] = React.useState(true);
 
+
+  const { loginErrorMessage, loginLoading } = useSelector(state => ({
+    loginErrorMessage: state.getIn(['app', 'loginErrorMessage']),
+    loginLoading: state.getIn(['app', 'loginLoading'])
+  }));
+
   const renderButtons = () => {
     switch (props.path || location.pathname) {
       case '/login':
         return (
           <div className={clsx(classes.div, classes.login)}>
-            <CustomButton theme={"filledButton"} title={t('signUp')} />
+            <CustomButton theme={"filledButton"} title={t('signUp')} component={RouterLink} to="/signup" />
             <CustomButton title={t('contactUs')} />
           </div>
         );
@@ -56,7 +65,8 @@ export const CustomAppBar = (props) => {
 
   return (
     <AppBar position="fixed" className={classes.appbar}>
-      <CustomSnackBar message={"Test de snackBar"} open={open} setOpen={setOpen} />
+      <CustomSnackBar message={t('welcomeMessage')} open={open} setOpen={setOpen} />
+      {loginErrorMessage && <CustomSnackBar message={loginErrorMessage} error open={open} setOpen={setOpen} />}
       <Toolbar className={classes.toolbar}>
         <Typography className={classes.title} variant="h1" noWrap>
           acracy

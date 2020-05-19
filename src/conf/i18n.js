@@ -165,7 +165,8 @@ i18n
             fieldTitleNewSelection: "Démarrer ma sélection",
             minMaxInfo: "5 maximum dont 3 prioritaires",
             button: "Valider"
-          }
+          },
+          welcomeMessage: "Merci pour votre validation. Votre compte est maintenant actif ! 👏"
         }
       }
     },
