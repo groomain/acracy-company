@@ -1,10 +1,11 @@
 import React from 'react';
-import { Grid, Box, Typography } from '@material-ui/core/';
+import { Box, Typography } from '@material-ui/core/';
 import styles from './styles';
 import { useTranslation } from 'react-i18next';
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 
+import DarkWrapper from '../../Layout/DarkWrapper/';
 import FirstDraft from '../Draft/FirstDraft';
 import Draft from '../Draft';
 import DraftsPagination from '../DraftsPagination/';
@@ -33,10 +34,7 @@ const Drafts = ({ drafts, loading, ...props }) => {
   };
 
   let draftsList = (
-    <Grid
-      container
-      className={classes.draftsWrapper}
-    >
+    <DarkWrapper>
       {!loading ? (
         <FirstDraft />
       ) : (
@@ -45,7 +43,7 @@ const Drafts = ({ drafts, loading, ...props }) => {
           </Box>
         )
       }
-    </Grid>
+    </DarkWrapper>
   );
 
   if (drafts.length > 0 && !loading) {
