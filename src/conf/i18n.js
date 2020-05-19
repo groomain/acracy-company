@@ -75,7 +75,13 @@ i18n
             minMaxInfo: "5 maximum, including 3 high priority",
             button: "Send"
           },
-
+          upload: {
+            title: "Shared documents",
+            subtitle: "Do you want to add documents ?",
+            confidentialityText: "We respect your privacy",
+            addDocument: "Add document",
+            maxFileSize: "Max file size : 5Mb"
+          }
         }
       },
       fr: {
@@ -182,7 +188,13 @@ i18n
             budgetPlaceholder: 'Votre budget',
             profilesLabel: 'Nombre de profils ou teams*',
             callMe: 'Être rappelé.e.',
-
+          },
+          upload: {
+            title: "Documents partagés",
+            subtitle: "N'hésitez pas à partager tout document utile (brief, job description, références)",
+            confidentialityText: "Acracy s’engage à respecter la confidentialité des informations partagées. Tum dicere exorsus est consecutus? laudem et via procedat oratio quaerimus igitur, quid.",
+            addDocument: "Ajouter un document",
+            maxFileSize: "Taille de fichier maximum : 5 Mo"
           }
         }
       }

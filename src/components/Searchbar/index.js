@@ -6,7 +6,7 @@ import {
 } from 'react-instantsearch-dom';
 import { useTranslation } from 'react-i18next';
 import { connectStateResults } from 'react-instantsearch-dom';
-import Select, { components, createFilter } from 'react-select'
+import Select, { components, createFilter } from 'react-select';
 import Highlighter from 'react-highlight-words';
 
 import { Grid, Typography, Box } from '@material-ui/core';
@@ -58,7 +58,7 @@ const SearchResults = ({ searchResults, ...props }) => {
       setResultsList(groupedOptions);
       setIsLoading(false);
     }
-  }, [searchResults]);
+  }, [searchResults, t]);
 
   const filterConfig = {
     trim: true
