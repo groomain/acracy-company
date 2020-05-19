@@ -11,6 +11,7 @@ import SignUpPage from '../../pages/SignUp';
 import ForgotPassword from '../../pages/ForgotPassword';
 import FirstLoginPage from '../../pages/FirstLogin';
 import MyAccount from "../../pages/MyAccount";
+import LeadCreationPage from "../../pages/LeadCreationPage";
 import CustomAppBar from "../AppBar";
 import ProgressBar from "../ProgressBar";
 
@@ -30,6 +31,7 @@ function App() {
       <PublicRoute exact path="/login" fixed component={SignInPage} />
       <PublicRoute exact path="/signup" fixed component={SignUpPage} />
       <PublicRoute exact path="/password" fixed component={ForgotPassword} />
+      <PublicRoute exact path="/newbrief" fixed component={LeadCreationPage} />
       <PrivateRoute exact path="/firstlogin" fixed component={FirstLoginPage} />
       <PrivateRoute exact path="/home" fixed component={HomePage} />
       <PrivateRoute exact path="/account" fixed component={MyAccount} />
@@ -56,7 +58,7 @@ function App() {
       {/*</div>*/}
       {/*/!* __NavbarEnd__ *!/*/}
       {
-          !isAuthenticated && <CustomAppBar />
+        !isAuthenticated && <CustomAppBar />
       }
       <ProgressBar />
       {

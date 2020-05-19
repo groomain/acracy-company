@@ -169,7 +169,20 @@ i18n
           },
           leadCreation: {
             synthesis: 'Synthèse Brief',
-            details: 'Détails Brief'
+            details: 'Détails Brief',
+            missionLabel: 'Donnez un titre à votre mission*',
+            missionPlaceholder: 'Ex: Motion design pour stories Instagram',
+            formatLabel: 'Format souhaité*',
+            locationLabel: 'Merci d’indiquer l\'adresse des locaux où la mission aura lieu*',
+            locationPlaceholder: '133 avenue des Champs Elysées - 75008 Paris',
+            rythmLabel: 'Rythme hebdomadaire',
+            durationLabel: 'Durée de la mission',
+            durationPlaceholder: 'Indiquez nombre',
+            budgetLabel: 'Budget',
+            budgetPlaceholder: 'Votre budget',
+            profilesLabel: 'Nombre de profils ou teams*',
+            callMe: 'Être rappelé.e.',
+
           }
         }
       }
