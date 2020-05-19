@@ -68,7 +68,7 @@ const SearchResults = ({ searchResults, ...props }) => {
     <Grid container alignItems="center">
       {data.label === 'Profils'
         ? <img src={profilIcon} alt={(t('searchbar.profileLabel'))} className={classes.img} />
-        : <img src={projectIcon} al={(t('searchbar.briefsLabel'))} className={classes.img} />}
+        : <img src={projectIcon} alt={(t('searchbar.briefsLabel'))} className={classes.img} />}
       <span>{data.label}</span>
     </Grid>
   );
