@@ -23,7 +23,8 @@ export const CustomSelect = ({ label, value, placeholder, type, error, isMulti, 
         fullWidth
         multiple={isMulti}
         renderValue={isMulti && ((selected) => selected.join(' '))}
-        value={options}
+        // value={options}
+        value={isMulti && options}
         error={error}
         onOpen={() => setOpen(true)}
         onClose={() => setOpen(false)}
