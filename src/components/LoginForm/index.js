@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { CustomButton } from '../Button/';
 import Grid from '@material-ui/core/Grid';
 import CustomTextField, { CustomPasswordField } from "../Inputs/CustomTextField";
-import CustomSnackBar from "../SnackBar";
-import {NavLink} from "react-router-dom";
+import { NavLink } from "react-router-dom";
+
 import styles from "./styles";
 
 const LoginForm = (props) => {
@@ -16,6 +16,7 @@ const LoginForm = (props) => {
     loginErrorMessage: state.getIn(['app', 'loginErrorMessage']),
     loginLoading: state.getIn(['app', 'loginLoading'])
   }));
+
   const {
     values,
     errors,
@@ -38,7 +39,7 @@ const LoginForm = (props) => {
       <CustomTextField
         id="email"
         type='email'
-        label={t('email')}
+        label={t('email') + '*'}
         placeholder={t('yourEmail')}
         value={email}
         onBlur={handleBlur}
@@ -48,7 +49,7 @@ const LoginForm = (props) => {
       />
       <CustomPasswordField
         id="password"
-        label={t('password')}
+        label={t('password') + '*'}
         placeholder={t('yourPassword')}
         value={password}
         onBlur={handleBlur}
@@ -57,19 +58,15 @@ const LoginForm = (props) => {
         helperText={touched.password && errors.password ? t(errors.password) : ''}
       />
       <NavLink to={'/password'} className={classes.navLink}>{t('forgotPasswordButton')}</NavLink>
-      <Grid container direction={'row'} jusitfy={'flex-end'}>
-        <Grid item xs={9}/>
-        <Grid item xs={3}>
-      <CustomButton
-        type="submit"
-        handleClick={() => handleSubmit({ email, password })}
-        loading={loginLoading}
-        title={t('loginSubmit')}
-        theme="filledButton"
-      />
-        </Grid>
+      <Grid container direction={'row'} justify={'flex-end'}>
+        <CustomButton
+          type="submit"
+          handleClick={() => handleSubmit({ email, password })}
+          loading={loginLoading}
+          title={t('loginSubmit')}
+          theme="filledButton"
+        />
       </Grid>
-      <CustomSnackBar message={loginErrorMessage} open={open} setOpen={setOpen} />
     </Grid>
   );
 };
