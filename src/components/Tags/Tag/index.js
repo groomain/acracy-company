@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Grid } from '@material-ui/core';
+import { Box } from '@material-ui/core';
 import clsx from "clsx";
 
 import styles from './styles';
@@ -49,11 +49,10 @@ const Tag = ({ title, isPrimaryColor, isWithInput, placeholder, isWithCheckbox, 
   };
 
   return (
-    <Grid container {...props}>
-      <div className={clsx(classes.tag, isPrimaryColor && classes.primaryColor, isWithInput && classes.withInput)} >
-        {content}
-      </div>
-    </Grid>
+
+    <Box m={0.5} className={clsx(classes.tag, isPrimaryColor && classes.primaryColor, isWithInput && classes.withInput)} >
+      {content}
+    </Box>
   )
 };
 

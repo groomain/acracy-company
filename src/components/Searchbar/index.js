@@ -138,14 +138,14 @@ const SearchResults = ({ searchResults, ...props }) => {
       case 'Profils':
         return (
           <Box style={{ display: 'flex', flexDirection: 'row' }}>
-            <img scr={profilIconYellow} alt='profil' />
+            <img src={profilIconYellow} alt='profil' className={classes.img} />
             <Typography variant="h2">&nbsp;Profil recherché</Typography>
           </Box>
         )
       case 'Livrables':
         return (
           <Box>
-            <img scr={livrableYellow} alt='livrable' />
+            <img src={livrableYellow} alt='livrable' className={classes.img} />
             <Typography variant="h2">&nbsp;Livrable recherché</Typography>
           </Box>
         )

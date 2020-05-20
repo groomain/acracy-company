@@ -4,8 +4,7 @@ import styles from '../styles';
 import KeyboardArrowDownRoundedIcon from '@material-ui/icons/KeyboardArrowDownRounded';
 import CustomCheckbox from '../../CheckBox';
 
-export const CustomSelect = ({ label, value, placeholder, context, type, error, isMulti, optionsValues, ...props }) => {
-  console.log('context :', context);
+export const CustomSelect = ({ label, value, placeholder, onUpdateSelection, context, type, error, isMulti, optionsValues, ...props }) => {
   const classes = styles();
 
   const [options, setOptions] = useState([]);
@@ -14,12 +13,11 @@ export const CustomSelect = ({ label, value, placeholder, context, type, error, 
 
   const handleChange = (event) => {
     setOptions(event.target.value);
+    onUpdateSelection(event.target.value); // used in lead creation form component
   };
 
   const renderCounter = (options) => {
     const len = options.length;
-    console.log('options :', options);
-    console.log('len:', len);
     return (
       !options ?
         (<Typography>toto</Typography>) : (<Typography>{len} livrable{len > 1 ? <span>s</span> : null} sélectionné{len > 1 ? <span>s</span> : null}</Typography>)
