@@ -27,7 +27,7 @@ export default makeStyles(theme => ({
     paddingTop: '4rem',
   },
   fieldRows: {
-    paddingTop: theme.spacing(2)
+    paddingTop: theme.spacing(3)
   },
   icon: {
     background: theme.palette.secondary.medium,

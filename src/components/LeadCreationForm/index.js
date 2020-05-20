@@ -5,10 +5,12 @@ import { CustomButton } from '../Button/';
 import { CustomTextField } from '../Inputs/CustomTextField';
 import CustomTextArea from '../Inputs/CustomTextArea';
 import CustomSelect from "../Inputs/CustomSelect";
+import Calendar from "../Inputs/Calendar";
+import Tag from '../Tags/Tag';
 // import CustomNavLink from "../CustomNavLink";
 // import CustomCheckbox from '../CheckBox';
 import backToTop from '../../utils/backToTop';
-import { Typography, Grid, Stepper, Step, StepLabel, StepButton, Box } from "@material-ui/core";
+import { Typography, Grid, Stepper, Step, StepLabel, StepButton, Box, FormHelperText } from "@material-ui/core";
 import clsx from 'clsx';
 import styles from './styles';
 
@@ -19,10 +21,10 @@ const LeadCreationForm = (props) => {
   const [activeStep, setActiveStep] = useState(0);
   // const [format, setFormat] = useState('');
   const [formValues, setFormValues] = useState({});
-  console.log('formValues :', formValues);
   const [formatOption, setFormatOption] = useState('Peu importe')
   const [missionTitle, setMissionTitle] = useState('');
-
+  const [deliverables, setDeliverables] = useState([]);
+  console.log('formValues :', formValues);
 
   const getSteps = () => {
     return [t('leadCreation.synthesis'), t('leadCreation.details')];
@@ -46,19 +48,6 @@ const LeadCreationForm = (props) => {
     backToTop();
   };
 
-  const handleFormatChange = e => {
-    const { name, value } = e.target;
-    setFormatOption(e.target.value);
-    setFormValues({ format: value })
-    console.log('e target', e.target)
-  }
-
-  const handleMissionTitleChange = e => {
-    const { name, value } = e.target;
-    setMissionTitle(e.target.value);
-    setFormValues({ missionTitle: value })
-    console.log('e target', e.target.value)
-  }
   const setOptionsValues = (fieldName) => {
     switch (fieldName) {
       case 'format':
@@ -81,8 +70,58 @@ const LeadCreationForm = (props) => {
         return (
           ['1', '2', '3', '4']
         )
+      case 'deliverables':
+        return (
+          ['Stratégie Annuelle Social Media', 'Veille Social Media', 'Brief Créatif Social Media', 'Social Listening', 'Reporting', 'Recommandation d\'influence', 'Ligne Éditoriale', 'Étude tendance Social Media', 'Benchmark', 'Stratégie Brand Content', 'Activation Tactique', 'Ne figure pas dans la liste']
+        )
       default:
     }
+  }
+
+  const handleFormatChange = e => {
+    const { name, value } = e.target;
+    setFormatOption(e.target.value);
+    setFormValues({ format: value })
+    console.log('e target', e.target)
+  }
+
+  const handleMissionTitleChange = e => {
+    const { name, value } = e.target;
+    setMissionTitle(e.target.value);
+    setFormValues({ missionTitle: value })
+    console.log('e target', e.target.value)
+  }
+
+  const handleDeliverablesChange = e => {
+    setDeliverables(e);
+  }
+
+
+  const showDeliverablesSettings = () => {
+    return (
+      <>
+        <Grid item xs={12} className={classes.fieldRows}>
+          <CustomSelect
+            onUpdateSelection={handleDeliverablesChange}
+            label={t('leadCreation.selectDeliverables')}
+            isMulti
+            context='deliverables'
+            name='deliverables'
+            optionsValues={setOptionsValues('deliverables')} />
+          <Grid item container direction='row' wrap>
+            {deliverables?.map((deliverable, i) =>
+              <Tag title={deliverable} key={i} />
+            )}
+          </Grid>
+          {deliverables.includes('Ne figure pas dans la liste') ?
+            <Grid item xs={12} className={classes.fieldRows}>
+              <CustomTextField label={t('leadCreation.customDeliverableLabel')} placeholder={t('leadCreation.customDeliverablePlaceholder')}></CustomTextField>
+            </Grid>
+            : null
+          }
+        </Grid>
+      </>
+    )
   }
 
   const setLeadSynthesis = () => {
@@ -97,6 +136,10 @@ const LeadCreationForm = (props) => {
             <SearchBar></SearchBar>
           </Grid>
 
+          <Grid item container xs={12} className={classes.fieldRows}>
+            {showDeliverablesSettings()}
+          </Grid>
+
           <Grid item xs={12} className={classes.fieldRows}>
             {/* MAX CHARACTERS = 200 MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM*/}
             <CustomTextArea
@@ -107,7 +150,7 @@ const LeadCreationForm = (props) => {
           </Grid>
 
           <Grid item xs={12} className={classes.fieldRows}>
-            {/* calendrier */}
+            <Calendar label="Choisis une date" />
           </Grid>
 
           <Grid item xs={12} className={classes.fieldRows}>
@@ -143,10 +186,10 @@ const LeadCreationForm = (props) => {
               <Typography variant={'body1'} >{t('leadCreation.durationLabel') + '*'}</Typography>
             </Box>
             <Grid container spacing={2}>
-              <Grid item xs={8}>
+              <Grid item xs={7}>
                 <CustomTextField placeholder={t('leadCreation.durationPlaceholder')}></CustomTextField>
               </Grid>
-              <Grid item xs={4}>
+              <Grid item xs={5}>
                 <CustomSelect
                   // label={t('leadCreation.durationLabel')}
                   optionsValues={setOptionsValues('duration')}
@@ -163,10 +206,10 @@ const LeadCreationForm = (props) => {
               <Typography variant={'body1'} >{t('leadCreation.budgetLabel') + '*'}</Typography>
             </Box>
             <Grid container spacing={2}>
-              <Grid item xs={8}>
+              <Grid item xs={7}>
                 <CustomTextField placeholder={t('leadCreation.budgetPlaceholder')}></CustomTextField>
               </Grid>
-              <Grid item xs={4}>
+              <Grid item xs={5}>
                 <CustomSelect
                   // label={t('leadCreation.durationLabel')}
                   optionsValues={setOptionsValues('budget')}
@@ -224,7 +267,9 @@ const LeadCreationForm = (props) => {
 
   const setLeadDetails = () => {
     return (
-      <></>
+      <>
+        <h1>This is step 2: brief detailss</h1>
+      </>
     )
   }
 

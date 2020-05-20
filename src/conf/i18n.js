@@ -188,6 +188,9 @@ i18n
             budgetPlaceholder: 'Votre budget',
             profilesLabel: 'Nombre de profils ou teams*',
             callMe: 'Être rappelé.e.',
+            selectDeliverables: 'Sélectionner jusqu\'à 5 livrables souhaités*',
+            customDeliverablePlaceholder: 'Livrable souhaité',
+            customDeliverableLabel: 'Précisez la nature du livrable qui ne figure pas dans le liste*',
           },
           upload: {
             title: "Documents partagés",
