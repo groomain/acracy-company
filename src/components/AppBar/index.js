@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -19,13 +19,19 @@ export const CustomAppBar = (props) => {
   let location = useLocation();
   const { t } = useTranslation();
   const classes = styles();
-  const [open, setOpen] = React.useState(true);
-
+  const [welcomeMessageOpen, setWelcomeMessageOpen] = React.useState(true);
+  const [errorMessageOpen, setErrorMessageOpen] = React.useState();
 
   const { loginErrorMessage, loginLoading } = useSelector(state => ({
     loginErrorMessage: state.getIn(['app', 'loginErrorMessage']),
     loginLoading: state.getIn(['app', 'loginLoading'])
   }));
+
+  useEffect(() => {
+    if (loginErrorMessage) {
+      setErrorMessageOpen(true);
+    }
+  }, [loginErrorMessage]);
 
   const renderButtons = () => {
     switch (props.path || location.pathname) {
@@ -65,8 +71,8 @@ export const CustomAppBar = (props) => {
 
   return (
     <AppBar position="fixed" className={classes.appbar}>
-      <CustomSnackBar message={t('welcomeMessage')} open={open} setOpen={setOpen} />
-      {loginErrorMessage && <CustomSnackBar message={loginErrorMessage} error open={open} setOpen={setOpen} />}
+      <CustomSnackBar message={t('welcomeMessage')} open={welcomeMessageOpen} setOpen={setWelcomeMessageOpen} />
+      {loginErrorMessage && <CustomSnackBar message={loginErrorMessage} error open={errorMessageOpen} setOpen={setErrorMessageOpen} />}
       <Toolbar className={classes.toolbar}>
         <Typography className={classes.title} variant="h1" noWrap>
           acracy
