@@ -24,7 +24,7 @@ export const TagsList = ({ tags }) => {
             <div>
               {tags && tags.map((tag, key) => <CheckableTag key={key} title={tag.title} />)}
               <CustomButton
-                title={t('tagsList.button')}
+                title={t('buttonTitles.validate')}
                 theme="asLink"
                 rippleDisabled
                 disabled={disabled}

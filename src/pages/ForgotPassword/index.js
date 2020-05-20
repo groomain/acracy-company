@@ -91,13 +91,14 @@ const ForgotPassword = () => {
       container
       direction="column"
       justify="center"
-      alignItems="center"
       className={classes.container}
     >
-      <Typography className={classes.titleForgotYourPassword}>La Pilule Rouge</Typography>
-      <Typography className={classes.titleFormForgotYourPassword}> Mot de passe oublié </Typography>
-      {renderForms()}
-      <CustomNavLink to="/login" text={t('loginButton')} />
+      <Grid item xs={7} container>
+        <Grid item xs={3} />
+        <Grid item xs={7} >
+          {renderForms()}
+        </Grid>
+      </Grid>
     </Grid>
   );
 };

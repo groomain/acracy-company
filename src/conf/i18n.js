@@ -72,8 +72,7 @@ i18n
             label: "Key profile expertise",
             fieldTitleStarted: "Change my selection",
             fieldTitleNewSelection: "Start my selection",
-            minMaxInfo: "5 maximum, including 3 high priority",
-            button: "Send"
+            minMaxInfo: "5 maximum, including 3 high priority"
           },
           upload: {
             title: "Shared documents",
@@ -110,8 +109,11 @@ i18n
           code: 'Code',
           submitNewPasswordButton: 'Confirmer',
           codeRequired: 'Veuillez renseigner votre code',
-          forgotPasswordPageTitle: 'Reinitialisez votre mot de passe',
-          forgotPasswordButton: 'Mot de passe oublié ?',
+          forgotPassword: {
+            forgotPasswordPageTitle: 'Mot de passe oublié',
+            forgotPasswordButton: 'Mot de passe oublié ?',
+            forgotPasswordSubtitle: 'Saisissez l’email associé à votre compte afin que nous puissions vous envoyer un code de réinitialisation de votre mot de passe.'
+          },
           firstLoginPageTitle: 'Vous y êtes presque ! Renseignez ces informations pour completer votre inscription',
           updateUserError: 'Une erreur est survenue',
           firstName: 'Prénom',
@@ -170,8 +172,7 @@ i18n
             label: "Expertises clés du profil",
             fieldTitleStarted: "Modifier ma sélection",
             fieldTitleNewSelection: "Démarrer ma sélection",
-            minMaxInfo: "5 maximum dont 3 prioritaires",
-            button: "Valider"
+            minMaxInfo: "5 maximum dont 3 prioritaires"
           },
           upload: {
             title: "Documents partagés",
@@ -179,6 +180,9 @@ i18n
             confidentialityText: "Acracy s’engage à respecter la confidentialité des informations partagées. Tum dicere exorsus est consecutus? laudem et via procedat oratio quaerimus igitur, quid.",
             addDocument: "Ajouter un document",
             maxFileSize: "Taille de fichier maximum : 5 Mo"
+          },
+          buttonTitles: {
+            validate: 'Valider'
           }
         }
       }

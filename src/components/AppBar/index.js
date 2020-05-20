@@ -11,6 +11,7 @@ import CustomIconButton from "../IconButton";
 import { useLocation, withRouter } from "react-router";
 import clsx from "clsx";
 import CustomSnackBar from "../SnackBar";
+import { Link as RouterLink } from 'react-router-dom';
 
 export const CustomAppBar = (props) => {
   let location = useLocation();
@@ -45,7 +46,7 @@ export const CustomAppBar = (props) => {
         return (
           <div className={clsx(classes.div, classes.password)}>
             <CustomNavLink to={'/login'} text={t('login')} theme="navLink" />
-            <CustomButton theme={"filledButton"} title={t('signUp')} />
+            <CustomButton theme={"filledButton"} title={t('signUp')} component={RouterLink} to="/signup" />
             <CustomButton title={t('contactUs')} />
           </div>
         );

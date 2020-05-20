@@ -50,5 +50,8 @@ export default makeStyles(theme => ({
     marginTop: 40,
     marginBottom: 40,
     backgroundColor: `${theme.palette.secondary.medium}`,
+  },
+  container: {
+    paddingTop: 30
   }
 }));
