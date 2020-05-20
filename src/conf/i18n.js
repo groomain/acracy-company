@@ -67,7 +67,14 @@ i18n
           },
           yourEmail: 'Your email',
           yourPassword: 'Your password',
-          haveAccount: 'I don\'t have accracy entreprise account'
+          haveAccount: 'I don\'t have accracy entreprise account',
+          tagsList: {
+            label: "Key profile expertise",
+            fieldTitleStarted: "Change my selection",
+            fieldTitleNewSelection: "Start my selection",
+            minMaxInfo: "5 maximum, including 3 high priority",
+            button: "Send"
+          }
         }
       },
       fr: {
@@ -151,8 +158,14 @@ i18n
             loading: 'Chargement...'
           },
           yourEmail: 'Votre email',
-          yourPassword: 'Votre mot de passe',
-          haveAccount: 'Je n\'ai pas de compte acracy entreprise'
+          haveAccount: 'Je n\'ai pas de compte acracy entreprise',
+          tagsList: {
+            label: "Expertises clés du profil",
+            fieldTitleStarted: "Modifier ma sélection",
+            fieldTitleNewSelection: "Démarrer ma sélection",
+            minMaxInfo: "5 maximum dont 3 prioritaires",
+            button: "Valider"
+          }
         }
       }
     },

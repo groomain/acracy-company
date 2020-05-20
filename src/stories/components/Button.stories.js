@@ -43,3 +43,9 @@ export const withLoading = () => (
     <CustomButton color="secondary" loading rippleDisabled />
   )
 );
+
+export const asLink = () => (
+  ProviderWrapper(
+    <CustomButton theme="asLink" title="Valider" rippleDisabled />
+  )
+);

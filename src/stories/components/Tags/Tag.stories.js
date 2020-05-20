@@ -1,8 +1,8 @@
 import React from 'react';
-import ProviderWrapper from '../../utils/Provider';
+import ProviderWrapper from '../../../utils/Provider';
 
-import Tag from '../../components/Tags/Tag';
-import CheckableTag from '../../components/Tags/CheckableTag';
+import Tag from '../../../components/Tags/Tag';
+import CheckableTag from '../../../components/Tags/CheckableTag';
 
 export default {
   title: 'Components|Tags'

@@ -1,7 +1,6 @@
 import React from 'react';
-import { TextField, TextareaAutosize, FilledInput } from '@material-ui/core';
+import { FilledInput } from '@material-ui/core';
 import InputLabel from '@material-ui/core/InputLabel';
-import FormHelperText from '@material-ui/core/FormHelperText';
 import Box from '@material-ui/core/Box';
 import styles from './styles';
 
@@ -23,7 +22,6 @@ export const CustomTextArea = ({ label, placeholder, error, helperText, ...props
         classes={{ root: `${classes.root} ${error ? classes.error : null}`, input: classes.input }}
         label={label}
         placeholder={placeholder}
-        shrink={false}
         disableUnderline
         rowsMin={3}
         fullWidth

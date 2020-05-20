@@ -14,11 +14,10 @@ import CustomSnackBar from "../SnackBar";
 import ProfilMenu from "../ProfilMenu";
 
 export const CustomAppBar = (props) => {
-    let location = useLocation();
-    const { t } = useTranslation();
-    const classes = styles();
-    const [open, setOpen] = React.useState(false);
-    const [open1, setOpen1] = React.useState(false);
+  let location = useLocation();
+  const { t } = useTranslation();
+  const classes = styles();
+  const [open, setOpen] = React.useState(true);
 
     const renderButtons = () => {
         switch (props.path || location.pathname) {
@@ -56,17 +55,17 @@ export const CustomAppBar = (props) => {
         }
     };
 
-    return (
-        <AppBar position="fixed" className={classes.appbar}>
-            <CustomSnackBar message={"Test de snackBar"} open={open} setOpen={setOpen}/>
-            <Toolbar className={classes.toolbar}>
-                <Typography className={classes.title} variant="h1" noWrap>
-                    acracy
+  return (
+    <AppBar position="fixed" className={classes.appbar}>
+      <CustomSnackBar message={"Test de snackBar"} open={open} setOpen={setOpen} />
+      <Toolbar className={classes.toolbar}>
+        <Typography className={classes.title} variant="h1" noWrap>
+          acracy
             </Typography>
-                <div className={classes.grow} />
-                {renderButtons()}
-            </Toolbar>
-        </AppBar>
-    );
+        <div className={classes.grow} />
+        {renderButtons()}
+      </Toolbar>
+    </AppBar>
+  );
 };
 export default withRouter(CustomAppBar);

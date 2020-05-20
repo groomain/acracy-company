@@ -10,7 +10,9 @@ import useApi from '../../utils/useApi';
 export const HomePage = (props) => {
 
   const {
-    loading, data, error, refetch
+    loading,
+    // data, 
+    error, refetch
   } = useApi('/ideas', 'Get');
   const dispatch = useDispatch();
   const { t } = useTranslation();

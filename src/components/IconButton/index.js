@@ -1,9 +1,7 @@
 import React from 'react';
-import styles from './styles';
 import IconButton from "@material-ui/core/IconButton";
 
 export const CustomIconButton = ({ icon, ...props }) => {
-    const classes = styles();
     return (
         <IconButton
             edge={'end'}
