@@ -19,6 +19,7 @@ html, body, #app, #app> div {
   width: 100%
 }
 
+/* Force calendar styling */
 .MuiPickersCalendarHeader-switchHeader > div p{
   color: #151D15;
   font-family: "Basier Medium"
@@ -28,6 +29,11 @@ html, body, #app, #app> div {
   width: 150px !important;
 }
 
+/* Force cursor styling to the upload button */
+input[type=file], /* FF, IE7+, chrome (except button) */
+input[type=file]::-webkit-file-upload-button { /* chromes and blink button */
+    cursor: pointer; 
+}
 
 /* Change Autofill styles in Chrome*/
 input:-webkit-autofill,
@@ -45,4 +51,3 @@ select:-webkit-autofill:focus {
   font-size: 17;
   font-family: "Basier Regular";
 }
-
