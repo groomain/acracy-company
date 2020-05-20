@@ -4,7 +4,8 @@ import styles from '../styles';
 import KeyboardArrowDownRoundedIcon from '@material-ui/icons/KeyboardArrowDownRounded';
 import CustomCheckbox from '../../CheckBox';
 
-export const CustomSelect = ({ label, value, placeholder, type, error, isMulti, optionsValues, ...props }) => {
+export const CustomSelect = ({ label, value, placeholder, context, type, error, isMulti, optionsValues, ...props }) => {
+  console.log('context :', context);
   const classes = styles();
 
   const [options, setOptions] = useState([]);
@@ -15,6 +16,16 @@ export const CustomSelect = ({ label, value, placeholder, type, error, isMulti, 
     setOptions(event.target.value);
   };
 
+  const renderCounter = (options) => {
+    const len = options.length;
+    console.log('options :', options);
+    console.log('len:', len);
+    return (
+      !options ?
+        (<Typography>toto</Typography>) : (<Typography>{len} livrable{len > 1 ? <span>s</span> : null} sélectionné{len > 1 ? <span>s</span> : null}</Typography>)
+    )
+  }
+
   return (
     <Box style={{ height: '140px' }}>
       <Typography variant='h4'>{label}</Typography >
@@ -22,7 +33,9 @@ export const CustomSelect = ({ label, value, placeholder, type, error, isMulti, 
         type={type}
         fullWidth
         multiple={isMulti}
-        renderValue={isMulti && ((selected) => selected.join(' '))}
+        context={context}
+        renderValue={isMulti && (context === 'deliverables' ? renderCounter : ((selected) => selected.join(' ')))}
+        // renderValue={isMulti && ((selected) => selected.join(' '))}
         // value={options}
         value={isMulti && options}
         error={error}
