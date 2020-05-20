@@ -13,6 +13,7 @@ import FirstLoginPage from '../../pages/FirstLogin';
 import MyAccount from "../../pages/MyAccount";
 import CustomAppBar from "../AppBar";
 import ProgressBar from "../ProgressBar";
+import MissionFollowUp from "../../pages/MissionFollowUp";
 
 function App() {
   const dispatch = useDispatch();
@@ -30,6 +31,7 @@ function App() {
       <PublicRoute exact path="/login" fixed component={SignInPage} />
       <PublicRoute exact path="/signup" fixed component={SignUpPage} />
       <PublicRoute exact path="/password" fixed component={ForgotPassword} />
+      <PublicRoute exact path="/mission" fixed component={MissionFollowUp} />
       <PrivateRoute exact path="/firstlogin" fixed component={FirstLoginPage} />
       <PrivateRoute exact path="/home" fixed component={HomePage} />
       <PrivateRoute exact path="/account" fixed component={MyAccount} />

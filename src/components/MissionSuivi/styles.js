@@ -4,7 +4,7 @@ export default makeStyles(theme => ({
   root: {
     width: '100%',
     maxWidth: 490,
-    backgroundColor: "#2b362c",
+    backgroundColor: "#353f36",
   },
   title: {
     marginLeft: 10

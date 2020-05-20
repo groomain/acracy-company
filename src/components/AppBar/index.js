@@ -16,7 +16,7 @@ export const CustomAppBar = (props) => {
   let location = useLocation();
   const { t } = useTranslation();
   const classes = styles();
-  const [open, setOpen] = React.useState(true);
+  const [open, setOpen] = React.useState(false);
 
   const renderButtons = () => {
     switch (props.path || location.pathname) {

@@ -25,7 +25,7 @@ export const MissionSuivi = ({step, ...props }) => {
     const classes = styles();
 
     return (
-        <Grid container direction={'column'} className={classes.root}>
+        <Grid container direction={'column'} className={classes.root} {...props}>
             <Typography variant={"h1"} className={classes.title}>Suivi</Typography>
             <Typography variant={"h1"} className={classes.title}>de la mission</Typography>
             <List className={classes.list}>
