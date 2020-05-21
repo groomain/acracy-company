@@ -20,10 +20,17 @@ const LeadCreationForm = (props) => {
 
   const [activeStep, setActiveStep] = useState(0);
   // const [format, setFormat] = useState('');
-  const [formValues, setFormValues] = useState({});
+  const [formValues, setFormValues] = useState({
+    formatOption: 'Peu importe', missionTitle: '',
+    deliverables: [], customDeliverable: '', profile: '',
+    searchedCategory: {}
+  });
   const [formatOption, setFormatOption] = useState('Peu importe')
   const [missionTitle, setMissionTitle] = useState('');
   const [deliverables, setDeliverables] = useState([]);
+  const [customDeliverable, setCustomDeliverables] = useState('');
+  const [profile, setProfile] = useState('');
+  const [searchedCategory, setSearchedCategory] = useState({});
   console.log('formValues :', formValues);
 
   const getSteps = () => {
@@ -66,13 +73,17 @@ const LeadCreationForm = (props) => {
         return (
           ['Taux journalier', 'Budget total']
         )
-      case 'profiles':
+      case 'profilesNumber':
         return (
           ['1', '2', '3', '4']
         )
       case 'deliverables':
         return (
           ['Stratégie Annuelle Social Media', 'Veille Social Media', 'Brief Créatif Social Media', 'Social Listening', 'Reporting', 'Recommandation d\'influence', 'Ligne Éditoriale', 'Étude tendance Social Media', 'Benchmark', 'Stratégie Brand Content', 'Activation Tactique', 'Ne figure pas dans la liste']
+        )
+      case 'profile':
+        return (
+          ['Social Media Strategist', 'Social Media Manager / Community Manager', 'Content Manager', 'Recevoir une recommandation acracy']
         )
       default:
     }
@@ -96,6 +107,18 @@ const LeadCreationForm = (props) => {
     setDeliverables(e);
   }
 
+  const handleProfileChange = e => {
+    setProfile(e);
+  }
+
+  const handleCustomDeliverable = (e) => {
+    setCustomDeliverables(e);
+  }
+
+  const handleUpdateResearch = e => {
+    console.log('e :', e);
+    setSearchedCategory(e);
+  }
 
   const showDeliverablesSettings = () => {
     return (
@@ -115,13 +138,50 @@ const LeadCreationForm = (props) => {
           </Grid>
           {deliverables.includes('Ne figure pas dans la liste') ?
             <Grid item xs={12} className={classes.fieldRows}>
-              <CustomTextField label={t('leadCreation.customDeliverableLabel')} placeholder={t('leadCreation.customDeliverablePlaceholder')}></CustomTextField>
+              <CustomTextField
+                label={t('leadCreation.customDeliverableLabel')}
+                placeholder={t('leadCreation.customDeliverablePlaceholder')}
+                onUpdateFieldValue={handleCustomDeliverable}
+              >
+              </CustomTextField>
             </Grid>
             : null
           }
         </Grid>
       </>
     )
+  }
+
+  const showProfilesSettings = () => {
+    return (
+      <>
+        <Grid item xs={12} className={classes.fieldRows}>
+          <CustomSelect
+            onUpdateSelection={handleProfileChange}
+            label={t('leadCreation.selectProfile')}
+            context='profileType'
+            name='profile'
+            optionsValues={setOptionsValues('profile')} />
+        </Grid>
+      </>
+    )
+  }
+
+  const renderSettings = (searchedCategory) => {
+    switch (searchedCategory.title) {
+      case 'Profils':
+        return (
+          showDeliverablesSettings()
+        )
+      case 'Livrables':
+        return (
+          showProfilesSettings()
+        )
+      default:
+        return (
+          null
+        );
+    }
   }
 
   const setLeadSynthesis = () => {
@@ -133,12 +193,10 @@ const LeadCreationForm = (props) => {
         <Grid container>
 
           <Grid item xs={12} className={classes.fieldRows}>
-            <SearchBar></SearchBar>
+            <SearchBar onUpdateChosenCategory={handleUpdateResearch}></SearchBar>
           </Grid>
 
-          <Grid item container xs={12} className={classes.fieldRows}>
-            {showDeliverablesSettings()}
-          </Grid>
+          {searchedCategory ? renderSettings(searchedCategory) : null}
 
           <Grid item xs={12} className={classes.fieldRows}>
             {/* MAX CHARACTERS = 200 MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM*/}
@@ -224,10 +282,10 @@ const LeadCreationForm = (props) => {
           <Grid item xs={12} className={classes.fieldRows}>
             <CustomSelect
               label={t('leadCreation.profilesLabel')}
-              optionsValues={setOptionsValues('profiles')}
+              optionsValues={setOptionsValues('profilesNumber')}
               onChange={handleFormatChange}
               value={formatOption}
-              name='profiles'
+              name='profilesNumber'
             ></CustomSelect>
           </Grid>
 
@@ -268,7 +326,7 @@ const LeadCreationForm = (props) => {
   const setLeadDetails = () => {
     return (
       <>
-        <h1>This is step 2: brief detailss</h1>
+        <h1>This is step 2: brief detaiiiils</h1>
       </>
     )
   }

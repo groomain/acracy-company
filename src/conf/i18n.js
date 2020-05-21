@@ -191,6 +191,7 @@ i18n
             selectDeliverables: 'Sélectionner jusqu\'à 5 livrables souhaités*',
             customDeliverablePlaceholder: 'Livrable souhaité',
             customDeliverableLabel: 'Précisez la nature du livrable qui ne figure pas dans le liste*',
+            selectProfile: 'Sélectionnez un profil souhaité pour la mission*'
           },
           upload: {
             title: "Documents partagés",

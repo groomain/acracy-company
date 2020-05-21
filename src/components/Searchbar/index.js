@@ -19,7 +19,7 @@ import projectIcon from '../../assets/icons/livrable-black.svg';
 import profilIconYellow from '../../assets/icons/profil-roll-out-yellow.svg';
 import livrableYellow from '../../assets/icons/livrable-yellow.svg';
 
-const Searchbar = () => {
+const Searchbar = ({ onUpdateChosenCategory }) => {
 
   const searchClient = algoliasearch(
     process.env.REACT_APP_ALGOLIA,
@@ -32,18 +32,19 @@ const Searchbar = () => {
       indexName={process.env.REACT_APP_ALGOLIA_INDEX_NAME}
     >
       <Configure hitsPerPage={12} />
-      <CustomSearchbar />
+      <CustomSearchbar onUpdateChosenCategory={onUpdateChosenCategory} />
     </InstantSearch>
   );
 }
 
-const SearchResults = ({ searchResults, ...props }) => {
+const SearchResults = ({ searchResults, onUpdateChosenCategory, ...props }) => {
   const classes = styles();
   const { t } = useTranslation();
 
   const [resultsList, setResultsList] = useState([]);
   const [loading, setIsLoading] = useState(true);
   const [searchValue, setSearchValue] = useState();
+
 
   useEffect(() => {
     if (searchResults) {
@@ -130,31 +131,32 @@ const SearchResults = ({ searchResults, ...props }) => {
   }, []);
 
   const handleOnChange = (option) => {
-    setSearchValue(option || null)
+    console.log('option :', option);
+    setSearchValue(option || null);
+    onUpdateChosenCategory(option);
   }
 
   const displayTitle = (searchValueTitle) => {
     switch (searchValueTitle) {
       case 'Profils':
         return (
-          <Box style={{ display: 'flex', flexDirection: 'row' }}>
+          <Grid container alignItems='center'>
             <img src={profilIconYellow} alt='profil' className={classes.img} />
             <Typography variant="h2">&nbsp;Profil recherché</Typography>
-          </Box>
+          </Grid>
         )
       case 'Livrables':
         return (
-          <Box>
+          <Grid container alignItems='center'>
             <img src={livrableYellow} alt='livrable' className={classes.img} />
             <Typography variant="h2">&nbsp;Livrable recherché</Typography>
-          </Box>
+          </Grid>
         )
       case 'unknown':
         return (
           <Typography variant="h2">Vous avez recherché</Typography>
         )
       default:
-        return null
     }
   }
 
