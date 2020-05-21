@@ -6,14 +6,22 @@ import styles from '../styles';
 // import eyeOpened from '../../../assets/icons/eye-opened.svg';
 // import eyeClosed from '../../../assets/icons/eye-closed.svg';
 
-export const CustomTextField = ({ label, placeholder, type, error, helperText, ...props }) => {
+export const CustomTextField = ({ label, placeholder, type, onUpdateFieldValue, error, helperText, ...props }) => {
   const classes = styles();
+
+  const handleChange = (event) => {
+    console.log('e :', event.target);
+    console.log('value:', event.target.value);
+    onUpdateFieldValue(event.target.value);
+  };
+
   return (
     <Box style={{ height: '140px' }}>
       <Typography variant='h4'>{label}</Typography >
       <FilledInput
         type={type}
         placeholder={placeholder}
+        onChange={handleChange}
         fullWidth
         error={error}
         classes={{ root: `${classes.root} ${error ? classes.error : null}`, focused: classes.focused }}
