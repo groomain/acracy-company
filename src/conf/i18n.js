@@ -164,7 +164,7 @@ i18n
             briefsLabel: 'Livrables',
             loading: 'Chargement...',
             createMessage: 'Créer',
-            newOption: "Cette option n'existe pas"
+            newOption: "n'existe pas"
           },
           yourEmail: 'Votre email',
           haveAccount: 'Je n\'ai pas de compte acracy entreprise',

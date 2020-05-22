@@ -179,7 +179,7 @@ const SearchResults = ({ searchResults, ...props }) => {
       />
       {newOption && (
         <Box my={2}>
-          <Typography variant="h2">{t('searchbar.newOption')}</Typography>
+          <Typography variant="h2">« {newOption.value} » {t('searchbar.newOption')}</Typography>
         </Box>
       )}
     </>
