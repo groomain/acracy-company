@@ -34,6 +34,7 @@ export default makeStyles(theme => ({
   sidebarDiv: {
     margin: '0 auto',
     backgroundColor: theme.palette.secondary.sidebarGreen,
+    minHeight: '100vh'
   },
   navLink: {
     color: `${theme.palette.primary.main}`,

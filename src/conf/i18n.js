@@ -181,6 +181,15 @@ i18n
             confidentialityText: "Acracy s’engage à respecter la confidentialité des informations partagées. Tum dicere exorsus est consecutus? laudem et via procedat oratio quaerimus igitur, quid.",
             addDocument: "Ajouter un document",
             maxFileSize: "Taille de fichier maximum : 5 Mo"
+          },
+          confirmSignupPage: {
+            title: "Il ne reste plus qu'à confirmer votre email",
+            subtitle: "Un code d'activation à 6 chiffres vient de vous être envoyé à l'adresse suivante :",
+            label: "Entrez le code ci-dessous*",
+            placeholder: "000000",
+            buttonTitle: "Valider code",
+            notReceived: "Vous n'avez rien reçu ?",
+            resendButton: "Renvoyer un code d'activation"
           }
         }
       }
