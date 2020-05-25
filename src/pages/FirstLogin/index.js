@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { Formik } from 'formik';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import FirstLoginForm from '../../components/FirstLoginForm';
+import FirstLoginForm from '../../components/Forms/FirstLoginForm';
 import { updateUserLaunched } from '../../components/App/reducer';
 import styles from '../../utils/styles';
 

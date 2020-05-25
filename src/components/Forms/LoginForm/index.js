@@ -1,11 +1,11 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import { CustomButton } from '../Button/';
+import { CustomButton } from '../../Button';
 import Grid from '@material-ui/core/Grid';
-import CustomTextField, { CustomPasswordField } from "../Inputs/CustomTextField";
-import CustomSnackBar from "../SnackBar";
-import {NavLink} from "react-router-dom";
+import CustomTextField, { CustomPasswordField } from "../../Inputs/CustomTextField";
+import CustomSnackBar from "../../SnackBar";
+import { NavLink } from "react-router-dom";
 import styles from "./styles";
 
 const LoginForm = (props) => {
@@ -58,15 +58,15 @@ const LoginForm = (props) => {
       />
       <NavLink to={'/password'} className={classes.navLink}>{t('forgotPasswordButton')}</NavLink>
       <Grid container direction={'row'} jusitfy={'flex-end'}>
-        <Grid item xs={9}/>
+        <Grid item xs={9} />
         <Grid item xs={3}>
-      <CustomButton
-        type="submit"
-        handleClick={() => handleSubmit({ email, password })}
-        loading={loginLoading}
-        title={t('loginSubmit')}
-        theme="filledButton"
-      />
+          <CustomButton
+            type="submit"
+            handleClick={() => handleSubmit({ email, password })}
+            loading={loginLoading}
+            title={t('loginSubmit')}
+            theme="filledButton"
+          />
         </Grid>
       </Grid>
       <CustomSnackBar message={loginErrorMessage} open={open} setOpen={setOpen} />

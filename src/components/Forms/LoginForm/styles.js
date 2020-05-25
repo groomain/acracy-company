@@ -1,5 +1,5 @@
 import makeStyles from '@material-ui/core/styles/makeStyles';
-import {basierRegular} from "../../utils/configureMaterialTheme";
+import { basierRegular } from "../../../utils/configureMaterialTheme";
 
 export default makeStyles(theme => ({
   navLink: {

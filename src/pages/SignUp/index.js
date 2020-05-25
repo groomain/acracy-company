@@ -7,7 +7,7 @@ import { signupLaunched } from '../../components/App/reducer';
 import Grid from '@material-ui/core/Grid';
 import Sidebar from '../../components/Layout/Sidebar';
 import Main from '../../components/Layout/Main';
-import SignUpForm from '../../components/SignUpForm';
+import SignUpForm from '../../components/Forms/SignUpForm';
 import SearchResultPannel from '../../components/SearchResultPannel';
 import styles from '../../utils/styles';
 
