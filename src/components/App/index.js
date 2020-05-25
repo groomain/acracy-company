@@ -8,6 +8,7 @@ import PublicRoute from '../PublicRoute';
 import { getCurrentSessionLaunched } from './reducer';
 import SignInPage from '../../pages/SignIn';
 import SignUpPage from '../../pages/SignUp';
+import ConfirmSignupPage from '../../pages/ConfirmSignUp';
 import ForgotPassword from '../../pages/ForgotPassword';
 import FirstLoginPage from '../../pages/FirstLogin';
 import MyAccount from "../../pages/MyAccount";
@@ -29,6 +30,7 @@ function App() {
       <Route exact path="/" render={() => <Redirect to="/home" />} />
       <PublicRoute exact path="/login" fixed component={SignInPage} />
       <PublicRoute exact path="/signup" fixed component={SignUpPage} />
+      <PublicRoute exact path="/confirm-signup" fixed component={ConfirmSignupPage} />
       <PublicRoute exact path="/password" fixed component={ForgotPassword} />
       <PrivateRoute exact path="/firstlogin" fixed component={FirstLoginPage} />
       <PrivateRoute exact path="/home" fixed component={HomePage} />
@@ -56,7 +58,7 @@ function App() {
       {/*</div>*/}
       {/*/!* __NavbarEnd__ *!/*/}
       {
-          !isAuthenticated && <CustomAppBar />
+        !isAuthenticated && <CustomAppBar />
       }
       <ProgressBar />
       {

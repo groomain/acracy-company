@@ -13,6 +13,8 @@ import {
   logoutFailure,
   signupSuccess,
   signupFailure,
+  confirmSignupSuccess,
+  confirmSignupFailure,
   requestPasswordCodeFailure,
   requestPasswordCodeSuccess,
   submitNewPasswordSuccess,
@@ -24,7 +26,8 @@ import {
   translateSignInError,
   translateSignUpError,
   translateConfirmForgotPassword,
-  translateForgotPassword
+  translateForgotPassword,
+  translateConfirmSignUpError
 } from '../../utils/cognito';
 import { config } from '../../conf/amplify';
 
@@ -86,6 +89,17 @@ function* doSignUp(action) {
   }
 }
 
+function* doConfirmSignUp(action) {
+  const { username, code } = action.payload;
+  try {
+    yield Auth.confirmSignUp(username, code);
+    yield put(confirmSignupSuccess());
+  } catch (error) {
+    console.log(error);
+    yield put(confirmSignupFailure(translateConfirmSignUpError(error.code)));
+  }
+}
+
 function* doRequestPasswordCode(action) {
   console.log(action);
   const { email } = action.payload;
@@ -143,6 +157,7 @@ export default function* rootSaga() {
     takeLatest('App/signupLaunched', doSignUp),
     takeLatest('App/requestPasswordCodeLaunched', doRequestPasswordCode),
     takeLatest('App/submitNewPasswordLaunched', doSubmitNewPassword),
-    takeLatest('App/updateUserLaunched', doUpdateUser)
+    takeLatest('App/updateUserLaunched', doUpdateUser),
+    takeLatest('App/confirmSignupLaunched', doConfirmSignUp)
   ]);
 }

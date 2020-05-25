@@ -13,6 +13,8 @@ const initialState = Immutable.Map({
   logoutLoading: false,
   signupLoading: false,
   signupErrorMessage: null,
+  confirmSignupLoading: false,
+  confirmSignupErrorMessage: null,
   requestCodeLoading: false,
   requestCodeErrorMessage: null,
   submitPasswordLoading: false,
@@ -70,6 +72,16 @@ const { actions, reducer } = createSlice({
     signupFailure: (state, action) => state
       .set('signupLoading', false)
       .set('signupErrorMessage', action.payload),
+    // CONFIRM SIGNUP
+    confirmSignupLaunched: (state, action) => state
+      .set('confirmSignupLoading', true)
+      .set('confirmSignupErrorMessage', null),
+    confirmSignupSuccess: (state, action) => state
+      .set('confirmSignupLoading', false)
+      .set('confirmSignupErrorMessage', null),
+    confirmSignupFailure: (state, action) => state
+      .set('confirmSignupLoading', false)
+      .set('confirmSignupErrorMessage', action.payload),
     // REQUEST PASSWORD CODE
     requestPasswordCodeLaunched: (state, action) => state
       .set('requestCodeLoading', true)
@@ -120,6 +132,9 @@ export const {
   signupLaunched,
   signupSuccess,
   signupFailure,
+  confirmSignupLaunched,
+  confirmSignupSuccess,
+  confirmSignupFailure,
   requestPasswordCodeLaunched,
   requestPasswordCodeSuccess,
   requestPasswordCodeFailure,
