@@ -162,7 +162,9 @@ i18n
             noOptions: 'Aucun résultat ne correspond à votre recherche.',
             profileLabel: 'Profil',
             briefsLabel: 'Livrables',
-            loading: 'Chargement...'
+            loading: 'Chargement...',
+            createMessage: 'Créer',
+            newOption: "n'existe pas"
           },
           yourEmail: 'Votre email',
           haveAccount: 'Je n\'ai pas de compte acracy entreprise',

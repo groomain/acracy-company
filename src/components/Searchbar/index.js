@@ -6,14 +6,15 @@ import {
 } from 'react-instantsearch-dom';
 import { useTranslation } from 'react-i18next';
 import { connectStateResults } from 'react-instantsearch-dom';
-import Select, { components, createFilter } from 'react-select';
+
+import { components, createFilter } from 'react-select';
+import CreatableSelect from 'react-select/creatable';
 import Highlighter from 'react-highlight-words';
 
 import { Grid, Typography, Box } from '@material-ui/core';
 import SearchIcon from '../../assets/icons/searchIcon';
 
 import styles, { reactSelectStyles } from './styles';
-
 import profilIcon from '../../assets/icons/profil-roll-out-black.svg';
 import projectIcon from '../../assets/icons/livrable-black.svg';
 import profilIconYellow from '../../assets/icons/profil-roll-out-yellow.svg';
@@ -44,6 +45,7 @@ const SearchResults = ({ searchResults, onUpdateChosenCategory, ...props }) => {
   const [resultsList, setResultsList] = useState([]);
   const [loading, setIsLoading] = useState(true);
   const [searchValue, setSearchValue] = useState();
+  const [newOption, setNewOption] = useState();
 
 
   useEffect(() => {
@@ -51,75 +53,74 @@ const SearchResults = ({ searchResults, onUpdateChosenCategory, ...props }) => {
       const { hits } = searchResults;
       const groupedOptions = [{
         label: (t('searchbar.profileLabel')),
-        options: hits.filter(x => x.title === 'Profils'),
+        options: hits.filter(x => x.TYPE === 'PROFILE'),
       }, {
         label: (t('searchbar.briefsLabel')),
-        options: hits.filter(x => x.title === 'Livrables'),
+        options: hits.filter(x => x.TYPE === 'DELIVERABLE'),
       }];
       setResultsList(groupedOptions);
       setIsLoading(false);
     }
   }, [searchResults, t]);
 
-  const filterConfig = {
-    trim: true
-  };
-
   const formatGroupLabel = data => (
     <Grid container alignItems="center">
-      {data.label === 'Profils'
+      {data.label === t('searchbar.profileLabel')
         ? <img src={profilIcon} alt={(t('searchbar.profileLabel'))} className={classes.img} />
         : <img src={projectIcon} alt={(t('searchbar.briefsLabel'))} className={classes.img} />}
       <span>{data.label}</span>
     </Grid>
   );
 
-  const formatOptionLabel = ({ label, tags }, { inputValue }) => {
+  const formatOptionLabel = ({ TEXT, TAGS }, { inputValue }) => {
     return (
       <>
-        <Grid container>
-          <Grid
-            container
-            item
-            xs={4}
-            alignContent="center"
-            className={classes.optionValue}
-          >
-            <Highlighter
-              searchWords={[inputValue.trim()]}
-              textToHighlight={label}
-              highlightClassName={classes.highlight}
-            />
-          </Grid>
-          <Grid item container xs={8}>
-            {tags && (
-              tags.map((tag, key) => (
-                <Grid item xs={4} key={key}>
-                  <small>#{tag.toLowerCase()}</small>
-                </Grid>
-              ))
-            )}
-          </Grid>
-        </Grid>
+        {TEXT
+          ? (
+            <Grid container>
+              <Grid
+                container
+                item
+                xs={4}
+                alignContent="center"
+                className={classes.optionValue}
+              >
+                <Highlighter
+                  searchWords={[inputValue.trim()]}
+                  textToHighlight={TEXT}
+                  highlightClassName={classes.highlight}
+                />
+              </Grid>
+              <Grid item container xs={8}>
+                {TAGS && (
+                  TAGS.map((tag, key) => (
+                    <Grid item xs={4} key={key}>
+                      <small>#{tag.toLowerCase()}</small>
+                    </Grid>
+                  ))
+                )}
+              </Grid>
+            </Grid>
+          )
+          : <Typography variant="body2" className={classes.createOption}>{t('searchbar.createMessage')} {inputValue}</Typography>
+        }
       </>
     );
   }
 
   const ValueContainer = ({ children, ...props }) => {
     return (
-      components.ValueContainer && (
-        <components.ValueContainer {...props}>
-          <SearchIcon color={'#000'} className={classes.searchImg} />
-          <Grid>{children}</Grid>
-        </components.ValueContainer>
-      )
+      <components.ValueContainer {...props}>
+        <SearchIcon color={'#000'} className={classes.searchImg} />
+        <Grid>{children}</Grid>
+      </components.ValueContainer>
     );
   };
 
   const SingleValue = props => {
     return (
       <components.SingleValue {...props} className={classes.value}>
-        {props.data.label}
+        {props.data.TEXT || newOption?.value}
       </components.SingleValue>
     )
   };
@@ -130,53 +131,57 @@ const SearchResults = ({ searchResults, onUpdateChosenCategory, ...props }) => {
     ref.current.select.getNextFocusedOption = () => null;
   }, []);
 
-  const handleOnChange = (option) => {
-    console.log('option :', option);
-    setSearchValue(option || null);
-    onUpdateChosenCategory(option);
+  const handleOnChange = (newValue, actionMeta) => {
+    // Store the search value if it doesn't exist
+    if (actionMeta.action === "create-option") {
+      setNewOption({ title: "Vous avez recherché", value: newValue.value })
+    }
+    if (actionMeta.action === 'clear') {
+      setNewOption('')
+    }
+    setSearchValue(newValue || null);
+    onUpdateChosenCategory(newValue);
   }
 
-  const displayTitle = (searchValueTitle) => {
-    switch (searchValueTitle) {
-      case 'Profils':
+  const renderTitle = (title) => {
+    switch (title) {
+      case "PROFILE":
         return (
           <Grid container alignItems='center'>
             <img src={profilIconYellow} alt='profil' className={classes.img} />
-            <Typography variant="h2">&nbsp;Profil recherché</Typography>
+            <Typography variant="h2">&nbsp;{t('searchbar.profileLabel')}</Typography>
           </Grid>
         )
-      case 'Livrables':
+      case "DELIVERABLE":
         return (
           <Grid container alignItems='center'>
             <img src={livrableYellow} alt='livrable' className={classes.img} />
-            <Typography variant="h2">&nbsp;Livrable recherché</Typography>
+            <Typography variant="h2">&nbsp;{t('searchbar.briefsLabel')}</Typography>
           </Grid>
         )
-      case 'unknown':
-        return (
-          <Typography variant="h2">Vous avez recherché</Typography>
-        )
       default:
+        break;
     }
   }
 
   return (
     <>
       <Box my={2} style={{ height: 30 }}>
-        {displayTitle(searchValue?.title)}
+        <Typography variant="h2">{renderTitle(searchValue?.TYPE) || newOption?.title}</Typography>
       </Box>
-      <Select
+      <CreatableSelect
         ref={ref}
         onChange={handleOnChange}
         placeholder={t('searchbar.placeholder')}
         options={resultsList}
         formatOptionLabel={formatOptionLabel}
         formatGroupLabel={formatGroupLabel}
+        formatCreateLabel={(inputValue) => `Créer ${inputValue}`}
         isClearable
         classNamePrefix="react-select"
         className={classes.searchbar}
         maxMenuHeight={400}
-        filterOption={createFilter(filterConfig)}
+        getOptionLabel={option => option.TEXT}
         noOptionsMessage={() => loading ? t('searchbar.loading') : t('searchbar.noOptions')}
         components={{
           DropdownIndicator: () => null,
@@ -186,6 +191,11 @@ const SearchResults = ({ searchResults, onUpdateChosenCategory, ...props }) => {
         }}
         styles={reactSelectStyles}
       />
+      {newOption && (
+        <Box my={2}>
+          <Typography variant="h2">« {newOption.value} » {t('searchbar.newOption')}</Typography>
+        </Box>
+      )}
     </>
   )
 }
