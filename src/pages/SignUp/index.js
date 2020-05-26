@@ -20,7 +20,9 @@ const SignUpPage = () => {
   const initialValues = {
     email: '',
     password: '',
-    confirmPassword: ''
+    confirmPassword: '',
+    phonePrefix: 'Fr : +33',
+    searchResult: 'Social Media Strategist'
   };
 
   // Form Submitting Function
@@ -31,6 +33,24 @@ const SignUpPage = () => {
   // Form Validation Schema
   const ValidationSchema = Yup.object().shape({
     email: Yup
+      .string()
+      .required(),
+    companyName: Yup
+      .string()
+      .required(),
+    firstName: Yup
+      .string()
+      .required(),
+    lastName: Yup
+      .string()
+      .required(),
+    role: Yup
+      .string()
+      .required(),
+    phoneNumber: Yup
+      .string()
+      .required(),
+    phonePrefix: Yup
       .string()
       .required(),
     password: Yup
@@ -61,7 +81,9 @@ const SignUpPage = () => {
           />
         </Main>
         <Sidebar>
-          <SearchResultPannel />
+          <SearchResultPannel
+            searchResult={initialValues.searchResult}
+          />
         </Sidebar>
       </Grid>
     </>

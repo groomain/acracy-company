@@ -7,20 +7,19 @@ import CustomSelect from "../Inputs/CustomSelect";
 import CustomNavLink from "../CustomNavLink";
 import CustomCheckbox from '../CheckBox';
 import backToTop from '../../utils/backToTop';
-import { Typography, Grid, Stepper, Step, StepLabel, StepButton, Box } from "@material-ui/core";
+import { Typography, Grid, Stepper, Step, StepLabel, StepButton, Box, StepConnector } from "@material-ui/core";
 import clsx from 'clsx';
 import styles from './styles';
 
-const SignUpForm = (props) => {
+const SignUpForm = ({ values, errors, touched, handleBlur, handleChange, handleSubmit }) => {
   const { t } = useTranslation();
   const classes = styles();
   const { signupErrorMessage, signupLoading } = useSelector(state => ({
     signupErrorMessage: state.getIn(['app', 'signupErrorMessage']),
     signupLoading: state.getIn(['app', 'signupLoading'])
   }));
-  const { values, errors, touched, handleBlur, handleChange, handleSubmit } = props;
-  const { companyName, firstName, lastName, role, phoneNumber, email, password, confirmPassword } = values;
-  const [activeStep, setActiveStep] = React.useState(0);
+
+  const { companyName, firstName, lastName, role, phoneNumber, phonePrefix, email, password, confirmPassword } = values;
 
   const [optionsValues] = useState([
     'Fr : +33',
@@ -28,6 +27,7 @@ const SignUpForm = (props) => {
     'It : +39'
   ]);
 
+  const [activeStep, setActiveStep] = useState(0);
 
   const getSteps = () => {
     return [t('personnalInfos'), t('password')];
@@ -47,7 +47,6 @@ const SignUpForm = (props) => {
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
     backToTop();
-
   };
 
   const handleStep = (step) => () => {
@@ -62,7 +61,7 @@ const SignUpForm = (props) => {
         <br />
         <br />
         <Typography variant={"h4"} >{t('alreadyHaveAccount')} &nbsp;
-            <span> <CustomNavLink to="/login" text={t('loginLinkMsg')} theme='yellowLink'></CustomNavLink></span>
+          <span><CustomNavLink to="/login" text={t('loginLinkMsg')} theme='yellowLink'></CustomNavLink></span>
         </Typography>
         <br />
         <br />
@@ -75,14 +74,13 @@ const SignUpForm = (props) => {
           <Grid item xs={12} className={classes.signupRows}>
             <CustomTextField
               name="companyName"
-              type="companyName"
+              type="text"
               value={companyName}
               onBlur={handleBlur}
               onChange={handleChange}
               placeholder={t('companyNamePlaceholder')}
               label={t('companyName') + '*'}
               error={!!touched.companyName && !!errors.companyName}
-              helperText={touched.companyName && errors.companyName ? t('companyNameRequired') : ''}
             />
           </Grid>
 
@@ -90,42 +88,39 @@ const SignUpForm = (props) => {
             <Grid item xs={6}>
               <CustomTextField
                 name="firstName"
-                type="firstName"
+                type="text"
                 value={firstName}
                 onBlur={handleBlur}
                 onChange={handleChange}
                 label={t('firstName') + '*'}
                 placeholder={t('firstNamePlaceholder')}
                 error={!!touched.firstName && !!errors.firstName}
-                helperText={touched.firstName && errors.firstName ? t('firstNameRequired') : ''}
               />
             </Grid>
 
             <Grid item xs={6}>
               <CustomTextField
                 name="lastName"
-                type="lastName"
+                type="text"
                 value={lastName}
                 onBlur={handleBlur}
                 onChange={handleChange}
                 label={t('lastName') + '*'}
                 placeholder={t('lastNamePlaceholder')}
                 error={!!touched.lastName && !!errors.lastName}
-                helperText={touched.lastName && errors.lastName ? t('lastNameRequired') : ''}
               />
             </Grid>
           </Grid>
           <Grid item xs={12} className={`${classes.signupRows} ${classes.marginTop}`}>
             <CustomTextField
               name="role"
-              type="role"
+              type="text"
               value={role}
               onBlur={handleBlur}
               onChange={handleChange}
               label={t('role') + '*'}
               placeholder={t('rolePlaceholder')}
               error={!!touched.role && !!errors.role}
-              helperText={touched.role && errors.role ? t('roleRequired') : ''}
             />
           </Grid>
 
@@ -139,33 +134,36 @@ const SignUpForm = (props) => {
               placeholder={t('emailPlaceholder')}
               label={t('emailPro') + '*'}
               error={!!touched.email && !!errors.email}
-              helperText={touched.email && errors.email ? t('emailRequired') : ''}
             //ajouter un verification en bdd pour voir si l'adresse email existe déjà
             />
           </Grid>
 
           <Grid container item direction='column' className={classes.marginTop}>
-
             <Box>
               <Typography variant={'body1'} >{t('phoneNumber') + '*'}</Typography>
             </Box>
             <Grid container spacing={2}>
 
               <Grid item xs={5}>
-                <CustomSelect optionsValues={optionsValues} />
+                <CustomSelect
+                  name='phonePrefix'
+                  optionsValues={optionsValues}
+                  value={values.phonePrefix}
+                  onBlur={handleBlur('phonePrefix')}
+                  onChange={handleChange}
+                  error={!!touched.phonePrefix && !!errors.phonePrefix}
+                />
               </Grid>
 
               <Grid item xs={7}>
                 <CustomTextField
                   name="phoneNumber"
-                  type="phoneNumber"
+                  type="text"
                   value={phoneNumber}
                   onBlur={handleBlur}
                   onChange={handleChange}
                   placeholder={t('phoneNumberPlaceholder')}
-                  label={' '}
                   error={!!touched.phoneNumber && !!errors.phoneNumber}
-                  helperText={touched.phoneNumber && errors.phoneNumber ? t('emailRequired') : ''}
                 />
               </Grid>
             </Grid>
@@ -179,7 +177,6 @@ const SignUpForm = (props) => {
             type="button"
             theme="filledButton"
             handleClick={handleStep(1)}
-            // handleClick={() => setActiveStep(1)}
             loading={signupLoading}
             title={t('nextButton')}
           >
@@ -227,7 +224,7 @@ const SignUpForm = (props) => {
 
           <Grid container justify='space-between' alignItems='center' className={classes.marginTop}>
             <Grid item xs={2}>
-              <CustomCheckbox></CustomCheckbox>
+              <CustomCheckbox />
             </Grid>
             <Grid item xs={10}>
               <Typography variant={"h4"}>
@@ -287,7 +284,10 @@ const SignUpForm = (props) => {
 
   return (
     <Grid item className={classes.formGridItem}>
-      <Stepper nonLinear connector={false} activeStep={activeStep} className={classes.stepper}>
+      <Stepper
+        connector={<StepConnector style={{ display: 'none' }} />}
+        activeStep={activeStep} className={classes.stepper}
+      >
         {steps.map((label, index) => {
           return (
             <Step key={label} className={classes.step}>
@@ -295,7 +295,7 @@ const SignUpForm = (props) => {
                 <StepLabel
                   style={{ textAlign: "left" }}
                   StepIconComponent={CustomIcon}
-                  classes={activeStep === index ? null : classes.inactiveLabel}
+                  className={activeStep === index ? null : classes.inactiveLabel}
                 >
                   <Typography variant={"h4"}>
                     {label}
@@ -306,11 +306,7 @@ const SignUpForm = (props) => {
           );
         })}
       </Stepper>
-      {/* <br />
-      <br />
-      <br /> */}
       {getStepContent(activeStep)}
-
     </Grid >
   )
 };
