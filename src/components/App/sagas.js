@@ -75,9 +75,24 @@ function* doSignOut() {
 }
 
 function* doSignUp(action) {
-  const { email, password } = action.payload;
+  const { email, password, companyName, firstName, lastName, role, phonePrefix, phoneNumber, searchType, searchValue, searchCode } = action.payload;
   try {
-    yield Auth.signUp({ username: email, password });
+    yield Auth.signUp({
+      username: email,
+      password,
+      'attributes': {
+        'custom: companyName': companyName,
+        'custom: firstName': firstName,
+        'custom: lastName': lastName,
+        'custom: role': role,
+        email,
+        'custom: phoneNumberCode': phonePrefix,
+        'custom: phoneNumberNumber': phoneNumber,
+        'custom: searchType': searchType,
+        'custom: searchValue': searchValue,
+        'custom: searchCode': searchCode
+      }
+    });
     yield call(doSignIn, { payload: { email, password } });
     yield put(signupSuccess());
   } catch (error) {

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { CustomButton } from '../Button/';
@@ -19,7 +19,7 @@ const SignUpForm = ({ values, errors, touched, handleBlur, handleChange, handleS
     signupLoading: state.getIn(['app', 'signupLoading'])
   }));
 
-  const { companyName, firstName, lastName, role, phoneNumber, phonePrefix, email, password, confirmPassword } = values;
+  const { companyName, firstName, lastName, role, phoneNumber, phonePrefix, email, password, confirmPassword, conditions } = values;
 
   const [optionsValues] = useState([
     'Fr : +33',
@@ -30,7 +30,7 @@ const SignUpForm = ({ values, errors, touched, handleBlur, handleChange, handleS
   const [activeStep, setActiveStep] = useState(0);
 
   const getSteps = () => {
-    return [t('personnalInfos'), t('password')];
+    return [t('signup.personnalInfos'), t('password')];
   };
 
   function getStepContent(step) {
@@ -54,19 +54,55 @@ const SignUpForm = ({ values, errors, touched, handleBlur, handleChange, handleS
     backToTop();
   };
 
+  const [disabledFirstStep, setDisabledFirstStep] = useState(true);
+
+  const checkLength = (text) => {
+    return !!text?.length > 0
+  };
+
+  useEffect(() => {
+    if (
+      checkLength(companyName) &&
+      checkLength(firstName) &&
+      checkLength(lastName) &&
+      checkLength(role) &&
+      checkLength(phoneNumber) &&
+      checkLength(phonePrefix) &&
+      checkLength(email)
+    ) {
+      setDisabledFirstStep(false)
+    } else {
+      setDisabledFirstStep(true)
+    }
+  }, [companyName, firstName, lastName, role, phoneNumber, phonePrefix, email]);
+
+  const [disabledSecondStep, setDisabledSecondStep] = useState(true)
+
+  useEffect(() => {
+    if (
+      checkLength(password) &&
+      checkLength(confirmPassword) &&
+      conditions === true
+    ) {
+      setDisabledSecondStep(false)
+    } else {
+      setDisabledSecondStep(true)
+    }
+  }, [password, confirmPassword, conditions]);
+
   const setPersonnalInfos = () => {
     return (
       <Box className={classes.stepContent}>
-        <Typography variant={"h1"} >{t('createAccount')}</Typography>
+        <Typography variant={"h1"} >{t('signup.createAccount')}</Typography>
         <br />
         <br />
-        <Typography variant={"h4"} >{t('alreadyHaveAccount')} &nbsp;
-          <span><CustomNavLink to="/login" text={t('loginLinkMsg')} theme='yellowLink'></CustomNavLink></span>
+        <Typography variant={"h4"} >{t('signup.alreadyHaveAccount')} &nbsp;
+          <span><CustomNavLink to="/login" text={t('signup.loginLinkMsg')} theme='yellowLink'></CustomNavLink></span>
         </Typography>
         <br />
         <br />
-        <Typography variant={"h2"} >{t('accountCreation')}</Typography>
-        <Typography variant={"h1"} >{t('personnalInfos')}</Typography>
+        <Typography variant={"h2"} >{t('signup.accountCreation')}</Typography>
+        <Typography variant={"h1"} >{t('signup.personnalInfos')}</Typography>
         <br />
         <br />
 
@@ -78,8 +114,8 @@ const SignUpForm = ({ values, errors, touched, handleBlur, handleChange, handleS
               value={companyName}
               onBlur={handleBlur}
               onChange={handleChange}
-              placeholder={t('companyNamePlaceholder')}
-              label={t('companyName') + '*'}
+              placeholder={t('signup.companyNamePlaceholder')}
+              label={t('signup.companyName') + '*'}
               error={!!touched.companyName && !!errors.companyName}
             />
           </Grid>
@@ -93,7 +129,7 @@ const SignUpForm = ({ values, errors, touched, handleBlur, handleChange, handleS
                 onBlur={handleBlur}
                 onChange={handleChange}
                 label={t('firstName') + '*'}
-                placeholder={t('firstNamePlaceholder')}
+                placeholder={t('signup.firstNamePlaceholder')}
                 error={!!touched.firstName && !!errors.firstName}
               />
             </Grid>
@@ -106,7 +142,7 @@ const SignUpForm = ({ values, errors, touched, handleBlur, handleChange, handleS
                 onBlur={handleBlur}
                 onChange={handleChange}
                 label={t('lastName') + '*'}
-                placeholder={t('lastNamePlaceholder')}
+                placeholder={t('signup.lastNamePlaceholder')}
                 error={!!touched.lastName && !!errors.lastName}
               />
             </Grid>
@@ -118,8 +154,8 @@ const SignUpForm = ({ values, errors, touched, handleBlur, handleChange, handleS
               value={role}
               onBlur={handleBlur}
               onChange={handleChange}
-              label={t('role') + '*'}
-              placeholder={t('rolePlaceholder')}
+              label={t('signup.role') + '*'}
+              placeholder={t('signup.rolePlaceholder')}
               error={!!touched.role && !!errors.role}
             />
           </Grid>
@@ -131,16 +167,15 @@ const SignUpForm = ({ values, errors, touched, handleBlur, handleChange, handleS
               value={email}
               onBlur={handleBlur}
               onChange={handleChange}
-              placeholder={t('emailPlaceholder')}
-              label={t('emailPro') + '*'}
+              placeholder={t('signup.emailPlaceholder')}
+              label={t('signup.emailPro') + '*'}
               error={!!touched.email && !!errors.email}
-            //ajouter un verification en bdd pour voir si l'adresse email existe déjà
             />
           </Grid>
 
           <Grid container item direction='column' className={classes.marginTop}>
             <Box>
-              <Typography variant={'body1'} >{t('phoneNumber') + '*'}</Typography>
+              <Typography variant={'body1'} >{t('signup.phoneNumber') + '*'}</Typography>
             </Box>
             <Grid container spacing={2}>
 
@@ -162,7 +197,7 @@ const SignUpForm = ({ values, errors, touched, handleBlur, handleChange, handleS
                   value={phoneNumber}
                   onBlur={handleBlur}
                   onChange={handleChange}
-                  placeholder={t('phoneNumberPlaceholder')}
+                  placeholder={t('signup.phoneNumberPlaceholder')}
                   error={!!touched.phoneNumber && !!errors.phoneNumber}
                 />
               </Grid>
@@ -175,14 +210,14 @@ const SignUpForm = ({ values, errors, touched, handleBlur, handleChange, handleS
         <Grid container justify='flex-end' className={classes.signupRows}>
           <CustomButton
             type="button"
-            theme="filledButton"
+            theme={disabledFirstStep ? "disabledFilled" : "filledButton"}
             handleClick={handleStep(1)}
             loading={signupLoading}
-            title={t('nextButton')}
+            title={t('buttonTitles.nextButton')}
+            disabled={disabledFirstStep}
           >
           </CustomButton>
         </Grid>
-
       </Box>
     );
   }
@@ -190,8 +225,8 @@ const SignUpForm = ({ values, errors, touched, handleBlur, handleChange, handleS
   const setPassword = () => {
     return (
       <Box className={classes.stepContent}>
-        <Typography variant={"h2"} >{t('accountCreation')}</Typography>
-        <Typography variant={"h1"} >{t('yourPassword')}</Typography>
+        <Typography variant={"h2"} >{t('signup.accountCreation')}</Typography>
+        <Typography variant={"h1"} >{t('signup.yourPassword')}</Typography>
         <br />
         <br />
 
@@ -202,10 +237,9 @@ const SignUpForm = ({ values, errors, touched, handleBlur, handleChange, handleS
               value={password}
               onBlur={handleBlur}
               onChange={handleChange}
-              placeholder={t('passwordPlaceholder')}
-              label={t('password')}
+              placeholder={t('signup.passwordPlaceholder')}
+              label={t('password') + '*'}
               error={!!touched.password && !!errors.password}
-              helperText={touched.password && errors.password ? t('passwordRequired') : ''}
             />
           </Grid>
 
@@ -215,24 +249,27 @@ const SignUpForm = ({ values, errors, touched, handleBlur, handleChange, handleS
               value={confirmPassword}
               onBlur={handleBlur}
               onChange={handleChange}
-              placeholder={t('confirmPasswordPlaceholder')}
-              label={t('confirmPassword')}
+              placeholder={t('signup.confirmPasswordPlaceholder')}
+              label={t('confirmPassword') + '*'}
               error={!!touched.confirmPassword && !!errors.confirmPassword}
-              helperText={touched.confirmPassword && errors.confirmPassword ? t('confirmPasswordRequired') : ''}
             />
           </Grid>
 
           <Grid container justify='space-between' alignItems='center' className={classes.marginTop}>
             <Grid item xs={2}>
-              <CustomCheckbox />
+              <CustomCheckbox
+                name="conditions"
+                value="true"
+                onChange={handleChange}
+              />
             </Grid>
             <Grid item xs={10}>
               <Typography variant={"h4"}>
-                J'ai lu et j'accepte les&nbsp;
+                {t('signup.conditions1')}
                 <span>
-                  <CustomNavLink to="/conditions" text={t('termsAndConditions')} theme='yellowLink'></CustomNavLink>
+                  <CustomNavLink to="/conditions" text={t('signup.termsAndConditions')} theme='yellowLink'></CustomNavLink>
                 </span>
-                &nbsp;du site et des missions acracy
+                {t('signup.conditions2')}
               </Typography>
             </Grid>
           </Grid>
@@ -243,17 +280,18 @@ const SignUpForm = ({ values, errors, touched, handleBlur, handleChange, handleS
                 type="button"
                 handleClick={handleBack}
                 loading={signupLoading}
-                title={t('backButton')}
+                title={t('buttonTitles.backButton')}
               >
               </CustomButton>
             </Grid>
             <Grid item>
               <CustomButton
                 type="submit"
-                theme="filledButton"
+                theme={disabledSecondStep ? "disabledFilled" : "filledButton"}
                 handleClick={() => handleSubmit({ email, password })}
                 loading={signupLoading}
-                title={t('createAccountButton')}
+                title={t('signup.createAccountButton')}
+                disabled={disabledSecondStep}
               >
               </CustomButton>
               <Typography variant={'subtitle2'}>{signupErrorMessage}</Typography>

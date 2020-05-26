@@ -5,7 +5,7 @@ import SearchIcon from '../../assets/icons/searchIcon';
 import CircleImage from '../CircleImage';
 import styles from './styles';
 
-const SearchResultPannel = ({ searchResult, ...props }) => {
+const SearchResultPannel = ({ searchValue, ...props }) => {
   const classes = styles();
   const { t } = useTranslation();
 
@@ -21,7 +21,7 @@ const SearchResultPannel = ({ searchResult, ...props }) => {
     <Grid container direction="column"
       justify='space-between' className={classes.pannel}
     >
-      {searchResult && (
+      {searchValue && (
         <>
           <Grid item>
             <Typography variant={"h1"}>
@@ -34,7 +34,7 @@ const SearchResultPannel = ({ searchResult, ...props }) => {
             </Grid>
             <Grid item>
               <Typography variant={"subtitle1"}>
-                {searchResult}
+                {searchValue}
               </Typography>
             </Grid>
           </Grid>
