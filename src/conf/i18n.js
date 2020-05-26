@@ -181,7 +181,8 @@ i18n
             confidentialityText: "Acracy s’engage à respecter la confidentialité des informations partagées. Tum dicere exorsus est consecutus? laudem et via procedat oratio quaerimus igitur, quid.",
             addDocument: "Ajouter un document",
             maxFileSize: "Taille de fichier maximum : 5 Mo"
-          }
+          },
+          characters: 'caractères'
         }
       }
     },

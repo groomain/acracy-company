@@ -1,13 +1,17 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+
 import { Grid, Typography, FilledInput, InputLabel, Box } from '@material-ui/core';
 import styles from './styles';
 
 export const CustomTextArea = ({ label, placeholder, error, helperText, maxLength, ...props }) => {
   const classes = styles();
+  const { t } = useTranslation();
+
   const [value, setValue] = useState({
     missionDescription: '',
   });
-  const [currentInputLength, setCurrentInputLength] = useState(0)
+  const [currentInputLength, setCurrentInputLength] = useState(0);
 
   const handleChange = prop => (event) => {
     setCurrentInputLength(event.target.value.length);
@@ -32,7 +36,7 @@ export const CustomTextArea = ({ label, placeholder, error, helperText, maxLengt
       />
       {maxLength && (
         <Grid container justify='flex-end'>
-          <Typography variant='body2' className={classes.inputLength}>{currentInputLength} / {maxLength}</Typography>
+          <Typography variant='body2' className={classes.inputLength}>{currentInputLength} / {maxLength} {t('characters')}</Typography>
         </Grid>
       )}
     </Box>
