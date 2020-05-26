@@ -95,6 +95,7 @@ function* doSignUp(action) {
     });
     yield call(doSignIn, { payload: { email, password } });
     yield put(signupSuccess());
+    yield put(push('/confirm-signup', { email: email }));
   } catch (error) {
     console.log(error);
     yield put(signupFailure(translateSignUpError(error.code)));
