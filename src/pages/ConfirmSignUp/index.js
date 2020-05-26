@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 
@@ -11,16 +11,19 @@ import Main from '../../components/Layout/Main';
 import ConfirmSignupForm from '../../components/Forms/ConfirmSignupForm';
 import styles from './styles';
 
-const SignUpPage = () => {
+const ConfirmSignUpPage = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const classes = styles();
-  const [emailAddress] = useState('prénomnom@email.com')
+
+  const { email } = useSelector(state => ({
+    email: state.getIn(['router', 'location', 'state', 'email'])
+  }))
 
   // Form data
   const initialValues = {
     code: '',
-    username: ''
+    username: email
   };
 
   // Form Submitting Function
@@ -48,7 +51,7 @@ const SignUpPage = () => {
           <Box my={3}>
             <Typography variant="h1">{t('confirmSignupPage.title')}</Typography>
             <Box my={2}>
-              <Typography variant="body1">{t('confirmSignupPage.subtitle')} <span className={classes.email}>{emailAddress}</span></Typography>
+              <Typography variant="body1">{t('confirmSignupPage.subtitle')} <span className={classes.email}>{email}</span></Typography>
             </Box>
           </Box>
           <Formik
@@ -66,4 +69,4 @@ const SignUpPage = () => {
   );
 };
 
-export default SignUpPage;
+export default ConfirmSignUpPage;

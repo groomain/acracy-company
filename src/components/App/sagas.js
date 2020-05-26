@@ -57,14 +57,18 @@ function* getCurrentSession(action) {
 
 function* doSignIn(action) {
   const { email, password, from } = action.payload;
-
-  try {
-    yield Auth.signIn(email, password);
-    yield put(loginSuccess());
-  } catch (err) {
-    yield put(loginFailure(translateSignInError(err.code)));
+  const signInResp = yield Auth.signIn(email, password);
+  if (signInResp.challengeName === "NEW_PASSWORD_REQUIRED") {
+    yield put(push('/confirm-signup', { email: email }));
+  } else {
+    try {
+      yield put(loginSuccess());
+    } catch (err) {
+      console.log(err)
+      yield put(loginFailure(translateSignInError(err.code)));
+    }
+    yield put(getCurrentSessionLaunched({ fromPath: from || '/home' }));
   }
-  yield put(getCurrentSessionLaunched({ fromPath: from || '/home' }));
 }
 
 function* doSignOut() {

@@ -13,8 +13,8 @@ const ConfirmSignupForm = (props) => {
   const [open, setOpen] = React.useState(false);
 
   const { confirmSignupErrorMessage, confirmSignupLoading } = useSelector(state => ({
-    confirmSignupErrorMessage: state.getIn(['app', 'confirmSignupErrorMessage']), /////////////////////////////////////////
-    confirmSignupLoading: state.getIn(['app', 'confirmSignupLoading']) //////////////////////////////////////////////
+    confirmSignupErrorMessage: state.getIn(['app', 'confirmSignupErrorMessage']),
+    confirmSignupLoading: state.getIn(['app', 'confirmSignupLoading'])
   }));
 
   const {
