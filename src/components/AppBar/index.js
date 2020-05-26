@@ -1,7 +1,5 @@
 import React from 'react';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
+import { AppBar, Toolbar, Typography } from '@material-ui/core';
 import styles from "./styles";
 import { useTranslation } from "react-i18next";
 import CustomButton from "../Button";
@@ -11,6 +9,7 @@ import CustomIconButton from "../IconButton";
 import { useLocation, withRouter } from "react-router";
 import clsx from "clsx";
 import CustomSnackBar from "../SnackBar";
+import { Link as RouterLink } from 'react-router-dom';
 
 export const CustomAppBar = (props) => {
   let location = useLocation();
@@ -23,7 +22,7 @@ export const CustomAppBar = (props) => {
       case '/login':
         return (
           <div className={clsx(classes.div, classes.login)}>
-            <CustomButton theme={"filledButton"} title={t('signUp')} />
+            <CustomButton theme={"filledButton"} title={t('signUp')} component={RouterLink} to="/signup" />
             <CustomButton title={t('contactUs')} />
           </div>
         );
