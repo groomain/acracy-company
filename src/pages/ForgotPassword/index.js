@@ -1,15 +1,12 @@
 import React from 'react';
-// import { NavLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
 import { RequestForm, SubmitForm } from '../../components/ForgotPasswordForm';
 import { requestPasswordCodeLaunched, submitNewPasswordLaunched } from '../../components/App/reducer';
 import styles from './styles';
-import CustomNavLink from '../../components/CustomNavLink';
 
 const ForgotPassword = () => {
   const classes = styles();

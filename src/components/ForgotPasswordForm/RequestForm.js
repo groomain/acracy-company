@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import { Grid, Box, Typography } from '@material-ui/core';
+import { Grid, Typography } from '@material-ui/core';
 
 import { CustomButton } from '../Button';
 import CustomTextField from '../Inputs/CustomTextField';
@@ -9,8 +9,7 @@ import styles from '../../utils/styles';
 
 const RequestForm = (props) => {
   const { t } = useTranslation();
-  const { requestCodeErrorMessage, requestCodeLoading } = useSelector(state => ({
-    requestCodeErrorMessage: state.getIn(['app', 'requestCodeErrorMessage']),
+  const { requestCodeLoading } = useSelector(state => ({
     requestCodeLoading: state.getIn(['app', 'requestCodeLoading'])
   }));
 
@@ -26,7 +25,6 @@ const RequestForm = (props) => {
   } = props;
   const { email } = values;
 
-  console.log(errors);
   return (
     <Grid
       container
@@ -47,7 +45,6 @@ const RequestForm = (props) => {
             label={t('email') + '*'}
             placeholder={t('yourEmail')}
             error={!!touched.email && !!errors.email}
-            helperText={touched.email && errors.email ? t(errors.email) : ''}
           />
           <Grid container justify='flex-end'>
             <CustomButton
@@ -58,7 +55,6 @@ const RequestForm = (props) => {
             />
           </Grid>
         </form>
-        <Typography variant={'subtitle2'}>{requestCodeErrorMessage}</Typography>
       </Grid>
     </Grid>
   );
