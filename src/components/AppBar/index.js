@@ -11,6 +11,7 @@ import CustomIconButton from "../IconButton";
 import { useLocation, withRouter } from "react-router";
 import clsx from "clsx";
 import CustomSnackBar from "../SnackBar";
+import ProfilMenu from "../ProfilMenu";
 
 export const CustomAppBar = (props) => {
   let location = useLocation();
@@ -18,41 +19,41 @@ export const CustomAppBar = (props) => {
   const classes = styles();
   const [open, setOpen] = React.useState(true);
 
-  const renderButtons = () => {
-    switch (props.path || location.pathname) {
-      case '/login':
-        return (
-          <div className={clsx(classes.div, classes.login)}>
-            <CustomButton theme={"filledButton"} title={t('signUp')} />
-            <CustomButton title={t('contactUs')} />
-          </div>
-        );
-      case '/signup':
-        return (
-          <div className={clsx(classes.div, classes.signup)}>
-            <CustomNavLink to={'/login'} text={t('login')} theme="navLink" />
-            <CustomButton title={t('contactUs')} />
-          </div>
-        );
-      case '/home':
-        return (
-          <div className={clsx(classes.div, classes.home)}>
-            <CustomButton theme={"filledButton"} title={"Nouveau brief"} />
-            <CustomIconButton icon={profilIcon} />
-          </div>
-        );
-      case '/password':
-        return (
-          <div className={clsx(classes.div, classes.password)}>
-            <CustomNavLink to={'/login'} text={t('login')} theme="navLink" />
-            <CustomButton theme={"filledButton"} title={t('signUp')} />
-            <CustomButton title={t('contactUs')} />
-          </div>
-        );
-      default:
-        break;
-    }
-  };
+    const renderButtons = () => {
+        switch (props.path || location.pathname) {
+            case '/login':
+                return (
+                    <div className={clsx(classes.div, classes.login)}>
+                        <CustomButton theme={"filledButton"} title={t('signUp')} />
+                        <CustomButton title={t('contactUs')} />
+                    </div>
+                );
+            case '/signup':
+                return (
+                    <div className={clsx(classes.div, classes.signup)}>
+                        <CustomNavLink to={'/login'} text={t('login')} />
+                        <CustomButton title={t('contactUs')} />
+                    </div>
+                );
+            case '/home':
+                return (
+                    <div className={clsx(classes.div, classes.home)}>
+                        <CustomButton theme={"filledButton"} title={"Nouveau brief"} />
+                        <ProfilMenu />
+                    </div>
+                );
+            case '/password':
+                return (
+                    <div className={clsx(classes.div, classes.password)}>
+                        <CustomNavLink to={'/login'} text={t('login')} />
+                        <CustomButton theme={"filledButton"} title={t('signUp')} />
+                        <CustomButton title={t('contactUs')} />
+                    </div>
+                );
+            default:
+                break;
+        }
+    };
 
   return (
     <AppBar position="fixed" className={classes.appbar}>
