@@ -58,6 +58,7 @@ function* doSignIn(action) {
   try {
     yield Auth.signIn(email, password);
     yield put(loginSuccess());
+    yield Auth.currentUserInfo();
   } catch (err) {
     yield put(loginFailure(translateSignInError(err.code)));
   }
@@ -75,11 +76,38 @@ function* doSignOut() {
 }
 
 function* doSignUp(action) {
-  const { email, password } = action.payload;
+  const { email, password, companyName, firstName, lastName, role, phonePrefix, phoneNumber, searchType, searchValue, searchCode } = action.payload;
+  /**
+   * 
+   * @param {string} prefix - A string formatted as "Fr : +33"
+   * @returns {string} - New string containing everything after the '+' character to only send the number part
+   */
+  const getPhonePrefixCode = prefix => {
+    const regex = /^(.*?)[+]/;
+    return prefix.replace(regex, '');
+  };
+  const prefixCode = getPhonePrefixCode(phonePrefix);
+
   try {
-    yield Auth.signUp({ username: email, password });
+    yield Auth.signUp({
+      username: email,
+      password,
+      'attributes': {
+        'custom:companyName': companyName,
+        'custom:firstName': firstName,
+        'custom:lastName': lastName,
+        'custom:role': role,
+        email,
+        'custom:phoneNumberCode': prefixCode,
+        'custom:phoneNumberNumber': phoneNumber,
+        'custom:searchType': searchType,
+        'custom:searchText': searchValue,
+        'custom:searchCode': searchCode
+      }
+    });
     yield call(doSignIn, { payload: { email, password } });
     yield put(signupSuccess());
+    yield put(push('/confirm-signup', { email: email }));
   } catch (error) {
     console.log(error);
     yield put(signupFailure(translateSignUpError(error.code)));

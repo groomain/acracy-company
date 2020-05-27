@@ -48,7 +48,7 @@ const optionsValues = [
 export const selectWithMulti = () => (
   ProviderWrapper(
     <div style={{ width: '50%' }}>
-      <CustomSelect label="Numéro de téléphone" isMulti optionsValues={optionsValues} />
+      <CustomSelect label="Numéro de téléphone" isMulti value={optionsValues} optionsValues={optionsValues} />
     </div>
   )
 );
@@ -56,7 +56,7 @@ export const selectWithMulti = () => (
 export const multiWithError = () => (
   ProviderWrapper(
     <div style={{ width: '50%' }}>
-      <CustomSelect label="Numéro de téléphone" error isMulti optionsValues={optionsValues} />
+      <CustomSelect label="Numéro de téléphone" error isMulti value={optionsValues} optionsValues={optionsValues} />
     </div>
   )
 );
