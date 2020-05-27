@@ -51,7 +51,7 @@ const SignUpPage = () => {
       .string()
       .required(),
     phoneNumber: Yup
-      .number()
+      .string()
       .required(),
     phonePrefix: Yup
       .string()

@@ -293,7 +293,6 @@ const SignUpForm = ({ values, errors, touched, handleBlur, handleChange, handleS
                 disabled={disabledSecondStep || signupLoading}
               >
               </CustomButton>
-              <Typography variant={'subtitle2'}>{signupErrorMessage}</Typography>
             </Grid>
           </Grid>
 
