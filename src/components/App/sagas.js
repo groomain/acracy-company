@@ -76,6 +76,7 @@ function* doSignOut() {
 
 function* doSignUp(action) {
   const { email, password, companyName, firstName, lastName, role, phonePrefix, phoneNumber, searchType, searchValue, searchCode } = action.payload;
+
   try {
     yield Auth.signUp({
       username: email,
@@ -87,7 +88,7 @@ function* doSignUp(action) {
         'custom: role': role,
         email,
         'custom: phoneNumberCode': phonePrefix,
-        'custom: phoneNumberNumber': phoneNumber,
+        'custom: phoneNumberNumber': +phoneNumber,
         'custom: searchType': searchType,
         'custom: searchValue': searchValue,
         'custom: searchCode': searchCode

@@ -169,6 +169,7 @@ i18n
             newOption: "n'existe pas"
           },
           yourEmail: 'Votre email',
+          yourPassword: 'Votre mot de passe',
           haveAccount: 'Je n\'ai pas de compte acracy entreprise',
           tagsList: {
             label: "Expertises clés du profil",

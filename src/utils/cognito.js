@@ -8,7 +8,7 @@ const translateSignUpError = (errorCode) => {
     case 'TooManyRequestsException':
       return 'Trop de requêtes effectué.';
     case 'UsernameExistsException':
-      return 'Cet email est déjà utilisé.';
+      return 'Cet email existe déjà';
     default:
       return 'Erreur';
   }

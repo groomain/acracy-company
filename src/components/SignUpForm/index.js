@@ -279,7 +279,6 @@ const SignUpForm = ({ values, errors, touched, handleBlur, handleChange, handleS
               <CustomButton
                 type="button"
                 handleClick={handleBack}
-                loading={signupLoading}
                 title={t('buttonTitles.backButton')}
               >
               </CustomButton>
@@ -291,7 +290,7 @@ const SignUpForm = ({ values, errors, touched, handleBlur, handleChange, handleS
                 handleClick={() => handleSubmit({ email, password })}
                 loading={signupLoading}
                 title={t('signup.createAccountButton')}
-                disabled={disabledSecondStep}
+                disabled={disabledSecondStep || signupLoading}
               >
               </CustomButton>
               <Typography variant={'subtitle2'}>{signupErrorMessage}</Typography>
