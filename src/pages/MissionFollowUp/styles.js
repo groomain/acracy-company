@@ -35,5 +35,9 @@ export default makeStyles(theme => ({
   },
   title: {
     marginBottom: 20
+  },
+  titleFreelance: {
+    marginBottom: 20,
+    marginLeft: "5%"
   }
 }));

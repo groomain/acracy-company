@@ -7,13 +7,14 @@ import Main from "../../components/Layout/Main";
 import Sidebar from "../../components/Layout/Sidebar";
 import MissionSuivi from "../../components/MissionSuivi";
 import Typography from "@material-ui/core/Typography";
-import TagsList from "../../components/Tags/TagsList";
 import CheckableTag from "../../components/Tags/CheckableTag";
 import CustomExpansionPanel from "../../components/CustomExpansionPanel";
 import Tag from "../../components/Tags/Tag";
 import CircleImage from "../../components/CircleImage";
 import RevealProfil from "../../components/RevealProfil";
-
+import CustomIconButton from "../../components/IconButton";
+import infosIcon from '../../assets/icons/infos.svg'
+import IconButton from "@material-ui/core/IconButton";
 
 const tags = [{
     title: "Stratégie Annuelle Social Media",
@@ -56,7 +57,54 @@ const MissionFollowUp = () => {
         forgotPasswordStep: state.getIn(['app', 'forgotPasswordStep'])
     }));
     const {t} = useTranslation();
-    const [step, setStepper] = React.useState(1);
+    const [step, setStepper] = React.useState(2);
+
+    const renderContent = (step) => {
+        if (step < 2) {
+            return (
+                <Grid container direction={'column'} justify={'center'} alignItems={'center'} style={{
+                    width: '100%',
+                    height: 261,
+                    backgroundColor: "#151d15",
+                    borderRadius: 15,
+                    textAlign: 'center',
+                    padding: 20,
+                    marginTop: 10,
+                    marginBottom: 150
+                }}>
+                    <CircleImage theme={'avatarLarge'}/>
+                    <Typography variant={'h4'} style={{marginTop: 10, marginBottom: 5}}>Matching en cours</Typography>
+                    <Typography variant={'h4'} style={{color: '#565e56', width: "70%"}}>
+                        Commencez par rechercher un type de profil ou livrable
+                        pour démarrer un brief.</Typography>
+                </Grid>
+            )
+        } else if (step >= 2 ) {
+            return (
+                <div className={classes.bloc}>
+                    <Grid item container direction={'row'} justify={"space-between"} style={{ maxHeight: 80}}>
+                        <Typography variant={'h2'} className={classes.titleFreelance}>Votre Freelance</Typography>
+                          <div style={{display: 'flex'}}>
+                              <Typography variant={'body2'}>Contact</Typography>
+                            {/*<CustomIconButton  style={{maxHeight: 40, maxWidth: 40}}/>*/}
+                              <IconButton
+                                  edge={'end'}
+                                  color="secondary" aria-label="notif"
+                                  style={{maxHeight: 40, maxWidth: 40}}
+                                  children={<span style={{
+                                      width: 35,
+                                      height: 35,
+                                      backgroundImage: `url(${infosIcon})`,
+                                      backgroundRepeat: 'no-repeat',
+                                      content: '""',
+                                  }} />}/>
+                          </div>
+                    </Grid>
+                    <RevealProfil modeMission style={{width: 693, backgroundColor: '#151d15', borderRadius: 15, padding: 20}}/>
+                </div>
+            );
+        }
+    };
 
     return (
         <Grid
@@ -183,30 +231,7 @@ const MissionFollowUp = () => {
                         (plus de 5 ans d'experience)</Typography>
                     </div>
                 </Grid>
-                {step === 0 &&
-                <Grid container direction={'column'} justify={'center'} alignItems={'center'} style={{
-                    width: '100%',
-                    height: 261,
-                    backgroundColor: "#151d15",
-                    borderRadius: 15,
-                    textAlign: 'center',
-                    padding: 20,
-                    marginTop: 10,
-                    marginBottom: 150
-                }}>
-                    <CircleImage theme={'avatarLarge'}/>
-                    <Typography variant={'h4'} style={{marginTop: 10, marginBottom: 5}}>Matching en cours</Typography>
-                    <Typography variant={'h4'} style={{color: '#565e56', width: "70%"}}>
-                        Commencez par rechercher un type de profil ou livrable
-                        pour démarrer un brief.</Typography>
-                </Grid>
-                }
-                {step === 2 &&
-                    <div style={{width: 643, height: 698}}>
-                    <RevealProfil/>
-                    </div>
-                }
-
+                {renderContent(step)}
                     </Main>
             <Sidebar>
             <MissionSuivi step={step} style={{marginTop: 150}}/>
