@@ -1,17 +1,15 @@
 import React, { useEffect } from 'react';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import styles from "./styles";
 import { useTranslation } from "react-i18next";
-import CustomButton from "../Button";
-import CustomNavLink from "../CustomNavLink";
 import { useLocation, withRouter } from "react-router";
 import clsx from "clsx";
-import CustomSnackBar from "../SnackBar";
 import { Link as RouterLink } from 'react-router-dom';
-
 import { useSelector } from 'react-redux';
+
+import { AppBar, Toolbar, Typography } from '@material-ui/core';
+import styles from "./styles";
+import CustomButton from "../Button";
+import CustomNavLink from "../CustomNavLink";
+import CustomSnackBar from "../SnackBar";
 import ProfilMenu from "../ProfilMenu";
 
 export const CustomAppBar = (props) => {
@@ -19,18 +17,18 @@ export const CustomAppBar = (props) => {
   const { t } = useTranslation();
   const classes = styles();
   const [welcomeMessageOpen, setWelcomeMessageOpen] = React.useState(true);
-  const [errorMessageOpen, setErrorMessageOpen] = React.useState();
+  const [errorMessageOpen, setErrorMessageOpen] = React.useState(false);
 
-  const { loginErrorMessage, loginLoading } = useSelector(state => ({
+  const { loginErrorMessage, signupErrorMessage } = useSelector(state => ({
     loginErrorMessage: state.getIn(['app', 'loginErrorMessage']),
-    loginLoading: state.getIn(['app', 'loginLoading'])
+    signupErrorMessage: state.getIn(['app', 'signupErrorMessage']),
   }));
 
   useEffect(() => {
-    if (loginErrorMessage) {
+    if (loginErrorMessage || signupErrorMessage) {
       setErrorMessageOpen(true);
     }
-  }, [loginErrorMessage]);
+  }, [loginErrorMessage, signupErrorMessage]);
 
   const renderButtons = () => {
     switch (props.path || location.pathname) {
@@ -68,10 +66,17 @@ export const CustomAppBar = (props) => {
     }
   };
 
+  const renderSnackbar = () => (
+    <>
+      {welcomeMessageOpen && <CustomSnackBar message={t('welcomeMessage')} open={welcomeMessageOpen} setOpen={setWelcomeMessageOpen} />}
+      {signupErrorMessage && <CustomSnackBar message={signupErrorMessage} open={errorMessageOpen} setOpen={setErrorMessageOpen} error />}
+      {loginErrorMessage && <CustomSnackBar message={loginErrorMessage} open={errorMessageOpen} setOpen={setErrorMessageOpen} error />}
+    </>
+  );
+
   return (
     <AppBar position="fixed" className={classes.appbar}>
-      <CustomSnackBar message={t('welcomeMessage')} open={welcomeMessageOpen} setOpen={setWelcomeMessageOpen} />
-      {loginErrorMessage && <CustomSnackBar message={loginErrorMessage} error open={errorMessageOpen} setOpen={setErrorMessageOpen} />}
+      {renderSnackbar()}
       <Toolbar className={classes.toolbar}>
         <Typography className={classes.title} variant="h1" noWrap>
           acracy
