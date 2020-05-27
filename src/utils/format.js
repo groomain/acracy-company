@@ -11,3 +11,22 @@ export const formatWithLineBreak = text => {
   });
   return newText;
 };
+
+/** 
+ * Capitalizes a given string
+* @param {string} text - A string to be capitalized
+* @returns {string} - The new capitalized text
+*/
+export const capitalize = text => {
+  return text.charAt(0).toUpperCase() + text.slice(1);
+}
+
+/**
+ * Shortens a too long text, keeping the first 4 and the last 4 characters to display the file extension
+ * @param {string} text - A string too long to be fully displayed in its container
+ * @returns  {string} - The shortened text, with the middle part replaced with '(...)' 
+ */
+export const formatLongText = text => {
+  const cutout = text.slice(4, -4);
+  return text.replace(cutout, '(...)');
+}

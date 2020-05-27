@@ -6,8 +6,7 @@ export default makeStyles(theme => ({
     border: `1px solid ${theme.palette.secondary.medium}`,
     borderRadius: 15,
     minHeight: 140,
-    width: 593,
-    margin: '.8rem auto 0',
+    margin: '.8rem auto',
     backgroundColor: `${fade(theme.palette.secondary.inputFadeFilter, 0.1)}`,
     color: theme.palette.secondary.main,
     fontWeight: 500,
@@ -24,4 +23,7 @@ export default makeStyles(theme => ({
   error: {
     borderColor: theme.palette.primary.danger
   },
+  inputLength: {
+    color: theme.palette.secondary.medium
+  }
 }));
