@@ -9,9 +9,8 @@ import { AppBar, Toolbar, Typography } from '@material-ui/core';
 import styles from "./styles";
 import CustomButton from "../Button";
 import CustomNavLink from "../CustomNavLink";
-import profilIcon from '../../assets/icons/profil-roll-out.svg'
-import CustomIconButton from "../IconButton";
 import CustomSnackBar from "../SnackBar";
+import ProfilMenu from "../ProfilMenu";
 
 export const CustomAppBar = (props) => {
   let location = useLocation();
@@ -44,7 +43,7 @@ export const CustomAppBar = (props) => {
         return (
           <div className={clsx(classes.div, classes.home)}>
             <CustomButton theme={"filledButton"} title={"Nouveau brief"} />
-            <CustomIconButton icon={profilIcon} />
+            <ProfilMenu />
           </div>
         );
       case '/password':
