@@ -162,7 +162,9 @@ i18n
             noOptions: 'Aucun résultat ne correspond à votre recherche.',
             profileLabel: 'Profils',
             briefsLabel: 'Livrables',
-            loading: 'Chargement...'
+            loading: 'Chargement...',
+            createMessage: 'Créer',
+            newOption: "n'existe pas"
           },
           yourEmail: 'Votre email',
           haveAccount: 'Je n\'ai pas de compte acracy entreprise',
@@ -180,7 +182,8 @@ i18n
             addDocument: "Ajouter un document",
             maxFileSize: "Taille de fichier maximum : 5 Mo"
           },
-          welcomeMessage: "Merci pour votre validation. Votre compte est maintenant actif ! 👏"
+          welcomeMessage: "Merci pour votre validation. Votre compte est maintenant actif ! 👏",
+          characters: 'caractères'
         }
       }
     },

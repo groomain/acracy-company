@@ -6,14 +6,13 @@ import styles from "./styles";
 import { useTranslation } from "react-i18next";
 import CustomButton from "../Button";
 import CustomNavLink from "../CustomNavLink";
-import profilIcon from '../../assets/icons/profil-roll-out.svg'
-import CustomIconButton from "../IconButton";
 import { useLocation, withRouter } from "react-router";
 import clsx from "clsx";
 import CustomSnackBar from "../SnackBar";
 import { Link as RouterLink } from 'react-router-dom';
 
 import { useSelector } from 'react-redux';
+import ProfilMenu from "../ProfilMenu";
 
 export const CustomAppBar = (props) => {
   let location = useLocation();
@@ -53,7 +52,7 @@ export const CustomAppBar = (props) => {
         return (
           <div className={clsx(classes.div, classes.home)}>
             <CustomButton theme={"filledButton"} title={"Nouveau brief"} />
-            <CustomIconButton icon={profilIcon} />
+            <ProfilMenu />
           </div>
         );
       case '/password':
