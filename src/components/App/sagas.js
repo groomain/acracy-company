@@ -58,15 +58,14 @@ function* doSignIn(action) {
   try {
     yield Auth.signIn(email, password);
     yield put(loginSuccess());
-    const userInfos = yield Auth.currentUserInfo();
-    if (!userInfos.attributes.email_verified) {
-      yield Auth.resendSignUp(email)
-      yield put(push('/confirm-signup'));
-    } else {
-      yield put(push('/home'));
-    }
+    yield put(push('/dashboard'));
   } catch (err) {
     console.log(err)
+    if (err.code === 'UserNotConfirmedException') {
+      yield Auth.resendSignUp(email)
+      yield put(push('/confirm-signup', { email: email }));
+      yield put(loginFailure(translateSignInError(err.code)));
+    }
     yield put(loginFailure(translateSignInError(err.code)));
   }
   yield put(getCurrentSessionLaunched({ fromPath: from || '/home' }));
