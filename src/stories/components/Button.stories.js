@@ -40,7 +40,7 @@ export const withDisabledRipple = () => (
 
 export const withLoading = () => (
   ProviderWrapper(
-    <CustomButton color="secondary" loading rippleDisabled />
+    <CustomButton loading rippleDisabled />
   )
 );
 
