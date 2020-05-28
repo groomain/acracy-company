@@ -39,5 +39,23 @@ export default makeStyles(theme => ({
   titleFreelance: {
     marginBottom: 20,
     marginLeft: "5%"
+  },
+  waitingProfile: {
+    width: '100%',
+    height: 261,
+    backgroundColor: `${theme.palette.secondary.dark}`,
+    borderRadius: 15,
+    textAlign: 'center',
+    padding: 20,
+    marginTop: 10,
+    marginBottom: 150
+  },
+  waitingProfilTitle: {
+    marginTop: 10,
+    marginBottom: 5
+  },
+  waitingProfileText: {
+    color: `${theme.palette.secondary.medium}`,
+    width: "70%"
   }
 }));
