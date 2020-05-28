@@ -1,18 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+
 import { CustomButton } from '../../Button';
-import { Grid, Typography } from '@material-ui/core';
+import { Grid } from '@material-ui/core';
 import CustomTextField from "../../Inputs/CustomTextField";
-import CustomSnackBar from "../../SnackBar";
-import { NavLink } from "react-router-dom";
-import styles from "./styles";
 
 const ConfirmSignupForm = (props) => {
   const { t } = useTranslation();
-  const classes = styles();
-
-  const [open, setOpen] = React.useState(false);
 
   const { confirmSignupLoading } = useSelector(state => ({
     confirmSignupLoading: state.getIn(['app', 'confirmSignupLoading'])
@@ -68,7 +63,6 @@ const ConfirmSignupForm = (props) => {
           style={{ margin: '1rem 0 0 2rem' }}
         />
       </Grid>
-      {/* <NavLink to={'/password'} className={classes.navLink}>{t('forgotPasswordButton')}</NavLink> */}
     </form>
   );
 };

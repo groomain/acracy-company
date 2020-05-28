@@ -35,7 +35,7 @@ CustomButton.propTypes = {
   /**
    * Defines the button's standard + disabled colors
    */
-  theme: PropTypes.oneOf(['primaryButton', 'secondaryButton', 'filledButton', 'asLink', 'disabledFilled', 'disabledOutlined']),
+  theme: PropTypes.oneOf(['primaryButton', 'secondaryButton', 'filledButton', 'asLink', 'disabledFilled', 'disabledOutlined', 'asLinkPrimary']),
   rippleDisabled: PropTypes.bool,
   type: PropTypes.oneOf(['button', 'submit']),
   handleClick: PropTypes.func,

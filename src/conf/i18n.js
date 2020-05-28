@@ -192,7 +192,9 @@ i18n
             placeholder: "000000",
             buttonTitle: "Valider code",
             notReceived: "Vous n'avez rien reçu ?",
-            resendButton: "Renvoyer un code d'activation"
+            resendButton: "Renvoyer un code d'activation",
+            resendCodeMessage: "Vous n'avez rien reçu ?",
+            resendCodeButton: "Renvoyer un code d'activation"
           },
           characters: 'caractères',
           buttonTitles: {

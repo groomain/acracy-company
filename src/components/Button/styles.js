@@ -63,5 +63,17 @@ export default makeStyles(theme => ({
   disabledOutlined: {
     borderColor: theme.palette.secondary.medium,
     color: theme.palette.secondary.medium
-  }
+  },
+  asLinkPrimary: {
+    border: 'none',
+    color: theme.palette.primary.main,
+    textDecoration: 'underline',
+    margin: 0,
+    padding: 0,
+    height: '1.5rem',
+    fontSize: 17,
+    '& span': {
+      justifyContent: 'flex-start'
+    }
+  },
 }));
