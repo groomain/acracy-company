@@ -13,6 +13,7 @@ export const WithDefault = () => (
         <DownloadModal
             open={true}
             files={["Devis 20.05.2020", "Devis 05.04.2020", "Devis 14.02.2020"]}
+            type={"devis"}
         />
     </div>
   )
