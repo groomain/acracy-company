@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import { CustomButton } from '../Button/';
-import { CustomTextField, CustomPasswordField } from "../Inputs/CustomTextField";
-import CustomSelect from "../Inputs/CustomSelect";
-import CustomNavLink from "../CustomNavLink";
-import CustomCheckbox from '../CheckBox';
-import backToTop from '../../utils/backToTop';
+import { CustomButton } from '../../Button/';
+import { CustomTextField, CustomPasswordField } from "../../Inputs/CustomTextField";
+import CustomSelect from "../../Inputs/CustomSelect";
+import CustomNavLink from "../../CustomNavLink";
+import CustomCheckbox from '../../CheckBox';
+import backToTop from '../../../utils/backToTop';
 import { Typography, Grid, Stepper, Step, StepLabel, StepButton, Box, StepConnector } from "@material-ui/core";
 import clsx from 'clsx';
 import styles from './styles';
@@ -56,19 +56,22 @@ const SignUpForm = ({ values, errors, touched, handleBlur, handleChange, handleS
 
   const [disabledFirstStep, setDisabledFirstStep] = useState(true);
 
-  const checkLength = (text) => {
-    return !!text?.length > 0
+  const checkLength = (text, length) => {
+    if (text?.length > length) {
+      return true;
+    }
+    return false;
   };
 
   useEffect(() => {
     if (
-      checkLength(companyName) &&
-      checkLength(firstName) &&
-      checkLength(lastName) &&
-      checkLength(role) &&
-      checkLength(phoneNumber) &&
-      checkLength(phonePrefix) &&
-      checkLength(email)
+      checkLength(companyName, 0) &&
+      checkLength(firstName, 0) &&
+      checkLength(lastName, 0) &&
+      checkLength(role, 0) &&
+      checkLength(phoneNumber, 9) &&
+      checkLength(phonePrefix, 0) &&
+      checkLength(email, 0)
     ) {
       setDisabledFirstStep(false)
     } else {
@@ -80,8 +83,8 @@ const SignUpForm = ({ values, errors, touched, handleBlur, handleChange, handleS
 
   useEffect(() => {
     if (
-      checkLength(password) &&
-      checkLength(confirmPassword) &&
+      checkLength(password, 7) &&
+      checkLength(confirmPassword, 7) &&
       conditions === true
     ) {
       setDisabledSecondStep(false)

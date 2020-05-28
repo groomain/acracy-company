@@ -185,7 +185,17 @@ i18n
             addDocument: "Ajouter un document",
             maxFileSize: "Taille de fichier maximum : 5 Mo"
           },
-          welcomeMessage: "Merci pour votre validation. Votre compte est maintenant actif ! 👏",
+          confirmSignupPage: {
+            title: "Il ne reste plus qu'à confirmer votre email",
+            subtitle: "Un code d'activation à 6 chiffres vient de vous être envoyé à l'adresse suivante :",
+            label: "Entrez le code ci-dessous*",
+            placeholder: "000000",
+            buttonTitle: "Valider code",
+            notReceived: "Vous n'avez rien reçu ?",
+            resendButton: "Renvoyer un code d'activation",
+            resendCodeMessage: "Vous n'avez rien reçu ?",
+            resendCodeButton: "Renvoyer un code d'activation"
+          },
           characters: 'caractères',
           buttonTitles: {
             nextButton: 'Suivant',

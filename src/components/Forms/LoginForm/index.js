@@ -1,9 +1,9 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import { CustomButton } from '../Button/';
+import { CustomButton } from '../../Button';
 import Grid from '@material-ui/core/Grid';
-import CustomTextField, { CustomPasswordField } from "../Inputs/CustomTextField";
+import CustomTextField, { CustomPasswordField } from "../../Inputs/CustomTextField";
 import { NavLink } from "react-router-dom";
 
 import styles from "./styles";

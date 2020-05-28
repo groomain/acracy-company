@@ -34,6 +34,7 @@ export default makeStyles(theme => ({
   sidebarDiv: {
     margin: '0 auto',
     backgroundColor: theme.palette.secondary.sidebarGreen,
+    minHeight: '100vh'
   },
   navLink: {
     color: `${theme.palette.primary.main}`,
@@ -50,5 +51,13 @@ export default makeStyles(theme => ({
     marginTop: 40,
     marginBottom: 40,
     backgroundColor: `${theme.palette.secondary.medium}`,
+  },
+  pannel: {
+    padding: '15.3rem 0 5rem 0',
+    position: 'sticky',
+    top: 0,
+  },
+  pannelLayout: {
+    paddingTop: '10rem'
   }
 }));

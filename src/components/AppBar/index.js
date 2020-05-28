@@ -19,16 +19,18 @@ export const CustomAppBar = (props) => {
   const [welcomeMessageOpen, setWelcomeMessageOpen] = React.useState(true);
   const [errorMessageOpen, setErrorMessageOpen] = React.useState(false);
 
-  const { loginErrorMessage, signupErrorMessage } = useSelector(state => ({
+  const { loginErrorMessage, signupErrorMessage, confirmSignupSuccessMessage, confirmSignupErrorMessage } = useSelector(state => ({
     loginErrorMessage: state.getIn(['app', 'loginErrorMessage']),
     signupErrorMessage: state.getIn(['app', 'signupErrorMessage']),
+    confirmSignupSuccessMessage: state.getIn(['app', 'confirmSignupSuccessMessage']),
+    confirmSignupErrorMessage: state.getIn(['app', 'confirmSignupErrorMessage']),
   }));
 
   useEffect(() => {
-    if (loginErrorMessage || signupErrorMessage) {
+    if (loginErrorMessage || signupErrorMessage || confirmSignupErrorMessage) {
       setErrorMessageOpen(true);
     }
-  }, [loginErrorMessage, signupErrorMessage]);
+  }, [loginErrorMessage, signupErrorMessage, confirmSignupErrorMessage]);
 
   const renderButtons = () => {
     switch (props.path || location.pathname) {
@@ -40,6 +42,7 @@ export const CustomAppBar = (props) => {
           </div>
         );
       case '/signup':
+      case '/confirm-signup':
         return (
           <div className={clsx(classes.div, classes.signup)}>
             <CustomNavLink to={'/login'} text={t('login')} theme="navLink" />
@@ -68,9 +71,10 @@ export const CustomAppBar = (props) => {
 
   const renderSnackbar = () => (
     <>
-      {welcomeMessageOpen && <CustomSnackBar message={t('welcomeMessage')} open={welcomeMessageOpen} setOpen={setWelcomeMessageOpen} />}
+      {confirmSignupSuccessMessage && <CustomSnackBar message={confirmSignupSuccessMessage} open={welcomeMessageOpen} setOpen={setWelcomeMessageOpen} />}
       {signupErrorMessage && <CustomSnackBar message={signupErrorMessage} open={errorMessageOpen} setOpen={setErrorMessageOpen} error />}
       {loginErrorMessage && <CustomSnackBar message={loginErrorMessage} open={errorMessageOpen} setOpen={setErrorMessageOpen} error />}
+      {confirmSignupErrorMessage && <CustomSnackBar message={confirmSignupErrorMessage} open={errorMessageOpen} setOpen={setErrorMessageOpen} error />}
     </>
   );
 

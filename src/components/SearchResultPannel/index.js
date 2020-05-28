@@ -1,15 +1,13 @@
 import React from 'react';
 import { Grid, Typography } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
+
 import SearchIcon from '../../assets/icons/searchIcon';
-import CircleImage from '../CircleImage';
 import styles from './styles';
 
 const SearchResultPannel = ({ searchValue, ...props }) => {
   const classes = styles();
   const { t } = useTranslation();
-
-  const logos = ['', '', '', '', '', ''];
 
   // const queryString = windows.location.search;
   // const urlParams = new URLSearchParams(queryString);
@@ -19,7 +17,7 @@ const SearchResultPannel = ({ searchValue, ...props }) => {
 
   return (
     <Grid container direction="column"
-      justify='space-between' className={classes.pannel}
+      justify='space-between'
     >
       {searchValue && (
         <>
@@ -40,22 +38,7 @@ const SearchResultPannel = ({ searchValue, ...props }) => {
           </Grid>
         </>
       )}
-      <Grid item className={classes.collaboratorsGridItem}>
-        <Typography variant={"h1"}>
-          {t('collaborators')}
-        </Typography>
-      </Grid>
-      <br />
-      <Grid container className={classes.iconContainer}>
-        {logos.map((logo, i) => {
-          return (
-            <Grid key={i} item xs={4} >
-              <CircleImage theme='partner' alt='partner' />
-            </Grid>
-          )
-        })}
-      </Grid>
-    </Grid >
+    </Grid>
   );
 }
 

@@ -13,18 +13,26 @@ import {
   logoutFailure,
   signupSuccess,
   signupFailure,
+  confirmSignupSuccess,
+  confirmSignupFailure,
   requestPasswordCodeFailure,
   requestPasswordCodeSuccess,
   submitNewPasswordSuccess,
   submitNewPasswordFaliure,
   updateUserFailure,
-  updateUserSuccess
+  updateUserSuccess,
+  resendCodeSuccess,
+  resendCodeFailure
 } from './reducer';
 import {
   translateSignInError,
   translateSignUpError,
   translateConfirmForgotPassword,
-  translateForgotPassword
+  translateForgotPassword,
+  translateConfirmSignUpError,
+  translateConfirmSignUpSuccess,
+  translateResendCodeSuccess,
+  translateResendCodeError
 } from '../../utils/cognito';
 import { config } from '../../conf/amplify';
 
@@ -60,6 +68,7 @@ function* doSignIn(action) {
     yield put(loginSuccess());
     yield put(push('/home'));
     yield Auth.currentUserInfo();
+    // yield call(doSignIn, { payload: { email, password } }); // Commented to avoid sending the verification twice
   } catch (err) {
     console.log(err)
     if (err.code === 'UserNotConfirmedException') {
@@ -69,7 +78,6 @@ function* doSignIn(action) {
     }
     yield put(loginFailure(translateSignInError(err.code)));
   }
-  yield put(getCurrentSessionLaunched({ fromPath: from || '/home' }));
 }
 
 function* doSignOut() {
@@ -112,12 +120,34 @@ function* doSignUp(action) {
         'custom:searchCode': searchCode
       }
     });
-    yield call(doSignIn, { payload: { email, password } });
     yield put(signupSuccess());
     yield put(push('/confirm-signup', { email: email }));
   } catch (error) {
     console.log(error);
     yield put(signupFailure(translateSignUpError(error.code)));
+  }
+}
+
+function* doConfirmSignUp(action) {
+  const { username, code } = action.payload;
+  try {
+    yield Auth.confirmSignUp(username, code);
+    yield put(push('/home'));
+    yield put(confirmSignupSuccess(translateConfirmSignUpSuccess()));
+  } catch (error) {
+    console.log(error);
+    yield put(confirmSignupFailure(translateConfirmSignUpError(error.code)));
+  }
+}
+
+function* doResendCode(action) {
+  const email = action.payload;
+  try {
+    yield Auth.resendSignUp(email);
+    yield put(resendCodeSuccess(translateResendCodeSuccess()));
+  } catch (error) {
+    console.log(error);
+    yield put(resendCodeFailure(translateResendCodeError(error.code)));
   }
 }
 
@@ -178,6 +208,8 @@ export default function* rootSaga() {
     takeLatest('App/signupLaunched', doSignUp),
     takeLatest('App/requestPasswordCodeLaunched', doRequestPasswordCode),
     takeLatest('App/submitNewPasswordLaunched', doSubmitNewPassword),
-    takeLatest('App/updateUserLaunched', doUpdateUser)
+    takeLatest('App/updateUserLaunched', doUpdateUser),
+    takeLatest('App/confirmSignupLaunched', doConfirmSignUp),
+    takeLatest('App/resendCodeLaunched', doResendCode),
   ]);
 }

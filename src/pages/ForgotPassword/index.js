@@ -6,7 +6,7 @@ import { Formik } from 'formik';
 import * as Yup from 'yup';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import { RequestForm, SubmitForm } from '../../components/ForgotPasswordForm';
+import { RequestForm, SubmitForm } from '../../components/Forms/ForgotPasswordForm';
 import { requestPasswordCodeLaunched, submitNewPasswordLaunched } from '../../components/App/reducer';
 import styles from './styles';
 import CustomNavLink from '../../components/CustomNavLink';

@@ -13,14 +13,18 @@ const initialState = Immutable.Map({
   logoutLoading: false,
   signupLoading: false,
   signupErrorMessage: null,
+  confirmSignupLoading: false,
+  confirmSignupErrorMessage: null,
+  confirmSignupSuccessMessage: null,
   requestCodeLoading: false,
   requestCodeErrorMessage: null,
   submitPasswordLoading: false,
   submitPasswordErrorMessage: null,
   forgotPasswordStep: 1,
   updateUserLoading: false,
-  updateUserErrorMessage: null
-
+  updateUserErrorMessage: null,
+  resendCodeLoading: false,
+  resendCodeFailure: null
 });
 
 const { actions, reducer } = createSlice({
@@ -70,6 +74,27 @@ const { actions, reducer } = createSlice({
     signupFailure: (state, action) => state
       .set('signupLoading', false)
       .set('signupErrorMessage', action.payload),
+    // CONFIRM SIGNUP
+    confirmSignupLaunched: (state, action) => state
+      .set('confirmSignupLoading', true)
+      .set('confirmSignupErrorMessage', null)
+      .set('confirmSignupSuccessMessage', null),
+    confirmSignupSuccess: (state, action) => state
+      .set('confirmSignupLoading', false)
+      .set('confirmSignupErrorMessage', null)
+      .set('confirmSignupSuccessMessage', action.payload),
+    confirmSignupFailure: (state, action) => state
+      .set('confirmSignupLoading', false)
+      .set('confirmSignupErrorMessage', action.payload)
+      .set('confirmSignupSuccessMessage', null),
+    // RESEND VERIFICATION CODE
+    resendCodeLaunched: (state, action) => state
+      .set('resendCodeLoading', true),
+    resendCodeSuccess: (state, action) => state
+      .set('resendCodeLoading', false)
+      .set('resendcodeSuccessMessage', action.payload),
+    resendCodeFailure: (state, action) => state
+      .set('resendCodeLoading', false),
     // REQUEST PASSWORD CODE
     requestPasswordCodeLaunched: (state, action) => state
       .set('requestCodeLoading', true)
@@ -120,6 +145,9 @@ export const {
   signupLaunched,
   signupSuccess,
   signupFailure,
+  confirmSignupLaunched,
+  confirmSignupSuccess,
+  confirmSignupFailure,
   requestPasswordCodeLaunched,
   requestPasswordCodeSuccess,
   requestPasswordCodeFailure,
@@ -130,7 +158,10 @@ export const {
   updateUserSuccess,
   updateUserFailure,
   handleNextStep,
-  handlePreviousStep
+  handlePreviousStep,
+  resendCodeLaunched,
+  resendCodeSuccess,
+  resendCodeFailure
 } = actions;
 
 export default reducer;
