@@ -51,9 +51,7 @@ export const CustomAppBar = (props) => {
       case '/home':
         return (
           <div className={clsx(classes.div, classes.home)}>
-              <CustomButton theme={"filledButton"} title={
-                  "Nouveau brief"
-              } component={RouterLink} to="/newbrief"  />
+              <CustomButton theme={"filledButton"} title={t('newBrief')} component={RouterLink} to="/newbrief"  />
             <ProfilMenu />
           </div>
         );
@@ -68,7 +66,7 @@ export const CustomAppBar = (props) => {
         case '/newbrief':
         return (
           <div className={clsx(classes.div, classes.newbrief)}>
-            <CustomButton style={{width: 207}} title={"Sauvegarder et fermer"} component={RouterLink} to="/save" />
+            <CustomButton style={{width: 207}} title={t('saveAndClose')} component={RouterLink} to="/save" />
           </div>
         );
       default:
