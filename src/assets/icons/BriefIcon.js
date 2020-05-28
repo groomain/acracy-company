@@ -2,7 +2,7 @@ import React from "react";
 
 export const BriefIcon = (props) => {
     return (
-        <svg xmlns="http://www.w3.org/2000/svg" width="74" height="74" viewBox="0 0 84 84">
+        <svg xmlns="http://www.w3.org/2000/svg" width="74" height="74" viewBox="0 0 84 84" onClick={props.onClick} className={props.className}>
             <g fill="none" fill-rule="evenodd">
                 <path fill="#212A21" d="M12 0h50c6.627 0 12 5.373 12 12v50c0 6.627-5.373 12-12 12H12C5.373 74 0 68.627 0 62V12C0 5.373 5.373 0 12 0z"/>
                 <text fill="#FFF" font-family="BasierCircle-Regular, Basier Circle" font-size="14" letter-spacing="-.368">
