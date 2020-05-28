@@ -11,12 +11,14 @@ import CustomButton from "../Button";
 import CustomNavLink from "../CustomNavLink";
 import CustomSnackBar from "../SnackBar";
 import ProfilMenu from "../ProfilMenu";
+import acracyLogo from "../../assets/icons/logo-acracy.svg";
+import { NavLink } from "react-router-dom";
 
 export const CustomAppBar = (props) => {
   let location = useLocation();
   const { t } = useTranslation();
   const classes = styles();
-  const [welcomeMessageOpen, setWelcomeMessageOpen] = React.useState(true);
+  const [welcomeMessageOpen, setWelcomeMessageOpen] = React.useState(false);
   const [errorMessageOpen, setErrorMessageOpen] = React.useState(false);
 
   const { loginErrorMessage, signupErrorMessage } = useSelector(state => ({
@@ -49,7 +51,9 @@ export const CustomAppBar = (props) => {
       case '/home':
         return (
           <div className={clsx(classes.div, classes.home)}>
-            <CustomButton theme={"filledButton"} title={"Nouveau brief"} />
+              <CustomButton theme={"filledButton"} title={
+                  "Nouveau brief"
+              } component={RouterLink} to="/newbrief"  />
             <ProfilMenu />
           </div>
         );
@@ -57,8 +61,14 @@ export const CustomAppBar = (props) => {
         return (
           <div className={clsx(classes.div, classes.password)}>
             <CustomNavLink to={'/login'} text={t('login')} theme="navLink" />
-            <CustomButton theme={"filledButton"} title={t('signUp')} />
-            <CustomButton title={t('contactUs')} />
+            <CustomButton theme={"filledButton"} title={<NavLink className={classes.navLink} to={'/signup'}>{t('signUp')}</NavLink>}/>
+            <CustomButton title={t('contactUs')} component={RouterLink} to="/contact" />
+          </div>
+        );
+        case '/newbrief':
+        return (
+          <div className={clsx(classes.div, classes.newbrief)}>
+            <CustomButton style={{width: 207}} title={"Sauvegarder et fermer"} component={RouterLink} to="/save" />
           </div>
         );
       default:
@@ -78,10 +88,10 @@ export const CustomAppBar = (props) => {
     <AppBar position="fixed" className={classes.appbar}>
       {renderSnackbar()}
       <Toolbar className={classes.toolbar}>
-        <Typography className={classes.title} variant="h1" noWrap>
-          acracy
-            </Typography>
-        <div className={classes.grow} />
+            <NavLink to={'/'} className={classes.logo}>
+                <img src={acracyLogo} alt="acracyLogo" />
+            </NavLink>
+          {(props.path !== "newbrief" || location.pathname !== "newbrief") && <div className={classes.grow} />}
         {renderButtons()}
       </Toolbar>
     </AppBar>

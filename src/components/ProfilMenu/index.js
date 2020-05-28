@@ -2,10 +2,7 @@ import React from 'react';
 import styles from './styles';
 import Grid from "@material-ui/core/Grid";
 import {NavLink} from "react-router-dom";
-import IconButton from "@material-ui/core/IconButton";
-import {AccountCircle} from "@material-ui/icons";
 import Menu from "@material-ui/core/Menu";
-import MenuItem from "@material-ui/core/MenuItem";
 import ProfilIcon from "../../assets/icons/ProfilIcon";
 import {CloseIcon} from "../../assets/icons/CloseIcon";
 import {DecoIcon} from "../../assets/icons/DecoIcon";
@@ -13,9 +10,11 @@ import {ContactIcon} from "../../assets/icons/ContactIcon";
 import {AdministratifIcon} from "../../assets/icons/AdministratifIcon";
 import profilIcon from "../../assets/icons/profil-roll-out.svg";
 import CustomIconButton from "../IconButton";
-// import {CloseIcon} from "../../assets/icons/CloseIcon";
+import {logoutLaunched} from "../App/reducer";
+import { useDispatch } from 'react-redux';
+import Typography from "@material-ui/core/Typography";
 
-export const ProfilMenu = (props) => {
+export const ProfilMenu = () => {
     const classes = styles();
     const [anchorEl, setAnchorEl] = React.useState(null);
     const isMenuOpen = Boolean(anchorEl);
@@ -24,6 +23,11 @@ export const ProfilMenu = (props) => {
     const [hovered3, setOvered3] = React.useState(false);
     const [hovered4, setOvered4] = React.useState(false);
     const [hovered6, setOvered6] = React.useState(false);
+    const dispatch = useDispatch();
+
+    const logout = (payload) => {
+        dispatch(logoutLaunched(payload));
+    };
 
     const handleProfileMenuOpen = (event) => {
         setAnchorEl(event.currentTarget);
@@ -52,7 +56,7 @@ export const ProfilMenu = (props) => {
                     onMouseLeave={() => setOvered6(false)}/>
                 </Grid>
                 <Grid item container direction={'row'} className={classes.row}>
-                    <NavLink className={classes.navLink} to={'/'}
+                    <NavLink className={classes.navLink} to={'/account'}
                              onMouseEnter={() => setOvered1(true)}
                              onMouseLeave={() => setOvered1(false)}>
                         <ProfilIcon hovered={hovered1}/>
@@ -60,7 +64,7 @@ export const ProfilMenu = (props) => {
                     </NavLink>
                 </Grid>
                 <Grid item container direction={'row'} className={classes.row}>
-                    <NavLink className={classes.navLink} to={'/'}
+                    <NavLink className={classes.navLink} to={'/admin'}
                              onMouseEnter={() => setOvered2(true)}
                              onMouseLeave={() => setOvered2(false)}>
                         <AdministratifIcon hovered={hovered2} className={classes.icon}/>
@@ -68,7 +72,7 @@ export const ProfilMenu = (props) => {
                     </NavLink>
                 </Grid>
                 <Grid item container direction={'row'} className={classes.row}>
-                    <NavLink className={classes.navLink} to={'/'}
+                    <NavLink className={classes.navLink} to={'/contact'}
                              onMouseEnter={() => setOvered3(true)}
                              onMouseLeave={() => setOvered3(false)}>
                         <ContactIcon hovered={hovered3} className={classes.icon}/>
@@ -76,12 +80,12 @@ export const ProfilMenu = (props) => {
                     </NavLink>
                 </Grid>
                 <Grid item container direction={'row'} className={classes.row}>
-                    <NavLink className={classes.navLink} to={'/'}
+                    <Typography className={classes.navLink} onClick={() => logout()}
                              onMouseEnter={() => setOvered4(true)}
                              onMouseLeave={() => setOvered4(false)}>
                         <DecoIcon hovered={hovered4} className={classes.icon}/>
                         Se déconnecter
-                    </NavLink>
+                    </Typography>
                 </Grid>
             </Grid>
         </Menu>
