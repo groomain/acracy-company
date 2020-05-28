@@ -39,5 +39,11 @@ export default makeStyles(theme => ({
   },
   textDone: {
     color: `${theme.palette.primary.main}`
+  },
+  downloadIcon: {
+    '&:hover': {
+      border: '1px solid transparent',
+      cursor: 'pointer'
+    },
   }
 }));
