@@ -50,6 +50,12 @@ export const asLink = () => (
   )
 );
 
+export const asLinkPrimary = () => (
+  ProviderWrapper(
+    <CustomButton theme="asLinkPrimary" title="Valider" rippleDisabled />
+  )
+);
+
 export const withDisabledFilled = () => (
   ProviderWrapper(
     <CustomButton theme="disabledFilled" title="Valider" disabled />

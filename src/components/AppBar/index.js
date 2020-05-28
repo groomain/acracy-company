@@ -42,6 +42,7 @@ export const CustomAppBar = (props) => {
           </div>
         );
       case '/signup':
+      case '/confirm-signup':
         return (
           <div className={clsx(classes.div, classes.signup)}>
             <CustomNavLink to={'/login'} text={t('login')} theme="navLink" />
