@@ -185,6 +185,7 @@ i18n
             addDocument: "Ajouter un document",
             maxFileSize: "Taille de fichier maximum : 5 Mo"
           },
+          welcomeMessage: "Merci pour votre validation. Votre compte est maintenant actif ! 👏",
           characters: 'caractères',
           buttonTitles: {
             nextButton: 'Suivant',

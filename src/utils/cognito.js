@@ -34,9 +34,11 @@ const translateSignInError = (errorCode) => {
     case 'UserNotFoundException':
       return 'Aucun compte avec cet email n\'existe, veuillez vérifier votre email.';
     case 'NotAuthorizedException':
-      return 'Mot de passe incorrect.';
+      return 'Cet e-mail et ce mot de passe ne correspondent pas.';
     case 'FormNotComplete':
       return 'Veuillez saisir votre email et mot de passe.';
+    case 'UserNotConfirmedException':
+      return 'Merci de saisir votre code de validation reçu par email.';
     default:
       return 'Erreur';
   }

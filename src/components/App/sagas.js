@@ -58,8 +58,15 @@ function* doSignIn(action) {
   try {
     yield Auth.signIn(email, password);
     yield put(loginSuccess());
+    yield put(push('/home'));
     yield Auth.currentUserInfo();
   } catch (err) {
+    console.log(err)
+    if (err.code === 'UserNotConfirmedException') {
+      yield Auth.resendSignUp(email)
+      yield put(push('/confirm-signup', { email: email }));
+      yield put(loginFailure(translateSignInError(err.code)));
+    }
     yield put(loginFailure(translateSignInError(err.code)));
   }
   yield put(getCurrentSessionLaunched({ fromPath: from || '/home' }));
