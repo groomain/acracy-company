@@ -20,7 +20,9 @@ import {
   submitNewPasswordSuccess,
   submitNewPasswordFaliure,
   updateUserFailure,
-  updateUserSuccess
+  updateUserSuccess,
+  resendCodeSuccess,
+  resendCodeFailure
 } from './reducer';
 import {
   translateSignInError,
@@ -28,7 +30,9 @@ import {
   translateConfirmForgotPassword,
   translateForgotPassword,
   translateConfirmSignUpError,
-  translateConfirmSignUpSuccess
+  translateConfirmSignUpSuccess,
+  translateResendCodeSuccess,
+  translateResendCodeError
 } from '../../utils/cognito';
 import { config } from '../../conf/amplify';
 
@@ -136,6 +140,17 @@ function* doConfirmSignUp(action) {
   }
 }
 
+function* doResendCode(action) {
+  const email = action.payload;
+  try {
+    yield Auth.resendSignUp(email);
+    yield put(resendCodeSuccess(translateResendCodeSuccess()));
+  } catch (error) {
+    console.log(error);
+    yield put(resendCodeFailure(translateResendCodeError(error.code)));
+  }
+}
+
 function* doRequestPasswordCode(action) {
   console.log(action);
   const { email } = action.payload;
@@ -194,6 +209,7 @@ export default function* rootSaga() {
     takeLatest('App/requestPasswordCodeLaunched', doRequestPasswordCode),
     takeLatest('App/submitNewPasswordLaunched', doSubmitNewPassword),
     takeLatest('App/updateUserLaunched', doUpdateUser),
-    takeLatest('App/confirmSignupLaunched', doConfirmSignUp)
+    takeLatest('App/confirmSignupLaunched', doConfirmSignUp),
+    takeLatest('App/resendCodeLaunched', doResendCode),
   ]);
 }

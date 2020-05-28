@@ -18,6 +18,14 @@ const translateConfirmSignUpSuccess = () => {
   return 'Merci pour votre validation. Votre compte est maintenant actif ! 👏'
 };
 
+const translateResendCodeSuccess = () => {
+  return 'Email renvoyé ! Pensez à vérifier votre dossier spam'
+};
+
+const translateResendCodeError = () => {
+  return 'Error'
+};
+
 const translateConfirmSignUpError = (errorCode) => {
   switch (errorCode) {
     case 'CodeMismatchException':
@@ -90,5 +98,7 @@ export {
   translateSignInError,
   translateForgotPassword,
   translateConfirmForgotPassword,
-  translateConfirmSignUpSuccess
+  translateConfirmSignUpSuccess,
+  translateResendCodeSuccess,
+  translateResendCodeError
 };

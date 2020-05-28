@@ -22,8 +22,9 @@ const initialState = Immutable.Map({
   submitPasswordErrorMessage: null,
   forgotPasswordStep: 1,
   updateUserLoading: false,
-  updateUserErrorMessage: null
-
+  updateUserErrorMessage: null,
+  resendCodeLoading: false,
+  resendCodeFailure: null
 });
 
 const { actions, reducer } = createSlice({
@@ -86,6 +87,14 @@ const { actions, reducer } = createSlice({
       .set('confirmSignupLoading', false)
       .set('confirmSignupErrorMessage', action.payload)
       .set('confirmSignupSuccessMessage', null),
+    // RESEND VERIFICATION CODE
+    resendCodeLaunched: (state, action) => state
+      .set('resendCodeLoading', true),
+    resendCodeSuccess: (state, action) => state
+      .set('resendCodeLoading', false)
+      .set('resendcodeSuccessMessage', action.payload),
+    resendCodeFailure: (state, action) => state
+      .set('resendCodeLoading', false),
     // REQUEST PASSWORD CODE
     requestPasswordCodeLaunched: (state, action) => state
       .set('requestCodeLoading', true)
@@ -149,7 +158,10 @@ export const {
   updateUserSuccess,
   updateUserFailure,
   handleNextStep,
-  handlePreviousStep
+  handlePreviousStep,
+  resendCodeLaunched,
+  resendCodeSuccess,
+  resendCodeFailure
 } = actions;
 
 export default reducer;
