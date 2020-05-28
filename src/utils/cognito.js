@@ -14,10 +14,14 @@ const translateSignUpError = (errorCode) => {
   }
 };
 
+const translateConfirmSignUpSuccess = () => {
+  return 'Merci pour votre validation. Votre compte est maintenant actif ! 👏'
+};
+
 const translateConfirmSignUpError = (errorCode) => {
   switch (errorCode) {
     case 'CodeMismatchException':
-      return 'Code incorrect.';
+      return "Le code n'est pas bon"
     case 'ExpiredCodeException':
       return 'Code expiré.';
     case 'InternalErrorException':
@@ -85,5 +89,6 @@ export {
   translateConfirmSignUpError,
   translateSignInError,
   translateForgotPassword,
-  translateConfirmForgotPassword
+  translateConfirmForgotPassword,
+  translateConfirmSignUpSuccess
 };

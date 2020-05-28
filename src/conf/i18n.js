@@ -194,7 +194,6 @@ i18n
             notReceived: "Vous n'avez rien reçu ?",
             resendButton: "Renvoyer un code d'activation"
           },
-          welcomeMessage: "Merci pour votre validation. Votre compte est maintenant actif ! 👏",
           characters: 'caractères',
           buttonTitles: {
             nextButton: 'Suivant',

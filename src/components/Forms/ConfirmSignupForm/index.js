@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { CustomButton } from '../../Button';
@@ -9,11 +9,12 @@ import { NavLink } from "react-router-dom";
 import styles from "./styles";
 
 const ConfirmSignupForm = (props) => {
+  const { t } = useTranslation();
   const classes = styles();
+
   const [open, setOpen] = React.useState(false);
 
-  const { confirmSignupErrorMessage, confirmSignupLoading } = useSelector(state => ({
-    confirmSignupErrorMessage: state.getIn(['app', 'confirmSignupErrorMessage']),
+  const { confirmSignupLoading } = useSelector(state => ({
     confirmSignupLoading: state.getIn(['app', 'confirmSignupLoading'])
   }));
 
@@ -27,16 +28,26 @@ const ConfirmSignupForm = (props) => {
   } = props;
   const { code, email } = values;
 
-  const { t } = useTranslation();
+  const [disabled, setDisabled] = useState(true);
+
+  const checkLength = (text) => {
+    if (text?.length >= 6) {
+      return true
+    }
+    return false
+  };
+
+  useEffect(() => {
+    if (checkLength(code)) {
+      setDisabled(false)
+    } else {
+      setDisabled(true)
+    }
+  }, [code, email]);
 
   return (
-    <Grid
-      container
-      direction="column"
-      justify="center"
-      className={classes.container}
-    >
-      <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit}>
+      <Grid container alignItems='center'>
         <CustomTextField
           id="code"
           type='text'
@@ -48,18 +59,17 @@ const ConfirmSignupForm = (props) => {
           error={!!touched.code && !!errors.code}
         />
 
-        {/* <NavLink to={'/password'} className={classes.navLink}>{t('forgotPasswordButton')}</NavLink> */}
-        <Grid container direction={'row'} justify={'flex-end'}>
-          <CustomButton
-            type="submit"
-            loading={confirmSignupLoading}
-            title={t('confirmSignupPage.buttonTitle')}
-            disabled={false}
-          />
-        </Grid>
-      </form>
-      {confirmSignupErrorMessage && <CustomSnackBar message={confirmSignupErrorMessage} open={open} setOpen={setOpen} />}
-    </Grid>
+        <CustomButton
+          type="submit"
+          loading={confirmSignupLoading}
+          title={t('confirmSignupPage.buttonTitle')}
+          theme={disabled ? 'disabledOutlined' : 'primaryButton'}
+          disabled={disabled}
+          style={{ margin: '1rem 0 0 2rem' }}
+        />
+      </Grid>
+      {/* <NavLink to={'/password'} className={classes.navLink}>{t('forgotPasswordButton')}</NavLink> */}
+    </form>
   );
 };
 

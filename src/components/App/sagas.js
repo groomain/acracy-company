@@ -27,7 +27,8 @@ import {
   translateSignUpError,
   translateConfirmForgotPassword,
   translateForgotPassword,
-  translateConfirmSignUpError
+  translateConfirmSignUpError,
+  translateConfirmSignUpSuccess
 } from '../../utils/cognito';
 import { config } from '../../conf/amplify';
 
@@ -114,7 +115,6 @@ function* doSignUp(action) {
         'custom:searchCode': searchCode
       }
     });
-    yield call(doSignIn, { payload: { email, password } });
     yield put(signupSuccess());
     yield put(push('/confirm-signup', { email: email }));
   } catch (error) {
@@ -128,6 +128,8 @@ function* doConfirmSignUp(action) {
   try {
     yield Auth.confirmSignUp(username, code);
     yield put(confirmSignupSuccess());
+    yield put(push('/home'));
+    yield put(confirmSignupSuccess(translateConfirmSignUpSuccess()));
   } catch (error) {
     console.log(error);
     yield put(confirmSignupFailure(translateConfirmSignUpError(error.code)));
