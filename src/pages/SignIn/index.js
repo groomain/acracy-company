@@ -57,7 +57,7 @@ const SignInPage = () => {
           />
           <Divider className={classes.divider} />
           <Typography variant={'body1'} className={classes.typo} >{t('haveAccount')}</Typography>
-          <NavLink to={'/password'} className={classes.navLink}>{t('signUpButton')}</NavLink>
+          <NavLink to={'/signup'} className={classes.navLink}>{t('signUpButton')}</NavLink>
         </Grid>
       </Grid>
     </Grid>

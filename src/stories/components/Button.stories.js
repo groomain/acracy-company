@@ -49,3 +49,15 @@ export const asLink = () => (
     <CustomButton theme="asLink" title="Valider" rippleDisabled />
   )
 );
+
+export const withDisabledFilled = () => (
+  ProviderWrapper(
+    <CustomButton theme="disabledFilled" title="Valider" disabled />
+  )
+);
+
+export const withDisabledOutlined = () => (
+  ProviderWrapper(
+    <CustomButton theme="disabledOutlined" title="Valider" disabled />
+  )
+);

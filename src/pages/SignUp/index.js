@@ -20,7 +20,12 @@ const SignUpPage = () => {
   const initialValues = {
     email: '',
     password: '',
-    confirmPassword: ''
+    confirmPassword: '',
+    phonePrefix: 'Fr : +33',
+    searchValue: 'Social Media Strategist',
+    searchType: '',
+    searchCode: '',
+    conditions: false
   };
 
   // Form Submitting Function
@@ -33,6 +38,24 @@ const SignUpPage = () => {
     email: Yup
       .string()
       .required(),
+    companyName: Yup
+      .string()
+      .required(),
+    firstName: Yup
+      .string()
+      .required(),
+    lastName: Yup
+      .string()
+      .required(),
+    role: Yup
+      .string()
+      .required(),
+    phoneNumber: Yup
+      .string()
+      .required(),
+    phonePrefix: Yup
+      .string()
+      .required(),
     password: Yup
       .string()
       .required(),
@@ -41,7 +64,10 @@ const SignUpPage = () => {
       .test('password-match', t('passwordMismatch'), function (confPass) {
         return confPass === this.parent.password;
       })
-      .required()
+      .required(),
+    conditions: Yup
+      .bool()
+      .required(),
   });
 
   return (
@@ -61,7 +87,9 @@ const SignUpPage = () => {
           />
         </Main>
         <Sidebar>
-          <SearchResultPannel />
+          <SearchResultPannel
+            searchValue={initialValues.searchValue}
+          />
         </Sidebar>
       </Grid>
     </>
