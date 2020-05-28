@@ -9,6 +9,7 @@ import Sidebar from '../../components/Layout/Sidebar';
 import Main from '../../components/Layout/Main';
 import SignUpForm from '../../components/Forms/SignUpForm';
 import SearchResultPannel from '../../components/SearchResultPannel';
+import PartnersList from '../../components/PartnersList';
 import styles from '../../utils/styles';
 
 const SignUpPage = () => {
@@ -51,7 +52,7 @@ const SignUpPage = () => {
       .string()
       .required(),
     phoneNumber: Yup
-      .string()
+      .number()
       .required(),
     phonePrefix: Yup
       .string()
@@ -87,9 +88,12 @@ const SignUpPage = () => {
           />
         </Main>
         <Sidebar>
-          <SearchResultPannel
-            searchValue={initialValues.searchValue}
-          />
+          <Grid className={classes.pannel}>
+            <SearchResultPannel
+              searchValue={initialValues.searchValue}
+            />
+            <PartnersList />
+          </Grid>
         </Sidebar>
       </Grid>
     </>

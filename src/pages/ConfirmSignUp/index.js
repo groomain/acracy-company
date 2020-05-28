@@ -54,29 +54,29 @@ const ConfirmSignUpPage = () => {
         container
         direction="row"
         justify="center"
-        alignItems="center"
-        className={classes.connectionDiv}
       >
         <Main>
-          <Box my={3}>
+          <Grid className={sharedClasses.pannelLayout} >
             <Typography variant="h1">{t('confirmSignupPage.title')}</Typography>
             <Box my={2}>
               <Typography variant="body1">{t('confirmSignupPage.subtitle')} <span className={classes.email}>{email}</span></Typography>
             </Box>
-          </Box>
-          <Formik
-            render={props => <ConfirmSignupForm {...props} />}
-            initialValues={initialValues}
-            validationSchema={ValidationSchema}
-            onSubmit={confirmSignup}
-          />
-          <Divider className={sharedClasses.divider} />
-          <Typography variant={'body1'} className={classes.typo} >{t('confirmSignupPage.resendCodeMessage')}</Typography>
-          <CustomButton theme="asLinkPrimary" title={t('confirmSignupPage.resendCodeButton')} rippleDisabled onClick={email => resendCode(email)} />
-          {resendcodeSuccessMessage && <Typography variant="body1">{resendcodeSuccessMessage}</Typography>}
+            <Formik
+              render={props => <ConfirmSignupForm {...props} />}
+              initialValues={initialValues}
+              validationSchema={ValidationSchema}
+              onSubmit={confirmSignup}
+            />
+            <Divider className={sharedClasses.divider} />
+            <Typography variant={'body1'} className={classes.typo} >{t('confirmSignupPage.resendCodeMessage')}</Typography>
+            <CustomButton theme="asLinkPrimary" title={t('confirmSignupPage.resendCodeButton')} rippleDisabled onClick={email => resendCode(email)} />
+            {resendcodeSuccessMessage && <Typography variant="body1">{resendcodeSuccessMessage}</Typography>}
+          </Grid>
         </Main>
         <Sidebar>
-          {searchValue && <SearchResultPannel searchValue={searchValue} />}
+          <Grid className={sharedClasses.pannelLayout}>
+            {searchValue && <SearchResultPannel searchValue={searchValue} />}
+          </Grid>
         </Sidebar>
       </Grid>
     </>
