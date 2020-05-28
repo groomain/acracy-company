@@ -68,6 +68,7 @@ function* doSignIn(action) {
     yield put(loginSuccess());
     yield put(push('/home'));
     yield Auth.currentUserInfo();
+    // yield call(doSignIn, { payload: { email, password } }); // Commented to avoid sending the verification twice
   } catch (err) {
     console.log(err)
     if (err.code === 'UserNotConfirmedException') {
@@ -131,7 +132,6 @@ function* doConfirmSignUp(action) {
   const { username, code } = action.payload;
   try {
     yield Auth.confirmSignUp(username, code);
-    yield put(confirmSignupSuccess());
     yield put(push('/home'));
     yield put(confirmSignupSuccess(translateConfirmSignUpSuccess()));
   } catch (error) {
