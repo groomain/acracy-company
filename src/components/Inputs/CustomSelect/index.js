@@ -7,10 +7,10 @@ import CustomCheckbox from '../../CheckBox';
 export const CustomSelect = ({ label, value, placeholder, type, error, isMulti, optionsValues, ...props }) => {
   const classes = styles();
 
-  const [options, setOptions] = useState([]);
-
   const [open, setOpen] = useState(false);
 
+  // Keep state + handleChange for the multi-select component for now
+  const [options, setOptions] = useState([]);
   const handleChange = (event) => {
     setOptions(event.target.value);
   };
@@ -23,11 +23,11 @@ export const CustomSelect = ({ label, value, placeholder, type, error, isMulti, 
         fullWidth
         multiple={isMulti}
         renderValue={isMulti && ((selected) => selected.join(' '))}
-        value={options}
+        value={isMulti ? options : value}
         error={error}
         onOpen={() => setOpen(true)}
         onClose={() => setOpen(false)}
-        onChange={handleChange}
+        onChange={isMulti && handleChange}
         classes={{ root: open ? `${classes.root} ${classes.open}` : classes.root }}
         disableUnderline
         IconComponent={KeyboardArrowDownRoundedIcon}

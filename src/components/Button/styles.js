@@ -54,5 +54,14 @@ export default makeStyles(theme => ({
     border: 'none',
     textDecoration: 'underline',
     margin: 0
+  },
+  disabledFilled: {
+    background: theme.palette.secondary.medium,
+    border: 'none',
+    color: `${theme.palette.secondary.black} !important`
+  },
+  disabledOutlined: {
+    borderColor: theme.palette.secondary.medium,
+    color: theme.palette.secondary.medium
   }
 }));

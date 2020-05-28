@@ -58,7 +58,7 @@ function App() {
       {/*</div>*/}
       {/*/!* __NavbarEnd__ *!/*/}
       {
-          !isAuthenticated && <CustomAppBar />
+        !isAuthenticated && <CustomAppBar />
       }
       <ProgressBar />
       {
