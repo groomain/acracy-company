@@ -3,18 +3,20 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
-import Grid from '@material-ui/core/Grid';
+
+import { Grid } from '@material-ui/core';
 import { RequestForm, SubmitForm } from '../../components/Forms/ForgotPasswordForm';
 import { requestPasswordCodeLaunched, submitNewPasswordLaunched } from '../../components/App/reducer';
-import styles from './styles';
+import sharedStyles from '../../utils/styles';
 
 const ForgotPassword = () => {
-  const classes = styles();
+  const sharedClasses = sharedStyles();
+  const { t } = useTranslation();
   const dispatch = useDispatch();
+
   const { forgotPasswordStep } = useSelector(state => ({
     forgotPasswordStep: state.getIn(['app', 'forgotPasswordStep'])
-  }));
-  const { t } = useTranslation();
+  }))
 
   //  Forms Data
   const RequestInitialValues = {
@@ -42,7 +44,6 @@ const ForgotPassword = () => {
       .string()
       .email('emailNotValid')
       .required('emailRequired')
-
   });
 
   const SubmissionValidationSchema = Yup.object().shape({
@@ -84,11 +85,7 @@ const ForgotPassword = () => {
   };
 
   return (
-    <Grid
-      container
-      direction="column"
-      justify="center"
-      className={classes.container}
+    <Grid className={`${sharedClasses.pannelLayout} ${sharedClasses.container}`}
     >
       <Grid item xs={7} container>
         <Grid item xs={3} />

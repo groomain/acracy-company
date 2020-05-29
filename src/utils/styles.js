@@ -61,6 +61,13 @@ export default makeStyles(theme => ({
     top: 0,
   },
   pannelLayout: {
-    paddingTop: '10rem'
+    paddingTop: '10rem',
+    paddingBottom: '10rem'
+  },
+  midWidth: {
+    width: '50%'
+  },
+  email: {
+    color: theme.palette.primary.main
   }
 }));

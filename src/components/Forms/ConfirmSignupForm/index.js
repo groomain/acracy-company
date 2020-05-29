@@ -28,7 +28,7 @@ const ConfirmSignupForm = (props) => {
   const [disabled, setDisabled] = useState(true);
 
   useEffect(() => {
-    if (checkLength(code, 6)) {
+    if (checkLength(code, 5)) {
       setDisabled(false)
     } else {
       setDisabled(true)
