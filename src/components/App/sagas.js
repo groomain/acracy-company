@@ -171,6 +171,7 @@ function* doSubmitNewPassword(action) {
   try {
     yield Auth.forgotPasswordSubmit(email, code, password);
     yield put(submitNewPasswordSuccess());
+    yield put(push('/home'));
   } catch (error) {
     yield put(submitNewPasswordFaliure(translateConfirmForgotPassword(error.code)));
   }
