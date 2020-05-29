@@ -8,16 +8,28 @@ const translateSignUpError = (errorCode) => {
     case 'TooManyRequestsException':
       return 'Trop de requêtes effectué.';
     case 'UsernameExistsException':
-      return 'Cet email est déjà utilisé.';
+      return 'Cet email existe déjà';
     default:
       return 'Erreur';
   }
 };
 
+const translateConfirmSignUpSuccess = () => {
+  return 'Merci pour votre validation. Votre compte est maintenant actif ! 👏'
+};
+
+const translateResendCodeSuccess = () => {
+  return 'Email renvoyé ! Pensez à vérifier votre dossier spam'
+};
+
+const translateResendCodeError = () => {
+  return 'Error'
+};
+
 const translateConfirmSignUpError = (errorCode) => {
   switch (errorCode) {
     case 'CodeMismatchException':
-      return 'Code incorrect.';
+      return "Le code n'est pas bon"
     case 'ExpiredCodeException':
       return 'Code expiré.';
     case 'InternalErrorException':
@@ -34,9 +46,11 @@ const translateSignInError = (errorCode) => {
     case 'UserNotFoundException':
       return 'Aucun compte avec cet email n\'existe, veuillez vérifier votre email.';
     case 'NotAuthorizedException':
-      return 'Mot de passe incorrect.';
+      return 'Cet e-mail et ce mot de passe ne correspondent pas.';
     case 'FormNotComplete':
       return 'Veuillez saisir votre email et mot de passe.';
+    case 'UserNotConfirmedException':
+      return 'Merci de saisir votre code de validation reçu par email.';
     default:
       return 'Erreur';
   }
@@ -83,5 +97,8 @@ export {
   translateConfirmSignUpError,
   translateSignInError,
   translateForgotPassword,
-  translateConfirmForgotPassword
+  translateConfirmForgotPassword,
+  translateConfirmSignUpSuccess,
+  translateResendCodeSuccess,
+  translateResendCodeError
 };

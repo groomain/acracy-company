@@ -26,6 +26,10 @@ export default makeStyles(theme => ({
     background: 'none',
     fontWeight: 600,
     color: theme.palette.secondary.black
+  },
+  createOption: {
+    color: theme.palette.secondary.medium,
+    fontFamily: "Basier Regular"
   }
 }));
 

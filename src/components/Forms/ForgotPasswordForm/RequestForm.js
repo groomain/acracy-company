@@ -3,9 +3,9 @@ import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { Grid, Typography } from '@material-ui/core';
 
-import { CustomButton } from '../Button';
-import CustomTextField from '../Inputs/CustomTextField';
-import styles from '../../utils/styles';
+import styles from '../../../utils/styles';
+import { CustomButton } from '../../Button';
+import CustomTextField from '../../Inputs/CustomTextField';
 
 const RequestForm = (props) => {
   const { t } = useTranslation();

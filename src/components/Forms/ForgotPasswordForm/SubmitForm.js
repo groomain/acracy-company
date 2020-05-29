@@ -1,10 +1,9 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import { CustomButton } from '../Button/';
-import Grid from '@material-ui/core/Grid';
-import CustomTextField, { CustomPasswordField } from "../Inputs/CustomTextField";
-import Typography from "@material-ui/core/Typography";
+import { CustomButton } from '../../Button/';
+import { Grid, Typography } from '@material-ui/core/';
+import CustomTextField, { CustomPasswordField } from "../../Inputs/CustomTextField";
 
 const SubmitForm = (props) => {
   const { t } = useTranslation();
