@@ -14,7 +14,6 @@ const LoginForm = (props) => {
   const classes = styles();
 
   const { loginLoading } = useSelector(state => ({
-    loginErrorMessage: state.getIn(['app', 'loginErrorMessage']),
     loginLoading: state.getIn(['app', 'loginLoading'])
   }));
 
@@ -30,11 +29,10 @@ const LoginForm = (props) => {
   } = props;
   const { email, password } = values;
 
-
   useEffect(() => {
     if (
       checkLength(email, 0) &&
-      checkLength(password, 8)
+      checkLength(password, 7)
     ) {
       setDisabled(false);
     } else {
