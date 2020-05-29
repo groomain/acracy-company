@@ -6,6 +6,8 @@ import { CustomButton } from '../../Button';
 import { Grid } from '@material-ui/core';
 import CustomTextField from "../../Inputs/CustomTextField";
 
+import { checkLength } from '../../../utils/validationChecks';
+
 const ConfirmSignupForm = (props) => {
   const { t } = useTranslation();
 
@@ -25,15 +27,8 @@ const ConfirmSignupForm = (props) => {
 
   const [disabled, setDisabled] = useState(true);
 
-  const checkLength = (text) => {
-    if (text?.length >= 6) {
-      return true
-    }
-    return false
-  };
-
   useEffect(() => {
-    if (checkLength(code)) {
+    if (checkLength(code, 6)) {
       setDisabled(false)
     } else {
       setDisabled(true)

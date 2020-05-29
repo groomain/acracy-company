@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+import clsx from 'clsx';
+
 import { CustomButton } from '../../Button/';
 import { CustomTextField, CustomPasswordField } from "../../Inputs/CustomTextField";
 import CustomSelect from "../../Inputs/CustomSelect";
 import CustomNavLink from "../../CustomNavLink";
 import CustomCheckbox from '../../CheckBox';
 import backToTop from '../../../utils/backToTop';
+import { checkLength } from '../../../utils/validationChecks';
 import { Typography, Grid, Stepper, Step, StepLabel, StepButton, Box, StepConnector } from "@material-ui/core";
-import clsx from 'clsx';
 import styles from './styles';
 
 const SignUpForm = ({ values, errors, touched, handleBlur, handleChange, handleSubmit }) => {
@@ -55,13 +57,6 @@ const SignUpForm = ({ values, errors, touched, handleBlur, handleChange, handleS
   };
 
   const [disabledFirstStep, setDisabledFirstStep] = useState(true);
-
-  const checkLength = (text, length) => {
-    if (text?.length > length) {
-      return true;
-    }
-    return false;
-  };
 
   useEffect(() => {
     if (

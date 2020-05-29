@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { Grid, Typography } from '@material-ui/core';
@@ -6,6 +6,8 @@ import { Grid, Typography } from '@material-ui/core';
 import styles from '../../../utils/styles';
 import { CustomButton } from '../../Button';
 import CustomTextField from '../../Inputs/CustomTextField';
+
+import { checkLength } from '../../../utils/validationChecks';
 
 const RequestForm = (props) => {
   const { t } = useTranslation();
@@ -24,6 +26,16 @@ const RequestForm = (props) => {
     handleSubmit
   } = props;
   const { email } = values;
+
+  const [disabled, setDisabled] = useState(true);
+
+  useEffect(() => {
+    if (checkLength(email, 0)) {
+      setDisabled(false);
+    } else {
+      setDisabled(true)
+    }
+  }, [email])
 
   return (
     <Grid
@@ -51,7 +63,8 @@ const RequestForm = (props) => {
               type="submit"
               loading={requestCodeLoading}
               title={t('buttonTitles.validate')}
-              theme={"filledButton"}
+              theme={disabled ? "disabledFilled" : "filledButton"}
+              disabled={disabled}
             />
           </Grid>
         </form>
