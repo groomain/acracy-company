@@ -76,9 +76,9 @@ const translateForgotPassword = (errorCode) => {
 const translateConfirmForgotPassword = (errorCode) => {
   switch (errorCode) {
     case 'PasswordDoNotMatch':
-      return 'Vos mot de passe ne correspondent pas.';
+      return 'Les mots de passe doivent être identiques';
     case 'CodeMismatchException':
-      return 'Code incorrect.';
+      return 'Mauvais code, revérifiez votre email';
     case 'ExpiredCodeException':
       return 'Code expiré.';
     case 'NetworkError':
