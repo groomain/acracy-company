@@ -61,7 +61,8 @@ const translateForgotPassword = (errorCode) => {
     case 'NetworkError':
       return 'Veuillez vérifier votre connection internet.';
     case 'UserNotFoundException':
-      return 'Aucun compte avec cet email n\'existe, veuillez vérifier votre email.';
+    case 'InvalidParameterException':
+      return "Cet email n'est pas connu ou pas encore validé";
     case 'FormNotComplete':
       return 'Veuillez saisir votre email.';
     case 'LimitExceededException':

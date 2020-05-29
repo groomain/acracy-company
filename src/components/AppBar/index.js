@@ -19,18 +19,19 @@ export const CustomAppBar = (props) => {
   const [welcomeMessageOpen, setWelcomeMessageOpen] = React.useState(true);
   const [errorMessageOpen, setErrorMessageOpen] = React.useState(false);
 
-  const { loginErrorMessage, signupErrorMessage, confirmSignupSuccessMessage, confirmSignupErrorMessage } = useSelector(state => ({
+  const { loginErrorMessage, signupErrorMessage, confirmSignupSuccessMessage, confirmSignupErrorMessage, requestCodeErrorMessage } = useSelector(state => ({
     loginErrorMessage: state.getIn(['app', 'loginErrorMessage']),
     signupErrorMessage: state.getIn(['app', 'signupErrorMessage']),
     confirmSignupSuccessMessage: state.getIn(['app', 'confirmSignupSuccessMessage']),
     confirmSignupErrorMessage: state.getIn(['app', 'confirmSignupErrorMessage']),
+    requestCodeErrorMessage: state.getIn(['app', 'requestCodeErrorMessage'])
   }));
 
   useEffect(() => {
-    if (loginErrorMessage || signupErrorMessage || confirmSignupErrorMessage) {
+    if (loginErrorMessage || signupErrorMessage || confirmSignupErrorMessage || requestCodeErrorMessage) {
       setErrorMessageOpen(true);
     }
-  }, [loginErrorMessage, signupErrorMessage, confirmSignupErrorMessage]);
+  }, [loginErrorMessage, signupErrorMessage, confirmSignupErrorMessage, requestCodeErrorMessage]);
 
   const renderButtons = () => {
     switch (props.path || location.pathname) {
@@ -75,6 +76,7 @@ export const CustomAppBar = (props) => {
       {signupErrorMessage && <CustomSnackBar message={signupErrorMessage} open={errorMessageOpen} setOpen={setErrorMessageOpen} error />}
       {loginErrorMessage && <CustomSnackBar message={loginErrorMessage} open={errorMessageOpen} setOpen={setErrorMessageOpen} error />}
       {confirmSignupErrorMessage && <CustomSnackBar message={confirmSignupErrorMessage} open={errorMessageOpen} setOpen={setErrorMessageOpen} error />}
+      {requestCodeErrorMessage && <CustomSnackBar message={requestCodeErrorMessage} open={errorMessageOpen} setOpen={setErrorMessageOpen} error />}
     </>
   );
 
