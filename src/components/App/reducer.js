@@ -92,17 +92,18 @@ const { actions, reducer } = createSlice({
       .set('resendCodeLoading', true),
     resendCodeSuccess: (state, action) => state
       .set('resendCodeLoading', false)
-      .set('resendcodeSuccessMessage', action.payload),
+      .set('resendCodeSuccessMessage', action.payload),
     resendCodeFailure: (state, action) => state
       .set('resendCodeLoading', false),
     // REQUEST PASSWORD CODE
     requestPasswordCodeLaunched: (state, action) => state
       .set('requestCodeLoading', true)
-      .set('requestCodeErrorMessage', null)
-      .set('forgotPasswordStep', 1),
+      .set('requestCodeErrorMessage', null),
+    // .set('forgotPasswordStep', 1), // Commented out to fix a redirection error
     requestPasswordCodeSuccess: (state, action) => state
       .set('requestCodeLoading', false)
       .set('requestCodeErrorMessage', null)
+      .set('resendCodeSuccessMessage', action.payload)
       .set('forgotPasswordStep', 2),
     requestPasswordCodeFailure: (state, action) => state
       .set('requestCodeLoading', false)

@@ -157,7 +157,7 @@ function* doRequestPasswordCode(action) {
 
   try {
     yield Auth.forgotPassword(email);
-    yield put(requestPasswordCodeSuccess());
+    yield put(requestPasswordCodeSuccess(translateResendCodeSuccess()));
   } catch (error) {
     yield put(requestPasswordCodeFailure(translateForgotPassword(error.code)));
   }
