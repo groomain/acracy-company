@@ -35,6 +35,8 @@ import {
   translateResendCodeError
 } from '../../utils/cognito';
 import { config } from '../../conf/amplify';
+import { launchPostFunction } from '../../utils/services/apiCalls';
+import { getPhonePrefixCode } from '../../utils/services/format';
 
 function* getCurrentSession(action) {
   const { fromPath } = action.payload;
@@ -49,6 +51,9 @@ function* getCurrentSession(action) {
         email: userInfo.attributes.email
       }
     });
+
+    // userDynamo = userDynamo.entity[0] || userDynamo.entity;
+    // console.log('function*getCurrentSession -> userDynamo', userDynamo);
 
     yield put(getCurrentSessionSuccess({ userInfo, userDynamo }));
     if (fromPath) {
@@ -65,10 +70,72 @@ function* doSignIn(action) {
 
   try {
     yield Auth.signIn(email, password);
-    yield put(loginSuccess());
-    yield put(push('/home'));
-    yield Auth.currentUserInfo();
-    // yield call(doSignIn, { payload: { email, password } }); // Commented to avoid sending the verification twice
+    const postSessionsConfig = {
+      endpoint: '/sessions',
+      body: {
+        email: email
+      }
+    }
+    const sessionsResponse = yield launchPostFunction(postSessionsConfig);
+
+    // check if sessionsResponse is ok
+    // check if loginSuccess + push are ok in each scope
+
+    const userAttributes = sessionsResponse?.attributes;
+    if (sessionsResponse?.companyId && sessionsResponse?.employeeId) {
+      if (userAttributes?.searchCode && userAttributes?.searchType && userAttributes?.searchValue) {
+        const postLeadsOptions = {
+          endpoint: '/leads',
+          body: {
+            companyId: sessionsResponse?.companyId,
+            searchCode: userAttributes?.searchCode,
+            searchType: userAttributes?.searchType,
+            searchValue: userAttributes?.searchValue
+          }
+        }
+        try {
+          sessionsResponse.leads = yield launchPostFunction(postLeadsOptions);
+        } catch (error) {
+          console.log(error);
+          yield put(loginFailure(translateSignInError(error.code)));
+        }
+      }
+      yield put(loginSuccess());
+      yield put(push('/home'));
+    } else {
+      if (!sessionsResponse?.companyId) {
+        try {
+          const postCompaniesOptions = {
+            endpoint: '/companies',
+            body: {
+              attributes: userAttributes
+            }
+          }
+          sessionsResponse.companyId = yield launchPostFunction(postCompaniesOptions);
+        } catch (error) {
+          console.log(error);
+          yield put(loginFailure(translateSignInError(error.code)));
+        }
+        yield put(loginSuccess());
+        yield put(push('/home'));
+      } else if (sessionsResponse?.companyId && !sessionsResponse?.employeeId) {
+        try {
+          const postEmployeesOptions = {
+            endpoint: '/employees',
+            body: {
+              companyId: sessionsResponse?.companyId,
+              attributes: userAttributes
+            }
+          }
+          sessionsResponse.employeeId = yield launchPostFunction(postEmployeesOptions);
+        } catch (error) {
+          console.log(error);
+          yield put(loginFailure(translateSignInError(error.code)));
+        }
+        yield put(loginSuccess());
+        yield put(push('/home'));
+      }
+    }
   } catch (err) {
     console.log(err)
     if (err.code === 'UserNotConfirmedException') {
@@ -92,15 +159,7 @@ function* doSignOut() {
 
 function* doSignUp(action) {
   const { email, password, companyName, firstName, lastName, role, phonePrefix, phoneNumber, searchType, searchValue, searchCode } = action.payload;
-  /**
-   * 
-   * @param {string} prefix - A string formatted as "Fr : +33"
-   * @returns {string} - New string containing everything after the '+' character to only send the number part
-   */
-  const getPhonePrefixCode = prefix => {
-    const regex = /^(.*?)[+]/;
-    return prefix.replace(regex, '');
-  };
+
   const prefixCode = getPhonePrefixCode(phonePrefix);
 
   try {

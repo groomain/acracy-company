@@ -23,7 +23,7 @@ const translateResendCodeSuccess = () => {
 };
 
 const translateResendCodeError = () => {
-  return 'Error'
+  return 'Erreur'
 };
 
 const translateConfirmSignUpError = (errorCode) => {
@@ -52,7 +52,7 @@ const translateSignInError = (errorCode) => {
     case 'UserNotConfirmedException':
       return 'Merci de saisir votre code de validation reçu par email.';
     default:
-      return 'Erreur';
+      return 'Uune erreur est survenue. Merci de réessayer';
   }
 };
 
