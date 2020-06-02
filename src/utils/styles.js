@@ -52,12 +52,22 @@ export default makeStyles(theme => ({
     marginBottom: 40,
     backgroundColor: `${theme.palette.secondary.medium}`,
   },
+  container: {
+    paddingTop: 30
+  },
   pannel: {
     padding: '15.3rem 0 5rem 0',
     position: 'sticky',
     top: 0,
   },
   pannelLayout: {
-    paddingTop: '10rem'
+    paddingTop: '10rem',
+    paddingBottom: '10rem'
+  },
+  midWidth: {
+    width: '50%'
+  },
+  email: {
+    color: theme.palette.primary.main
   }
 }));

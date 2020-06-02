@@ -72,8 +72,7 @@ i18n
             label: "Key profile expertise",
             fieldTitleStarted: "Change my selection",
             fieldTitleNewSelection: "Start my selection",
-            minMaxInfo: "5 maximum, including 3 high priority",
-            button: "Send"
+            minMaxInfo: "5 maximum, including 3 high priority"
           },
           upload: {
             title: "Shared documents",
@@ -108,10 +107,19 @@ i18n
           requestCodeButton: 'Envoyer',
           emailNotValid: 'Email non valide',
           code: 'Code',
-          submitNewPasswordButton: 'Confirmer',
+          submitNewPasswordButton: 'Confirmer changement',
           codeRequired: 'Veuillez renseigner votre code',
-          forgotPasswordPageTitle: 'Reinitialisez votre mot de passe',
-          forgotPasswordButton: 'Mot de passe oublié ?',
+          forgotPassword: {
+            forgotPasswordPageTitle: 'Mot de passe oublié',
+            forgotPasswordButton: 'Mot de passe oublié ?',
+            forgotPasswordSubtitle: 'Saisissez l’email associé à votre compte afin que nous puissions vous envoyer un code de réinitialisation de votre mot de passe.',
+            newPasswordTitle: 'Nouveau mot de passe',
+            newPasswordSubtitle: "Un code de vérification à 6 chiffres vient de vous être envoyé à l'adresse suivante : ",
+            newPasswordPlaceholder: 'Entrez un mot de passe',
+            confirmPasswordLabel: 'Confirmation du nouveau mot de passe',
+            confirmPasswordPlaceholder: 'Confirmez votre nouveau mot de passe',
+            resendVerificationCodeButton: 'Renvoyer un code de vérification'
+          },
           firstLoginPageTitle: 'Vous y êtes presque ! Renseignez ces informations pour completer votre inscription',
           updateUserError: 'Une erreur est survenue',
           firstName: 'Prénom',
@@ -175,8 +183,7 @@ i18n
             label: "Expertises clés du profil",
             fieldTitleStarted: "Modifier ma sélection",
             fieldTitleNewSelection: "Démarrer ma sélection",
-            minMaxInfo: "5 maximum dont 3 prioritaires",
-            button: "Valider"
+            minMaxInfo: "5 maximum dont 3 prioritaires"
           },
           upload: {
             title: "Documents partagés",
@@ -200,6 +207,7 @@ i18n
           buttonTitles: {
             nextButton: 'Suivant',
             backButton: 'Retour',
+            validate: 'Valider'
           }
         }
       }

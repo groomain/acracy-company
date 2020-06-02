@@ -61,7 +61,8 @@ const translateForgotPassword = (errorCode) => {
     case 'NetworkError':
       return 'Veuillez vérifier votre connection internet.';
     case 'UserNotFoundException':
-      return 'Aucun compte avec cet email n\'existe, veuillez vérifier votre email.';
+    case 'InvalidParameterException':
+      return "Cet email n'est pas connu ou pas encore validé";
     case 'FormNotComplete':
       return 'Veuillez saisir votre email.';
     case 'LimitExceededException':
@@ -75,9 +76,9 @@ const translateForgotPassword = (errorCode) => {
 const translateConfirmForgotPassword = (errorCode) => {
   switch (errorCode) {
     case 'PasswordDoNotMatch':
-      return 'Vos mot de passe ne correspondent pas.';
+      return 'Les mots de passe doivent être identiques';
     case 'CodeMismatchException':
-      return 'Code incorrect.';
+      return 'Mauvais code, revérifiez votre email';
     case 'ExpiredCodeException':
       return 'Code expiré.';
     case 'NetworkError':

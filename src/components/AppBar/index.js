@@ -19,18 +19,20 @@ export const CustomAppBar = (props) => {
   const [welcomeMessageOpen, setWelcomeMessageOpen] = React.useState(true);
   const [errorMessageOpen, setErrorMessageOpen] = React.useState(false);
 
-  const { loginErrorMessage, signupErrorMessage, confirmSignupSuccessMessage, confirmSignupErrorMessage } = useSelector(state => ({
+  const { loginErrorMessage, signupErrorMessage, confirmSignupSuccessMessage, confirmSignupErrorMessage, requestCodeErrorMessage, submitPasswordErrorMessage } = useSelector(state => ({
     loginErrorMessage: state.getIn(['app', 'loginErrorMessage']),
     signupErrorMessage: state.getIn(['app', 'signupErrorMessage']),
     confirmSignupSuccessMessage: state.getIn(['app', 'confirmSignupSuccessMessage']),
     confirmSignupErrorMessage: state.getIn(['app', 'confirmSignupErrorMessage']),
+    requestCodeErrorMessage: state.getIn(['app', 'requestCodeErrorMessage']),
+    submitPasswordErrorMessage: state.getIn(['app', 'submitPasswordErrorMessage'])
   }));
 
   useEffect(() => {
-    if (loginErrorMessage || signupErrorMessage || confirmSignupErrorMessage) {
+    if (loginErrorMessage || signupErrorMessage || confirmSignupErrorMessage || requestCodeErrorMessage || submitPasswordErrorMessage) {
       setErrorMessageOpen(true);
     }
-  }, [loginErrorMessage, signupErrorMessage, confirmSignupErrorMessage]);
+  }, [loginErrorMessage, signupErrorMessage, confirmSignupErrorMessage, requestCodeErrorMessage, submitPasswordErrorMessage]);
 
   const renderButtons = () => {
     switch (props.path || location.pathname) {
@@ -60,7 +62,7 @@ export const CustomAppBar = (props) => {
         return (
           <div className={clsx(classes.div, classes.password)}>
             <CustomNavLink to={'/login'} text={t('login')} theme="navLink" />
-            <CustomButton theme={"filledButton"} title={t('signUp')} />
+            <CustomButton theme={"filledButton"} title={t('signUp')} component={RouterLink} to="/signup" />
             <CustomButton title={t('contactUs')} />
           </div>
         );
@@ -75,6 +77,8 @@ export const CustomAppBar = (props) => {
       {signupErrorMessage && <CustomSnackBar message={signupErrorMessage} open={errorMessageOpen} setOpen={setErrorMessageOpen} error />}
       {loginErrorMessage && <CustomSnackBar message={loginErrorMessage} open={errorMessageOpen} setOpen={setErrorMessageOpen} error />}
       {confirmSignupErrorMessage && <CustomSnackBar message={confirmSignupErrorMessage} open={errorMessageOpen} setOpen={setErrorMessageOpen} error />}
+      {requestCodeErrorMessage && <CustomSnackBar message={requestCodeErrorMessage} open={errorMessageOpen} setOpen={setErrorMessageOpen} error />}
+      {submitPasswordErrorMessage && <CustomSnackBar message={submitPasswordErrorMessage} open={errorMessageOpen} setOpen={setErrorMessageOpen} error />}
     </>
   );
 

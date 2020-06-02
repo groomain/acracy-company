@@ -20,9 +20,9 @@ const ConfirmSignUpPage = () => {
   const classes = styles();
   const sharedClasses = sharedStyles();
 
-  const { email, resendcodeSuccessMessage } = useSelector(state => ({
+  const { email, resendCodeSuccessMessage } = useSelector(state => ({
     email: state.getIn(['router', 'location', 'state', 'email']),
-    resendcodeSuccessMessage: state.getIn(['app', 'resendcodeSuccessMessage'])
+    resendCodeSuccessMessage: state.getIn(['app', 'resendCodeSuccessMessage'])
   }))
 
   // Form data
@@ -32,6 +32,7 @@ const ConfirmSignUpPage = () => {
   };
 
   const [searchValue] = useState('Social Media Strategist');
+
   // Form Submitting Function
   const confirmSignup = (credentials) => {
     dispatch(confirmSignupLaunched(credentials));
@@ -56,10 +57,10 @@ const ConfirmSignUpPage = () => {
         justify="center"
       >
         <Main>
-          <Grid className={sharedClasses.pannelLayout} >
+          <Grid className={sharedClasses.pannelLayout}>
             <Typography variant="h1">{t('confirmSignupPage.title')}</Typography>
             <Box my={2}>
-              <Typography variant="body1">{t('confirmSignupPage.subtitle')} <span className={classes.email}>{email}</span></Typography>
+              <Typography variant="body1">{t('confirmSignupPage.subtitle')} <span className={sharedClasses.email}>{email}</span></Typography>
             </Box>
             <Formik
               render={props => <ConfirmSignupForm {...props} />}
@@ -70,7 +71,7 @@ const ConfirmSignUpPage = () => {
             <Divider className={sharedClasses.divider} />
             <Typography variant={'body1'} className={classes.typo} >{t('confirmSignupPage.resendCodeMessage')}</Typography>
             <CustomButton theme="asLinkPrimary" title={t('confirmSignupPage.resendCodeButton')} rippleDisabled onClick={email => resendCode(email)} />
-            {resendcodeSuccessMessage && <Typography variant="body1">{resendcodeSuccessMessage}</Typography>}
+            {resendCodeSuccessMessage && <Typography variant="body1">{resendCodeSuccessMessage}</Typography>}
           </Grid>
         </Main>
         <Sidebar>
