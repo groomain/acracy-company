@@ -24,6 +24,10 @@ export const styles = makeStyles(theme => ({
   bottomContainer: {
 
   },
+  firstMiddleContainer: {
+    height: '100vh',
+    minHeight: 1100
+  },
   middleContainer: {
     marginTop: 100
   },
@@ -33,6 +37,7 @@ export const styles = makeStyles(theme => ({
     padding: 15,
     width: 215,
     height: 322,
+    marginTop: 100
   },
   cardTitle: {
     paddingTop: 10,
@@ -62,8 +67,10 @@ export const styles = makeStyles(theme => ({
   },
   list: {
     width: '100%',
-    maxWidth: 360,
-    position: 'sticky'
+    maxWidth: 250,
+    position: 'sticky',
+    top: 0,
+    paddingTop: "30vh"
   },
   avatar: {
     border: '3px yellow solid'
