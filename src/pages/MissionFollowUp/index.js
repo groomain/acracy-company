@@ -33,10 +33,6 @@ const MissionFollowUp = () => {
         missionData: state.getIn(['Mission', 'missionData'])
     }));
 
-    console.log("MISSION", missionData);
-    console.log("BRIEF", briefData);
-
-
     const {t} = useTranslation();
     const [step, setStepper] = React.useState(2);
 
@@ -45,7 +41,6 @@ const MissionFollowUp = () => {
         getMissionData()
     }, []);
 
-    console.log("missionData", missionData);
     const renderContent = (status) => {
         switch (status) {
             case 'WAITING_FOR_ACCEPTANCE':
@@ -231,7 +226,9 @@ const MissionFollowUp = () => {
                 }
             </Main>
             <Sidebar>
-                <MissionSuivi briefData={briefData && briefData} style={{marginTop: 150}}/>
+                {briefData &&
+                <MissionSuivi briefData={briefData} style={{marginTop: 150}}/>
+                }
             </Sidebar>
         </Grid>
     );

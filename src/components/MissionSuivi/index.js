@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import styles from './styles';
 import Grid from "@material-ui/core/Grid";
 import List from '@material-ui/core/List';
@@ -21,9 +21,13 @@ import {FactureIcon} from "../../assets/icons/FactureIcon";
 import {BriefIcon} from "../../assets/icons/BriefIcon";
 import {DevisIcon} from "../../assets/icons/DevisIcon";
 import DownloadModal from "../DownloadModal";
+import {getLeadsLaunched} from "../../pages/MissionFollowUp/reducer";
+import {useDispatch, useSelector} from "react-redux";
 
 export const MissionSuivi = ({briefData, ...props}) => {
     const classes = styles();
+    const dispatch = useDispatch();
+
     const [devisOpen, setDevisOpen] = React.useState(false);
     const [factureOpen, setfactureOpen] = React.useState(false);
     const [briefOpen, setBriefOpen] = React.useState(false);
@@ -35,8 +39,26 @@ export const MissionSuivi = ({briefData, ...props}) => {
         "IN_PROGRESS": 4,
         "CLOSED": 5
     };
+    const sharedDocuments = briefData.missionDetail.sharedDocument;
     const step = briefData ? existingSteps[briefData.status] : 0;
 
+    // const getLeadsData = (payload) => {
+    //     dispatch(getLeadsLaunched(payload));
+    // };
+
+    // const {leadsData} = useSelector(state => ({
+    //     leadsData: state.getIn(['Mission', 'leadsData']),
+    // }));
+
+
+    useEffect( () => {
+        console.log("briefData", briefData);
+        console.log("sharedDocuments", sharedDocuments);
+        // getLeadsData(briefData.externalId);
+    }, []);
+
+
+    // console.log("leadsData", leadsData);
     return (
         <Grid container direction={'column'} className={classes.root} {...props}>
             <Typography variant={"h1"} className={classes.title}>Suivi</Typography>

@@ -1,6 +1,13 @@
 import {all, put, takeLatest} from 'redux-saga/effects';
 import { API } from 'aws-amplify';
-import {getMissionSuccess, getMissionFailure, getBriefSuccess, getBriefFailure} from './reducer';
+import {
+  getMissionSuccess,
+  getMissionFailure,
+  getBriefSuccess,
+  getBriefFailure,
+  getLeadsFailure,
+  getLeadsSuccess
+} from './reducer';
 import { config } from '../../conf/amplify';
 
 function* getMission(action) {
@@ -12,7 +19,6 @@ function* getMission(action) {
         'x-api-key': config.apiKey
       }
     });
-    console.log("SAGA missionData", missionData);
 
     yield put(getMissionSuccess(missionData));
   } catch (error) {
@@ -38,9 +44,28 @@ function* getBrief(action) {
   }
 }
 
+function* getLeads(action) {
+  // const { briefId } = action.payload;
+  try {
+    const briefId = action.payload
+    console.log("SAGA getLeads : briefId = ", briefId);
+    const briefData = yield API.get(config.apiGateway.NAME, `/leads/${briefId}`, {
+      headers: {
+        'x-api-key': config.apiKey
+      }
+    });
+
+    yield put(getLeadsSuccess(briefData));
+  } catch (error) {
+    console.log(error);
+    yield put(getLeadsFailure());
+  }
+}
+
 export default function* missionSaga() {
   yield all([
     takeLatest('Mission/getMissionLaunched', getMission),
     takeLatest('Mission/getBriefLaunched', getBrief),
+    takeLatest('Mission/getLeadsLaunched', getLeads),
   ]);
 }
