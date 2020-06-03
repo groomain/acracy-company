@@ -13,6 +13,7 @@ import FirstLoginPage from '../../pages/FirstLogin';
 import MyAccount from "../../pages/MyAccount";
 import CustomAppBar from "../AppBar";
 import ProgressBar from "../ProgressBar";
+import ProfileSelection from "../../pages/ProfileSelection";
 
 function App() {
   const dispatch = useDispatch();
@@ -33,6 +34,7 @@ function App() {
       <PrivateRoute exact path="/firstlogin" fixed component={FirstLoginPage} />
       <PrivateRoute exact path="/home" fixed component={HomePage} />
       <PrivateRoute exact path="/account" fixed component={MyAccount} />
+      <Route exact path="/selection" fixed component={ProfileSelection} />
     </Switch>
   );
 

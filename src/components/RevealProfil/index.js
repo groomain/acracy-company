@@ -8,18 +8,17 @@ import CustomButton from "../Button";
 import styles from './styles'
 import Avatar from "@material-ui/core/Avatar";
 import ProfileElement from "../ProfileElement";
-import langues from "../../assets/icons/langues.svg";
 import star from "../../assets/icons/expertises.svg";
 import checkStatus from "../../assets/icons/check-statut.svg";
 import clsx from "clsx";
 
-const RevealProfil = () => {
+const RevealProfil = ({ref, ...props}) => {
   const classes = styles();
   const photoLink = 'https://cdn-media.rtl.fr/cache/p0NFoli1OBEqRtMwTbdztw/880v587-0/online/image/2015/0403/loveok_141338438169183900.jpg';
   const [checked, setChecked] = React.useState(false);
 
   return (
-      <div className={classes.root}>
+      <div className={classes.root} ref={ref} >
         <Grid container direction={"column"} justify={'center'}>
           <Grid container direction="row" justify={'center'} xs={12} className={classes.upCard}>
             <Grid item xs={4}>
