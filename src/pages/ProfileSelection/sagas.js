@@ -6,11 +6,12 @@ import {config} from "../../conf/amplify";
 function* getSelectionProfil(action) {
   try {
     let missionId = 'get_IN_PROGRESS';
-    const missionData = yield API.get(config.apiGateway.NAME, `/missions/${missionId}`, {
+    const missionData = yield API.get(config.apiGateway.NAME, `/brief/${missionId}`, {
       headers: {
         'x-api-key': config.apiKey
       }
     });
+    console.log("missionData", missionData);
 
     yield put(getSelectionProfilSuccess(missionData));
   } catch (err) {
