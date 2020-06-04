@@ -19,17 +19,34 @@ import clsx from "clsx";
 import CustomExpansionPanel from "../../components/CustomExpansionPanel";
 import Tag from "../../components/Tags/Tag";
 import CustomLoader from "../../components/Loader";
+import { Link, Element , Events, animateScroll as scroll, scrollSpy, scroller } from 'react-scroll'
+import * as Scroll from 'react-scroll';
 
 const ProfileSelection = (props) => {
-    const classes = styles();
     const dispatch = useDispatch();
 
     let profils = [1, 2, 3, 4];
-
+    let [checkedProfiles, setCheckedProfiles] = React.useState([]);
     const [elementPosition, setElementPosition] = useState({x: 10, y: 450});
     const [elementHeight, setElementHeight] = useState(0);
     const heightRef = useRef();
     const elementsRef = useRef();
+    const classes = styles();
+    let Element    = Scroll.Element;
+
+    const handleCheckedProfiles = (index) => {
+        if (!checkedProfiles.includes(index)) {
+            console.log("ABSENT");
+            setCheckedProfiles([index, ...checkedProfiles])
+        } else {
+            // console.log("checkedProfiles.indexOf(index)", checkedProfiles.indexOf(index));
+            console.log("PRESENT");
+            checkedProfiles.splice(checkedProfiles.indexOf(index), 1);
+            setCheckedProfiles(checkedProfiles)
+        }
+    };
+
+    console.log("checkedProfiles", checkedProfiles);
 
     useScrollPosition(
         () => {
@@ -56,7 +73,8 @@ const ProfileSelection = (props) => {
         dispatch(getSelectionProfilLaunched())
     }, []);
 
-    console.log("elementPosition.y", elementPosition.y);
+    const heightProfilesContainer = elementHeight / profils.length;
+    const margin = 350;
 
     return (
         <Grid
@@ -72,49 +90,52 @@ const ProfileSelection = (props) => {
                 className={classes.container}
             >
 
-                <Grid item container xs={3} direction={'row'} justify="center" alignItems="flex-start"
-                >
+                <Grid item container xs={3} direction={'row'} justify="center" alignItems="flex-start">
                     <List className={classes.list}>
-                        <ListItem className={classes.listItem}>
+                        <ListItem className={classes.listItem} onClick={() => scroll.scrollToTop()}>
                             <ListItemAvatar>
                                 <Avatar
-                                    className={clsx(classes.borderAvatarAcracy, {[classes.borderAvatarActive]: elementPosition.y > 350})}>
+                                    className={clsx(classes.borderAvatarAcracy, {[classes.borderAvatarActive]: elementPosition.y > margin})}>
                                     <img src={acracy} alt="acracyLogo" style={{width: 17, height: 17, paddingLeft: 2}}/>
                                 </Avatar>
                             </ListItemAvatar>
                             <ListItemText primary="Recommandation globale"
-                                          primaryTypographyProps={{className: {[classes.listItemTextActive]: elementPosition.y > 350}}}/>
+                                          primaryTypographyProps={{className: {[classes.listItemText]: elementPosition.y < margin,
+                                                  [classes.listItemTextActive]: elementPosition.y > margin}}}/>
                         </ListItem>
                         {profils.map((profil, index) =>
+                            <Link to={index} smooth={true}>
                             <ListItem className={classes.listItem}>
                                 <ListItemAvatar>
                                     <Avatar
-                                        className={clsx(classes.avatar, {[classes.avatarActive]: elementPosition.y < 350 - (index * elementHeight / profils.length) && elementPosition.y > 350 - ((index + 1) * elementHeight / profils.length)})}>
+                                        className={clsx(classes.avatar, {[classes.avatarActive]: elementPosition.y < margin - (index * heightProfilesContainer) && elementPosition.y > margin - ((index + 1) * heightProfilesContainer)})}>
                                         <img
                                             src={"https://cdn-media.rtl.fr/cache/p0NFoli1OBEqRtMwTbdztw/880v587-0/online/image/2015/0403/loveok_141338438169183900.jpg"}
                                             alt="linkedingProfil" style={{width: 46, height: 46}}/>
                                     </Avatar>
                                 </ListItemAvatar>
                                 <ListItemText primary="Anh-Dao"
-                                              primaryTypographyProps={{className: {[classes.listItemTextActive]: elementPosition.y < 350 - (index * elementHeight / profils.length) && elementPosition.y > 350 - ((index + 1) * elementHeight / profils.length)}}}/>
+                                              primaryTypographyProps={{className: {[classes.listItemText]: elementPosition.y > margin - (index * heightProfilesContainer) || elementPosition.y < margin - ((index + 1) * heightProfilesContainer),
+                                                      [classes.listItemTextActive]: elementPosition.y < margin - (index * heightProfilesContainer) && elementPosition.y > margin - ((index + 1) * heightProfilesContainer)}}}/>
                             </ListItem>
+                            </Link>
                         )}
+                        <Link to="lastContainer" smooth={true}>
                         <ListItem className={classes.listItem}>
                             <ListItemAvatar>
                                 <Avatar className={classes.borderAvatar}>
-                                    {elementPosition.y > 350 ?
-                                        <img src={groupe52copy} alt="groupe52copy"
-                                            // style={{width: 17, height: 17, paddingLeft: 2}}
-                                        /> :
-                                        <img src={groupe52} alt="groupe52"
-                                            // style={{width: 17, height: 17, paddingLeft: 2}}
-                                        />
+                                    {elementPosition.y < margin - elementHeight ?
+                                        <img src={groupe52copy} alt="groupe52copy"/>
+                                        :
+                                        <img src={groupe52} alt="groupe52"/>
                                     }
                                 </Avatar>
                             </ListItemAvatar>
                             <ListItemText primary="Récapitulatif de mon brief"
-                                          primaryTypographyProps={{className: {[classes.listItemTextActive]: elementPosition.y > 350}}}/>
+                                          primaryTypographyProps={{className: {[classes.listItemText]: elementPosition.y > margin - elementHeight,
+                                                  [classes.listItemTextActive]: elementPosition.y < margin - elementHeight}}}/>
                         </ListItem>
+                        </Link>
                         {/*<ListItem>*/}
                         {/*<ListItemAvatar>*/}
                         {/*<Avatar className={{[classes.avatar]: elementPosition.y < 150}}>*/}
@@ -128,8 +149,7 @@ const ProfileSelection = (props) => {
 
 
                 {selectionProfilData ?
-                    <Grid item container xs={6} className={classes.middleContainer} direction="column">
-
+                    <Grid  item container xs={6} className={classes.middleContainer} direction="column">
                         <Grid item container direction="column" className={classes.firstMiddleContainer}>
                             <Typography className={classes.mainTitle}>Il est temps de faire votre sélection
                                 !</Typography>
@@ -146,17 +166,21 @@ const ProfileSelection = (props) => {
                             </Grid>
                         </Grid>
                         <div ref={elementsRef}>
-                            <div ref={heightRef}>
+                            <div ref={heightRef} >
                                 {profils.map((profil, i) =>
-                                    <RevealProfil/>
+                                    <Element name={i}>
+                                    <RevealProfil style={{paddingTop: 70, paddingBottom: 70}} index={i} setCheckedProfiles={handleCheckedProfiles}/>
+                                    </Element>
                                 )}
                             </div>
                         </div>
-                        <Grid container direction={'column'} style={{width: '95%', marginLeft: "5%"}}>
+                        <Grid container direction={'column'} style={{width: '70%', marginLeft: "5%"}}>
+                            <Element name="lastContainer">
                             <div className={classes.bloc}>
                                 <Typography variant={'h2'}>Détails du profil recherché</Typography>
                                 <Typography variant={'h1'}>{selectionProfilData.profile.text}</Typography>
                             </div>
+                            </Element>
                             <div className={classes.bloc}>
                                 <Typography variant={'h4'} className={classes.title}>Expertises clés du
                                     profil</Typography>
@@ -202,19 +226,16 @@ const ProfileSelection = (props) => {
                                                 borderRadius: 15
                                             }}>{selectionProfilData.missionRequirement.seniority}</Typography>
                             </div>
-                        </Grid>
-                        <Grid>
-                            <Grid container direction={'column'}
-                                  style={{width: '95%', marginLeft: "5%", marginTop: 150}}>
-                                <div className={classes.title}>
+                                <div className={classes.secondTitle}>
                                     <Typography variant={'h1'}>Ma Mission</Typography>
                                 </div>
                                 <div className={classes.bloc}>
                                     <Typography variant={'h2'}>Titre de la mission</Typography>
                                     <Typography variant={'h1'}>{selectionProfilData.missionContext.title}</Typography>
                                 </div>
-                            </Grid>
-                            <Grid container direction={'row'} className={classes.card}>
+
+                        </Grid>
+                            <Grid container direction={'row'} className={classes.footerCard}>
                                 <Grid container item xs={5} direction={'column'} spacing={2}>
                                     <Grid item className={classes.blocTypoUp}>
                                         <Typography variant={"h4"} className={classes.typo}>Format</Typography>
@@ -249,7 +270,9 @@ const ProfileSelection = (props) => {
                                     </Grid>
                                 </Grid>
                             </Grid>
-                            <div className={classes.bloc}>
+                        <Grid container direction={'column'} style={{width: '70%', marginLeft: "5%"}}>
+
+                        <div className={classes.bloc}>
                                 <Typography variant={'h2'}>Livrable.s</Typography>
                                 <Grid container direction={'row'} style={{width: '80%', marginTop: 5}} spacing={1}>
                                     {selectionProfilData.deliverables.map((tag, key) =>
@@ -276,10 +299,13 @@ const ProfileSelection = (props) => {
                                 </CustomExpansionPanel>
                             </div>
                         </Grid>
-
                     </Grid>
                     :
-                    <CustomLoader/>}
+                    <Grid item container xs={6} className={classes.middleContainer} direction="column" justify="center"
+                          alignItems="center">
+                        <CustomLoader/>
+                    </Grid>
+                }
 
 
                 <Grid item container xs={3}>
@@ -294,6 +320,27 @@ const ProfileSelection = (props) => {
             <Grid className={classes.logoAcracyContainer}>
                 <img src={acracy} alt="acracy" className={classes.logoAcracy}/>
             </Grid>
+            {selectionProfilData &&
+            <Grid item container className={classes.cart} direction={'row'}>
+                <Typography style={{width: 200, textAlign: 'center', color: 'black', marginTop: 'auto', marginBottom: 'auto'}}>Ma pre-sélection</Typography>
+                {checkedProfiles.map((profile, index) =>
+                    <ListItem className={classes.listItem} style={{width: 250}}>
+                        <ListItemAvatar>
+                            <Avatar
+                                className={classes.avatar}>
+                                <img
+                                    src={"https://cdn-media.rtl.fr/cache/p0NFoli1OBEqRtMwTbdztw/880v587-0/online/image/2015/0403/loveok_141338438169183900.jpg"}
+                                    alt="linkedingProfil" style={{width: 46, height: 46}}/>
+                            </Avatar>
+                        </ListItemAvatar>
+                        <ListItemText primary="Anh-Dao"
+                                      primaryTypographyProps={{className: classes.listItemText}}
+                                      secondary={'Social Media Strategist'}
+                        />
+                    </ListItem>
+                )}
+            </Grid>
+            }
         </Grid>
 
     );

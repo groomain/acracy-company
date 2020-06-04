@@ -16,7 +16,7 @@ export const CustomAppBar = (props) => {
   let location = useLocation();
   const { t } = useTranslation();
   const classes = styles();
-  const [welcomeMessageOpen, setWelcomeMessageOpen] = React.useState(true);
+  const [welcomeMessageOpen, setWelcomeMessageOpen] = React.useState(false);
   const [errorMessageOpen, setErrorMessageOpen] = React.useState(false);
 
   const { loginErrorMessage, signupErrorMessage } = useSelector(state => ({

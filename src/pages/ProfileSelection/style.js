@@ -3,7 +3,6 @@ import {bodoniBook} from "../../utils/configureMaterialTheme";
 
 export const styles = makeStyles(theme => ({
   container: {
-    height: '100vh',
     margin: 'auto'
   },
   divider: {
@@ -26,10 +25,12 @@ export const styles = makeStyles(theme => ({
   },
   firstMiddleContainer: {
     height: '100vh',
-    minHeight: 1100
+    minHeight: 900
   },
   middleContainer: {
-    marginTop: 100
+    paddingLeft: '6%',
+    marginTop: 100,
+    marginBottom: 200
   },
   card: {
     backgroundColor: theme.palette.secondary.dark,
@@ -73,14 +74,15 @@ export const styles = makeStyles(theme => ({
     paddingTop: "30vh"
   },
   listItem: {
-    marginBottom: 10
+    marginBottom: 10,
+    cursor: 'pointer'
   },
   listItemTextActive: {
     color: theme.palette.primary.main
   },
   listItemText: {
-    color: '#8a908b',
-      size: 20
+    color: theme.palette.secondary.medium,
+    size: 20
   },
   avatarActive: {
     border: '3px yellow solid',
@@ -104,5 +106,67 @@ export const styles = makeStyles(theme => ({
   borderAvatarActive: {
     border: '3px yellow solid',
     // backgroundColor: theme.palette.secondary.black,
+  },
+  footerCard: {
+    padding: 25,
+    width: '80%',
+    height: 263,
+    backgroundColor: "#283028",
+    borderRadius: 15,
+    marginTop: 20,
+    marginBottom: 20
+  },
+  typo:{
+    padding: 3,
+    width: '100%',
+    textAlign: 'left'
+  },
+  blocTypoUp: {
+    width: '100%',
+    marginTop: 10,
+    marginBottom: 20,
+  },
+  blocTypoDown: {
+    width: '100%',
+    marginTop: 20,
+    marginBottom: 20
+  },
+  bloc: {
+    marginTop: 20,
+    marginBottom: 20
+  },
+  title: {
+    marginBottom: 20
+  },
+  secondTitle: {
+    marginTop: 100,
+    marginBottom: 20
+  },
+  titleFreelance: {
+    marginBottom: 20,
+    marginLeft: "5%"
+  },
+  waitingProfile: {
+    width: '100%',
+    height: 261,
+    backgroundColor: `${theme.palette.secondary.dark}`,
+    borderRadius: 15,
+    textAlign: 'center',
+    padding: 20,
+    marginTop: 10,
+    marginBottom: 150
+  },
+  waitingProfilTitle: {
+    marginTop: 10,
+    marginBottom: 5
+  },
+  waitingProfileText: {
+    color: `${theme.palette.secondary.medium}`,
+    width: "70%"
+  },
+  cart: {
+    backgroundColor: 'yellow',
+    width: '100%',
+    height: 104,
   }
 }));
