@@ -12,6 +12,7 @@ import clsx from "clsx";
 import CustomButton from "../../components/Button";
 import {useTranslation} from "react-i18next";
 import acracyLogo from "../../assets/icons/logo-acracy.svg";
+import {NavLink} from "react-router-dom";
 
 const LeadCreationPage = () => {
   const classes = styles();
@@ -29,9 +30,9 @@ const LeadCreationPage = () => {
       <AppBar position="fixed" className={classes.appbar}>
         <CustomSnackBar message={"Test de snackBar"} open={open} setOpen={setOpen} />
         <Toolbar className={classes.toolbar}>
-          <Typography className={classes.title} variant="h1" noWrap>
-            acracy
-          </Typography>
+          <NavLink to={'/'} className={classes.logo}>
+            <img src={acracyLogo} alt="acracyLogo" />
+          </NavLink>
           <div className={classes.grow} />
           <div className={classes.save}>
             <CustomButton title={t('saveAndClose')} className={classes.buttonSave}/>

@@ -46,6 +46,9 @@ export default makeStyles(theme => ({
       display: 'block',
     },
   },
+  logo: {
+    outlineStyle: 'none'
+  },
   save: {
     display: 'flex',
     flexDirection: 'row',
