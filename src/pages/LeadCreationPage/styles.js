@@ -27,6 +27,35 @@ export default makeStyles(theme => ({
     fontFamily: 'Basier Medium',
     color: theme.palette.primary.main,
     letterSpacing: '-0.45px',
+  },
+  appbar: {
+    backgroundColor: 'transparent',
+    boxShadow: 'none'
+  },
+  toolbar: {
+    height: 104,
+    paddingLeft: 40,
+    paddingRight: 40
+  },
+  grow: {
+    flexGrow: 1,
+  },
+  title: {
+    display: 'none',
+    [theme.breakpoints.up('sm')]: {
+      display: 'block',
+    },
+  },
+  save: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignContent: 'center',
+    alignItems: 'center',
+    width: 390,
+  },
+  buttonSave: {
+    paddingLeft: 25,
+    paddingRight: 25
   }
-
 }));

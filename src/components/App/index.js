@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Switch, Route, Redirect } from 'react-router';
+import {Switch, Route, Redirect, useLocation} from 'react-router';
 // import { useTranslation } from 'react-i18next';
 import HomePage from '../../pages/HomePage';
 import PrivateRoute from '../PrivateRoute';
@@ -16,7 +16,8 @@ import CustomAppBar from "../AppBar";
 import ProgressBar from "../ProgressBar";
 
 function App() {
-  const dispatch = useDispatch();
+    let location = useLocation();
+    const dispatch = useDispatch();
   const isAuthenticating = useSelector(state => state.getIn(['app', 'isAuthenticating']), null);
   const isAuthenticated = useSelector(state => state.getIn(['app', 'isAuthenticated']), null);
   // const { i18n } = useTranslation();
@@ -38,7 +39,8 @@ function App() {
     </Switch>
   );
 
-  return (
+    console.log("PATHNAME", location.pathname);
+    return (
     <div>
       {/*/!* __NavbarStart__ Replace this whit your navbar *!/*/}
       {/*<div>*/}
@@ -58,7 +60,7 @@ function App() {
       {/*</div>*/}
       {/*/!* __NavbarEnd__ *!/*/}
       {
-        !isAuthenticated && <CustomAppBar />
+          (!isAuthenticated && location.pathname !== "/newbrief") && <CustomAppBar />
       }
       <ProgressBar />
       {
