@@ -34,7 +34,9 @@ import {
   translateResendCodeSuccess,
   translateResendCodeError
 } from '../../utils/cognito';
+
 import { config } from '../../conf/amplify';
+import { leadsSagas } from '../../pages/HomePage/sagas';
 
 function* getCurrentSession(action) {
   const { fromPath } = action.payload;
@@ -66,8 +68,8 @@ function* doSignIn(action) {
   try {
     yield Auth.signIn(email, password);
     yield put(loginSuccess());
-    yield put(push('/home'));
-    yield Auth.currentUserInfo();
+    // yield put(push('/home'));
+    // yield Auth.currentUserInfo();
     // yield call(doSignIn, { payload: { email, password } }); // Commented to avoid sending the verification twice
   } catch (err) {
     console.log(err)
@@ -78,6 +80,7 @@ function* doSignIn(action) {
     }
     yield put(loginFailure(translateSignInError(err.code)));
   }
+  yield put(getCurrentSessionLaunched({ fromPath: from || '/home' }));
 }
 
 function* doSignOut() {
@@ -120,6 +123,7 @@ function* doSignUp(action) {
         'custom:searchCode': searchCode
       }
     });
+    // yield call(doSignIn, { payload: { email, password } });
     yield put(signupSuccess());
     yield put(push('/confirm-signup', { email: email }));
   } catch (error) {
@@ -132,7 +136,8 @@ function* doConfirmSignUp(action) {
   const { username, code } = action.payload;
   try {
     yield Auth.confirmSignUp(username, code);
-    yield put(push('/home'));
+    // yield put(push('/home'));
+    yield put(getCurrentSessionLaunched('/home'));
     yield put(confirmSignupSuccess(translateConfirmSignUpSuccess()));
   } catch (error) {
     console.log(error);
@@ -171,7 +176,8 @@ function* doSubmitNewPassword(action) {
   try {
     yield Auth.forgotPasswordSubmit(email, code, password);
     yield put(submitNewPasswordSuccess());
-    yield put(push('/home'));
+    // yield put(push('/home'));
+    yield put(getCurrentSessionLaunched('/home'));
   } catch (error) {
     yield put(submitNewPasswordFaliure(translateConfirmForgotPassword(error.code)));
   }
@@ -200,7 +206,6 @@ function* doUpdateUser(action) {
   yield put(getCurrentSessionLaunched('/home'));
 }
 
-
 export default function* rootSaga() {
   yield all([
     takeLatest('App/getCurrentSessionLaunched', getCurrentSession),
@@ -212,5 +217,6 @@ export default function* rootSaga() {
     takeLatest('App/updateUserLaunched', doUpdateUser),
     takeLatest('App/confirmSignupLaunched', doConfirmSignUp),
     takeLatest('App/resendCodeLaunched', doResendCode),
+    ...leadsSagas,
   ]);
 }
