@@ -11,6 +11,7 @@ import AppBar from "@material-ui/core/AppBar";
 import clsx from "clsx";
 import CustomButton from "../../components/Button";
 import {useTranslation} from "react-i18next";
+import acracyLogo from "../../assets/icons/logo-acracy.svg";
 
 const LeadCreationPage = () => {
   const classes = styles();
