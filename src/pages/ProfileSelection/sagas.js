@@ -6,7 +6,7 @@ import {config} from "../../conf/amplify";
 function* getSelectionProfil(action) {
   try {
     let missionId = 'get_IN_PROGRESS';
-    const missionData = yield API.get(config.apiGateway.NAME, `/brief/${missionId}`, {
+    const missionData = yield API.get(config.apiGateway.NAME, `/briefs/${missionId}`, {
       headers: {
         'x-api-key': config.apiKey
       }

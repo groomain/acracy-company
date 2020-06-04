@@ -49,7 +49,7 @@ const ProfileSelection = (props) => {
     // };
 
     const {selectionProfilData} = useSelector(state => ({
-        selectionProfilData: state.getIn(['SelectionProfil', 'selectionProfilData'])
+        selectionProfilData: state.getIn(['SelectionProfil', 'selectionProfilData']),
     }));
 
     useEffect(() => {
@@ -154,32 +154,6 @@ const ProfileSelection = (props) => {
                         </div>
                         <Grid container direction={'column'} style={{width: '95%', marginLeft: "5%"}}>
                             <div className={classes.bloc}>
-                                <Typography variant={'h2'}>Livrable.s</Typography>
-                                <Grid container direction={'row'} style={{width: '80%', marginTop: 5}} spacing={1}>
-                                    {selectionProfilData.deliverables.map((tag, key) =>
-                                        <Grid item>
-                                            <Tag key={key} title={tag.text} isPrimaryColor={false}/>
-                                        </Grid>)}
-                                </Grid>
-                            </div>
-                            <div className={classes.bloc}>
-
-                                <CustomExpansionPanel isTag={false}
-                                                      panelTitle="Contexte de la mission et tâches à réaliser">
-                                    <Typography>
-                                        {selectionProfilData.missionDetail.contextAndTasks}
-                                    </Typography>
-                                </CustomExpansionPanel>
-                            </div>
-                            <div className={classes.bloc}>
-
-                                <CustomExpansionPanel isTag={false} panelTitle="Détails des livrables">
-                                    <Typography>
-                                        {selectionProfilData.missionDetail.DetailsOfDeliverables}
-                                    </Typography>
-                                </CustomExpansionPanel>
-                            </div>
-                            <div className={classes.bloc}>
                                 <Typography variant={'h2'}>Détails du profil recherché</Typography>
                                 <Typography variant={'h1'}>{selectionProfilData.profile.text}</Typography>
                             </div>
@@ -275,6 +249,32 @@ const ProfileSelection = (props) => {
                                     </Grid>
                                 </Grid>
                             </Grid>
+                            <div className={classes.bloc}>
+                                <Typography variant={'h2'}>Livrable.s</Typography>
+                                <Grid container direction={'row'} style={{width: '80%', marginTop: 5}} spacing={1}>
+                                    {selectionProfilData.deliverables.map((tag, key) =>
+                                        <Grid item>
+                                            <Tag key={key} title={tag.text} isPrimaryColor={false}/>
+                                        </Grid>)}
+                                </Grid>
+                            </div>
+                            <div className={classes.bloc}>
+
+                                <CustomExpansionPanel isTag={false}
+                                                      panelTitle="Contexte de la mission et tâches à réaliser">
+                                    <Typography>
+                                        {selectionProfilData.missionDetail.contextAndTasks}
+                                    </Typography>
+                                </CustomExpansionPanel>
+                            </div>
+                            <div className={classes.bloc}>
+
+                                <CustomExpansionPanel isTag={false} panelTitle="Détails des livrables">
+                                    <Typography>
+                                        {selectionProfilData.missionDetail.DetailsOfDeliverables}
+                                    </Typography>
+                                </CustomExpansionPanel>
+                            </div>
                         </Grid>
 
                     </Grid>
