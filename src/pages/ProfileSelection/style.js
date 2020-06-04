@@ -72,6 +72,9 @@ export const styles = makeStyles(theme => ({
     top: 0,
     paddingTop: "30vh"
   },
+  listItem: {
+    marginBottom: 10
+  },
   listItemTextActive: {
     color: theme.palette.primary.main
   },
@@ -79,7 +82,27 @@ export const styles = makeStyles(theme => ({
     color: '#8a908b',
       size: 20
   },
+  avatarActive: {
+    border: '3px yellow solid',
+
+  },
   avatar: {
-    border: '3px yellow solid'
+    width: 46,
+    height: 46
+  },
+  borderAvatar: {
+    backgroundColor: theme.palette.secondary.black,
+    width: 46,
+    height: 46
+  },
+  borderAvatarAcracy: {
+    border: `2px ${theme.palette.secondary.medium} solid`,
+    backgroundColor: theme.palette.secondary.black,
+    width: 46,
+    height: 46
+  },
+  borderAvatarActive: {
+    border: '3px yellow solid',
+    // backgroundColor: theme.palette.secondary.black,
   }
 }));

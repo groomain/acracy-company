@@ -6,14 +6,16 @@ import {styles} from './style';
 import CircleImage from "../../components/CircleImage";
 import RevealProfil from "../../components/RevealProfil";
 import acracy from "../../assets/icons/logo-acracy-a.svg";
+import groupe52copy from "../../assets/icons/group-52-copy.svg";
+import groupe52 from "../../assets/icons/group-52.svg";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import ListItemText from "@material-ui/core/ListItemText";
 import {useScrollPosition} from '@n8tb1t/use-scroll-position'
-import {logoutLaunched} from "../../components/App/reducer";
 import {useDispatch, useSelector} from "react-redux";
 import {getSelectionProfilLaunched} from "./reducer";
+import clsx from "clsx";
 
 const ProfileSelection = (props) => {
     const classes = styles();
@@ -21,7 +23,7 @@ const ProfileSelection = (props) => {
 
     let profils = [1,2,3,4];
 
-    const [elementPosition, setElementPosition] = useState({ x: 10, y: 150 });
+    const [elementPosition, setElementPosition] = useState({ x: 10, y: 450 });
     const [elementHeight, setElementHeight] = useState(0);
     const heightRef = useRef();
     const elementsRef = useRef();
@@ -51,7 +53,7 @@ const ProfileSelection = (props) => {
         getSelectionProfil()
     }, []);
 
-    console.log("selectionProfilData", selectionProfilData);
+    console.log("elementPosition.y", elementPosition.y);
 
     return (
             <Grid
@@ -70,24 +72,39 @@ const ProfileSelection = (props) => {
                     <Grid item container xs={3} direction={'row'} justify="center" alignItems="flex-start"
                           >
                         <List className={classes.list}>
-                            <ListItem>
+                            <ListItem className={classes.listItem}>
                                 <ListItemAvatar>
-                                    <Avatar className={{[classes.avatar]: elementPosition.y > 350 || null}}>
-                                        <img src={acracy} alt="acracyLogo"/>
+                                    <Avatar className={clsx(classes.borderAvatarAcracy, {[classes.borderAvatarActive]: elementPosition.y > 350})}>
+                                        <img src={acracy} alt="acracyLogo" style={{width: 17, height: 17, paddingLeft: 2}}/>
                                     </Avatar>
                                 </ListItemAvatar>
-                                <ListItemText primary="Recommandation globale" primaryTypographyProps={{className: {[classes.listItemTextActive]: elementPosition.y > 350 || null}}}/>
+                                <ListItemText primary="Recommandation globale" primaryTypographyProps={{className: {[classes.listItemTextActive]: elementPosition.y > 350}}}/>
                             </ListItem>
                             {profils.map((profil, index) =>
-                                <ListItem>
+                                <ListItem className={classes.listItem}>
                                     <ListItemAvatar>
-                                        <Avatar className={{[classes.avatar]: elementPosition.y < 350-(index*elementHeight/profils.length) && elementPosition.y > 350-((index+1)*elementHeight/profils.length)}}>
-                                            <img src={"https://cdn-media.rtl.fr/cache/p0NFoli1OBEqRtMwTbdztw/880v587-0/online/image/2015/0403/loveok_141338438169183900.jpg"} alt="linkedingProfil"/>
+                                        <Avatar className={clsx(classes.avatar, {[classes.avatarActive]: elementPosition.y < 350-(index*elementHeight/profils.length) && elementPosition.y > 350-((index+1)*elementHeight/profils.length)})}>
+                                            <img src={"https://cdn-media.rtl.fr/cache/p0NFoli1OBEqRtMwTbdztw/880v587-0/online/image/2015/0403/loveok_141338438169183900.jpg"} alt="linkedingProfil" style={{width: 46, height: 46}}/>
                                         </Avatar>
                                     </ListItemAvatar>
                                     <ListItemText primary="Anh-Dao" primaryTypographyProps={{className: {[classes.listItemTextActive]: elementPosition.y < 350-(index*elementHeight/profils.length) && elementPosition.y > 350-((index+1)*elementHeight/profils.length)}}}/>
                                 </ListItem>
                             )}
+                            <ListItem className={classes.listItem}>
+                                <ListItemAvatar>
+                                    <Avatar className={classes.borderAvatar}>
+                                        {elementPosition.y > 350 ?
+                                            <img src={groupe52copy} alt="groupe52copy"
+                                                // style={{width: 17, height: 17, paddingLeft: 2}}
+                                            />:
+                                            <img src={groupe52} alt="groupe52"
+                                                // style={{width: 17, height: 17, paddingLeft: 2}}
+                                            />
+                                        }
+                                    </Avatar>
+                                </ListItemAvatar>
+                                <ListItemText primary="Récapitulatif de mon brief" primaryTypographyProps={{className: {[classes.listItemTextActive]: elementPosition.y > 350}}}/>
+                            </ListItem>
                             {/*<ListItem>*/}
                             {/*<ListItemAvatar>*/}
                             {/*<Avatar className={{[classes.avatar]: elementPosition.y < 150}}>*/}
