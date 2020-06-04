@@ -151,7 +151,7 @@ const SearchResults = ({ searchResults, ...props }) => {
   }
 
   return (
-    <>
+    <Box my={4}>
       <Box my={2} style={{ height: 30 }}>
         <Typography variant="h2">{renderTitle(searchValue?.TYPE) || newOption?.title}</Typography>
       </Box>
@@ -182,7 +182,7 @@ const SearchResults = ({ searchResults, ...props }) => {
           <Typography variant="h2">« {newOption.value} » {t('searchbar.newOption')}</Typography>
         </Box>
       )}
-    </>
+    </Box>
   )
 }
 

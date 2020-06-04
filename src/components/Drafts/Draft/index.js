@@ -6,7 +6,7 @@ import styles from './styles';
 import DraftWrapper from './DraftWrapper';
 
 import ClearIcon from '@material-ui/icons/Clear';
-import SearchIcon from '@material-ui/icons/Search';
+import SearchIcon from '../../../assets/icons/searchIcon';
 import StartIcon from '../../../assets/icons/demarrer.svg';
 import ToValidateIcon from '../../../assets/icons/a-valider.svg';
 import WaitingForCallIcon from '../../../assets/icons/en-attente-de-rappel.svg';
@@ -54,13 +54,13 @@ const Draft = ({ draft }) => {
           ? <Typography variant='h3' className={classes.newDraft}>
             {t('draft.newBriefTitle')}
           </Typography>
-          : <Typography variant='h3'>{draft.content}</Typography>
+          : <Typography variant='h3'>{draft.missionContext.title}</Typography>
         }
       </Box>
       <Grid container>
-        <SearchIcon color="secondary" size="small" />
+        <SearchIcon color='#fff' size="small" />
         <Box mx={1.5}>
-          <Typography variant='body2'>{draft.target}</Typography>
+          <Typography variant='body2'>{draft.search.text}</Typography>
         </Box>
       </Grid>
 
