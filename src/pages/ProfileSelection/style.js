@@ -72,6 +72,13 @@ export const styles = makeStyles(theme => ({
     top: 0,
     paddingTop: "30vh"
   },
+  listItemTextActive: {
+    color: theme.palette.primary.main
+  },
+  listItemText: {
+    color: '#8a908b',
+      size: 20
+  },
   avatar: {
     border: '3px yellow solid'
   }

@@ -19,7 +19,7 @@ const { actions, reducer } = createSlice({
       .set('selectionProfilData', null),
     getSelectionProfilSuccess: (state, action) => state
       .set('selectionProfilLoading', true)
-      .set('selectionProfilData', action.payload),
+      .set('selectionProfilData', action.payload.serviceProviderProfile),
     getSelectionProfilFailure: (state, action) => state
       .set('selectionProfilLoading', false)
       .set('selectionProfilData', null)

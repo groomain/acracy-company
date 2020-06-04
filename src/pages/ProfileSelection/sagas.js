@@ -5,20 +5,16 @@ import {config} from "../../conf/amplify";
 
 function* getSelectionProfil(action) {
   try {
-    const apiURL = `/users/${action.userId}`;
-    const params = {
+    let missionId = 'get_IN_PROGRESS';
+    const missionData = yield API.get(config.apiGateway.NAME, `/missions/${missionId}`, {
       headers: {
         'x-api-key': config.apiKey
-      },
-      body: {
-
       }
-    };
+    });
 
-    yield API.put(config.apiGateway.NAME, apiURL, params);
-    yield put(getSelectionProfilSuccess());
+    yield put(getSelectionProfilSuccess(missionData));
   } catch (err) {
-    yield put(getSelectionProfilFailure());
+    yield put(getSelectionProfilFailure(err));
   }
 }
 

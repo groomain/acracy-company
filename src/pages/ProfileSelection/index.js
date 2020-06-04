@@ -73,17 +73,19 @@ const ProfileSelection = (props) => {
                             <ListItem>
                                 <ListItemAvatar>
                                     <Avatar className={{[classes.avatar]: elementPosition.y > 350 || null}}>
+                                        <img src={acracy} alt="acracyLogo"/>
                                     </Avatar>
                                 </ListItemAvatar>
-                                <ListItemText primary="Recommandation globale"/>
+                                <ListItemText primary="Recommandation globale" primaryTypographyProps={{className: {[classes.listItemTextActive]: elementPosition.y > 350 || null}}}/>
                             </ListItem>
                             {profils.map((profil, index) =>
                                 <ListItem>
                                     <ListItemAvatar>
                                         <Avatar className={{[classes.avatar]: elementPosition.y < 350-(index*elementHeight/profils.length) && elementPosition.y > 350-((index+1)*elementHeight/profils.length)}}>
+                                            <img src={"https://cdn-media.rtl.fr/cache/p0NFoli1OBEqRtMwTbdztw/880v587-0/online/image/2015/0403/loveok_141338438169183900.jpg"} alt="linkedingProfil"/>
                                         </Avatar>
                                     </ListItemAvatar>
-                                    <ListItemText primary="Anh-Dao"/>
+                                    <ListItemText primary="Anh-Dao" primaryTypographyProps={{className: {[classes.listItemTextActive]: elementPosition.y < 350-(index*elementHeight/profils.length) && elementPosition.y > 350-((index+1)*elementHeight/profils.length)}}}/>
                                 </ListItem>
                             )}
                             {/*<ListItem>*/}
