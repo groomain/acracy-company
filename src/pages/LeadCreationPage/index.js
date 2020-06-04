@@ -8,15 +8,22 @@ import styles from './styles';
 import CustomSnackBar from "../../components/SnackBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import AppBar from "@material-ui/core/AppBar";
-import clsx from "clsx";
 import CustomButton from "../../components/Button";
 import {useTranslation} from "react-i18next";
 import acracyLogo from "../../assets/icons/logo-acracy.svg";
 import {NavLink} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+import {leadSaveLaunched} from "./reducer";
 
 const LeadCreationPage = () => {
   const classes = styles();
   const { t } = useTranslation();
+  const dispatch = useDispatch();
+
+  const leadSaveLoading = useSelector(state => state.getIn(['leadCreation', 'leadSaveLoading']), null);
+  const leadSave = (leads) => {
+    dispatch(leadSaveLaunched(leads));
+  };
   const [open, setOpen] = React.useState(false);
 
   return (
@@ -35,7 +42,7 @@ const LeadCreationPage = () => {
           </NavLink>
           <div className={classes.grow} />
           <div className={classes.save}>
-            <CustomButton title={t('saveAndClose')} className={classes.buttonSave}/>
+            <CustomButton title={t('saveAndClose')} className={classes.buttonSave} handleClick={() => leadSave()} loading={leadSaveLoading}/>
           </div>
           <div className={classes.grow} />
         </Toolbar>
