@@ -208,6 +208,11 @@ i18n
             nextButton: 'Suivant',
             backButton: 'Retour',
             validate: 'Valider'
+          },
+          dashboard: {
+            welcome: "Bonjour, ",
+            subtitle: "Merci d’avoir rejoint acracy! Ceci est votre tableau de bord. Vous y trouverez toute l’information nécessaire pour gérer vos missions.",
+            missionsTitle: "Mes Missions"
           }
         }
       }

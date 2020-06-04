@@ -12,29 +12,30 @@ import DraftsPagination from '../DraftsPagination/';
 import CustomLoader from '../../Loader';
 
 const Drafts = ({ drafts, loading, ...props }) => {
+  console.log('Drafts -> drafts', drafts)
   const classes = styles();
   const { t } = useTranslation();
 
   const responsive = {
     desktop: {
-      breakpoint: { max: 3000, min: 1200 },
+      breakpoint: { max: 3000, min: 1400 },
       items: 3,
-      partialVisibilityGutter: 30,
+      partialVisibilityGutter: 25,
     },
     tablet: {
-      breakpoint: { max: 1200, min: 900 },
+      breakpoint: { max: 1400, min: 1000 },
       items: 2,
-      partialVisibilityGutter: 30
+      partialVisibilityGutter: 15
     },
     mobile: {
-      breakpoint: { max: 900, min: 0 },
+      breakpoint: { max: 1000, min: 0 },
       items: 1,
-      partialVisibilityGutter: 30
+      partialVisibilityGutter: 5
     }
   };
 
   let draftsList = (
-    <DarkWrapper>
+    <DarkWrapper isBleed>
       {!loading ? (
         <FirstDraft />
       ) : (
@@ -46,7 +47,7 @@ const Drafts = ({ drafts, loading, ...props }) => {
     </DarkWrapper>
   );
 
-  if (drafts.length > 0 && !loading) {
+  if (drafts?.length > 0 && !loading) {
     draftsList = (
       <Carousel
         responsive={responsive}
@@ -63,14 +64,14 @@ const Drafts = ({ drafts, loading, ...props }) => {
     )
   };
 
-  const draftsNumber = drafts.length > 0 ? ('0' + drafts.length).slice(-2) : null
+  const draftsNumber = drafts?.length > 0 ? ('0' + drafts?.length).slice(-2) : null
 
   return (
-    <>
+    <Box my={4}>
       <Typography variant='h2'>{draftsNumber} {t('draft.briefsTitle')}</Typography>
       <br />
       {draftsList}
-    </>
+    </Box>
   );
 };
 

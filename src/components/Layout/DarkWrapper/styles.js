@@ -9,5 +9,9 @@ export default makeStyles(theme => ({
     margin: '1rem 0',
     alignItems: 'center',
     position: 'relative'
+  },
+  bleed: {
+    transform: 'translate(-2rem) !important',
+    width: 'calc(100% + 4rem)'
   }
 }));
