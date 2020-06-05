@@ -5,7 +5,9 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = Immutable.Map({
   leadsData: null,
-  leadsLoading: false
+  leadsLoading: false,
+  deletingLeadId: null,
+  deletingLeadLoading: false
 });
 
 const { actions, reducer } = createSlice({
@@ -21,14 +23,27 @@ const { actions, reducer } = createSlice({
       .set('leadsData', action.payload.leads),
     getLeadsFailure: (state, action) => state
       .set('leadsLoading', false)
-      .set('leadsData', null)
+      .set('leadsData', null),
+
+    deleteLeadLaunched: (state, action) => state
+      .set('deletingLeadLoading', true)
+      .set('deletingLeadId', null),
+    deleteLeadSuccess: (state, action) => state
+      .set('deletingLeadLoading', false)
+      .set('deletingLeadId', action.payload),
+    deleteLeadFailure: (state, action) => state
+      .set('deletingLeadLoading', false)
+      .set('deletingLeadId', null)
   }
 });
 
 export const {
   getLeadsLaunched,
   getLeadsSuccess,
-  getLeadsFailure
+  getLeadsFailure,
+  deleteLeadLaunched,
+  deleteLeadSuccess,
+  deleteLeadFailure
 } = actions;
 
 export default reducer;

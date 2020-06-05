@@ -58,7 +58,7 @@ const Drafts = ({ drafts, loading, ...props }) => {
         infinite={false}
         {...props}
       >
-        {drafts.map((draft, key) => <Draft draft={draft} key={key} />)}
+        {drafts.map((draft, key) => <Draft key={key} draft={draft} draftId={key} />)}
       </Carousel>
     )
   };

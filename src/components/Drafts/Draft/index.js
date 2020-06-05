@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useSelector, useDispatch } from 'react-redux';
 
 import { CustomButton } from '../../Button';
 import { Grid, Box, Typography, IconButton } from '@material-ui/core';
@@ -12,13 +13,18 @@ import ToValidateIcon from '../../../assets/icons/a-valider.svg';
 import WaitingForCallIcon from '../../../assets/icons/en-attente-de-rappel.svg';
 
 import { shortenLongText } from '../../../utils/format';
+import { deleteLeadLaunched } from '../../../pages/HomePage/reducer';
 
-const Draft = ({ draft }) => {
+const Draft = ({ draft, draftId }) => {
   const classes = styles();
   const { t } = useTranslation();
+  const dispatch = useDispatch();
 
   const [open, setOpen] = useState(false);
   const [newDraft, setNewDraft] = useState(false);
+  const { deletingLeadLoading } = useSelector(state => ({
+    deletingLeadLoading: state.getIn(['leads', 'deletingLeadLoading']),
+  }));
 
   /**
    * Goes through an object (nested or not) to check for empty values
@@ -91,6 +97,10 @@ const Draft = ({ draft }) => {
     }
   };
 
+  const deleteLead = () => {
+    dispatch(deleteLeadLaunched(draftId))
+  };
+
   return (
     <DraftWrapper>
       <Grid container justify='space-between' alignItems="center">
@@ -133,7 +143,8 @@ const Draft = ({ draft }) => {
           <Grid item>
             <CustomButton
               type="button"
-              handleClick={() => console.log("Deleted !")}
+              handleClick={deleteLead}
+              loading={deletingLeadLoading}
               title={t('draft.confirmDelete')}
               theme="filledButton"
             />
