@@ -1,12 +1,11 @@
 import makeStyles from '@material-ui/core/styles/makeStyles';
-import {basierRegular} from "../../utils/configureMaterialTheme";
+import { basierRegular } from "../../utils/configureMaterialTheme";
 
 export default makeStyles(theme => ({
   container: {
     height: 323,
     maxHeight: 323,
-    maxWidth: 1195,
-    minWidth: 1195,
+    width: '100%',
     flexGrow: 1,
     backgroundColor: "#283028",
     borderRadius: 15,
@@ -59,7 +58,7 @@ export default makeStyles(theme => ({
     marginBottom: '2%',
     width: '100%',
   },
-  typo:{
+  typo: {
     padding: 3,
     width: '100%',
     textAlign: 'left'
