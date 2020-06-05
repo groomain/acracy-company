@@ -53,35 +53,39 @@ const Draft = ({ draft, draftId }) => {
     }
   }, [path]);
 
+  const START_LEAD = t('draft.startBrief');
+  const FINALIZE_BRIEF = t('draft.finalizeBrief');
+  const GET_CALLED = t('draft.getCalled');
+
   const getStatus = (draftStatus, path) => {
     let status;
     if (draftStatus === 'DRAFT') {
       if (path.length < 1) {
         return status = {
-          title: 'Démarrer brief',
+          title: START_LEAD,
           progress: 10,
           status: 'lead'
         }
       } else if (path.length > 1 && !path["obj.search.text"]) {
         return status = {
-          title: 'Démarrer brief',
+          title: START_LEAD,
           progress: 30
         }
       } else {
         return status = {
-          title: 'Brief à finaliser',
+          title: FINALIZE_BRIEF,
           progress: 80
         }
       }
     } else if (draftStatus === 'HELP_NEEDED') {
       if (path.length < 1) {
         return status = {
-          title: 'En attente de rappel',
+          title: GET_CALLED,
           progress: 40
         }
       } else {
         return status = {
-          title: 'En attente de rappel',
+          title: GET_CALLED,
           progress: 80
         }
       }
@@ -91,9 +95,9 @@ const Draft = ({ draft, draftId }) => {
   console.log('result', result)
 
   const renderIcon = (result) => {
-    if (result?.title === 'En attente de rappel') {
+    if (result?.title === GET_CALLED) {
       return <img src={WaitingForCallIcon} alt="pending" />
-    } else if (result?.title === 'Brief à finaliser') {
+    } else if (result?.title === FINALIZE_BRIEF) {
       return <img src={ToValidateIcon} alt="to be validated" />
     } else {
       return <img src={StartIcon} alt="start" />

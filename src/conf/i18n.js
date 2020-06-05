@@ -137,7 +137,10 @@ i18n
             newBrief: 'Nouveau brief',
             firstBriefTitle: 'Créez votre premier \nbrief',
             firstBriefButton: "C'est parti !",
-            newBriefTitle: "Votre nouveau brief vous attend !"
+            newBriefTitle: "Votre nouveau brief vous attend !",
+            startBrief: "Démarrer brief",
+            finalizeBrief: "Brief à finaliser",
+            getCalled: "En attente de rappel"
           },
           signup: {
             conditions1: "J'ai lu et j'accepte les ",
