@@ -5,7 +5,9 @@ import {
   getLeadsSuccess,
   getLeadsFailure,
   deleteLeadSuccess,
-  deleteLeadFailure
+  deleteLeadFailure,
+  getMissionsSuccess,
+  getMissionsFailure
 } from './reducer';
 
 function* doGetLeads(action) {
@@ -48,7 +50,26 @@ function* doDeleteLead(action) {
   }
 }
 
-export const leadsSagas = [
+function* doGetMissions(action) {
+  try {
+    const apiURL = `/missions`;
+    const params = {
+      headers: {
+        'x-api-key': config.apiKey
+      },
+      body: {}
+    };
+
+    const missions = yield API.get(config.apiGateway.NAME, apiURL, params);
+    yield put(getMissionsSuccess(missions));
+  } catch (err) {
+    console.log('function*doGetLeads -> err', err)
+    yield put(getMissionsFailure());
+  }
+}
+
+export const dashboardSagas = [
   takeLatest('Leads/getLeadsLaunched', doGetLeads),
   takeLatest('Leads/deleteLeadLaunched', doDeleteLead),
+  takeLatest('Leads/getMissionsLaunched', doGetMissions),
 ]

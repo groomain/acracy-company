@@ -92,7 +92,6 @@ const Draft = ({ draft, draftId }) => {
     }
   }
   const result = getStatus(draft?.status, path);
-  console.log('result', result)
 
   const renderIcon = (result) => {
     if (result?.title === GET_CALLED) {

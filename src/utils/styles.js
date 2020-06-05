@@ -73,5 +73,9 @@ export default makeStyles(theme => ({
   fullPage: {
     paddingLeft: '14vw',
     paddingRight: '14vw'
+  },
+  disabledText: {
+    textAlign: 'center',
+    opacity: '.5'
   }
 }));

@@ -214,8 +214,15 @@ i18n
           },
           dashboard: {
             welcome: "Bonjour, ",
-            subtitle: "Merci d’avoir rejoint acracy! Ceci est votre tableau de bord. Vous y trouverez toute l’information nécessaire pour gérer vos missions.",
-            missionsTitle: "Mes Missions"
+            subtitle: "Merci d’avoir rejoint acracy ! Ceci est votre tableau de bord. Vous y trouverez toute l’information nécessaire pour gérer vos missions.",
+            missions: {
+              name: "Mission",
+              missionsTitle: "Mes Missions",
+              inProgress: " en cours",
+              future: " à venir",
+              finished: "Historique",
+              noMission: "Aucune mission en cours.\n Commencez par rechercher un type de profil ou livrable pour démarrer un brief."
+            }
           }
         }
       }
