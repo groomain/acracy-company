@@ -1,33 +1,94 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+
 import { CustomButton } from '../../Button';
 import { Grid, Box, Typography, IconButton } from '@material-ui/core';
 import styles from './styles';
 import DraftWrapper from './DraftWrapper';
-
 import ClearIcon from '@material-ui/icons/Clear';
 import SearchIcon from '../../../assets/icons/searchIcon';
 import StartIcon from '../../../assets/icons/demarrer.svg';
 import ToValidateIcon from '../../../assets/icons/a-valider.svg';
 import WaitingForCallIcon from '../../../assets/icons/en-attente-de-rappel.svg';
 
+import { shortenLongText } from '../../../utils/format';
+
 const Draft = ({ draft }) => {
   const classes = styles();
   const { t } = useTranslation();
 
   const [open, setOpen] = useState(false);
+  const [newDraft, setNewDraft] = useState(false);
 
-  const renderIcon = () => {
-    switch (draft.status) {
-      case 'To Validate':
-        return <img src={ToValidateIcon} alt="to be validated" />
-      case 'Pending':
-        return <img src={WaitingForCallIcon} alt="pending" />
-      case 'Start':
-        return <img src={StartIcon} alt="start" />
-      default:
-        return <img src={StartIcon} alt="start" />
-    };
+  /**
+   * Goes through an object (nested or not) to check for empty values
+   * @param {object} obj - The object to check for empty values 
+   * @param {string} path - The base string to be concatenated with the path of the missing values
+   * @returns {array} - A list of all missing values, the path of the key being represented as a string separated by '.' (ex : obj.draft.status)
+   */
+  const getPath = (obj, path) => {
+    var props = [];
+    for (var key in obj) {
+      if (obj[key] === "") {
+        props.push(path + '.' + key);
+      }
+      if (obj[key] instanceof Object) {
+        props.push.apply(props, getPath(obj[key], path + '.' + key));
+      }
+    }
+    return props;
+  };
+  const path = getPath(draft, "obj");
+
+  useEffect(() => {
+    if (path.length > 1 && !path["obj.search.text"]) {
+      setNewDraft(true)
+    }
+  }, [path]);
+
+  const getStatus = (draftStatus, path) => {
+    let status;
+    if (draftStatus === 'DRAFT') {
+      if (path.length < 1) {
+        return status = {
+          title: 'Démarrer brief',
+          progress: 10
+        }
+      } else if (path.length > 1 && !path["obj.search.text"]) {
+        return status = {
+          title: 'Démarrer brief',
+          progress: 30
+        }
+      } else {
+        return status = {
+          title: 'Brief à finaliser',
+          progress: 80
+        }
+      }
+    } else if (draftStatus === 'HELP_NEEDED') {
+      if (path.length < 1) {
+        return status = {
+          title: 'En attente de rappel',
+          progress: 40
+        }
+      } else {
+        return status = {
+          title: 'En attente de rappel',
+          progress: 80
+        }
+      }
+    }
+  }
+  const result = getStatus(draft?.status, path);
+
+  const renderIcon = (result) => {
+    if (result?.title === 'En attente de rappel') {
+      return <img src={WaitingForCallIcon} alt="pending" />
+    } else if (result?.title === 'Brief à finaliser') {
+      return <img src={ToValidateIcon} alt="to be validated" />
+    } else {
+      return <img src={StartIcon} alt="start" />
+    }
   };
 
   return (
@@ -35,10 +96,10 @@ const Draft = ({ draft }) => {
       <Grid container justify='space-between' alignItems="center">
         <Grid item>
           <Grid container alignItems="center">
-            <Box className={classes.iconBox}>{renderIcon()}</Box>
+            <Box className={classes.iconBox}>{renderIcon(result)}</Box>
             <Grid>
-              <Typography variant='h2' className={classes.toUppercase}>{draft.title} ({draft.progress} %)</Typography>
-              <Typography variant='body2'>Créé le : {draft.date} à {draft.time}</Typography>
+              <Typography variant='h2' className={classes.toUppercase}>{result?.title} ({result?.progress} %)</Typography>
+              <Typography variant='body2'>Créé le : {draft?.missionContext.startDate} à {draft?.time}</Typography>
             </Grid>
           </Grid>
         </Grid>
@@ -50,17 +111,17 @@ const Draft = ({ draft }) => {
       </Grid>
 
       <Box className={classes.titleBox}>
-        {draft.new
+        {newDraft
           ? <Typography variant='h3' className={classes.newDraft}>
             {t('draft.newBriefTitle')}
           </Typography>
-          : <Typography variant='h3'>{draft.missionContext.title}</Typography>
+          : <Typography variant='h3'>{shortenLongText(draft?.missionContext.title, 37)}</Typography>
         }
       </Box>
       <Grid container>
         <SearchIcon color='#fff' size="small" />
         <Box mx={1.5}>
-          <Typography variant='body2'>{draft.search.text}</Typography>
+          <Typography variant='body2'>{shortenLongText(draft?.search.text, 30)}</Typography>
         </Box>
       </Grid>
 

@@ -12,7 +12,6 @@ import DraftsPagination from '../DraftsPagination/';
 import CustomLoader from '../../Loader';
 
 const Drafts = ({ drafts, loading, ...props }) => {
-  console.log('Drafts -> drafts', drafts)
   const classes = styles();
   const { t } = useTranslation();
 

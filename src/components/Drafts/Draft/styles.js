@@ -12,7 +12,7 @@ export default makeStyles(theme => ({
     margin: 15,
   },
   titleBox: {
-    margin: '27px 50px 20px 0',
+    margin: '27px 50px 15px 0',
     '& h3': {
       lineHeight: 1.55
     }
@@ -38,7 +38,8 @@ export default makeStyles(theme => ({
     color: theme.palette.primary.main
   },
   toUppercase: {
-    textTransform: 'uppercase'
+    textTransform: 'uppercase',
+    fontSize: 15
   },
   firstBriefTitle: {
     lineHeight: .5
