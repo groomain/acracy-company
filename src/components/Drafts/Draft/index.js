@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector, useDispatch } from 'react-redux';
+import { NavLink } from 'react-router-dom';
 
 import { CustomButton } from '../../Button';
 import { Grid, Box, Typography, IconButton } from '@material-ui/core';
@@ -58,7 +59,8 @@ const Draft = ({ draft, draftId }) => {
       if (path.length < 1) {
         return status = {
           title: 'Démarrer brief',
-          progress: 10
+          progress: 10,
+          status: 'lead'
         }
       } else if (path.length > 1 && !path["obj.search.text"]) {
         return status = {
@@ -86,6 +88,7 @@ const Draft = ({ draft, draftId }) => {
     }
   }
   const result = getStatus(draft?.status, path);
+  console.log('result', result)
 
   const renderIcon = (result) => {
     if (result?.title === 'En attente de rappel') {
@@ -119,15 +122,19 @@ const Draft = ({ draft, draftId }) => {
           </IconButton>
         </Grid>
       </Grid>
-
-      <Box className={classes.titleBox}>
-        {newDraft
-          ? <Typography variant='h3' className={classes.newDraft}>
-            {t('draft.newBriefTitle')}
-          </Typography>
-          : <Typography variant='h3'>{shortenLongText(draft?.missionContext.title, 37)}</Typography>
-        }
-      </Box>
+      <NavLink
+        to={result?.status === 'lead' ? `/lead/${draftId}?step=1` : `/lead/${draftId}?step=2`}
+        className={classes.draftLink}
+      >
+        <Box className={classes.titleBox}>
+          {newDraft
+            ? <Typography variant='h3' className={classes.newDraft}>
+              {t('draft.newBriefTitle')}
+            </Typography>
+            : <Typography variant='h3'>{shortenLongText(draft?.missionContext.title, 37)}</Typography>
+          }
+        </Box>
+      </NavLink>
       <Grid container>
         <SearchIcon color='#fff' size="small" />
         <Box mx={1.5}>

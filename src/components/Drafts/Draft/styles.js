@@ -43,5 +43,12 @@ export default makeStyles(theme => ({
   },
   firstBriefTitle: {
     lineHeight: .5
+  },
+  draftLink: {
+    textDecoration: 'none',
+    '&:hover div h3': {
+      transition: '.3s',
+      opacity: '.85'
+    }
   }
 }));
