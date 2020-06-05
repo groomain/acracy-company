@@ -36,7 +36,7 @@ import {
 } from '../../utils/cognito';
 
 import { config } from '../../conf/amplify';
-import { leadsSagas } from '../../pages/HomePage/sagas';
+import { dashboardSagas } from '../../pages/HomePage/sagas';
 
 function* getCurrentSession(action) {
   const { fromPath } = action.payload;
@@ -217,6 +217,6 @@ export default function* rootSaga() {
     takeLatest('App/updateUserLaunched', doUpdateUser),
     takeLatest('App/confirmSignupLaunched', doConfirmSignUp),
     takeLatest('App/resendCodeLaunched', doResendCode),
-    ...leadsSagas,
+    ...dashboardSagas,
   ]);
 }
