@@ -40,12 +40,30 @@ export const withDisabledRipple = () => (
 
 export const withLoading = () => (
   ProviderWrapper(
-    <CustomButton color="secondary" loading rippleDisabled />
+    <CustomButton loading rippleDisabled />
   )
 );
 
 export const asLink = () => (
   ProviderWrapper(
     <CustomButton theme="asLink" title="Valider" rippleDisabled />
+  )
+);
+
+export const asLinkPrimary = () => (
+  ProviderWrapper(
+    <CustomButton theme="asLinkPrimary" title="Valider" rippleDisabled />
+  )
+);
+
+export const withDisabledFilled = () => (
+  ProviderWrapper(
+    <CustomButton theme="disabledFilled" title="Valider" disabled />
+  )
+);
+
+export const withDisabledOutlined = () => (
+  ProviderWrapper(
+    <CustomButton theme="disabledOutlined" title="Valider" disabled />
   )
 );

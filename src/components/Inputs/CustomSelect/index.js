@@ -7,10 +7,10 @@ import CustomCheckbox from '../../CheckBox';
 export const CustomSelect = ({ label, value, placeholder, onUpdateSelection, context, type, error, isMulti, optionsValues, ...props }) => {
   const classes = styles();
 
-  const [options, setOptions] = useState([]);
-
   const [open, setOpen] = useState(false);
 
+  // Keep state + handleChange for the multi-select component for now
+  const [options, setOptions] = useState([]);
   const handleChange = (event) => {
     setOptions(event.target.value);
     onUpdateSelection(event.target.value); // used in lead creation form component
@@ -35,11 +35,11 @@ export const CustomSelect = ({ label, value, placeholder, onUpdateSelection, con
         renderValue={isMulti && (context === 'deliverables' ? renderCounter : ((selected) => selected.join(' ')))}
         // renderValue={isMulti && ((selected) => selected.join(' '))}
         // value={options}
-        value={isMulti && options}
+        value={isMulti ? options : value}
         error={error}
         onOpen={() => setOpen(true)}
         onClose={() => setOpen(false)}
-        onChange={handleChange}
+        onChange={isMulti && handleChange}
         defaultValue={context === 'profileType' ? (optionsValues[optionsValues.length - 1]) : null}
         classes={{ root: open ? `${classes.root} ${classes.open}` : classes.root }}
         disableUnderline

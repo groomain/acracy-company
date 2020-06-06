@@ -5,7 +5,7 @@ import { Formik } from 'formik';
 import * as Yup from 'yup';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
-import LoginForm from '../../components/LoginForm';
+import LoginForm from '../../components/Forms/LoginForm';
 import { loginLaunched } from '../../components/App/reducer';
 import styles from '../../utils/styles';
 import { NavLink } from "react-router-dom";
@@ -57,7 +57,7 @@ const SignInPage = () => {
           />
           <Divider className={classes.divider} />
           <Typography variant={'body1'} className={classes.typo} >{t('haveAccount')}</Typography>
-          <NavLink to={'/password'} className={classes.navLink}>{t('signUpButton')}</NavLink>
+          <NavLink to={'/signup'} className={classes.navLink}>{t('signUpButton')}</NavLink>
         </Grid>
       </Grid>
     </Grid>

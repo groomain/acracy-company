@@ -7,8 +7,9 @@ import { signupLaunched } from '../../components/App/reducer';
 import Grid from '@material-ui/core/Grid';
 import Sidebar from '../../components/Layout/Sidebar';
 import Main from '../../components/Layout/Main';
-import SignUpForm from '../../components/SignUpForm';
+import SignUpForm from '../../components/Forms/SignUpForm';
 import SearchResultPannel from '../../components/SearchResultPannel';
+import PartnersList from '../../components/PartnersList';
 import styles from '../../utils/styles';
 
 const SignUpPage = () => {
@@ -20,7 +21,12 @@ const SignUpPage = () => {
   const initialValues = {
     email: '',
     password: '',
-    confirmPassword: ''
+    confirmPassword: '',
+    phonePrefix: 'Fr : +33',
+    searchValue: 'Social Media Strategist',
+    searchType: '',
+    searchCode: '',
+    conditions: false
   };
 
   // Form Submitting Function
@@ -33,6 +39,24 @@ const SignUpPage = () => {
     email: Yup
       .string()
       .required(),
+    companyName: Yup
+      .string()
+      .required(),
+    firstName: Yup
+      .string()
+      .required(),
+    lastName: Yup
+      .string()
+      .required(),
+    role: Yup
+      .string()
+      .required(),
+    phoneNumber: Yup
+      .number()
+      .required(),
+    phonePrefix: Yup
+      .string()
+      .required(),
     password: Yup
       .string()
       .required(),
@@ -41,7 +65,10 @@ const SignUpPage = () => {
       .test('password-match', t('passwordMismatch'), function (confPass) {
         return confPass === this.parent.password;
       })
-      .required()
+      .required(),
+    conditions: Yup
+      .bool()
+      .required(),
   });
 
   return (
@@ -61,7 +88,12 @@ const SignUpPage = () => {
           />
         </Main>
         <Sidebar>
-          <SearchResultPannel />
+          <Grid className={classes.pannel}>
+            <SearchResultPannel
+              searchValue={initialValues.searchValue}
+            />
+            <PartnersList />
+          </Grid>
         </Sidebar>
       </Grid>
     </>

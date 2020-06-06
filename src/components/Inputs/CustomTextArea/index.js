@@ -1,17 +1,20 @@
-import React from 'react';
-import { FilledInput } from '@material-ui/core';
-import InputLabel from '@material-ui/core/InputLabel';
-import Box from '@material-ui/core/Box';
+import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+
+import { Grid, Typography, FilledInput, InputLabel, Box } from '@material-ui/core';
 import styles from './styles';
 
-export const CustomTextArea = ({ label, placeholder, error, helperText, ...props
-}) => {
+export const CustomTextArea = ({ label, placeholder, error, helperText, maxLength, ...props }) => {
   const classes = styles();
-  const [value, setValue] = React.useState({
+  const { t } = useTranslation();
+
+  const [value, setValue] = useState({
     missionDescription: '',
   });
+  const [currentInputLength, setCurrentInputLength] = useState(0);
 
   const handleChange = prop => (event) => {
+    setCurrentInputLength(event.target.value.length);
     setValue({ ...value, [prop]: event.target.value });
   };
 
@@ -28,8 +31,14 @@ export const CustomTextArea = ({ label, placeholder, error, helperText, ...props
         multiline
         onChange={handleChange('value')}
         error={error}
+        inputProps={{ maxLength: maxLength }}
         {...props}
       />
+      {maxLength && (
+        <Grid container justify='flex-end'>
+          <Typography variant='body2' className={classes.inputLength}>{currentInputLength} / {maxLength} {t('characters')}</Typography>
+        </Grid>
+      )}
     </Box>
   );
 

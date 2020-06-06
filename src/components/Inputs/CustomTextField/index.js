@@ -56,10 +56,9 @@ export const CustomPasswordField = ({ label, placeholder, error, helperText, ...
   };
   return (
     <Box style={{ height: '140px' }}>
-      <Typography htmlFor="filled-adornment-password" variant='h4'>{label}</Typography>
+      <Typography variant='h4'>{label}</Typography>
       <FilledInput
         classes={{ root: `${classes.root} ${error ? classes.error : null}`, focused: classes.focused, select: classes.select }}
-        id="filled-adornment-password"
         placeholder={placeholder}
         fullWidth
         type={values.showPassword ? 'text' : 'password'}

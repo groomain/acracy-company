@@ -12,7 +12,8 @@ export const CustomIconButton = ({ icon, ...props }) => {
                 backgroundImage: `url(${icon})`,
                 backgroundRepeat: 'no-repeat',
                 content: '""',
-            }} />} />
+            }} />}
+            {...props}/>
     );
 };
 
