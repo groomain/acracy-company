@@ -55,6 +55,9 @@ export default makeStyles(theme => ({
     margin: 'auto',
     color: "black"
   },
+  logo: {
+    outlineStyle: 'none'
+  },
   iconButton: {
     marginTop: "auto",
     marginBottom: 'auto'

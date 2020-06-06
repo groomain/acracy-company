@@ -11,6 +11,8 @@ import CustomIconButton from "../IconButton";
 import { useLocation, withRouter } from "react-router";
 import clsx from "clsx";
 import CustomSnackBar from "../SnackBar";
+import {NavLink} from "react-router-dom";
+import acracyLogo from "../../assets/icons/logo-acracy.svg";
 
 export const CustomAppBar = (props) => {
   let location = useLocation();
@@ -58,9 +60,9 @@ export const CustomAppBar = (props) => {
     <AppBar position="fixed" className={classes.appbar}>
       <CustomSnackBar message={"Test de snackBar"} open={open} setOpen={setOpen} />
       <Toolbar className={classes.toolbar}>
-        <Typography className={classes.title} variant="h1" noWrap>
-          acracy
-            </Typography>
+          <NavLink to={'/'} className={classes.logo}>
+              <img src={acracyLogo} alt="acracyLogo" />
+          </NavLink>
         <div className={classes.grow} />
         {renderButtons()}
       </Toolbar>

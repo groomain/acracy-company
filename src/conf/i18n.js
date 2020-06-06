@@ -121,6 +121,7 @@ i18n
           lastNameRequired: 'Veuillez saisir votre nom',
           search: 'Rechercher…',
           refresh: 'Rafraîchir',
+          saveAndClose: 'Sauvegarder et fermer',
           draft: {
             confirmDelete: 'Confirmer la suppression',
             cancel: 'Annuler',
