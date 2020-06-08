@@ -1,6 +1,8 @@
 import React from 'react';
 import ProviderWrapper from '../../utils/Provider';
-import Mission from "../../components/Mission";
+import Mission from "../../components/Missions/Mission";
+
+import { missions } from '../../mocks/missions';
 
 export default {
   title: 'Components|Mission',
@@ -12,8 +14,10 @@ export default {
   },
 };
 
+const singleMission = missions[0];
+
 export const withLogin = () => (
   ProviderWrapper(
-      <Mission/>
+    <Mission mission={singleMission} />
   )
 );

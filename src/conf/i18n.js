@@ -221,6 +221,7 @@ i18n
               inProgress: " en cours",
               future: " à venir",
               finished: "Historique",
+              profileMatching: "Matching de profil",
               noMission: "Aucune mission en cours.\n Commencez par rechercher un type de profil ou livrable pour démarrer un brief."
             }
           }
