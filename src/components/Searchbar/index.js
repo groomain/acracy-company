@@ -38,14 +38,14 @@ const Searchbar = ({ onUpdateChosenCategory }) => {
   );
 }
 
-const SearchResults = ({ searchResults, onUpdateChosenCategory, ...props }) => {
+const SearchResults = ({ searchResults, onUpdateChosenCategory, context, ...props }) => {
   const classes = styles();
   const { t } = useTranslation();
 
   const [resultsList, setResultsList] = useState([]);
   const [loading, setIsLoading] = useState(true);
   const [searchValue, setSearchValue] = useState();
-  const [newOption, setNewOption] = useState();
+  const [newOption, setNewOption] = useState({ title: t('leadCreation.reseachLabel') });
 
 
   useEffect(() => {
@@ -137,7 +137,7 @@ const SearchResults = ({ searchResults, onUpdateChosenCategory, ...props }) => {
       setNewOption({ title: "Vous avez recherché", value: newValue.value })
     }
     if (actionMeta.action === 'clear') {
-      setNewOption('')
+      setNewOption({ title: t('leadCreation.reseachLabel') })
     }
     setSearchValue(newValue || null);
     onUpdateChosenCategory(newValue);
@@ -167,7 +167,13 @@ const SearchResults = ({ searchResults, onUpdateChosenCategory, ...props }) => {
   return (
     <>
       <Box my={2} style={{ height: 30 }}>
-        <Typography variant="h2">{renderTitle(searchValue?.TYPE) || newOption?.title}</Typography>
+        <Typography variant="h2">
+          {renderTitle(searchValue?.TYPE) || newOption?.title}
+          {/* {searchValue ?
+            (renderTitle(searchValue?.TYPE) || newOption?.title)
+            :
+            (context === 'leadCreation' ? t('LeadCreation.reseachLabel') : null)} */}
+        </Typography>
       </Box>
       <CreatableSelect
         ref={ref}
@@ -193,7 +199,12 @@ const SearchResults = ({ searchResults, onUpdateChosenCategory, ...props }) => {
       />
       {newOption && (
         <Box my={2}>
-          <Typography variant="h2">« {newOption.value} » {t('searchbar.newOption')}</Typography>
+          <Typography variant="h2">
+            {newOption.title !== (t('leadCreation.reseachLabel')) ?
+              ('« ' + newOption.value + ' » ' + t('searchbar.newOption'))
+              :
+              ''}
+          </Typography>
         </Box>
       )}
     </>
