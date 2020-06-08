@@ -12,8 +12,10 @@ export const CustomSelect = ({ label, value, placeholder, onUpdateSelection, con
   // Keep state + handleChange for the multi-select component for now
   const [options, setOptions] = useState([]);
   const handleChange = (event) => {
-    setOptions(event.target.value);
-    onUpdateSelection(event.target.value); // used in lead creation form component
+    if (event.target.value.length <= 5) {
+      setOptions(event.target.value);
+      onUpdateSelection(event.target.value); // used in lead creation form component
+    }
   };
 
   const renderCounter = (options) => {
