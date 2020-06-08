@@ -3,7 +3,7 @@ import ProviderWrapper from '../../utils/Provider';
 import Draft from '../../components/Drafts/Draft';
 import Drafts from '../../components/Drafts/DraftsWrapper';
 
-import { leads } from '../mocks/leads';
+import { leads } from '../../mocks/leads';
 
 export default {
   title: 'Components|Drafts',
@@ -11,8 +11,7 @@ export default {
 };
 
 const styles = {
-  padding: '3rem',
-  position: 'relative'
+  padding: '3rem'
 }
 
 
