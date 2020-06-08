@@ -1,4 +1,6 @@
 import React from 'react';
+import { Formik } from 'formik';
+import * as Yup from 'yup';
 import Sidebar from '../../components/Layout/Sidebar';
 import Main from '../../components/Layout/Main';
 import LeadCreationForm from '../../components/LeadCreationForm';
@@ -9,11 +11,11 @@ import CustomSnackBar from "../../components/SnackBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import AppBar from "@material-ui/core/AppBar";
 import CustomButton from "../../components/Button";
-import {useTranslation} from "react-i18next";
+import { useTranslation } from "react-i18next";
 import acracyLogo from "../../assets/icons/logo-acracy.svg";
-import {NavLink} from "react-router-dom";
-import {useDispatch, useSelector} from "react-redux";
-import {leadSaveLaunched} from "./reducer";
+import { NavLink } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { leadSaveLaunched } from "./reducer";
 
 const LeadCreationPage = () => {
   const classes = styles();
@@ -26,8 +28,40 @@ const LeadCreationPage = () => {
   };
   const [open, setOpen] = React.useState(false);
 
-  return (
+  const initialValues = {
+    deliverable: '',
+    searchedValue: '',
+    customDeliverable: '',
+    profile: '',
+    missionTitle: '',
+    missionStartDate: '',
+    workspace: '',
+    frequency: '',
+    duration: '',
+    durationType: 'Jours',
+    budget: '',
+    budgetType: '',
+    profilesNumber: 1,
+  };
 
+  // Form Validation Schema
+  const ValidationSchema = Yup.object().shape({
+    deliverable: Yup.string().required(),
+    searchedValue: Yup.string().required(),
+    customDeliverable: Yup.string().required(),
+    profile: Yup.string().required(),
+    missionTitle: Yup.string().required(),
+    missionStartDate: Yup.string().required(),
+    workspace: Yup.string().required(),
+    frequency: Yup.string().required(),
+    duration: Yup.number().required(),
+    durationType: Yup.string().required(),
+    budget: Yup.number().required(),
+    budgetType: Yup.string().required(),
+    profilesNumber: Yup.number().required(),
+  });
+
+  return (
     <Grid
       container
       direction="row"
@@ -42,13 +76,18 @@ const LeadCreationPage = () => {
           </NavLink>
           <div className={classes.grow} />
           <div className={classes.save}>
-            <CustomButton title={t('saveAndClose')} className={classes.buttonSave} handleClick={() => leadSave()} loading={leadSaveLoading}/>
+            <CustomButton title={t('saveAndClose')} className={classes.buttonSave} handleClick={() => leadSave()} loading={leadSaveLoading} />
           </div>
           <div className={classes.grow} />
         </Toolbar>
       </AppBar>
       <Main>
-        <LeadCreationForm />
+        <Formik
+          render={props => <LeadCreationForm {...props} />}
+          initialValues={initialValues}
+          validationSchema={ValidationSchema}
+          onSubmit={leadSave}
+        />
       </Main>
 
       <Sidebar>
