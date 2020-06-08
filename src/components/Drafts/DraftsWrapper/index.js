@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { Box, Typography } from '@material-ui/core/';
 import styles from './styles';
 import { useTranslation } from 'react-i18next';
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
+
+import { getLeadsLaunched } from '../../../pages/HomePage/reducer';
 
 import DarkWrapper from '../../Layout/DarkWrapper/';
 import FirstDraft from '../Draft/FirstDraft';
@@ -11,9 +14,31 @@ import Draft from '../Draft';
 import DraftsPagination from '../DraftsPagination/';
 import CustomLoader from '../../Loader';
 
-const Drafts = ({ drafts, loading, ...props }) => {
+const Drafts = ({ ...props }) => {
   const classes = styles();
   const { t } = useTranslation();
+  const dispatch = useDispatch();
+
+  const [currentDrafts, setCurrentDrafts] = useState();
+
+  const { leadsData, leadsLoading } = useSelector(state => ({
+    leadsData: state.getIn(['dashboard', 'leadsData']),
+    leadsLoading: state.getIn(['dashboard', 'leadsLoading']),
+  }));
+
+  const getLeads = () => {
+    dispatch(getLeadsLaunched());
+  };
+
+  useEffect(() => {
+    getLeads();
+  }, []);
+
+  useEffect(() => {
+    setCurrentDrafts(leadsData);
+    setCurrentDrafts([]);
+  }, [leadsData]);
+
 
   const responsive = {
     desktop: {
@@ -35,7 +60,7 @@ const Drafts = ({ drafts, loading, ...props }) => {
 
   let draftsList = (
     <DarkWrapper isBleed>
-      {!loading ? (
+      {!leadsLoading ? (
         <FirstDraft />
       ) : (
           <Box mx='auto'>
@@ -46,7 +71,7 @@ const Drafts = ({ drafts, loading, ...props }) => {
     </DarkWrapper>
   );
 
-  if (drafts?.length > 0 && !loading) {
+  if (currentDrafts?.length > 0 && !leadsLoading) {
     draftsList = (
       <Carousel
         responsive={responsive}
@@ -58,12 +83,12 @@ const Drafts = ({ drafts, loading, ...props }) => {
         infinite={false}
         {...props}
       >
-        {drafts.map((draft, key) => <Draft key={key} draft={draft} draftId={key} />)}
+        {currentDrafts?.map((draft, key) => <Draft key={key} draft={draft} />)}
       </Carousel>
     )
   };
 
-  const draftsNumber = drafts?.length > 0 ? ('0' + drafts?.length).slice(-2) : null
+  const draftsNumber = currentDrafts?.length > 0 ? ('0' + currentDrafts?.length).slice(-2) : null
 
   return (
     <Box my={4}>

@@ -1,4 +1,4 @@
-import { put, takeLatest, call } from 'redux-saga/effects';
+import { all, put, takeLatest, call } from 'redux-saga/effects';
 import { API } from 'aws-amplify';
 import { config } from "../../conf/amplify";
 import {
@@ -30,18 +30,19 @@ function* doGetLeads(action) {
 
 function* doDeleteLead(action) {
   const leadId = action.payload;
+  console.log('function*doDeleteLead -> leadId', leadId)
   try {
-    // const apiURL = `/leads/{leadId}`;
-    // const params = {
-    //   headers: {
-    //     'x-api-key': config.apiKey
-    //   },
-    //   body: {
-    //     'status': 'DELETED'
-    //   }
-    // };
+    const apiURL = `/leads/{leadId}`;
+    const params = {
+      headers: {
+        'x-api-key': config.apiKey
+      },
+      body: {
+        'status': 'DELETED'
+      }
+    };
 
-    // yield API.put(config.apiGateway.NAME, apiURL, params);
+    yield API.put(config.apiGateway.NAME, apiURL, params);
     yield put(deleteLeadSuccess(action.payload));
     yield call(doGetLeads());
   } catch (err) {
@@ -68,8 +69,10 @@ function* doGetMissions(action) {
   }
 }
 
-export const dashboardSagas = [
-  takeLatest('Leads/getLeadsLaunched', doGetLeads),
-  takeLatest('Leads/deleteLeadLaunched', doDeleteLead),
-  takeLatest('Leads/getMissionsLaunched', doGetMissions),
-]
+export default function* dashboardSagas() {
+  yield all([
+    takeLatest('Leads/getLeadsLaunched', doGetLeads),
+    takeLatest('Leads/deleteLeadLaunched', doDeleteLead),
+    takeLatest('Leads/getMissionsLaunched', doGetMissions),
+  ])
+}

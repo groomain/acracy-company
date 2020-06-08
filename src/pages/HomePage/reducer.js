@@ -9,7 +9,8 @@ const initialState = Immutable.Map({
   deletingLeadId: null,
   deletingLeadLoading: false,
   missionsLoading: false,
-  missionsData: null
+  missionsData: null,
+  leadCreationStep: null
 });
 
 const { actions, reducer } = createSlice({
@@ -44,6 +45,8 @@ const { actions, reducer } = createSlice({
     getMissionsFailure: (state, action) => state
       .set('missionsLoading', false)
       .set('missionsData', null),
+    setLeadCreationStep: (state, action) => state
+      .set('leadCreationStep', action.payload)
   }
 });
 
@@ -56,7 +59,8 @@ export const {
   deleteLeadFailure,
   getMissionsLaunched,
   getMissionsSuccess,
-  getMissionsFailure
+  getMissionsFailure,
+  setLeadCreationStep
 } = actions;
 
 export default reducer;

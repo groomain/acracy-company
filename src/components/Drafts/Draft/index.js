@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector, useDispatch } from 'react-redux';
 import { NavLink } from 'react-router-dom';
+import * as moment from 'moment';
 
 import { CustomButton } from '../../Button';
 import { Grid, Box, Typography, IconButton } from '@material-ui/core';
@@ -13,19 +14,31 @@ import StartIcon from '../../../assets/icons/demarrer.svg';
 import ToValidateIcon from '../../../assets/icons/a-valider.svg';
 import WaitingForCallIcon from '../../../assets/icons/en-attente-de-rappel.svg';
 
+import { setLeadCreationStep } from '../../../pages/HomePage/reducer';
 import { shortenLongText } from '../../../utils/format';
 import { deleteLeadLaunched } from '../../../pages/HomePage/reducer';
 
-const Draft = ({ draft, draftId }) => {
+moment.locale('fr');
+
+const Draft = ({ draft }) => {
   const classes = styles();
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
-  const [open, setOpen] = useState(false);
-  const [newDraft, setNewDraft] = useState(false);
+  const START_LEAD = t('draft.startBrief');
+  const FINALIZE_BRIEF = t('draft.finalizeBrief');
+  const GET_CALLED = t('draft.getCalled');
+
   const { deletingLeadLoading } = useSelector(state => ({
     deletingLeadLoading: state.getIn(['leads', 'deletingLeadLoading']),
   }));
+  const [open, setOpen] = useState(false);
+  const [newDraft, setNewDraft] = useState(false);
+  const [getStatusResult, setGetStatusResult] = useState();
+  const [path, setPath] = useState([]);
+
+  const startDate = draft?.missionContext.startDate;
+  const date = moment.unix(startDate).format("MM.DD à hh:mm");
 
   /**
    * Goes through an object (nested or not) to check for empty values
@@ -33,70 +46,71 @@ const Draft = ({ draft, draftId }) => {
    * @param {string} path - The base string to be concatenated with the path of the missing values
    * @returns {array} - A list of all missing values, the path of the key being represented as a string separated by '.' (ex : obj.draft.status)
    */
-  const getPath = (obj, path) => {
-    var props = [];
-    for (var key in obj) {
-      if (obj[key] === "") {
-        props.push(path + '.' + key);
+  useEffect(() => {
+    const getPath = (obj, path) => {
+      var props = [];
+      for (var key in obj) {
+        if (obj[key] === "") {
+          props.push(path + '.' + key);
+        }
+        if (obj[key] instanceof Object) {
+          props.push.apply(props, getPath(obj[key], path + '.' + key));
+        }
       }
-      if (obj[key] instanceof Object) {
-        props.push.apply(props, getPath(obj[key], path + '.' + key));
-      }
-    }
-    return props;
-  };
-  const path = getPath(draft, "obj");
+      return props;
+    };
+    setPath(getPath(draft, "obj"));
+  }, [draft]);
 
   useEffect(() => {
     if (path.length > 1 && !path["obj.search.text"]) {
-      setNewDraft(true)
+      setNewDraft(true);
     }
-  }, [path]);
+  }, [path, dispatch]);
 
-  const START_LEAD = t('draft.startBrief');
-  const FINALIZE_BRIEF = t('draft.finalizeBrief');
-  const GET_CALLED = t('draft.getCalled');
-
-  const getStatus = (draftStatus, path) => {
-    let status;
-    if (draftStatus === 'DRAFT') {
-      if (path.length < 1) {
-        return status = {
-          title: START_LEAD,
-          progress: 10,
-          status: 'lead'
+  useEffect(() => {
+    const getStatus = (draftStatus, path) => {
+      let status;
+      if (draftStatus === 'DRAFT') {
+        if (path.length < 1) {
+          return status = {
+            title: START_LEAD,
+            progress: 10,
+            status: 'lead'
+          }
+        } else if (path.length > 1 && !path["obj.search.text"]) {
+          return status = {
+            title: START_LEAD,
+            progress: 30
+          }
+        } else {
+          return status = {
+            title: FINALIZE_BRIEF,
+            progress: 80
+          }
         }
-      } else if (path.length > 1 && !path["obj.search.text"]) {
-        return status = {
-          title: START_LEAD,
-          progress: 30
-        }
-      } else {
-        return status = {
-          title: FINALIZE_BRIEF,
-          progress: 80
-        }
-      }
-    } else if (draftStatus === 'HELP_NEEDED') {
-      if (path.length < 1) {
-        return status = {
-          title: GET_CALLED,
-          progress: 40
-        }
-      } else {
-        return status = {
-          title: GET_CALLED,
-          progress: 80
+      } else if (draftStatus === 'HELP_NEEDED') {
+        if (path.length < 1) {
+          return status = {
+            title: GET_CALLED,
+            progress: 40
+          }
+        } else {
+          return status = {
+            title: GET_CALLED,
+            progress: 80
+          }
         }
       }
     }
-  }
-  const result = getStatus(draft?.status, path);
+    const result = getStatus(draft?.status, path);
+    setGetStatusResult(result);
+  }, [FINALIZE_BRIEF, GET_CALLED, START_LEAD, draft, draft.status, path]);
 
-  const renderIcon = (result) => {
-    if (result?.title === GET_CALLED) {
+  const renderIcon = (getStatusResult) => {
+    if (getStatusResult?.title === GET_CALLED) {
       return <img src={WaitingForCallIcon} alt="pending" />
-    } else if (result?.title === FINALIZE_BRIEF) {
+    } else if (getStatusResult?.title === FINALIZE_BRIEF) {
       return <img src={ToValidateIcon} alt="to be validated" />
     } else {
       return <img src={StartIcon} alt="start" />
@@ -104,7 +118,15 @@ const Draft = ({ draft, draftId }) => {
   };
 
   const deleteLead = () => {
-    dispatch(deleteLeadLaunched(draftId))
+    dispatch(deleteLeadLaunched(draft?.externalId))
+  };
+
+  const setLeadStep = () => {
+    if (getStatusResult?.status === 'lead' || newDraft) {
+      dispatch(setLeadCreationStep(null))
+    } else {
+      dispatch(setLeadCreationStep(2))
+    }
   };
 
   return (
@@ -112,10 +134,10 @@ const Draft = ({ draft, draftId }) => {
       <Grid container justify='space-between' alignItems="center">
         <Grid item>
           <Grid container alignItems="center">
-            <Box className={classes.iconBox}>{renderIcon(result)}</Box>
+            <Box className={classes.iconBox}>{renderIcon(getStatusResult)}</Box>
             <Grid>
-              <Typography variant='h2' className={classes.toUppercase}>{result?.title} ({result?.progress} %)</Typography>
-              <Typography variant='body2'>Créé le : {draft?.missionContext.startDate} à {draft?.time}</Typography>
+              <Typography variant='h2' className={classes.toUppercase}>{getStatusResult?.title} ({getStatusResult?.progress} %)</Typography>
+              <Typography variant='body2'>Créé le : {date}</Typography>
             </Grid>
           </Grid>
         </Grid>
@@ -126,8 +148,9 @@ const Draft = ({ draft, draftId }) => {
         </Grid>
       </Grid>
       <NavLink
-        to={result?.status === 'lead' ? `/lead/${draftId}?step=1` : `/lead/${draftId}?step=2`}
+        to={`/lead/${draft?.externalId}`}
         className={classes.draftLink}
+        onClick={setLeadStep}
       >
         <Box className={classes.titleBox}>
           {newDraft
@@ -169,7 +192,7 @@ const Draft = ({ draft, draftId }) => {
           </Grid>
         </Grid>
       }
-    </DraftWrapper>
+    </DraftWrapper >
   )
 };
 

@@ -23,7 +23,7 @@ const FirstDraft = () => {
           {formatWithLineBreak(t('draft.firstBriefTitle'))}
         </Typography>
         <Box>
-          <Button title={t('draft.firstBriefButton')} theme='filledButton' component={RouterLink} to="/newbrief" />
+          <Button title={t('draft.firstBriefButton')} theme='filledButton' component={RouterLink} to="/lead" />
         </Box>
       </Grid>
     </DraftWrapper>
