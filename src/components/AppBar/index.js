@@ -5,7 +5,7 @@ import clsx from "clsx";
 import { Link as RouterLink } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
-import { AppBar, Toolbar, Typography } from '@material-ui/core';
+import { AppBar, Toolbar } from '@material-ui/core';
 import styles from "./styles";
 import CustomButton from "../Button";
 import CustomNavLink from "../CustomNavLink";

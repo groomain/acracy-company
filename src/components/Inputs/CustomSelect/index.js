@@ -40,7 +40,7 @@ export const CustomSelect = ({ label, value, placeholder, onUpdateSelection, con
         onOpen={() => setOpen(true)}
         onClose={() => setOpen(false)}
         onChange={isMulti && handleChange}
-        defaultValue={context === 'profileType' ? (optionsValues[optionsValues.length - 1]) : null}
+        defaultValue={context === 'profileType' ? (optionsValues[optionsValues.length - 1]) : ''}
         classes={{ root: open ? `${classes.root} ${classes.open}` : classes.root }}
         disableUnderline
         IconComponent={KeyboardArrowDownRoundedIcon}

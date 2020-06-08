@@ -7,7 +7,7 @@ import {
 import { useTranslation } from 'react-i18next';
 import { connectStateResults } from 'react-instantsearch-dom';
 
-import { components, createFilter } from 'react-select';
+import { components } from 'react-select';
 import CreatableSelect from 'react-select/creatable';
 import Highlighter from 'react-highlight-words';
 
