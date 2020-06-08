@@ -24,7 +24,7 @@ DarkWrapper.propTypes = {
   /**
    * Defines how children are horizontally aligned, based on flexbox values
    */
-  justify: PropTypes.oneOf('flex-start', 'center', 'flex-end'),
+  justify: PropTypes.oneOf(['flex-start', 'center', 'flex-end']),
   isBleed: PropTypes.bool
 };
 
