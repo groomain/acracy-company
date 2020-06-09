@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from "react-i18next";
 
-import { getMissionsLaunched } from '../../pages/HomePage/reducer';
+import { getMissionsLaunched, getBriefsLaunched } from '../../pages/HomePage/reducer';
 import { Grid, Typography, Box } from '@material-ui/core/';
 
 import Mission from './Mission';
@@ -12,6 +12,7 @@ import sharedStyles from "../../utils/styles";
 
 import { formatWithLineBreak } from '../../utils/format';
 import { missions } from '../../mocks/missions';
+import { briefs } from '../../mocks/briefs';
 
 export const Missions = () => {
   const { t } = useTranslation();
@@ -22,31 +23,30 @@ export const Missions = () => {
   const [futureMissions, setFutureMissions] = useState();
   const [finishedMissions, setFinishedMissions] = useState();
   const [profileMatching, setProfileMatching] = useState();
+  console.log('Missions -> profileMatching', profileMatching)
 
-  const getMissions = () => {
-    dispatch(getMissionsLaunched());
-  };
-
-  const { missionsLoading } = useSelector(state => ({
+  const { missionsLoading, briefsLoading } = useSelector(state => ({
     // missionsData: state.getIn(['dashboard', 'missionsData']),
-    missionsLoading: state.getIn(['dashboard', 'missionsLoading'])
+    missionsLoading: state.getIn(['dashboard', 'missionsLoading']),
+    // briefsData: state.getIn(['dashboard', 'briefsData']),
+    briefsLoading: state.getIn(['dashboard', 'briefsLoading'])
   }));
 
   const [missionsData] = useState(missions);
+  const [briefsData] = useState(briefs);
 
   useEffect(() => {
-    // getMissions();
-  }, []);
-
-
+    // dispatch(getMissionsLaunched());
+    // dispatch(getBriefsLaunched());
+  }, [dispatch]);
 
   useEffect(() => {
     const today = Date.now() / 1000;
     setInProgressMissions(missionsData?.filter(x => x.status === 'IN_PROGRESS' && x.brief.missionContext.startDate < today));
     setFutureMissions(missionsData?.filter(x => x.status === 'IN_PROGRESS' && x.brief.missionContext.startDate > today));
     setFinishedMissions(missionsData?.filter(x => x.status === 'FINISHED'));
-    setProfileMatching(missionsData?.filter(x => x.status === 'WAITING_FOR_SIGNATURE' && x.status !== 'CLOSED'));
-    setInProgressMissions([])
+    setProfileMatching(briefsData);
+    // setInProgressMissions([])
     setFutureMissions([])
     setFinishedMissions([])
     // setProfileMatching([])
@@ -66,7 +66,7 @@ export const Missions = () => {
         {displayInProgressMissionsTitle()}
         <DarkWrapper isBleed justify='center'>
           <Grid className={sharedClasses.disabledText}>
-            {missionsLoading
+            {missionsLoading || briefsLoading
               ? <CustomLoader size={70} />
               : <span>{formatWithLineBreak(t('dashboard.missions.noMission'))}</span>
             }
@@ -81,7 +81,7 @@ export const Missions = () => {
             {inProgressMissions?.length > 0 && (
               <>
                 {displayInProgressMissionsTitle()}
-                {inProgressMissions.map((mission, key) => <Mission key={key} mission={mission} missionId={key} />)}
+                {inProgressMissions.map((mission, key) => <Mission key={key} mission={mission} />)}
               </>
             )}
             {futureMissions?.length > 0 && (
@@ -90,7 +90,7 @@ export const Missions = () => {
                   {t('dashboard.missions.name')}{futureMissions?.length > 1 ? 's' : null}
                   {t('dashboard.missions.future')}
                 </Typography>
-                {futureMissions.map((mission, key) => <Mission key={key} mission={mission} missionId={key} />)}
+                {futureMissions.map((mission, key) => <Mission key={key} mission={mission} />)}
               </>
             )}
             {finishedMissions?.length > 0 && (
@@ -98,8 +98,7 @@ export const Missions = () => {
                 <Typography variant="h2">
                   {t('dashboard.missions.finished')}
                 </Typography>
-                {finishedMissions.map((mission, key) => <Mission key={key} mission={mission} missionId={key} />)}
-
+                {finishedMissions.map((mission, key) => <Mission key={key} mission={mission} />)}
               </>
             )}
             {profileMatching?.length > 0 && (
@@ -107,7 +106,7 @@ export const Missions = () => {
                 <Typography variant="h2">
                   {t('dashboard.missions.profileMatching')}
                 </Typography>
-                {profileMatching.map((mission, key) => <Mission key={key} mission={mission} missionId={key} />)}
+                {profileMatching.map((matching, key) => <Mission key={key} matching={matching} />)}
               </>
             )}
           </Box>

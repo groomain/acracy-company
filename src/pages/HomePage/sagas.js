@@ -7,7 +7,9 @@ import {
   deleteLeadSuccess,
   deleteLeadFailure,
   getMissionsSuccess,
-  getMissionsFailure
+  getMissionsFailure,
+  getBriefsSuccess,
+  getBriefsFailure
 } from './reducer';
 
 function* doGetLeads(action) {
@@ -69,10 +71,31 @@ function* doGetMissions(action) {
   }
 }
 
+function* doGetBriefs(action) {
+  try {
+    const apiURL = `/briefs?exclude-status[]=CLOSED`;
+    const params = {
+      headers: {
+        'x-api-key': config.apiKey
+      },
+      body: {}
+    };
+
+    const briefs = yield API.get(config.apiGateway.NAME, apiURL, params);
+    yield put(getBriefsSuccess(briefs));
+  } catch (err) {
+    console.log('function*doGetLeads -> err', err)
+    yield put(getBriefsFailure());
+  }
+}
+
+
+
 export default function* dashboardSagas() {
   yield all([
     takeLatest('Leads/getLeadsLaunched', doGetLeads),
     takeLatest('Leads/deleteLeadLaunched', doDeleteLead),
     takeLatest('Leads/getMissionsLaunched', doGetMissions),
+    takeLatest('Leads/getBriefsLaunched', doGetBriefs),
   ])
 }

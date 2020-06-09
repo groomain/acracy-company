@@ -26,19 +26,14 @@ const Drafts = ({ ...props }) => {
     leadsLoading: state.getIn(['dashboard', 'leadsLoading']),
   }));
 
-  const getLeads = () => {
-    dispatch(getLeadsLaunched());
-  };
-
   useEffect(() => {
-    getLeads();
-  }, []);
+    // dispatch(getLeadsLaunched());
+  }, [dispatch]);
 
   useEffect(() => {
     setCurrentDrafts(leadsData);
     setCurrentDrafts([]);
   }, [leadsData]);
-
 
   const responsive = {
     desktop: {
