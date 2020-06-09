@@ -23,7 +23,7 @@ export const Missions = () => {
   const [futureMissions, setFutureMissions] = useState();
   const [finishedMissions, setFinishedMissions] = useState();
   const [profileMatching, setProfileMatching] = useState();
-  console.log('Missions -> profileMatching', profileMatching)
+  const today = Date.now() / 1000;
 
   const { missionsLoading, briefsLoading } = useSelector(state => ({
     // missionsData: state.getIn(['dashboard', 'missionsData']),
@@ -41,13 +41,12 @@ export const Missions = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    const today = Date.now() / 1000;
     setInProgressMissions(missionsData?.filter(x => x.status === 'IN_PROGRESS' && x.brief.missionContext.startDate < today));
     setFutureMissions(missionsData?.filter(x => x.status === 'IN_PROGRESS' && x.brief.missionContext.startDate > today));
     setFinishedMissions(missionsData?.filter(x => x.status === 'FINISHED'));
     setProfileMatching(briefsData);
-    // setInProgressMissions([])
-    setFutureMissions([])
+    setInProgressMissions([])
+    // setFutureMissions([])
     setFinishedMissions([])
     // setProfileMatching([])
   }, [missionsData]);
@@ -59,7 +58,8 @@ export const Missions = () => {
         {t('dashboard.missions.inProgress')}
       </Typography>
     )
-  }
+  };
+
   const displayMissions = () => {
     let missionsList = (
       <>
@@ -90,7 +90,7 @@ export const Missions = () => {
                   {t('dashboard.missions.name')}{futureMissions?.length > 1 ? 's' : null}
                   {t('dashboard.missions.future')}
                 </Typography>
-                {futureMissions.map((mission, key) => <Mission key={key} mission={mission} />)}
+                {futureMissions.map((mission, key) => <Mission key={key} mission={mission} today={today} />)}
               </>
             )}
             {finishedMissions?.length > 0 && (

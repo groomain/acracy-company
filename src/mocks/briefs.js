@@ -425,10 +425,10 @@ export const briefs = [
         "unit": "WEEK"
       },
       "budget": {
-        "value": 500.00,
+        "value": 300.00,
         "type": "DAILY_RATE"
       },
-      "estimatedAverageDailyRate": 500.00,
+      "estimatedAverageDailyRate": 300.00,
       "profileNumber": 2
     },
     "missionDetail": {

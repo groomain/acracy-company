@@ -84,7 +84,8 @@ export default makeStyles(theme => ({
     fontSize: 14,
     fontFamily: basierRegular,
     color: '#ecf805',
-    paddingTop: 7
+    paddingTop: 7,
+    textTransform: 'uppercase'
   },
   statusTitleRed: {
     color: '#ff565c',
@@ -100,10 +101,7 @@ export default makeStyles(theme => ({
     paddingLeft: 15
   },
   titleContainer: {
-    height: '47%',
-    paddingTop: '8%',
-    paddingLeft: 30,
-    paddingRight: 38
+    padding: '8% 38px 8% 30px'
   },
   title: {
     fontSize: 22,

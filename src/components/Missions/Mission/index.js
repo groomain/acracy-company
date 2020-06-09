@@ -17,16 +17,41 @@ import clsx from "clsx";
 import CircularProgress from "@material-ui/core/CircularProgress";
 // import { SettingsOutlined } from '@material-ui/icons';
 
-import { formatWithLineBreak } from '../../../utils/format';
+import { shortenLongText } from '../../../utils/format';
 import * as moment from 'moment';
 moment.locale('fr');
 
-export const Mission = ({ mission, matching, ...props }) => {
-  // console.log('Mission -> matching', matching)
+export const Mission = ({ mission, matching, today, ...props }) => {
+  console.log('Mission -> today', today)
+  // console.log('Mission -> duration', duration)
   // console.log('Mission -> mission', mission)
   const classes = styles();
   const [open, setOpen] = React.useState(false);
   const [hoveredMenu, setOveredMenu] = React.useState(false);
+
+  const weekly = mission?.brief.missionContext.weeklyRythm || matching?.missionContext.weeklyRythm;
+  const durationNb = mission?.brief.missionContext.duration.nb || matching?.missionContext.duration.nb;
+  const durationUnit = mission?.brief.missionContext.duration.unit || matching?.missionContext.duration.unit;
+  const startDate = mission?.brief.missionContext.startDate || matching?.missionContext.startDate;
+  const formattedDate = moment.unix(startDate).format("DD/MM/YYYY");
+
+  /**
+   * Takes a date, adds a specified number of days and returns the new date, weekends excluded
+   * @param {string} date - The original date, in DD/MM/YYYY format 
+   * @param {number} nbOfDaysToAdd - Number of days to be added
+   * @returns {string} - The new date with specified number of days added, excluding weekends
+   */
+  const inTwoDays = (date, nbOfDaysToAdd) => {
+    date = new Date(date);
+    let endDate = "", count = 0;
+    while (count < nbOfDaysToAdd) {
+      endDate = new Date(date.setDate(date.getDate() + 1));
+      if (endDate.getDay() != 0 && endDate.getDay() != 6) {
+        count++;
+      }
+    }
+    return moment(endDate).format('DD/MM/YYYY');
+  }
 
   const getStatusIcon = (status) => {
     switch (status) {
@@ -51,9 +76,8 @@ export const Mission = ({ mission, matching, ...props }) => {
     }
   };
 
-  const inTwoDays = moment.unix(matching?.missionContext.startDate + 24 * 3600 * 2).format("DD/MM/YYYY")
-
   const [matchingValues, setMatchingValues] = useState();
+  // console.log('Mission -> matchingValues', matchingValues)
   useEffect(() => {
     const getBriefStatus = (briefStatus) => {
       switch (briefStatus) {
@@ -69,19 +93,20 @@ export const Mission = ({ mission, matching, ...props }) => {
             status: 'Matching en cours',
             avatar: match,
             title: 'Matching en cours',
-            subtext: `Garanti en 48h.\n Estimé au ${inTwoDays}`
+            subtext: `Garanti en 48h.\n Estimé au ${inTwoDays(formattedDate, 2)}`
           };
         case 'WAITING_FOR_CUSTOMER_SELECTION':
           return {
             status: 'Faites votre sélection',
             avatar: '?',
             title: `Découvrir les profils`,
-            subtext: 'Nous vous proposons X top freelance ! (=nb de quotes)'
+            subtext: 'Nous vous proposons X top freelance ! (=nb de quotes)',
+            buttonText: 'Sélectionner profil'
           };
         case 'WAITING_FOR_SIGNATURE':
           return {
             status: 'Devis à valider',
-
+            buttonText: 'Valider devis'
           };
         default:
           break;
@@ -90,6 +115,13 @@ export const Mission = ({ mission, matching, ...props }) => {
     const result = getBriefStatus(matching?.status);
     setMatchingValues(result);
   }, [matching]);
+
+  const missionTitle = () => {
+    if (today && mission?.brief.missionContext.startDate > today) {
+      const days = Math.floor((mission?.brief.missionContext.startDate - today) / 86400);
+      return `Démarre dans ${days} jour${days > 2 ? 's' : ''}`;
+    }
+  }
 
   return (
     <Box mt={3} mb={6}>
@@ -101,7 +133,7 @@ export const Mission = ({ mission, matching, ...props }) => {
               <Grid container item className={classes.statusContainer} direction={'row'}>
                 {getStatusIcon(matching?.status)}
                 <Typography
-                  className={clsx(classes.statusTitle, { [classes.statusTitleRed]: props.status === 5 })}>{matchingValues?.status.toUpperCase() || "mission en cours"}</Typography>
+                  className={clsx(classes.statusTitle, { [classes.statusTitleRed]: props.status === 5 })}>{matchingValues?.status || missionTitle()}</Typography>
                 <div style={{ flexGrow: 1 }} />
                 <IconButton className={classes.buttonIcon} aria-label="display more actions"
                   onClick={() => setOpen(true)} color="secondary">
@@ -111,7 +143,7 @@ export const Mission = ({ mission, matching, ...props }) => {
                 </IconButton>
               </Grid>
               <Grid item className={classes.titleContainer}>
-                <Typography className={classes.title}>{mission?.brief.missionContext.title || matching?.missionContext.title}</Typography>
+                <Typography className={classes.title}>{shortenLongText(mission?.brief.missionContext.title || matching?.missionContext.title, 42)}</Typography>
               </Grid>
               <Grid item className={classes.description}>
                 <Typography variant="body2">
@@ -146,31 +178,45 @@ export const Mission = ({ mission, matching, ...props }) => {
                 <Grid item className={classes.blocTypoDown}>
                   <Typography variant={"h4"} className={classes.typo}>Rythme</Typography>
                   <Typography variant={"body1"} className={classes.typo}>
-                    Plein temps ( {mission?.brief.missionContext.weeklyRythm || matching?.missionContext.weeklyRythm} jours)
+                    {weekly === 5 ? 'Plein temps' : 'Temps partiel'} ({weekly} jours)
                   </Typography>
                 </Grid>
               </Grid>
               <Grid container item xs={4} direction={'column'} alignItems={'center'}>
                 <Grid item className={classes.blocTypoUp}>
                   <Typography variant={"h4"} className={classes.typo}>Taux journalier</Typography>
-                  <Typography variant={"body1"} className={classes.typo}>550 €/j</Typography>
+                  <Typography variant={"body1"} className={classes.typo}>{mission?.brief.missionContext.estimatedAverageDailyRate || matching?.missionContext.estimatedAverageDailyRate} €/j</Typography>
                 </Grid>
                 <Grid item className={classes.blocTypoDown}>
                   <Typography variant={"h4"} className={classes.typo}>Durée</Typography>
-                  <Typography variant={"body1"} className={classes.typo}>10 jours à partir du
-                                    20/05/20</Typography>
+                  <Typography variant={"body1"} className={classes.typo}>
+                    {durationNb}{' '}{durationUnit.toLowerCase()}{durationNb > 1 && 's'} à partir de {formattedDate}
+                  </Typography>
                 </Grid>
               </Grid>
             </Grid>
-            <Grid container
-              className={clsx(classes.gridRight, { [classes.withoutButton]: props.status === 6 }, { [classes.rightRed]: props.status === 5 })}
-              alignItems={'center'} justify={'center'}>
-              {props.status !== 6 &&
-                <Grid item>
-                  <Typography className={classes.button}>Confirmer la fin de la mission</Typography>
-                </Grid>
-              }
-            </Grid>
+            {matching?.status === 'WAITING_FOR_CUSTOMER_SELECTION' && (
+              <Grid container
+                className={clsx(classes.gridRight, { [classes.withoutButton]: props.status === 6 }, { [classes.rightRed]: props.status === 5 })}
+                alignItems={'center'} justify={'center'}>
+                {props.status !== 6 &&
+                  <Grid item>
+                    <Typography className={classes.button}>{matchingValues?.buttonText}</Typography>
+                  </Grid>
+                }
+              </Grid>
+            )}
+            {matching?.status === 'WAITING_FOR_SIGNATURE' && (
+              <Grid container
+                className={clsx(classes.gridRight, { [classes.withoutButton]: props.status === 6 }, { [classes.rightRed]: props.status === 5 })}
+                alignItems={'center'} justify={'center'}>
+                {props.status !== 6 &&
+                  <Grid item>
+                    <Typography className={classes.button}>{matchingValues?.buttonText}</Typography>
+                  </Grid>
+                }
+              </Grid>
+            )}
           </Grid>
           :
           <Grid container direction={'row'} justify={'center'} alignItems={'center'} className={classes.container}>
@@ -180,8 +226,8 @@ export const Mission = ({ mission, matching, ...props }) => {
         {!props.isLoading &&
           <Grid container direction={'row'} alignItems={'center'} className={classes.outsideContainer}>
             <CircleImage />
-            <Typography variant="body2" className={classes.outsideTypo}>Severine est en charge de votre
-                        dossier</Typography>
+            <Typography variant="body2" className={classes.outsideTypo}>
+              Séverine est en charge de votre dossier</Typography>
           </Grid>
         }
       </Grid>

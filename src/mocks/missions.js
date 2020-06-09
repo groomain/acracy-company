@@ -46,10 +46,10 @@ export const missions = [
           "unit": "WEEK"
         },
         "budget": {
-          "value": 500.00,
+          "value": 1500.00,
           "type": "DAILY_RATE"
         },
-        "estimatedAverageDailyRate": 500.00,
+        "estimatedAverageDailyRate": 1500.00,
         "profileNumber": 1
       },
       "missionDetail": {
@@ -1911,10 +1911,10 @@ export const missions = [
           "unit": "WEEK"
         },
         "budget": {
-          "value": 500.00,
+          "value": 1500.00,
           "type": "DAILY_RATE"
         },
-        "estimatedAverageDailyRate": 500.00,
+        "estimatedAverageDailyRate": 1500.00,
         "profileNumber": 1
       },
       "missionDetail": {
@@ -2090,7 +2090,7 @@ export const missions = [
       ],
       "missionContext": {
         "title": "The GB matrix is down, transmit the bluetooth panel so we can quantify the HTTP card!",
-        "startDate": 1607412521,
+        "startDate": 1591812877,
         "format": "BOTH",
         "address": "Trinityport - 3876 Rempel Manors",
         "weeklyRythm": 5,
@@ -2099,10 +2099,10 @@ export const missions = [
           "unit": "WEEK"
         },
         "budget": {
-          "value": 500.00,
+          "value": 1500.00,
           "type": "DAILY_RATE"
         },
-        "estimatedAverageDailyRate": 500.00,
+        "estimatedAverageDailyRate": 1500.00,
         "profileNumber": 1
       },
       "missionDetail": {
