@@ -43,7 +43,7 @@ function* getCurrentSession(action) {
   try {
     yield Auth.currentSession();
     const userInfo = yield Auth.currentUserInfo();
-    const userDynamo = yield API.post(config.apiGateway.NAME, '/sessions', {
+    const userDynamo = yield API.post(config.apiGateway.NAME, 'sessions', {
       headers: {
         'x-api-key': config.apiKey
       },
@@ -51,6 +51,7 @@ function* getCurrentSession(action) {
         email: userInfo.attributes.email
       }
     });
+    console.log('function*getCurrentSession -> userDynamo', userDynamo)
 
     // userDynamo = userDynamo.entity[0] || userDynamo.entity;
     // console.log('function*getCurrentSession -> userDynamo', userDynamo);
@@ -71,69 +72,76 @@ function* doSignIn(action) {
   try {
     yield Auth.signIn(email, password);
     const postSessionsConfig = {
-      endpoint: '/sessions',
+      endpoint: 'sessions',
       body: {
         email: email
       }
     }
     const sessionsResponse = yield launchPostFunction(postSessionsConfig);
+    console.log('function*doSignIn -> sessionsResponse', sessionsResponse)
 
     // check if sessionsResponse is ok
     // check if loginSuccess + push are ok in each scope
 
     const userAttributes = sessionsResponse?.attributes;
-    if (sessionsResponse?.companyId && sessionsResponse?.employeeId) {
-      if (userAttributes?.searchCode && userAttributes?.searchType && userAttributes?.searchValue) {
-        const postLeadsOptions = {
-          endpoint: '/leads',
-          body: {
-            companyId: sessionsResponse?.companyId,
-            searchCode: userAttributes?.searchCode,
-            searchType: userAttributes?.searchType,
-            searchValue: userAttributes?.searchValue
-          }
-        }
-        try {
-          sessionsResponse.leads = yield launchPostFunction(postLeadsOptions);
-        } catch (error) {
-          console.log(error);
-          yield put(loginFailure(translateSignInError(error.code)));
-        }
-      }
-      yield put(loginSuccess());
-      yield put(push('/home'));
-    } else {
-      if (!sessionsResponse?.companyId) {
-        try {
-          const postCompaniesOptions = {
-            endpoint: '/companies',
-            body: {
-              attributes: userAttributes
-            }
-          }
-          sessionsResponse.companyId = yield launchPostFunction(postCompaniesOptions);
-        } catch (error) {
-          console.log(error);
-          yield put(loginFailure(translateSignInError(error.code)));
-        }
-        yield put(loginSuccess());
-        yield put(push('/home'));
-      } else if (sessionsResponse?.companyId && !sessionsResponse?.employeeId) {
-        try {
-          const postEmployeesOptions = {
-            endpoint: '/employees',
+
+    if (sessionsResponse) {
+      if (sessionsResponse?.companyId && sessionsResponse?.employeeId) {
+        console.log('1')
+        if (userAttributes?.searchCode && userAttributes?.searchType && userAttributes?.searchValue) {
+          const postLeadsOptions = {
+            endpoint: 'leads',
             body: {
               companyId: sessionsResponse?.companyId,
-              attributes: userAttributes
+              searchCode: userAttributes?.searchCode,
+              searchType: userAttributes?.searchType,
+              searchValue: userAttributes?.searchValue
             }
           }
-          sessionsResponse.employeeId = yield launchPostFunction(postEmployeesOptions);
-        } catch (error) {
-          console.log(error);
-          yield put(loginFailure(translateSignInError(error.code)));
+          try {
+            sessionsResponse.leads = yield launchPostFunction(postLeadsOptions);
+          } catch (error) {
+            console.log(error);
+            yield put(loginFailure(translateSignInError(error.code)));
+          }
         }
         yield put(loginSuccess());
-        yield put(push('/home'));
+        // yield put(push('/home'));
+      } else {
+        if (!sessionsResponse?.companyId) {
+          console.log('2')
+          try {
+            const postCompaniesOptions = {
+              endpoint: 'companies',
+              body: {
+                attributes: userAttributes
+              }
+            }
+            sessionsResponse.companyId = yield launchPostFunction(postCompaniesOptions);
+          } catch (error) {
+            console.log(error);
+            yield put(loginFailure(translateSignInError(error.code)));
+          }
+          yield put(loginSuccess());
+          // yield put(push('/home'));
+        } else if (sessionsResponse?.companyId && !sessionsResponse?.employeeId) {
+          console.log('3')
+          try {
+            const postEmployeesOptions = {
+              endpoint: 'employees',
+              body: {
+                companyId: sessionsResponse?.companyId,
+                attributes: userAttributes
+              }
+            }
+            sessionsResponse.employeeId = yield launchPostFunction(postEmployeesOptions);
+          } catch (error) {
+            console.log(error);
+            yield put(loginFailure(translateSignInError(error.code)));
+          }
+          yield put(loginSuccess());
+          // yield put(push('/home'));
+        }
       }
     }
   } catch (err) {
