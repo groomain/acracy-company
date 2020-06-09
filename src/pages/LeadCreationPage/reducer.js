@@ -4,11 +4,16 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = Immutable.Map({
   leadSaveLoading: false,
   leadSaveErrorMessage: false,
+  leadSaveData: null,
+  leadDraftData: {
+    search: null
+  },
+  deliverablesArray: []
 });
 
 const { actions, reducer } = createSlice({
-  slice: 'leadCreation',
-  name: 'leadCreation',
+  slice: 'LeadCreation',
+  name: 'LeadCreation',
   initialState,
   reducers: {
     leadSaveLaunched: (state, action) => state
@@ -16,10 +21,15 @@ const { actions, reducer } = createSlice({
       .set('leadSaveErrorMessage', null),
     leadSaveSuccess: (state, action) => state
       .set('leadSaveLoading', false)
+      .set('leadSaveData', action.payload)
       .set('leadSaveErrorMessage', null),
     leadSaveFailure: (state, action) => state
       .set('leadSaveLoading', false)
       .set('leadSaveErrorMessage', action.payload),
+    setLeadDraft: (state, action) => state
+      .set('leadDraftData', action.payload),
+    setDeliverablesArray: (state, action) => state
+      .set('deliverablesArray', action.payload)
   }
 });
 
@@ -27,6 +37,8 @@ export const {
   leadSaveLaunched,
   leadSaveSuccess,
   leadSaveFailure,
+  setLeadDraft,
+  setDeliverablesArray
 } = actions;
 
 export default reducer;

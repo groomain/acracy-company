@@ -1,9 +1,10 @@
 import { all, put, takeLatest } from 'redux-saga/effects';
 import { API } from 'aws-amplify';
 import { config } from '../../conf/amplify';
-import {leadSaveSuccess, leadSaveFailure} from "./reducer";
+import { leadSaveSuccess, leadSaveFailure } from "./reducer";
 
-function* leadSave(action) {
+function* doLeadSave(action) {
+  // console.log('action: ', action.payload)
   try {
 
     const leads = yield API.post(config.apiGateway.NAME, '/leads', {
@@ -22,6 +23,6 @@ function* leadSave(action) {
 
 export default function* LeadCreationSaga() {
   yield all([
-    takeLatest('LeadCreation/leadSaveLaunched', leadSave),
+    takeLatest('LeadCreation/leadSaveLaunched', doLeadSave),
   ]);
 }
