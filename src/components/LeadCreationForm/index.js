@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useDispatch, useSelector } from 'react-redux';
 import SearchBar from '../Searchbar';
 import { CustomButton } from '../Button/';
 import { CustomTextField } from '../Inputs/CustomTextField';
@@ -7,31 +8,24 @@ import CustomTextArea from '../Inputs/CustomTextArea';
 import CustomSelect from "../Inputs/CustomSelect";
 import Calendar from "../Inputs/Calendar";
 import Tag from '../Tags/Tag';
-// import CustomNavLink from "../CustomNavLink";
-// import CustomCheckbox from '../CheckBox';
 import backToTop from '../../utils/backToTop';
-import { Typography, Grid, Stepper, Step, StepLabel, StepButton, Box, FormHelperText } from "@material-ui/core";
+import { Typography, Grid, Stepper, Step, StepLabel, StepButton, Box } from "@material-ui/core";
+import { setLeadDraft, setDeliverablesArray } from '../../pages/LeadCreationPage/reducer';
 import clsx from 'clsx';
 import styles from './styles';
 
-const LeadCreationForm = (props) => {
+
+const LeadCreationForm = ({ sendValues, ...props }) => {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
   const classes = styles();
 
+  const { values, errors, touched, handleBlur, handleChange, handleSubmit } = props;
+  const { frequency, searchedValue, workspace, companyAddress, duration, durationType, missionTitle, budget, budgetType, deliverable, customDeliverable, profile, profilesNumber } = values;
+
   const [activeStep, setActiveStep] = useState(0);
-  // const [format, setFormat] = useState('');
-  const [formValues, setFormValues] = useState({
-    formatOption: 'Peu importe', missionTitle: '',
-    deliverables: [], customDeliverable: '', profile: '',
-    searchedCategory: {}
-  });
-  const [formatOption, setFormatOption] = useState('Peu importe')
-  const [missionTitle, setMissionTitle] = useState('');
-  const [deliverables, setDeliverables] = useState([]);
-  const [customDeliverable, setCustomDeliverables] = useState('');
-  const [profile, setProfile] = useState('');
   const [searchedCategory, setSearchedCategory] = useState({});
-  console.log('formValues :', formValues);
+  const [deliverables, setDeliverables] = useState([]);
 
   const getSteps = () => {
     return [t('leadCreation.synthesis'), t('leadCreation.details')];
@@ -57,11 +51,11 @@ const LeadCreationForm = (props) => {
 
   const setOptionsValues = (fieldName) => {
     switch (fieldName) {
-      case 'format':
+      case 'workspace':
         return (
           ['Peu importe', 'En remote uniquement', 'Sur place uniquement', 'En remote et sur place']
         )
-      case 'rythm':
+      case 'frequency':
         return (
           ['Temps partiel (1 jour)', 'Temps partiel (2 jours)', 'Temps partiel (3 jours)', 'Temps partiel (4 jours)', 'Plein temps (5 jours)']
         )
@@ -69,7 +63,7 @@ const LeadCreationForm = (props) => {
         return (
           ['Jours', 'Semaines', 'Mois']
         )
-      case 'budget':
+      case 'budgetType':
         return (
           ['Taux journalier', 'Budget total']
         )
@@ -89,35 +83,32 @@ const LeadCreationForm = (props) => {
     }
   }
 
-  const handleFormatChange = e => {
-    const { name, value } = e.target;
-    setFormatOption(e.target.value);
-    setFormValues({ format: value })
-    console.log('e target', e.target)
-  }
-
-  const handleMissionTitleChange = e => {
-    const { name, value } = e.target;
-    setMissionTitle(e.target.value);
-    setFormValues({ missionTitle: value })
-    console.log('e target', e.target.value)
-  }
+  // const handleFormatChange = e => {
+  //   const { name, value } = e.target;
+  //   setFormatOption(e.target.value);
+  //   setFormValues({ format: value })
+  //   console.log('e target', e.target)
+  // }
 
   const handleDeliverablesChange = e => {
     setDeliverables(e);
   }
 
-  const handleProfileChange = e => {
-    setProfile(e);
-  }
+  useEffect(() => {
+    dispatch(setDeliverablesArray(deliverables))
+  }, [deliverables, dispatch]);
 
-  const handleCustomDeliverable = (e) => {
-    setCustomDeliverables(e);
-  }
+  // const handleProfileChange = e => {
+  //   setProfile(e);
+  // }
 
-  const handleUpdateResearch = e => {
-    console.log('e :', e);
-    setSearchedCategory(e);
+  // const handleCustomDeliverable = (e) => {
+  //   setCustomDeliverables(e);
+  // }
+
+  const handleUpdateResearch = (e) => {
+    setSearchedCategory(e);  // type, text and objectID
+    dispatch(setLeadDraft({ search: e }))
   }
 
   const showDeliverablesSettings = () => {
@@ -126,22 +117,32 @@ const LeadCreationForm = (props) => {
         <Grid item xs={12} className={classes.fieldRows}>
           <CustomSelect
             onUpdateSelection={handleDeliverablesChange}
-            label={t('leadCreation.selectDeliverables')}
+            label={deliverables ? t('leadCreation.modifyDeliverables') : t('leadCreation.selectDeliverables')}
             isMulti
             context='deliverables'
-            name='deliverables'
-            optionsValues={setOptionsValues('deliverables')} />
-          <Grid item container direction='row' wrap>
+            name='deliverable'
+            optionsValues={setOptionsValues('deliverables')}
+            onBlur={handleBlur}
+          // onChange={handleChange} //// nope, isMulti
+          // error={!!touched.companyName && !!errors.companyName}
+          // helperText={touched.companyName && errors.companyName ? t('companyNameRequired') : ''}
+          />
+          <Grid item container direction='row'>
             {deliverables?.map((deliverable, i) =>
               <Tag title={deliverable} key={i} />
             )}
           </Grid>
-          {deliverables.includes('Ne figure pas dans la liste') ?
+          {deliverables?.includes('Ne figure pas dans la liste') ?
             <Grid item xs={12} className={classes.fieldRows}>
               <CustomTextField
                 label={t('leadCreation.customDeliverableLabel')}
                 placeholder={t('leadCreation.customDeliverablePlaceholder')}
-                onUpdateFieldValue={handleCustomDeliverable}
+                name='customDeliverable'
+                onChange={handleChange}
+              // onUpdateFieldValue={handleCustomDeliverable}
+              // onBlur={handleBlur}
+              // error={!!touched.companyName && !!errors.companyName}
+              // helperText={touched.companyName && errors.companyName ? t('companyNameRequired') : ''}
               >
               </CustomTextField>
             </Grid>
@@ -157,23 +158,26 @@ const LeadCreationForm = (props) => {
       <>
         <Grid item xs={12} className={classes.fieldRows}>
           <CustomSelect
-            onUpdateSelection={handleProfileChange}
+            // onUpdateSelection={handleProfileChange}
             label={t('leadCreation.selectProfile')}
+            optionsValues={setOptionsValues('profile')}
+            onChange={handleChange}
+            value={profile}
             context='profileType'
             name='profile'
-            optionsValues={setOptionsValues('profile')} />
+          />
         </Grid>
       </>
     )
   }
 
-  const renderSettings = (searchedCategory) => {
-    switch (searchedCategory.title) {
-      case 'Profils':
+  const renderSearchedTypeSettings = (searchedCategory) => {
+    switch (searchedCategory.TYPE) {
+      case 'PROFILE':
         return (
           showDeliverablesSettings()
         )
-      case 'Livrables':
+      case 'DELIVERABLE':
         return (
           showProfilesSettings()
         )
@@ -193,49 +197,60 @@ const LeadCreationForm = (props) => {
         <Grid container>
 
           <Grid item xs={12} className={classes.fieldRows}>
-            <SearchBar onUpdateChosenCategory={handleUpdateResearch}></SearchBar>
+            <SearchBar
+              // onChange={handleChange}
+              name='researchValue'
+              context='leadCreation'
+              // setFieldValue={searchedCategory}
+              onUpdateChosenCategory={handleUpdateResearch}
+            ></SearchBar>
           </Grid>
 
-          {searchedCategory ? renderSettings(searchedCategory) : null}
+          {searchedCategory ? renderSearchedTypeSettings(searchedCategory) : null}
 
           <Grid item xs={12} className={classes.fieldRows}>
-            {/* MAX CHARACTERS = 200 MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM*/}
             <CustomTextArea
               label={t('leadCreation.missionLabel')}
               placeholder={t('leadCreation.missionPlaceholder')}
-              onChange={handleMissionTitleChange}
+              name='missionTitle'
+              maxLength={200}
+              onChange={handleChange}
             ></CustomTextArea>
           </Grid>
 
           <Grid item xs={12} className={classes.fieldRows}>
-            <Calendar label="Choisis une date" />
-          </Grid>
-
-          <Grid item xs={12} className={classes.fieldRows}>
+            <Calendar
+              label={t('leadCreation.calendarLabel')}
+              name='missionStartDate' />
           </Grid>
 
           <Grid item xs={12} className={classes.fieldRows}>
             <CustomSelect
-              label={t('leadCreation.formatLabel')}
-              optionsValues={setOptionsValues('format')}
-              onChange={handleFormatChange}
-              value={formatOption}
-              name='format'
+              label={t('leadCreation.workspaceLabel')}
+              optionsValues={setOptionsValues('workspace')}
+              onChange={handleChange}
+              value={workspace}
+              name='workspace'
             ></CustomSelect>
           </Grid>
-          {(formatOption === 'Sur place uniquement' || formatOption === 'En remote et sur place') ?
+          {(workspace === 'Sur place uniquement' || workspace === 'En remote et sur place') ?
             <Grid item xs={12} className={classes.fieldRows}>
-              <CustomTextField label={t('leadCreation.locationLabel')} placeholder={t('leadCreation.locationPlaceholder')}></CustomTextField>
+              <CustomTextField
+                label={t('leadCreation.locationLabel')}
+                placeholder={t('leadCreation.locationPlaceholder')}
+                name='companyAddress'
+                onChange={handleChange}
+              ></CustomTextField>
             </Grid> : null
           }
 
           <Grid item xs={12} className={classes.fieldRows}>
             <CustomSelect
-              label={t('leadCreation.rythmLabel')}
-              optionsValues={setOptionsValues('rythm')}
-            // onChange={handleFormatChange}
-            // value={formatOption}
-            // name='format'
+              label={t('leadCreation.frequencyLabel')}
+              optionsValues={setOptionsValues('frequency')}
+              onChange={handleChange}
+              value={frequency}
+              name='frequency'
             ></CustomSelect>
           </Grid>
 
@@ -245,15 +260,19 @@ const LeadCreationForm = (props) => {
             </Box>
             <Grid container spacing={2}>
               <Grid item xs={7}>
-                <CustomTextField placeholder={t('leadCreation.durationPlaceholder')}></CustomTextField>
+                <CustomTextField
+                  placeholder={t('leadCreation.durationPlaceholder')}
+                  onChange={handleChange}
+                  value={duration}
+                  name='duration'
+                ></CustomTextField>
               </Grid>
               <Grid item xs={5}>
                 <CustomSelect
-                  // label={t('leadCreation.durationLabel')}
                   optionsValues={setOptionsValues('duration')}
-                // onChange={handleFormatChange}
-                // value={formatOption}
-                // name='format'
+                  onChange={handleChange}
+                  value={durationType}
+                  name='durationType'
                 ></CustomSelect>
               </Grid>
             </Grid>
@@ -265,15 +284,19 @@ const LeadCreationForm = (props) => {
             </Box>
             <Grid container spacing={2}>
               <Grid item xs={7}>
-                <CustomTextField placeholder={t('leadCreation.budgetPlaceholder')}></CustomTextField>
+                <CustomTextField
+                  onChange={handleChange}
+                  name='budget'
+                  placeholder={t('leadCreation.budgetPlaceholder')}
+                ></CustomTextField>
               </Grid>
               <Grid item xs={5}>
                 <CustomSelect
                   // label={t('leadCreation.durationLabel')}
-                  optionsValues={setOptionsValues('budget')}
-                // onChange={handleFormatChange}
-                // value={formatOption}
-                // name='format'
+                  optionsValues={setOptionsValues('budgetType')}
+                  onChange={handleChange}
+                  value={budgetType}
+                  name='budgetType'
                 ></CustomSelect>
               </Grid>
             </Grid>
@@ -283,8 +306,8 @@ const LeadCreationForm = (props) => {
             <CustomSelect
               label={t('leadCreation.profilesLabel')}
               optionsValues={setOptionsValues('profilesNumber')}
-              onChange={handleFormatChange}
-              value={formatOption}
+              onChange={handleChange}
+              value={profilesNumber}
               name='profilesNumber'
             ></CustomSelect>
           </Grid>
@@ -304,7 +327,7 @@ const LeadCreationForm = (props) => {
                 type="button"
                 theme="filledButton"
                 handleClick={handleStep(1)}
-                title={t('nextButton')}
+                title={t('leadCreation.finishBrief')}
               >
               </CustomButton>
             </Grid>
@@ -319,7 +342,7 @@ const LeadCreationForm = (props) => {
         <br />
         <br />
         <br />
-      </Box>
+      </Box >
     )
   }
 
@@ -350,7 +373,7 @@ const LeadCreationForm = (props) => {
 
   return (
     <Grid item className={classes.formGridItem}>
-      <Stepper nonLinear connector={false} activeStep={activeStep} className={classes.stepper}>
+      <Stepper nonLinear activeStep={activeStep} className={classes.stepper}>
         {steps.map((label, index) => {
           return (
             <Step key={label} className={classes.step}>
@@ -358,7 +381,7 @@ const LeadCreationForm = (props) => {
                 <StepLabel
                   style={{ textAlign: "left" }}
                   StepIconComponent={CustomIcon}
-                  classes={activeStep === index ? null : classes.inactiveLabel}
+                  className={activeStep === index ? null : classes.inactiveLabel}
                 >
                   <Typography variant={"h4"}>
                     {label}
