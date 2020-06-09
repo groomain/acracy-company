@@ -169,10 +169,6 @@ const SearchResults = ({ searchResults, onUpdateChosenCategory, context, ...prop
       <Box my={2} style={{ height: 30 }}>
         <Typography variant="h2">
           {renderTitle(searchValue?.TYPE) || newOption?.title}
-          {/* {searchValue ?
-            (renderTitle(searchValue?.TYPE) || newOption?.title)
-            :
-            (context === 'leadCreation' ? t('LeadCreation.reseachLabel') : null)} */}
         </Typography>
       </Box>
       <CreatableSelect

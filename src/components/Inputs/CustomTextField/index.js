@@ -10,8 +10,6 @@ export const CustomTextField = ({ label, placeholder, type, onUpdateFieldValue, 
   const classes = styles();
 
   const handleChange = (event) => {
-    console.log('e :', event.target);
-    console.log('value:', event.target.value);
     onUpdateFieldValue(event.target.value);
   };
 
@@ -21,7 +19,6 @@ export const CustomTextField = ({ label, placeholder, type, onUpdateFieldValue, 
       <FilledInput
         type={type}
         placeholder={placeholder}
-        onChange={handleChange}
         fullWidth
         error={error}
         classes={{ root: `${classes.root} ${error ? classes.error : null}`, focused: classes.focused }}
