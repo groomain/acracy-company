@@ -52,7 +52,7 @@ const translateSignInError = (errorCode) => {
     case 'UserNotConfirmedException':
       return 'Merci de saisir votre code de validation reçu par email.';
     default:
-      return 'Uune erreur est survenue. Merci de réessayer';
+      return 'Une erreur est survenue. Merci de réessayer';
   }
 };
 

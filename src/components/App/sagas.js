@@ -35,7 +35,6 @@ import {
   translateResendCodeError
 } from '../../utils/cognito';
 import { config } from '../../conf/amplify';
-import { launchPostFunction } from '../../utils/services/apiCalls';
 import { getPhonePrefixCode } from '../../utils/services/format';
 
 function* getCurrentSession(action) {
@@ -53,8 +52,80 @@ function* getCurrentSession(action) {
     });
     console.log('function*getCurrentSession -> userDynamo', userDynamo)
 
-    // userDynamo = userDynamo.entity[0] || userDynamo.entity;
-    // console.log('function*getCurrentSession -> userDynamo', userDynamo);
+    if (!userDynamo?.company) {
+      console.log('1');
+      try {
+        const params = {
+          headers: {
+            'x-api-key': config.apiKey
+          },
+          body: {
+            'name': userInfo?.attributes['custom:companyName'],
+            // 'status': ,
+            // 'administrativeProfile': ,
+          }
+        }
+        userDynamo.company = yield API.put(config.apiGateway.NAME, 'companies', params)
+      } catch (error) {
+        console.log(error);
+        yield put(loginFailure(translateSignInError(error.code)));
+      }
+      // yield put(push('/home'));
+    };
+
+    if (userDynamo?.company && !userDynamo?.employee) {
+      console.log('2')
+      try {
+        const params = {
+          headers: {
+            'x-api-key': config.apiKey
+          },
+          body: {
+            'companyId': userDynamo?.company.id,
+            'email': userInfo?.attributes.email,
+            'firstName': userInfo?.attributes['custom:firstName'],
+            'lastName': userInfo?.attributes['custom:lastName'],
+            'role': userInfo?.attributes['custom:role'],
+            'phoneNumber': {
+              'code': userInfo?.attributes['custom:phoneNumberCode'],
+              'number': userInfo?.attributes['custom:phoneNumberNumber']
+            }
+          }
+        }
+        userDynamo.employee = yield put(config.apiGateway.NAME, 'employees', params);
+      } catch (error) {
+        console.log(error);
+        yield put(loginFailure(translateSignInError(error.code)));
+      }
+      // yield put(push('/home'));
+    };
+
+    if (userDynamo?.company && userDynamo?.employee) {
+      const userAttributes = userInfo?.attributes;
+      console.log('3')
+      if (userAttributes['custom:searchCode'] && userAttributes['custom:searchType'] && userAttributes['custom:searchValue']) {
+        const params = {
+          headers: {
+            'x-api-key': config.apiKey
+          },
+          body: {
+            'search': {
+              'code': userAttributes['custom:searchCode'],
+              'type': userAttributes['custom:searchType'],
+              'text': userAttributes['custom:searchValue']
+            }
+          }
+        }
+        try {
+          yield put(config.apiGateway.NAME, 'leads', params);
+        } catch (error) {
+          console.log(error);
+          yield put(loginFailure(translateSignInError("Une erreur est survenue lors de la création du brief, merci de réessayer plus tard")));
+        }
+      }
+      yield put(loginSuccess());
+      // yield put(push('/home'));
+    }
 
     yield put(getCurrentSessionSuccess({ userInfo, userDynamo }));
     if (fromPath) {
@@ -67,83 +138,11 @@ function* getCurrentSession(action) {
 }
 
 function* doSignIn(action) {
-  const { email, password, from } = action.payload;
-
+  const { password, from } = action.payload;
+  const email = action.payload.trim().toLowerCase();
   try {
     yield Auth.signIn(email, password);
-    const postSessionsConfig = {
-      endpoint: 'sessions',
-      body: {
-        email: email
-      }
-    }
-    const sessionsResponse = yield launchPostFunction(postSessionsConfig);
-    console.log('function*doSignIn -> sessionsResponse', sessionsResponse)
-
-    // check if sessionsResponse is ok
-    // check if loginSuccess + push are ok in each scope
-
-    const userAttributes = sessionsResponse?.attributes;
-
-    if (sessionsResponse) {
-      if (sessionsResponse?.companyId && sessionsResponse?.employeeId) {
-        console.log('1')
-        if (userAttributes?.searchCode && userAttributes?.searchType && userAttributes?.searchValue) {
-          const postLeadsOptions = {
-            endpoint: 'leads',
-            body: {
-              companyId: sessionsResponse?.companyId,
-              searchCode: userAttributes?.searchCode,
-              searchType: userAttributes?.searchType,
-              searchValue: userAttributes?.searchValue
-            }
-          }
-          try {
-            sessionsResponse.leads = yield launchPostFunction(postLeadsOptions);
-          } catch (error) {
-            console.log(error);
-            yield put(loginFailure(translateSignInError(error.code)));
-          }
-        }
-        yield put(loginSuccess());
-        // yield put(push('/home'));
-      } else {
-        if (!sessionsResponse?.companyId) {
-          console.log('2')
-          try {
-            const postCompaniesOptions = {
-              endpoint: 'companies',
-              body: {
-                attributes: userAttributes
-              }
-            }
-            sessionsResponse.companyId = yield launchPostFunction(postCompaniesOptions);
-          } catch (error) {
-            console.log(error);
-            yield put(loginFailure(translateSignInError(error.code)));
-          }
-          yield put(loginSuccess());
-          // yield put(push('/home'));
-        } else if (sessionsResponse?.companyId && !sessionsResponse?.employeeId) {
-          console.log('3')
-          try {
-            const postEmployeesOptions = {
-              endpoint: 'employees',
-              body: {
-                companyId: sessionsResponse?.companyId,
-                attributes: userAttributes
-              }
-            }
-            sessionsResponse.employeeId = yield launchPostFunction(postEmployeesOptions);
-          } catch (error) {
-            console.log(error);
-            yield put(loginFailure(translateSignInError(error.code)));
-          }
-          yield put(loginSuccess());
-          // yield put(push('/home'));
-        }
-      }
-    }
+    yield put(loginSuccess());
   } catch (err) {
     console.log(err)
     if (err.code === 'UserNotConfirmedException') {
@@ -153,6 +152,7 @@ function* doSignIn(action) {
     }
     yield put(loginFailure(translateSignInError(err.code)));
   }
+  yield put(getCurrentSessionLaunched({ fromPath: from || '/home' }));
 }
 
 function* doSignOut() {
@@ -166,9 +166,9 @@ function* doSignOut() {
 }
 
 function* doSignUp(action) {
-  const { email, password, companyName, firstName, lastName, role, phonePrefix, phoneNumber, searchType, searchValue, searchCode } = action.payload;
-
+  const { password, companyName, firstName, lastName, role, phonePrefix, phoneNumber, searchType, searchValue, searchCode } = action.payload;
   const prefixCode = getPhonePrefixCode(phonePrefix);
+  const email = action.payload.email.trim().toLowerCase();
 
   try {
     yield Auth.signUp({
@@ -183,7 +183,7 @@ function* doSignUp(action) {
         'custom:phoneNumberCode': prefixCode,
         'custom:phoneNumberNumber': phoneNumber,
         'custom:searchType': searchType,
-        'custom:searchText': searchValue,
+        'custom:searchValue': searchValue,
         'custom:searchCode': searchCode
       }
     });
@@ -196,7 +196,8 @@ function* doSignUp(action) {
 }
 
 function* doConfirmSignUp(action) {
-  const { username, code } = action.payload;
+  const { code } = action.payload;
+  const username = action.payload.username.trim().toLowerCase();
   try {
     yield Auth.confirmSignUp(username, code);
     yield put(push('/home'));
@@ -208,7 +209,7 @@ function* doConfirmSignUp(action) {
 }
 
 function* doResendCode(action) {
-  const email = action.payload;
+  const email = action.payload.trim().toLowerCase();
   try {
     yield Auth.resendSignUp(email);
     yield put(resendCodeSuccess(translateResendCodeSuccess()));
@@ -220,7 +221,7 @@ function* doResendCode(action) {
 
 function* doRequestPasswordCode(action) {
   console.log(action);
-  const { email } = action.payload;
+  const email = action.payload.email.trim().toLowerCase();
 
   try {
     yield Auth.forgotPassword(email);
@@ -232,9 +233,8 @@ function* doRequestPasswordCode(action) {
 
 function* doSubmitNewPassword(action) {
   console.log(action);
-  const {
-    email, code, password
-  } = action.payload;
+  const { code, password } = action.payload;
+  const email = action.payload.trim().toLowerCase();
   try {
     yield Auth.forgotPasswordSubmit(email, code, password);
     yield put(submitNewPasswordSuccess());
