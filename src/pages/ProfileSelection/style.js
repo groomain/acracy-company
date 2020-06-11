@@ -84,9 +84,16 @@ export const styles = makeStyles(theme => ({
     color: theme.palette.secondary.medium,
     size: 20
   },
+  avatarCheck: {
+    position: "absolute",
+    zIndex: 3,
+    left: 8,
+    top: 5,
+    width: 25,
+    height: 25
+  },
   avatarActive: {
     border: '3px yellow solid',
-
   },
   avatar: {
     width: 46,

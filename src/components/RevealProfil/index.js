@@ -12,7 +12,7 @@ import star from "../../assets/icons/expertises.svg";
 import checkStatus from "../../assets/icons/check-statut.svg";
 import clsx from "clsx";
 
-const RevealProfil = ({setCheckedProfiles, index, ...props}) => {
+const RevealProfil = ({setCheckedProfiles, index, modeMission, profil, ...props}) => {
   const classes = styles();
   const photoLink = 'https://cdn-media.rtl.fr/cache/p0NFoli1OBEqRtMwTbdztw/880v587-0/online/image/2015/0403/loveok_141338438169183900.jpg';
   const [checked, setChecked] = React.useState(false);
@@ -36,7 +36,7 @@ const RevealProfil = ({setCheckedProfiles, index, ...props}) => {
                 <Typography variant={"body2"} className={classes.noSelect}>Profil non séléctionné</Typography>
                 </Grid>
                 <Grid item>
-                <CustomSwitch className={classes.switch} checked={checked} setChecked={setChecked} onChange={() => setCheckedProfiles(index + 'index')} switchSize="large"/>
+                <CustomSwitch className={classes.switch} checked={checked} setChecked={setChecked} onChange={() => setCheckedProfiles(index)} switchSize="large"/>
                 </Grid>
                 <Grid item>
                 <Typography variant={"body2"} className={clsx(classes.preSelect, { [classes.selected]: checked})}>Profil pré-sélectionné</Typography>
