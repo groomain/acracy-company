@@ -27,12 +27,12 @@ const Drafts = ({ ...props }) => {
   }));
 
   useEffect(() => {
-    // dispatch(getLeadsLaunched());
-  }, [dispatch]);
+    dispatch(getLeadsLaunched());
+  }, [dispatch])
 
   useEffect(() => {
     setCurrentDrafts(leadsData);
-    setCurrentDrafts([]);
+    // setCurrentDrafts([]);
   }, [leadsData]);
 
   const responsive = {

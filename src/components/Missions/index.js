@@ -11,7 +11,7 @@ import CustomLoader from '../Loader';
 import sharedStyles from "../../utils/styles";
 
 import { formatWithLineBreak } from '../../utils/format';
-import { missions } from '../../mocks/missions';
+// import { missions } from '../../mocks/missions';
 import { briefs } from '../../mocks/briefs';
 
 export const Missions = () => {
@@ -19,37 +19,31 @@ export const Missions = () => {
   const dispatch = useDispatch();
   const sharedClasses = sharedStyles();
 
-  const [inProgressMissions, setInProgressMissions] = useState();
-  const [futureMissions, setFutureMissions] = useState();
-  const [finishedMissions, setFinishedMissions] = useState();
-  const [profileMatching, setProfileMatching] = useState();
   const today = Date.now() / 1000;
 
-  const { missionsLoading, briefsLoading } = useSelector(state => ({
-    // missionsData: state.getIn(['dashboard', 'missionsData']),
+  const { missionsLoading, briefsLoading, briefsData, missions } = useSelector(state => ({
+    missions: state.getIn(['dashboard', 'missionsData']),
     missionsLoading: state.getIn(['dashboard', 'missionsLoading']),
-    // briefsData: state.getIn(['dashboard', 'briefsData']),
+    briefsData: state.getIn(['dashboard', 'briefsData']),
     briefsLoading: state.getIn(['dashboard', 'briefsLoading'])
   }));
 
-  const [missionsData] = useState(missions);
-  const [briefsData] = useState(briefs);
+  const [currentMissions, setCurrentMissions] = useState();
+  const [profileMatching, setProfileMatching] = useState();
 
   useEffect(() => {
-    // dispatch(getMissionsLaunched());
-    // dispatch(getBriefsLaunched());
+    dispatch(getMissionsLaunched());
+    dispatch(getBriefsLaunched());
   }, [dispatch]);
 
   useEffect(() => {
-    setInProgressMissions(missionsData?.filter(x => x.status === 'IN_PROGRESS' && x.brief.missionContext.startDate < today));
-    setFutureMissions(missionsData?.filter(x => x.status === 'IN_PROGRESS' && x.brief.missionContext.startDate > today));
-    setFinishedMissions(missionsData?.filter(x => x.status === 'FINISHED'));
-    setProfileMatching(briefsData);
-    setInProgressMissions([])
-    // setFutureMissions([])
-    setFinishedMissions([])
-    // setProfileMatching([])
-  }, [missionsData]);
+    setCurrentMissions(missions);
+    setProfileMatching(briefs)
+  }, []);
+
+  const inProgressMissions = currentMissions?.filter(x => x.status === 'IN_PROGRESS' && x.brief.missionContext.startDate < today)
+  const futureMissions = currentMissions?.filter(x => x.status === 'IN_PROGRESS' && x.brief.missionContext.startDate > today);
+  const finishedMissions = currentMissions?.filter(x => x.status === 'FINISHED');
 
   const displayInProgressMissionsTitle = () => {
     return (

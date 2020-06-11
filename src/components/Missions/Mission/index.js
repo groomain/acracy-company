@@ -22,9 +22,6 @@ import * as moment from 'moment';
 moment.locale('fr');
 
 export const Mission = ({ mission, matching, today, ...props }) => {
-  console.log('Mission -> today', today)
-  // console.log('Mission -> duration', duration)
-  // console.log('Mission -> mission', mission)
   const classes = styles();
   const [open, setOpen] = React.useState(false);
   const [hoveredMenu, setOveredMenu] = React.useState(false);
@@ -46,7 +43,7 @@ export const Mission = ({ mission, matching, today, ...props }) => {
     let endDate = "", count = 0;
     while (count < nbOfDaysToAdd) {
       endDate = new Date(date.setDate(date.getDate() + 1));
-      if (endDate.getDay() != 0 && endDate.getDay() != 6) {
+      if (endDate.getDay() !== 0 && endDate.getDay() !== 6) {
         count++;
       }
     }
@@ -77,7 +74,6 @@ export const Mission = ({ mission, matching, today, ...props }) => {
   };
 
   const [matchingValues, setMatchingValues] = useState();
-  // console.log('Mission -> matchingValues', matchingValues)
   useEffect(() => {
     const getBriefStatus = (briefStatus) => {
       switch (briefStatus) {
@@ -114,7 +110,7 @@ export const Mission = ({ mission, matching, today, ...props }) => {
     }
     const result = getBriefStatus(matching?.status);
     setMatchingValues(result);
-  }, [matching]);
+  }, [matching, formattedDate]);
 
   const missionTitle = () => {
     if (today && mission?.brief.missionContext.startDate > today) {
@@ -149,7 +145,7 @@ export const Mission = ({ mission, matching, today, ...props }) => {
                 <Typography variant="body2">
                   {(matching?.deliverables || mission?.brief.deliverables).map((x, key) => `0${key + 1} ${x.text} ${key + 1 !== (matching?.deliverables.length || mission?.brief.deliverables.length) ? '- ' : ''}`)}</Typography>
               </Grid>
-              {open && <LeftOverlay setOpen={setOpen} />}
+              {open && <LeftOverlay setOpen={setOpen} matching={matching} mission={mission} />}
             </Grid>
             <Grid container direction={'row'}
               className={clsx(classes.gridCenter, { [classes.gridCenterFinished]: props.status === 6 })}>
@@ -226,7 +222,7 @@ export const Mission = ({ mission, matching, today, ...props }) => {
         <Grid container direction={'row'} alignItems={'center'} className={classes.outsideContainer}>
           {matching && <CircleImage />}
           <Typography variant="body2" className={classes.outsideTypo}>
-            {mission?.secondaryTitle || 'Séverine est en charge de votre dossier'}
+            {mission ? mission?.secondaryTitle || '' : 'Séverine est en charge de votre dossier'}
           </Typography>
         </Grid>
       </Grid>
