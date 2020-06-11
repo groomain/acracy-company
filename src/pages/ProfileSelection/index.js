@@ -22,6 +22,7 @@ import CustomLoader from "../../components/Loader";
 import {Link, Element, Events, animateScroll as scroll, scrollSpy, scroller} from 'react-scroll'
 import * as Scroll from 'react-scroll';
 import checkStatus from "../../assets/icons/small-check.svg";
+import CustomButton from "../../components/Button";
 
 const ProfileSelection = (props) => {
     const dispatch = useDispatch();
@@ -40,10 +41,10 @@ const ProfileSelection = (props) => {
             console.log("ABSENT");
             setCheckedProfiles([index, ...checkedProfiles])
         } else if (checkedProfiles.includes(index)){
-            // console.log("checkedProfiles.indexOf(index)", checkedProfiles.indexOf(index));
             console.log("PRESENT");
-            checkedProfiles.splice(checkedProfiles.indexOf(index), 1);
-            setCheckedProfiles(checkedProfiles)
+            const indexToDelete = checkedProfiles.indexOf(index);
+            const newCheckedProfiles = [...checkedProfiles.slice(0, indexToDelete), ...checkedProfiles.slice(indexToDelete + 1)];
+            setCheckedProfiles(newCheckedProfiles)
         }
     };
 
@@ -329,18 +330,32 @@ const ProfileSelection = (props) => {
                             plusieurs profils. Vous
                             pourrez ensuite valider votre selection ou réaliser un/des entretien.s.</Typography>
                     </Grid>
+                    {profils.map((profil, index) =>
+                        <Grid item container direction={'column'} >
+                            <Grid item justify={'center'} alignItems={'center'} style={{backgroundColor: '#212a21', width: 215, height: 141, borderRadius: '15px 15px 0 0', marginBottom: 2}}>
+                                <Typography>TJM</Typography>
+                            </Grid>
+                            <Grid item style={{backgroundColor: '#1b251c', width: 215, height: 123, borderRadius: '0 0 15px 15px'}}>
+                            </Grid>
+                        </Grid>
+                    )
+                    }
                 </Grid>
             </Grid>
-            <Grid className={classes.logoAcracyContainer}>
-                <img src={acracy} alt="acracy" className={classes.logoAcracy}/>
-            </Grid>
+            {/*<Grid className={classes.logoAcracyContainer}>*/}
+                {/*<img src={acracy} alt="acracy" className={classes.logoAcracy}/>*/}
+            {/*</Grid>*/}
             {selectionProfilData &&
-            <Grid item container className={classes.cart} direction={'row'}>
-                <Typography
-                    style={{width: 200, textAlign: 'center', color: 'black', marginTop: 'auto', marginBottom: 'auto'}}>Ma
-                    pre-sélection</Typography>
+            <Grid item container className={classes.cart} direction={'row'} xs={12}>
+            {/*<Grid item xs={2} style={{marginTop: 'auto', marginBottom: 'auto'}}>*/}
+
+            {/*</Grid>*/}
+                <Grid container item xs={9} direction={'row'}>
+                    <Typography
+                        style={{width: 250, textAlign: 'center', color: 'black', marginTop: 'auto', marginBottom: 'auto'}}>Ma
+                        pre-sélection</Typography>
                 {checkedProfiles.map((profile, index) =>
-                    <ListItem className={classes.listItem} style={{width: 250}}>
+                    <ListItem style={{width: 250}}>
                         <ListItemAvatar>
                             <Avatar
                                 className={classes.avatar}>
@@ -350,11 +365,17 @@ const ProfileSelection = (props) => {
                             </Avatar>
                         </ListItemAvatar>
                         <ListItemText primary="Anh-Dao"
-                                      primaryTypographyProps={{className: classes.listItemText}}
+                                      primaryTypographyProps={{className: classes.cartText}}
                                       secondary={'Social Media Strategist'}
+                                      secondaryTypographyProps={{className: classes.cartTextSecondary}}
                         />
                     </ListItem>
                 )}
+                </Grid>
+                <Grid item xs={3}>
+                <CustomButton title={"Faire passer des entretiens"} theme={'outlinedBlackBorder'} style={{width: 219, marginRight: 20}}/>
+                <CustomButton title={"Valider choix profil.s"} theme={'outlinedBlackBackground'} style={{width: 219, marginRight: 15}}/>
+                </Grid>
             </Grid>
             }
         </Grid>

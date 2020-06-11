@@ -63,5 +63,17 @@ export default makeStyles(theme => ({
   disabledOutlined: {
     borderColor: theme.palette.secondary.medium,
     color: theme.palette.secondary.medium
+  },
+  outlinedBlackBorder: {
+    borderColor: theme.palette.secondary.black,
+    color: theme.palette.secondary.black
+  },
+  outlinedBlackBackground: {
+    borderColor: theme.palette.secondary.black,
+    backgroundColor: theme.palette.secondary.black,
+    color: theme.palette.primary.main,
+      '&:hover, &:active': {
+          background: `${theme.palette.secondary.dark}`
+      }
   }
 }));

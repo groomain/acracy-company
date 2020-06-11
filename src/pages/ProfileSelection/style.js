@@ -84,6 +84,14 @@ export const styles = makeStyles(theme => ({
     color: theme.palette.secondary.medium,
     size: 20
   },
+  cartText: {
+    color: theme.palette.secondary.dark,
+    size: 20
+  },
+  cartTextSecondary: {
+    color: theme.palette.secondary.dark,
+    size: 16
+  },
   avatarCheck: {
     position: "absolute",
     zIndex: 3,
