@@ -223,13 +223,12 @@ export const Mission = ({ mission, matching, today, ...props }) => {
             <CircularProgress />
           </Grid>
         }
-        {!props.isLoading &&
-          <Grid container direction={'row'} alignItems={'center'} className={classes.outsideContainer}>
-            <CircleImage />
-            <Typography variant="body2" className={classes.outsideTypo}>
-              Séverine est en charge de votre dossier</Typography>
-          </Grid>
-        }
+        <Grid container direction={'row'} alignItems={'center'} className={classes.outsideContainer}>
+          {matching && <CircleImage />}
+          <Typography variant="body2" className={classes.outsideTypo}>
+            {mission?.secondaryTitle || 'Séverine est en charge de votre dossier'}
+          </Typography>
+        </Grid>
       </Grid>
     </Box>
   )
