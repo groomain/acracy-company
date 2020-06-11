@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import algoliasearch from 'algoliasearch/lite';
 import {
   InstantSearch,
@@ -7,7 +7,7 @@ import {
 import { useTranslation } from 'react-i18next';
 import { connectStateResults } from 'react-instantsearch-dom';
 
-import { components } from 'react-select';
+import { components, createFilter } from 'react-select';
 import CreatableSelect from 'react-select/creatable';
 import Highlighter from 'react-highlight-words';
 
@@ -103,7 +103,7 @@ const SearchResults = ({ searchResults, ...props }) => {
         }
       </>
     );
-  }
+  };
 
   const ValueContainer = ({ children, ...props }) => {
     return (
@@ -122,12 +122,6 @@ const SearchResults = ({ searchResults, ...props }) => {
     )
   };
 
-  const ref = useRef();
-
-  useEffect(() => {
-    ref.current.select.getNextFocusedOption = () => null;
-  }, []);
-
   const handleOnChange = (newValue, actionMeta) => {
     // Store the search value if it doesn't exist
     if (actionMeta.action === "create-option") {
@@ -137,7 +131,7 @@ const SearchResults = ({ searchResults, ...props }) => {
       setNewOption('')
     }
     setSearchValue(newValue || null)
-  }
+  };
 
   const renderTitle = (title) => {
     switch (title) {
@@ -156,7 +150,6 @@ const SearchResults = ({ searchResults, ...props }) => {
         <Typography variant="h2">{renderTitle(searchValue?.TYPE) || newOption?.title}</Typography>
       </Box>
       <CreatableSelect
-        ref={ref}
         onChange={handleOnChange}
         placeholder={t('searchbar.placeholder')}
         options={resultsList}
@@ -169,6 +162,7 @@ const SearchResults = ({ searchResults, ...props }) => {
         maxMenuHeight={400}
         getOptionLabel={option => option.TEXT}
         noOptionsMessage={() => loading ? t('searchbar.loading') : t('searchbar.noOptions')}
+        filterOption={createFilter({ ignoreAccents: false })} // Prevent lagging with large sets of data
         components={{
           DropdownIndicator: () => null,
           IndicatorSeparator: () => null,
@@ -184,7 +178,7 @@ const SearchResults = ({ searchResults, ...props }) => {
       )}
     </Box>
   )
-}
+};
 
 const CustomSearchbar = connectStateResults(SearchResults)
 
