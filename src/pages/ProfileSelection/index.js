@@ -14,33 +14,70 @@ import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import ListItemText from "@material-ui/core/ListItemText";
 import {useScrollPosition} from '@n8tb1t/use-scroll-position'
 import {useDispatch, useSelector} from "react-redux";
-import {getSelectionProfilLaunched} from "./reducer";
+import {getSelectionProfilLaunched, validateProfilesLaunched} from "./reducer";
 import clsx from "clsx";
 import CustomExpansionPanel from "../../components/CustomExpansionPanel";
 import Tag from "../../components/Tags/Tag";
 import CustomLoader from "../../components/Loader";
-import {Link, Element, Events, animateScroll as scroll, scrollSpy, scroller} from 'react-scroll'
+import {Link, Element, animateScroll as scroll} from 'react-scroll'
 import * as Scroll from 'react-scroll';
 import checkStatus from "../../assets/icons/small-check.svg";
+import infosSmall from "../../assets/icons/infos-small-copy.svg";
 import CustomButton from "../../components/Button";
+import CustomModal from "../../components/Modal";
+import CustomSelect from "../../components/Inputs/CustomSelect";
+import CustomTextArea from "../../components/Inputs/CustomTextArea";
+import Dialog from '@material-ui/core/Dialog';
+import {loginLaunched} from "../../components/App/reducer";
 
 const ProfileSelection = (props) => {
     const dispatch = useDispatch();
+
+    const {selectionProfilData, validateError} = useSelector(state => ({
+        selectionProfilData: state.getIn(['SelectionProfil', 'selectionProfilData']),
+        validateCodeError: state.getIn(['SelectionProfil', 'validateCodeError']),
+    }));
 
     let profils = [1, 2, 3, 4];
     let [checkedProfiles, setCheckedProfiles] = React.useState([]);
     const [elementPosition, setElementPosition] = useState({x: 10, y: 450});
     const [elementHeight, setElementHeight] = useState(0);
+    const [noProfileModaleOpen, setNoProfileModaleOpen] = useState(false);
+    const [validateChoiceModaleOpen, setValidateChoiceModaleOpen] = useState(true);
+    // const [validateChoiceModaleOpen, setValidateChoiceModaleOpen] = useState(validateError);
     const heightRef = useRef();
     const elementsRef = useRef();
     const classes = styles();
     let Element = Scroll.Element;
+    const [anchorEl, setAnchorEl] = React.useState(null);
+
+    const open = Boolean(anchorEl);
+
+    const validateProfiles = (profiles) => {
+        dispatch(validateProfilesLaunched(profiles));
+    };
+
+    const handleNoProfileModaleOpen = () => {
+        setNoProfileModaleOpen(!noProfileModaleOpen);
+    };
+
+    const handleValidateChoiceModaleOpen = () => {
+        setValidateChoiceModaleOpen(!validateChoiceModaleOpen);
+    };
+
+    const handlePopoverOpen = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handlePopoverClose = () => {
+        setAnchorEl(null);
+    };
 
     const handleCheckedProfiles = (index) => {
         if (!checkedProfiles.includes(index)) {
             console.log("ABSENT");
             setCheckedProfiles([index, ...checkedProfiles])
-        } else if (checkedProfiles.includes(index)){
+        } else if (checkedProfiles.includes(index)) {
             console.log("PRESENT");
             const indexToDelete = checkedProfiles.indexOf(index);
             const newCheckedProfiles = [...checkedProfiles.slice(0, indexToDelete), ...checkedProfiles.slice(indexToDelete + 1)];
@@ -60,14 +97,6 @@ const ProfileSelection = (props) => {
             setElementPosition(currPos)
         }, [], elementsRef
     );
-
-    // const getSelectionProfil = () => {
-    //     dispatch(getSelectionProfilLaunched());
-    // };
-
-    const {selectionProfilData} = useSelector(state => ({
-        selectionProfilData: state.getIn(['SelectionProfil', 'selectionProfilData']),
-    }));
 
     useEffect(() => {
         dispatch(getSelectionProfilLaunched())
@@ -89,7 +118,7 @@ const ProfileSelection = (props) => {
                 direction="row"
                 className={classes.container}
             >
-
+                {selectionProfilData &&
                 <Grid item container xs={3} direction={'row'} justify="center" alignItems="flex-start">
                     <List className={classes.list}>
                         <ListItem className={classes.listItem} onClick={() => scroll.scrollToTop()}>
@@ -150,16 +179,8 @@ const ProfileSelection = (props) => {
                                               }}/>
                             </ListItem>
                         </Link>
-                        {/*<ListItem>*/}
-                        {/*<ListItemAvatar>*/}
-                        {/*<Avatar className={{[classes.avatar]: elementPosition.y < 150}}>*/}
-                        {/*</Avatar>*/}
-                        {/*</ListItemAvatar>*/}
-                        {/*<ListItemText secondaryTypographyProps={{color: 'white'}} primary="Vacation"*/}
-                        {/*secondary="July 20, 2014"/>*/}
-                        {/*</ListItem>*/}
                     </List>
-                </Grid>
+                </Grid>}
 
 
                 {selectionProfilData ?
@@ -183,10 +204,81 @@ const ProfileSelection = (props) => {
                             <div ref={heightRef}>
                                 {profils.map((profil, i) =>
                                     <Element name={i}>
+                                        <Grid item container direction={'column'}
+                                              style={{position: 'absolute', marginTop: 70, width: 215, left: '80%'}}>
+                                            <Grid item container justify={'center'} alignItems={'center'} style={{
+                                                backgroundColor: '#212a21',
+                                                width: 215,
+                                                height: 141,
+                                                borderRadius: '15px 15px 0 0',
+                                                marginBottom: 2,
+                                                padding: 20
+                                            }} spacing={0}>
+                                                <img src={infosSmall} alt={'infoSmall'}
+                                                     style={{position: 'absolute', top: 10, right: 10}}
+                                                     aria-owns={open ? 'mouse-over-popover' : undefined}
+                                                     aria-haspopup="true" onMouseEnter={handlePopoverOpen}
+                                                     onMouseLeave={handlePopoverClose}/>
+                                                {open &&
+                                                <Grid item container direction={'column'}
+                                                      className={classes.paper}>
+                                                    <Typography className={classes.popoverTypoTitle}>Pourquoi ce TJM
+                                                        étrange ?</Typography>
+                                                    <Typography className={classes.popoverTypo}>
+                                                        Nous incluons dans le TJM des freelances les frais de X%
+                                                        liés à l’affacturage.
+                                                        C’est un système qui leur permet d’être protégés avec un
+                                                        paiement rapide, et qui nous permet de fidéliser les
+                                                        meilleurs freelances.</Typography>
+                                                </Grid>
+                                                }
+                                                <Typography style={{
+                                                    fontSize: 34,
+                                                    fontFamily: 'Basier Regular', color: '#ecf805'
+                                                }}>550€/j</Typography>
+                                                <Grid item container direction={'row'} justify={'center'}
+                                                      alignItems={'center'}>
+                                                    <Typography style={{
+                                                        fontSize: 14,
+                                                        fontFamily: 'Basier Regular',
+                                                        color: '#ecf805'
+                                                    }}>Soit </Typography>
+                                                    <div style={{
+                                                        color: 'black',
+                                                        backgroundColor: 'yellow',
+                                                        borderRadius: '15px',
+                                                        width: 70,
+                                                        marginLeft: 5,
+                                                        marginRight: 5
+                                                    }}><Typography style={{
+                                                        fontFamily: 'Basier Regular',
+                                                        color: '#162217',
+                                                        fontSize: 14,
+                                                        textAlign: 'center'
+                                                    }}>632,50€</Typography></div>
+                                                </Grid>
+                                                <Typography style={{
+                                                    fontSize: 14,
+                                                    fontFamily: 'Basier Regular',
+                                                    color: '#ecf805'
+                                                }}>Commission incluse</Typography>
+                                            </Grid>
+                                            <Grid item container justify="center" alignItems="center" style={{
+                                                backgroundColor: '#1b251c',
+                                                width: 215,
+                                                height: 123,
+                                                borderRadius: '0 0 15px 15px'
+                                            }}>
+                                                <Typography variant={'body2'} style={{width: 165, textAlign: 'center'}}>En
+                                                    pré-selectionnant ce profil, vous acceptez <span
+                                                        style={{color: 'yellow'}}>les CGV</span> du profil</Typography>
+                                            </Grid>
+                                        </Grid>
                                         <RevealProfil style={{paddingTop: 70, paddingBottom: 70}} index={i}
                                                       setCheckedProfiles={handleCheckedProfiles}/>
                                     </Element>
                                 )}
+
                             </div>
                         </div>
                         <Grid container direction={'column'} style={{width: '70%', marginLeft: "5%"}}>
@@ -316,13 +408,13 @@ const ProfileSelection = (props) => {
                         </Grid>
                     </Grid>
                     :
-                    <Grid item container xs={6} className={classes.middleContainer} direction="column" justify="center"
+                    <Grid item container xs={12} className={classes.loader} direction="column" justify="center"
                           alignItems="center">
                         <CustomLoader/>
                     </Grid>
                 }
 
-
+                {selectionProfilData &&
                 <Grid item container xs={3}>
                     <Grid item container direction={'column'} className={classes.card}>
                         <Typography variant={'h3'} className={classes.cardTitle}>Faites votre choix</Typography>
@@ -330,54 +422,110 @@ const ProfileSelection = (props) => {
                             plusieurs profils. Vous
                             pourrez ensuite valider votre selection ou réaliser un/des entretien.s.</Typography>
                     </Grid>
-                    {profils.map((profil, index) =>
-                        <Grid item container direction={'column'} >
-                            <Grid item justify={'center'} alignItems={'center'} style={{backgroundColor: '#212a21', width: 215, height: 141, borderRadius: '15px 15px 0 0', marginBottom: 2}}>
-                                <Typography>TJM</Typography>
-                            </Grid>
-                            <Grid item style={{backgroundColor: '#1b251c', width: 215, height: 123, borderRadius: '0 0 15px 15px'}}>
-                            </Grid>
-                        </Grid>
-                    )
-                    }
                 </Grid>
+                }
             </Grid>
             {/*<Grid className={classes.logoAcracyContainer}>*/}
-                {/*<img src={acracy} alt="acracy" className={classes.logoAcracy}/>*/}
+            {/*<img src={acracy} alt="acracy" className={classes.logoAcracy}/>*/}
             {/*</Grid>*/}
             {selectionProfilData &&
             <Grid item container className={classes.cart} direction={'row'} xs={12}>
-            {/*<Grid item xs={2} style={{marginTop: 'auto', marginBottom: 'auto'}}>*/}
-
-            {/*</Grid>*/}
                 <Grid container item xs={9} direction={'row'}>
                     <Typography
-                        style={{width: 250, textAlign: 'center', color: 'black', marginTop: 'auto', marginBottom: 'auto'}}>Ma
-                        pre-sélection</Typography>
-                {checkedProfiles.map((profile, index) =>
-                    <ListItem style={{width: 250}}>
-                        <ListItemAvatar>
-                            <Avatar
-                                className={classes.avatar}>
-                                <img
-                                    src={"https://cdn-media.rtl.fr/cache/p0NFoli1OBEqRtMwTbdztw/880v587-0/online/image/2015/0403/loveok_141338438169183900.jpg"}
-                                    alt="linkedingProfil" style={{width: 46, height: 46}}/>
-                            </Avatar>
-                        </ListItemAvatar>
-                        <ListItemText primary="Anh-Dao"
-                                      primaryTypographyProps={{className: classes.cartText}}
-                                      secondary={'Social Media Strategist'}
-                                      secondaryTypographyProps={{className: classes.cartTextSecondary}}
+                        style={{
+                            fontSize: 17,
+                            fontFamily: 'Basier Medium',
+                            width: 200,
+                            padding: 25,
+                            textAlign: 'left',
+                            color: 'black',
+                            marginTop: 'auto',
+                            marginBottom: 'auto'
+                        }}>{checkedProfiles.length === 0 ?
+                        'Aucuns Profils pre-sélectionnés'
+                        :
+                        'Ma pre-sélection'
+                    }</Typography>
+                    {checkedProfiles.map((profile, index) =>
+                        <ListItem style={{width: 250}}>
+                                <ListItemAvatar>
+                                    <Avatar
+                                        className={classes.avatar}>
+                                        <img
+                                            src={"https://cdn-media.rtl.fr/cache/p0NFoli1OBEqRtMwTbdztw/880v587-0/online/image/2015/0403/loveok_141338438169183900.jpg"}
+                                            alt="linkedingProfil" style={{width: 46, height: 46}}/>
+                                    </Avatar>
+                                </ListItemAvatar>
+                                <ListItemText primary={"Anh Dao"}
+                                              primaryTypographyProps={{className: classes.cartText}}
+                                              secondary={'Social Media Strategist'}
+                                              secondaryTypographyProps={{className: classes.cartTextSecondary}}
+                                />
+                            </ListItem>
+                    )}
+                </Grid>
+                {checkedProfiles.length === 0 ?
+                    <Grid item container direction={'row'} xs={3}>
+                        <CustomButton title={"Aucun profil ne convient"} theme={'outlinedBlackBorder'}
+                                      style={{width: 221, marginRight: 20}}
+                                      handleClick={() => handleNoProfileModaleOpen()}/>
+                        <CustomButton title={"Contacter acracy"} theme={'outlinedBlackBorder'}
+                                      style={{width: 172, marginRight: 20}}/>
+                    </Grid>
+                    :
+                    <Grid item container direction={'row'} xs={3}>
+                        <CustomButton title={"Faire passer des entretiens"} theme={'outlinedBlackBorder'}
+                                      style={{width: 219, marginRight: 20}}
+
                         />
-                    </ListItem>
-                )}
-                </Grid>
-                <Grid item xs={3}>
-                <CustomButton title={"Faire passer des entretiens"} theme={'outlinedBlackBorder'} style={{width: 219, marginRight: 20}}/>
-                <CustomButton title={"Valider choix profil.s"} theme={'outlinedBlackBackground'} style={{width: 219, marginRight: 15}}/>
-                </Grid>
+                        <CustomButton title={"Valider choix profil.s"} theme={'outlinedBlackBackground'}
+                                      style={{width: 219, marginRight: 15}}
+                                      handleClick={() => validateProfiles()}
+                        />
+                    </Grid>
+                }
+
             </Grid>
             }
+            <Dialog open={noProfileModaleOpen} onClose={handleNoProfileModaleOpen} classes={{ paper: classes.modale}}>
+                <Grid item container direction={'column'} justify={'center'} className={classes.modaleContainer}>
+                    <Typography variant={"h1"}>Aucun profil ne me convient</Typography>
+                    <Typography variant={"body1"} style={{marginBottom: 20}}>Afin de pouvoir améliorer nos futures propositions, n’hésitez pas à
+                        nous dire la raison du refus de ces profils.</Typography>
+                    <CustomSelect placeholder={"Sélectionner raison"} label={"Raison"} optionsValues={['test1', "test2"]}/>
+                    <CustomTextArea style={{height: 241}} placeholder={"Donnez nous plus de détails"} />
+                    <CustomButton theme={"filledButton"} style={{width: 254}} title={"Confirmer et envoyer réponse"} handleClick={() => console.log("test confirme réponse")} />
+                </Grid>
+            </Dialog>
+            <Dialog open={validateChoiceModaleOpen} onClose={handleValidateChoiceModaleOpen} classes={{ paper: classes.modale}}>
+                <Grid item container direction={'column'} justify={'center'} className={classes.modaleContainer}>
+                    <Typography variant={"h1"}>Confirmation sélection</Typography>
+                    <Typography variant={"body1"} style={{marginBottom: 20}}>Vous êtes sur le point de confirmer la sélection de deux profils.
+                        En confirmant, vous recevrez un email sur prénomnom@entreprise.com vous invitant à signer le devis.</Typography>
+                    <Typography variant={"body1"}>Dès la signature de ce dernier, vous pourrez accéder aux profils.</Typography>
+                    <Grid item container direction={"row"}>
+                        <Grid item container direction={"column"} xs={6} justify={'flex-end'}>
+                        <Typography variant={"body1"} style={{width: 200,  fontSize: 14,
+                            fontFamily: 'Basier Medium', marginBottom: 20}}>Vous n’avez pas reçu le devis?</Typography>
+                        </Grid>
+                        <Grid item container direction={"column"} xs={6}>
+
+                        <CustomButton style={{width: 183}} theme={"filledButton"} title={"Confimer ma sélection"} handleClick={() => console.log("test confirme réponse2")} />
+                    <CustomButton style={{width: 183}} theme={"filledButton"} title={"Renvoyer email"} handleClick={() => console.log("test confirme réponse3")} />
+                        </Grid>
+                    </Grid>
+                </Grid>
+            </Dialog>
+            <Dialog open={noProfileModaleOpen} onClose={handleNoProfileModaleOpen} classes={{ paper: classes.modale }}>
+                <Grid item container direction={'column'} justify={'center'} className={classes.modaleContainer}>
+                    <Typography variant={"h1"}>Aucun profil ne me convient</Typography>
+                    <Typography variant={"body1"} style={{marginBottom: 20}}>Afin de pouvoir améliorer nos futures propositions, n’hésitez pas à
+                        nous dire la raison du refus de ces profils.</Typography>
+                    <CustomSelect placeholder={"Sélectionner raison"} label={"Raison"} optionsValues={['test1', "test2"]}/>
+                    <CustomTextArea style={{height: 241}} placeholder={"Donnez nous plus de détails"} />
+                    <CustomButton theme={"filledButton"} style={{width: 254}} title={"Confirmer et envoyer réponse"} handleClick={() => console.log("test confirme réponse")} />
+                </Grid>
+            </Dialog>
         </Grid>
 
     );

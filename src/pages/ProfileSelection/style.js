@@ -32,6 +32,10 @@ export const styles = makeStyles(theme => ({
     marginTop: 100,
     marginBottom: 200
   },
+  loader: {
+    width: '100vh',
+    height: '100vh'
+  },
   card: {
     backgroundColor: theme.palette.secondary.dark,
     borderRadius: 15,
@@ -183,5 +187,43 @@ export const styles = makeStyles(theme => ({
     backgroundColor: 'yellow',
     width: '100%',
     height: 104,
-  }
+  },
+  popover: {
+    pointerEvents: 'none',
+  },
+  paper: {
+    padding: 20,
+    backgroundColor: theme.palette.secondary.dark,
+    width: 253,
+    maxWidth: 253,
+    height: 213,
+    borderRadius: '15px',
+    position: 'absolute',
+    top: 10, right: 30
+  },
+  popoverTypoTitle: {
+    fontSize: 14,
+    fontFamily: 'Basier Regular',
+    color: '#fff',
+    letterSpacing: '-0.37px',
+    marginBottom: 5
+  },
+  popoverTypo: {
+    fontSize: 14,
+    fontFamily: 'Basier Regular',
+    color: '#fff',
+    letterSpacing: '-0.37px',
+  },
+  modale: {
+    backgroundColor: 'transparent'
+  },
+  modaleContainer: {
+    prosition: 'absolute',
+    backgroundColor: theme.palette.secondary.modalGreen,
+    borderRadius: '15px',
+    width: 520,
+    padding: 30,
+    paddingTop: 40,
+    textAlign: 'left'
+  },
 }));
