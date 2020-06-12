@@ -42,7 +42,7 @@ function* getCurrentSession(action) {
   try {
     yield Auth.currentSession();
     const userInfo = yield Auth.currentUserInfo();
-    const userDynamo = yield API.post(config.apiGateway.NAME, 'sessions', {
+    const userDynamo = yield API.post(config.apiGateway.NAME, '/sessions', {
       headers: {
         'x-api-key': config.apiKey
       },
@@ -60,12 +60,10 @@ function* getCurrentSession(action) {
             'x-api-key': config.apiKey
           },
           body: {
-            'name': userInfo?.attributes['custom:companyName'],
-            // 'status': ,
-            // 'administrativeProfile': ,
+            'name': userInfo?.attributes['custom:companyName']
           }
         }
-        userDynamo.company = yield API.put(config.apiGateway.NAME, 'companies', params)
+        userDynamo.company = yield API.put(config.apiGateway.NAME, '/companies', params)
       } catch (error) {
         console.log(error);
         yield put(loginFailure(translateSignInError(error.code)));
@@ -92,7 +90,7 @@ function* getCurrentSession(action) {
             }
           }
         }
-        userDynamo.employee = yield put(config.apiGateway.NAME, 'employees', params);
+        userDynamo.employee = yield put(config.apiGateway.NAME, '/employees', params);
       } catch (error) {
         console.log(error);
         yield put(loginFailure(translateSignInError(error.code)));
@@ -117,7 +115,7 @@ function* getCurrentSession(action) {
           }
         }
         try {
-          yield put(config.apiGateway.NAME, 'leads', params);
+          yield put(config.apiGateway.NAME, '/leads', params);
         } catch (error) {
           console.log(error);
           yield put(loginFailure(translateSignInError("Une erreur est survenue lors de la création du brief, merci de réessayer plus tard")));
