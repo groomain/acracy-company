@@ -39,7 +39,7 @@ export const Missions = () => {
   useEffect(() => {
     setCurrentMissions(missions);
     setProfileMatching(briefs)
-  }, []);
+  }, [missions]);
 
   const inProgressMissions = currentMissions?.filter(x => x.status === 'IN_PROGRESS' && x.brief.missionContext.startDate < today)
   const futureMissions = currentMissions?.filter(x => x.status === 'IN_PROGRESS' && x.brief.missionContext.startDate > today);

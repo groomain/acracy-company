@@ -48,7 +48,7 @@ function* doDeleteLead(action) {
     yield put(deleteLeadSuccess(action.payload));
     yield call(doGetLeads());
   } catch (err) {
-    console.log('function*doGetLeads -> err', err)
+    console.log('function*doDeleteLead -> err', err)
     yield put(deleteLeadFailure());
   }
 }
@@ -66,7 +66,7 @@ function* doGetMissions(action) {
     const missions = yield API.get(config.apiGateway.NAME, apiURL, params);
     yield put(getMissionsSuccess(missions));
   } catch (err) {
-    console.log('function*doGetLeads -> err', err)
+    console.log('function*doGetMissions -> err', err)
     yield put(getMissionsFailure());
   }
 }
@@ -84,12 +84,10 @@ function* doGetBriefs(action) {
     const briefs = yield API.get(config.apiGateway.NAME, apiURL, params);
     yield put(getBriefsSuccess(briefs));
   } catch (err) {
-    console.log('function*doGetLeads -> err', err)
+    console.log('function*doGetBriefs -> err', err)
     yield put(getBriefsFailure());
   }
 }
-
-
 
 export default function* dashboardSagas() {
   yield all([
