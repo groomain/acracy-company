@@ -9,7 +9,8 @@ import CustomSelect from "../Inputs/CustomSelect";
 import Calendar from "../Inputs/Calendar";
 import Tag from '../Tags/Tag';
 import backToTop from '../../utils/backToTop';
-import { Typography, Grid, Stepper, Step, StepLabel, StepButton, Box } from "@material-ui/core";
+import EuroSymbolIcon from '@material-ui/icons/EuroSymbol';
+import { Typography, Grid, Stepper, Step, StepLabel, StepButton, Box, InputAdornment } from "@material-ui/core";
 import { setLeadDraft, setDeliverablesArray } from '../../pages/LeadCreationPage/reducer';
 import clsx from 'clsx';
 import styles from './styles';
@@ -71,14 +72,6 @@ const LeadCreationForm = ({ sendValues, ...props }) => {
         return (
           ['1', '2', '3', '4']
         )
-      case 'deliverables':
-        return (
-          ['Stratégie Annuelle Social Media', 'Veille Social Media', 'Brief Créatif Social Media', 'Social Listening', 'Reporting', 'Recommandation d\'influence', 'Ligne Éditoriale', 'Étude tendance Social Media', 'Benchmark', 'Stratégie Brand Content', 'Activation Tactique', 'Ne figure pas dans la liste']
-        )
-      case 'profile':
-        return (
-          ['Social Media Strategist', 'Social Media Manager / Community Manager', 'Content Manager', 'Recevoir une recommandation acracy']
-        )
       default:
     }
   }
@@ -112,6 +105,12 @@ const LeadCreationForm = ({ sendValues, ...props }) => {
   }
 
   const showDeliverablesSettings = () => {
+    const selectableDeliverables = searchedCategory.DELIVERABLES;
+    let deliverablesList = [];
+    deliverablesList = selectableDeliverables.map((item) => {
+      return item.TEXT;
+    });
+    deliverablesList.push('Ne figure pas dans la liste');
     return (
       <>
         <Grid item xs={12} className={classes.fieldRows}>
@@ -121,7 +120,7 @@ const LeadCreationForm = ({ sendValues, ...props }) => {
             isMulti
             context='deliverables'
             name='deliverable'
-            optionsValues={setOptionsValues('deliverables')}
+            optionsValues={deliverablesList}
             onBlur={handleBlur}
           // onChange={handleChange} //// nope, isMulti
           // error={!!touched.companyName && !!errors.companyName}
@@ -154,13 +153,18 @@ const LeadCreationForm = ({ sendValues, ...props }) => {
   }
 
   const showProfilesSettings = () => {
+    const selectableProfiles = searchedCategory.PROFILES;
+    const profilesList = selectableProfiles.map((item) => {
+      return item.TEXT;
+    });
     return (
       <>
         <Grid item xs={12} className={classes.fieldRows}>
           <CustomSelect
             // onUpdateSelection={handleProfileChange}
             label={t('leadCreation.selectProfile')}
-            optionsValues={setOptionsValues('profile')}
+            // optionsValues={setOptionsValues('profile')}
+            optionsValues={profilesList}
             onChange={handleChange}
             value={profile}
             context='profileType'
@@ -221,7 +225,9 @@ const LeadCreationForm = ({ sendValues, ...props }) => {
           <Grid item xs={12} className={classes.fieldRows}>
             <Calendar
               label={t('leadCreation.calendarLabel')}
-              name='missionStartDate' />
+              name='missionStartDate'
+              onChange={handleChange}
+            />
           </Grid>
 
           <Grid item xs={12} className={classes.fieldRows}>
@@ -285,9 +291,13 @@ const LeadCreationForm = ({ sendValues, ...props }) => {
             <Grid container spacing={2}>
               <Grid item xs={7}>
                 <CustomTextField
+                  endAdornment={<InputAdornment position="end"><EuroSymbolIcon /></InputAdornment>}
                   onChange={handleChange}
                   name='budget'
                   placeholder={t('leadCreation.budgetPlaceholder')}
+                  error={!!touched.budget && !!errors.budget}
+                  onBlur={handleBlur}
+                  helperText={touched.budget && errors.budget ? 'merci de saisir une somme en chiffres' : ''}
                 ></CustomTextField>
               </Grid>
               <Grid item xs={5}>
