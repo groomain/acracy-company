@@ -23,11 +23,69 @@ const LeadCreationPage = () => {
   const dispatch = useDispatch();
   const ref = useRef();
 
-  const { leadSaveLoading, leadDraftData, deliverablesArray } = useSelector(state => ({
+  const { leadSaveLoading, leadDraftData, deliverablesArray, dateFromCalendar } = useSelector(state => ({
     leadSaveLoading: state.getIn(['leadCreation', 'leadSaveLoading']),
     leadDraftData: state.getIn(['leadCreation', 'leadDraftData']),
-    deliverablesArray: state.getIn(['leadCreation', 'deliverablesArray'])
+    deliverablesArray: state.getIn(['leadCreation', 'deliverablesArray']),
+    dateFromCalendar: state.getIn(['leadCreation', 'dateFromCalendar'])
   }));
+
+  const setDesireds = (leads, values, deliverables) => {
+    console.log('leads :', leads);
+    console.log('setDesireds');
+    let leadType = leads.search?.TYPE;
+    console.log('leadType :', leadType);
+    if (leads.search === null) {
+      const desireds = []
+      return desireds;
+    } else
+
+      if (leadType === 'PROFILE') {
+        console.log('PROFILE :');
+        let desiredDeliverables = [];
+        for (let i = 0; i < leads.search.DELIVERABLES.length; i++) {
+          if (deliverables.includes(leads.search.DELIVERABLES[i].TEXT)) {
+            desiredDeliverables.push(leads.search.DELIVERABLES[i]);
+          }
+        }
+        console.log('desiredDeliverables :', desiredDeliverables);
+        if (values?.customDeliverable !== '') {
+          desiredDeliverables.push({
+            "type": "",
+            "text": values.customDeliverable,
+            "code": ""
+          })
+          console.log('custom desiredDeliverables :', desiredDeliverables);
+        }
+        return desiredDeliverables;
+      } else if (leadType === 'DELIVERABLE') {
+        console.log('DELIVERABLE :');
+        let desiredProfiles = [];
+        for (let i = 0; i < leads.search.PROFILES.length; i++) {
+          if ((values.profile).includes(leads.search.PROFILES[i].TEXT)) {
+            desiredProfiles.push(leads.search.PROFILES[i])
+          }
+        }
+        console.log('desiredProfiles :', desiredProfiles);
+        return desiredProfiles;
+      }
+  }
+
+  const setDraftSearchResult = (search) => {
+    if ((search.label) !== null) {
+      return ({
+        type: '',
+        text: search?.label,
+        code: ''
+      })
+    } else {
+      return ({
+        type: search?.TYPE,
+        text: search?.TEXT,
+        code: search?.objectID
+      })
+    }
+  }
 
   const leadSave = (leads, array) => {
     console.log("search: ", leads);              // resultat algolia
@@ -37,45 +95,52 @@ const LeadCreationPage = () => {
     console.log('deliverables :', deliverables);
     let values = ref.current.state.values;
     let customDeliverable = values.customDeliverable;
+    let getSearchResult;
+    let getDesireds;
     // for (let i = 0; i < deliverables.length; i++) {
     //   if (deliverables[i] === 'Ne figure pas dans la liste') {
-    //     return deliverables[i] == customDeliverable;
+    //     return deliverables.splice( i, 1, customDeliverable);
     //   }
     // };
-    let customIndex = deliverables.indexOf("Ne figure pas dans la liste")
-    if (~customIndex) {
-      deliverables[customIndex] = customDeliverable;
+    // let customIndex = deliverables.indexOf("Ne figure pas dans la liste")
+    // if (~customIndex) {
+    //   deliverables[customIndex] = customDeliverable;
+    // }
+    // console.log('whut :', deliverables);
+
+    if (leads && values && deliverables) {
+      const getDesireds = setDesireds(leads, values, deliverables);
     }
-    console.log('whut :', deliverables);
+    // search n'a pas la meme forme quand saisie libre !!!!!!!!!!!!!!!!!!!
+    if (search) {
+      getSearchResult = setDraftSearchResult(search);
+    }
 
     let leadDraft = {
       search: {
-        type: search?.TYPE,
-        text: search?.TEXT,
-        code: search?.objectID
+        getSearchResult
       },
       missionContext: {
-        title: values.missionTitle,
-        startDate: values.missionStartDate, // operateur ternaire pour remettre profil à 0 quand profil a été recherché
-        format: values.workspace,
-        weeklyRythm: values.frequency,
+        title: values.missionTitle || '',
+        startDate: dateFromCalendar || '', // operateur ternaire pour remettre profil à 0 quand profil a été recherché
+        format: values.workspace || '',
+        weeklyRythm: values.frequency || '',
         duration: {
-          nb: values.duration,
-          type: values.durationType,
+          nb: values.duration || '',
+          type: values.durationType || '',
+        },
+        budget: {
+          value: values.budget || '',
+          type: values.budgetType || ''
         },
         estimatedAverageDailyRate: '',
-        profilNumber: values.profilesNumber,
-        adress: values.companyAddress,
-        desireds: deliverables
+        profilNumber: values.profilesNumber || '',
+        adress: values.companyAddress || '',
+        desireds: getDesireds || ''
       },
-      ////////////////////////////////
-      budget: values.budget,
-      budgetType: values.budgetType,
-      customDeliverable: values.customDeliverable,
-      deliverable: values.deliverable,
-      profile: (search?.TYPE === 'DE') ? values.profile : '',
     };
-    dispatch(leadSaveLaunched(leadDraft));
+    console.log('leadDraft :', leadDraft);
+    // dispatch(leadSaveLaunched(leadDraft));
   };
   const [open, setOpen] = React.useState(false);
 
@@ -131,7 +196,7 @@ const LeadCreationPage = () => {
           <div className={classes.save}>
             <CustomButton title={t('saveAndClose')}
               className={classes.buttonSave}
-              handleClick={() => leadSave(leadDraftData, deliverablesArray)}
+              handleClick={() => leadSave(leadDraftData, deliverablesArray, dateFromCalendar)}
               loading={leadSaveLoading} />
           </div>
           <div className={classes.grow} />
