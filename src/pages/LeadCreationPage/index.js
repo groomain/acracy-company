@@ -17,24 +17,29 @@ import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { leadSaveLaunched } from "./reducer";
 
+let leadSave;
+let needhelp = false;
+let formData = false;
 const LeadCreationPage = () => {
   const classes = styles();
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const ref = useRef();
 
-  const { leadSaveLoading, leadDraftData, deliverablesArray, dateFromCalendar } = useSelector(state => ({
+  const { leadSaveLoading, leadDraftData, deliverablesArray, dateFromCalendar, missionTitle } = useSelector(state => ({
     leadSaveLoading: state.getIn(['leadCreation', 'leadSaveLoading']),
     leadDraftData: state.getIn(['leadCreation', 'leadDraftData']),
     deliverablesArray: state.getIn(['leadCreation', 'deliverablesArray']),
-    dateFromCalendar: state.getIn(['leadCreation', 'dateFromCalendar'])
+    dateFromCalendar: state.getIn(['leadCreation', 'dateFromCalendar']),
+    missionTitle: state.getIn(['leadCreation', 'missionTitle'])
   }));
 
   const setDesireds = (leads, values, deliverables) => {
-    console.log('leads :', leads);
-    console.log('setDesireds');
+    console.log('setDesireds values :', values);
+    console.log('setDesireds leads :', leads);
+    console.log('setDesireds deliverables: ', deliverables);
     let leadType = leads.search?.TYPE;
-    console.log('leadType :', leadType);
+    console.log('setDesireds leadType :', leadType);
     if (leads.search === null) {
       const desireds = []
       return desireds;
@@ -71,57 +76,84 @@ const LeadCreationPage = () => {
       }
   }
 
-  const setDraftSearchResult = (search) => {
-    if ((search.label) !== null) {
+  const setSearchResultType = (search) => {
+    console.log('set draft search :', search.TEXT);
+    if (search.label) {
       return ({
         type: '',
-        text: search?.label,
+        text: search.label,
         code: ''
       })
     } else {
       return ({
-        type: search?.TYPE,
-        text: search?.TEXT,
-        code: search?.objectID
+        type: search.TYPE,
+        text: search.TEXT,
+        code: search.objectID
       })
     }
   }
 
-  const leadSave = (leads, array) => {
-    console.log("search: ", leads);              // resultat algolia
-    console.log(" données formulaire ", ref.current.state.values);  // data formulaire
+  leadSave = (leads, deliverables, formData, needHelp) => {
+    // console.log('formContent :', formContent);
+    console.log('needHelp :', needHelp);
+    console.log("leads (algolia): ", leads);              // resultat algolia
+    console.log(" ref formik", ref.current.state.values);  // data formulaire
     let search = leads.search;
-    let deliverables = array;
-    console.log('deliverables :', deliverables);
-    let values = ref.current.state.values;
-    let customDeliverable = values.customDeliverable;
+    console.log('deliverables from redux:', deliverables);
+    let values;
+    if (formData === false) {
+      values = ref.current.state.values;
+    } else {
+      values = formData;
+    };
+
+    console.log('values :', values);
+    // let customDeliverable = values.customDeliverable;
     let getSearchResult;
     let getDesireds;
-    // for (let i = 0; i < deliverables.length; i++) {
-    //   if (deliverables[i] === 'Ne figure pas dans la liste') {
-    //     return deliverables.splice( i, 1, customDeliverable);
-    //   }
-    // };
-    // let customIndex = deliverables.indexOf("Ne figure pas dans la liste")
-    // if (~customIndex) {
-    //   deliverables[customIndex] = customDeliverable;
-    // }
-    // console.log('whut :', deliverables);
+    let getEstimatedRate;
+    let getHelp = '';
+    if (needHelp === true) {
+      getHelp = 'HELP_NEEDED';
+    }
+    console.log('getHelp :', getHelp);
+    console.log('1')
+
+    getEstimatedRate = (values) => {
+      if (values) {
+        if (values.budget && values.budgetType && values.duration && values.durationType) {
+          if (values.budgetType === 'Taux journalier') {
+            if (values.durationType === 'Mois') {
+
+            } else if (values.durationType === 'Semaines') {
+
+            } else if (values.durationType === 'Jours') {
+
+            }
+          } else if (values.budgetType === 'Budget total') {
+
+          }
+        }
+      }
+    }
+    console.log('2')
 
     if (leads && values && deliverables) {
-      const getDesireds = setDesireds(leads, values, deliverables);
+      getDesireds = setDesireds(leads, values, deliverables);
+      console.log('getDesireds :', getDesireds);
     }
     // search n'a pas la meme forme quand saisie libre !!!!!!!!!!!!!!!!!!!
     if (search) {
-      getSearchResult = setDraftSearchResult(search);
+      getSearchResult = setSearchResultType(search);
+      console.log('getSearchResult :', getSearchResult);
     }
 
+    console.log('3')
+
     let leadDraft = {
-      search: {
-        getSearchResult
-      },
+      search: getSearchResult || '',
       missionContext: {
-        title: values.missionTitle || '',
+        title: missionTitle,
         startDate: dateFromCalendar || '', // operateur ternaire pour remettre profil à 0 quand profil a été recherché
         format: values.workspace || '',
         weeklyRythm: values.frequency || '',
@@ -136,7 +168,8 @@ const LeadCreationPage = () => {
         estimatedAverageDailyRate: '',
         profilNumber: values.profilesNumber || '',
         adress: values.companyAddress || '',
-        desireds: getDesireds || ''
+        desireds: getDesireds || '',
+        status: getHelp
       },
     };
     console.log('leadDraft :', leadDraft);
@@ -196,7 +229,7 @@ const LeadCreationPage = () => {
           <div className={classes.save}>
             <CustomButton title={t('saveAndClose')}
               className={classes.buttonSave}
-              handleClick={() => leadSave(leadDraftData, deliverablesArray, dateFromCalendar)}
+              handleClick={() => leadSave(leadDraftData, deliverablesArray, formData, needhelp)}
               loading={leadSaveLoading} />
           </div>
           <div className={classes.grow} />
@@ -230,4 +263,5 @@ const LeadCreationPage = () => {
   )
 }
 
+export { leadSave };
 export default LeadCreationPage;

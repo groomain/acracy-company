@@ -11,7 +11,8 @@ import Tag from '../Tags/Tag';
 import backToTop from '../../utils/backToTop';
 import EuroSymbolIcon from '@material-ui/icons/EuroSymbol';
 import { Typography, Grid, Stepper, Step, StepLabel, StepButton, Box, InputAdornment } from "@material-ui/core";
-import { setLeadDraft, setDeliverablesArray } from '../../pages/LeadCreationPage/reducer';
+import { setLeadDraft, setDeliverablesArray, dateFromCalendar, setMissionTitle } from '../../pages/LeadCreationPage/reducer';
+import { leadSave } from '../../pages/LeadCreationPage/index';
 import clsx from 'clsx';
 import styles from './styles';
 
@@ -27,6 +28,12 @@ const LeadCreationForm = ({ sendValues, ...props }) => {
   const [activeStep, setActiveStep] = useState(0);
   const [searchedCategory, setSearchedCategory] = useState({});
   const [deliverables, setDeliverables] = useState([]);
+
+  const { dateFromCalendar, leadDraftData, deliverablesArray } = useSelector(state => ({
+    dateFromCalendar: state.getIn(['leadCreation', 'dateFromCalendar']),
+    leadDraftData: state.getIn(['leadCreation', 'leadDraftData']),
+    deliverablesArray: state.getIn(['leadCreation', 'deliverablesArray']),
+  }));
 
   const getSteps = () => {
     return [t('leadCreation.synthesis'), t('leadCreation.details')];
@@ -46,9 +53,18 @@ const LeadCreationForm = ({ sendValues, ...props }) => {
   //   backToTop();
   // };
   const handleStep = (step) => () => {
+    // if (deliverables && searchedCategory) {
     setActiveStep(step);
+    // }
     backToTop();
   };
+
+  const handleCallMe = () => {
+    const needHelp = true
+    console.log('component values :', values);
+    leadSave(leadDraftData, deliverablesArray, values, needHelp)
+    // algolia, livrables, données formulaire, needhelp, date????
+  }
 
   const setOptionsValues = (fieldName) => {
     switch (fieldName) {
@@ -76,32 +92,30 @@ const LeadCreationForm = ({ sendValues, ...props }) => {
     }
   }
 
-  // const handleFormatChange = e => {
-  //   const { name, value } = e.target;
-  //   setFormatOption(e.target.value);
-  //   setFormValues({ format: value })
-  //   console.log('e target', e.target)
-  // }
-
   const handleDeliverablesChange = e => {
     setDeliverables(e);
+  }
+
+  const handleUpdateMissionTitle = e => {
+    console.log('e :', e);
+    dispatch(setMissionTitle(e))
   }
 
   useEffect(() => {
     dispatch(setDeliverablesArray(deliverables))
   }, [deliverables, dispatch]);
 
-  // const handleProfileChange = e => {
-  //   setProfile(e);
-  // }
-
-  // const handleCustomDeliverable = (e) => {
-  //   setCustomDeliverables(e);
-  // }
-
   const handleUpdateResearch = (e) => {
     setSearchedCategory(e);  // type, text and objectID
     dispatch(setLeadDraft({ search: e }))
+  }
+
+  const checkFormContent = () => {
+    if (deliverables && searchedCategory) {
+      return false
+    } else {
+      return true
+    }
   }
 
   const showDeliverablesSettings = () => {
@@ -218,7 +232,7 @@ const LeadCreationForm = ({ sendValues, ...props }) => {
               placeholder={t('leadCreation.missionPlaceholder')}
               name='missionTitle'
               maxLength={200}
-              onChange={handleChange}
+              onUpdateMissionTitle={handleUpdateMissionTitle}
             ></CustomTextArea>
           </Grid>
 
@@ -327,17 +341,18 @@ const LeadCreationForm = ({ sendValues, ...props }) => {
               <CustomButton
                 type="button"
                 theme='primaryButton'
-                // handleClick={handleCallMe}
+                handleClick={handleCallMe}
                 title={t('leadCreation.callMe')}
               >
               </CustomButton>
             </Grid>
-            <Grid item>
+            <Grid item style={{ paddingLeft: '1.2rem' }}>
               <CustomButton
                 type="button"
                 theme="filledButton"
                 handleClick={handleStep(1)}
                 title={t('leadCreation.finishBrief')}
+                disabled={checkFormContent}
               >
               </CustomButton>
             </Grid>
@@ -383,11 +398,13 @@ const LeadCreationForm = ({ sendValues, ...props }) => {
 
   return (
     <Grid item className={classes.formGridItem}>
-      <Stepper nonLinear activeStep={activeStep} className={classes.stepper}>
+      <Stepper linear activeStep={activeStep} className={classes.stepper}>
         {steps.map((label, index) => {
           return (
             <Step key={label} className={classes.step}>
-              <StepButton onClick={handleStep(index)} className={classes.stepButton}>
+              <StepButton
+                onClick={handleStep(index)}
+                className={classes.stepButton}>
                 <StepLabel
                   style={{ textAlign: "left" }}
                   StepIconComponent={CustomIcon}
