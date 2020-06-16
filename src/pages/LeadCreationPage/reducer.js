@@ -9,7 +9,8 @@ const initialState = Immutable.Map({
     search: null
   },
   deliverablesArray: [],
-  dateFromCalendar: null
+  dateFromCalendar: null,
+  missionTitle: ''
 });
 
 const { actions, reducer } = createSlice({
@@ -32,7 +33,9 @@ const { actions, reducer } = createSlice({
     setDeliverablesArray: (state, action) => state
       .set('deliverablesArray', action.payload),
     setDateFromCalendar: (state, action) => state
-      .set('dateFromCalendar', action.payload)
+      .set('dateFromCalendar', action.payload),
+    setMissionTitle: (state, action) => state
+      .set('missionTitle', action.payload)
   }
 });
 
@@ -42,7 +45,8 @@ export const {
   leadSaveFailure,
   setLeadDraft,
   setDeliverablesArray,
-  setDateFromCalendar
+  setDateFromCalendar,
+  setMissionTitle
 } = actions;
 
 export default reducer;
