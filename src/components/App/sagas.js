@@ -50,82 +50,9 @@ function* getCurrentSession(action) {
         email: userInfo.attributes.email
       }
     });
-    console.log('function*getCurrentSession -> userDynamo', userDynamo)
-
-    if (!userDynamo?.company) {
-      console.log('1');
-      try {
-        const params = {
-          headers: {
-            'x-api-key': config.apiKey
-          },
-          body: {
-            'name': userInfo?.attributes['custom:companyName']
-          }
-        }
-        userDynamo.company = yield API.put(config.apiGateway.NAME, '/companies', params)
-      } catch (error) {
-        console.log(error);
-        yield put(loginFailure(translateSignInError(error.code)));
-      }
-      // yield put(push('/home'));
-    };
-
-    if (userDynamo?.company && !userDynamo?.employee) {
-      console.log('2')
-      try {
-        const params = {
-          headers: {
-            'x-api-key': config.apiKey
-          },
-          body: {
-            'companyId': userDynamo?.company.id,
-            'email': userInfo?.attributes.email,
-            'firstName': userInfo?.attributes['custom:firstName'],
-            'lastName': userInfo?.attributes['custom:lastName'],
-            'role': userInfo?.attributes['custom:role'],
-            'phoneNumber': {
-              'code': userInfo?.attributes['custom:phoneNumberCode'],
-              'number': userInfo?.attributes['custom:phoneNumberNumber']
-            }
-          }
-        }
-        userDynamo.employee = yield put(config.apiGateway.NAME, '/employees', params);
-      } catch (error) {
-        console.log(error);
-        yield put(loginFailure(translateSignInError(error.code)));
-      }
-      // yield put(push('/home'));
-    };
-
-    if (userDynamo?.company && userDynamo?.employee) {
-      const userAttributes = userInfo?.attributes;
-      console.log('3')
-      if (userAttributes['custom:searchCode'] && userAttributes['custom:searchType'] && userAttributes['custom:searchValue']) {
-        const params = {
-          headers: {
-            'x-api-key': config.apiKey
-          },
-          body: {
-            'search': {
-              'code': userAttributes['custom:searchCode'],
-              'type': userAttributes['custom:searchType'],
-              'text': userAttributes['custom:searchValue']
-            }
-          }
-        }
-        try {
-          yield put(config.apiGateway.NAME, '/leads', params);
-        } catch (error) {
-          console.log(error);
-          yield put(loginFailure(translateSignInError("Une erreur est survenue lors de la création du brief, merci de réessayer plus tard")));
-        }
-      }
-      yield put(loginSuccess());
-      // yield put(push('/home'));
-    }
 
     yield put(getCurrentSessionSuccess({ userInfo, userDynamo }));
+
     if (fromPath) {
       yield put(push(fromPath));
     }
@@ -136,11 +63,98 @@ function* getCurrentSession(action) {
 }
 
 function* doSignIn(action) {
-  const { password, from } = action.payload;
-  const email = action.payload.trim().toLowerCase();
+  const { password, from, email } = action.payload;
   try {
     yield Auth.signIn(email, password);
-    yield put(loginSuccess());
+    try {
+      yield Auth.currentSession();
+      const userInfo = yield Auth.currentUserInfo();
+      let userDynamo = yield API.post(config.apiGateway.NAME, '/sessions', {
+        headers: {
+          'x-api-key': config.apiKey
+        },
+        body: {
+          email: userInfo.attributes.email
+        }
+      });
+
+      if (userDynamo) {
+        if (!userDynamo?.companyId) {
+          try {
+            userDynamo.companyId = yield API.post(config.apiGateway.NAME, '/companies', {
+              headers: {
+                'x-api-key': config.apiKey
+              },
+              body: {
+                'name': userInfo?.attributes['custom:companyName']
+              }
+            })
+          } catch (error) {
+            console.log(error);
+            yield put(loginFailure(translateSignInError(error.code)));
+          }
+        }
+
+        if (userDynamo.companyId && !userDynamo?.employeeId) {
+          try {
+            userDynamo.employeeId = yield API.post(config.apiGateway.NAME, '/employees', {
+              headers: {
+                'x-api-key': config.apiKey
+              },
+              body: {
+                'companyId': userDynamo?.companyId,
+                'email': userInfo?.attributes.email,
+                'firstName': userInfo?.attributes['custom:firstName'],
+                'lastName': userInfo?.attributes['custom:lastName'],
+                'role': userInfo?.attributes['custom:role'],
+                'phoneNumber': {
+                  'code': userInfo?.attributes['custom:phoneNumberCode'],
+                  'number': userInfo?.attributes['custom:phoneNumberNumber']
+                }
+              }
+            });
+          } catch (error) {
+            console.log(error);
+            yield put(loginFailure(translateSignInError(error.code)));
+          }
+          if (userDynamo?.companyId && userDynamo?.employeeId && !userDynamo?.search) {
+            const userAttributes = userInfo?.attributes;
+            if (userAttributes['custom:searchCode'] && userAttributes['custom:searchType'] && userAttributes['custom:searchText']) {
+              try {
+                userDynamo.search = yield API.post(config.apiGateway.NAME, '/leads', {
+                  headers: {
+                    'x-api-key': config.apiKey
+                  },
+                  body: {
+                    'search': {
+                      'code': userAttributes['custom:searchCode'],
+                      'type': userAttributes['custom:searchType'],
+                      'text': userAttributes['custom:searchText']
+                    }
+                  }
+                });
+              } catch (error) {
+                console.log(error);
+                yield put(loginFailure(translateSignInError("Une erreur est survenue lors de la création du brief, merci de réessayer plus tard")));
+              }
+            }
+            userDynamo = yield API.post(config.apiGateway.NAME, '/sessions', {
+              headers: {
+                'x-api-key': config.apiKey
+              },
+              body: {
+                email: userInfo.attributes.email
+              }
+            });
+          }
+        }
+      };
+    } catch (error) {
+      console.log(error);
+      yield put(getCurrentSessionFailure());
+    }
+    yield put(loginSuccess())
+    yield put(getCurrentSessionLaunched({ fromPath: from || '/home' }));
   } catch (err) {
     console.log(err)
     if (err.code === 'UserNotConfirmedException') {
@@ -150,7 +164,6 @@ function* doSignIn(action) {
     }
     yield put(loginFailure(translateSignInError(err.code)));
   }
-  yield put(getCurrentSessionLaunched({ fromPath: from || '/home' }));
 }
 
 function* doSignOut() {
@@ -164,9 +177,8 @@ function* doSignOut() {
 }
 
 function* doSignUp(action) {
-  const { password, companyName, firstName, lastName, role, phonePrefix, phoneNumber, searchType, searchValue, searchCode } = action.payload;
+  const { password, companyName, email, firstName, lastName, role, phonePrefix, phoneNumber, searchType, searchValue, searchCode } = action.payload;
   const prefixCode = getPhonePrefixCode(phonePrefix);
-  const email = action.payload.email.trim().toLowerCase();
 
   try {
     yield Auth.signUp({
@@ -181,7 +193,7 @@ function* doSignUp(action) {
         'custom:phoneNumberCode': prefixCode,
         'custom:phoneNumberNumber': phoneNumber,
         'custom:searchType': searchType,
-        'custom:searchValue': searchValue,
+        'custom:searchText': searchValue,
         'custom:searchCode': searchCode
       }
     });
@@ -198,7 +210,7 @@ function* doConfirmSignUp(action) {
   const username = action.payload.username.trim().toLowerCase();
   try {
     yield Auth.confirmSignUp(username, code);
-    yield put(push('/home'));
+    yield put(push('/login'));
     yield put(confirmSignupSuccess(translateConfirmSignUpSuccess()));
   } catch (error) {
     console.log(error);
