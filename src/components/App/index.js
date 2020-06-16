@@ -2,6 +2,8 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Switch, Route, Redirect } from 'react-router';
 // import { useTranslation } from 'react-i18next';
+import { Grid } from '@material-ui/core';
+
 import HomePage from '../../pages/HomePage';
 import PrivateRoute from '../PrivateRoute';
 import PublicRoute from '../PublicRoute';
@@ -14,6 +16,7 @@ import FirstLoginPage from '../../pages/FirstLogin';
 import MyAccount from "../../pages/MyAccount";
 import CustomAppBar from "../AppBar";
 import ProgressBar from "../ProgressBar";
+import CustomLoader from '../Loader';
 
 function App() {
   const dispatch = useDispatch();
@@ -57,12 +60,13 @@ function App() {
       {/*</button>*/}
       {/*</div>*/}
       {/*/!* __NavbarEnd__ *!/*/}
-      {
-        !isAuthenticated && <CustomAppBar />
-      }
+      {isAuthenticated && <CustomAppBar />}
       <ProgressBar />
-      {
-        isAuthenticating ? 'Loading...' : appSwitch
+      {isAuthenticating
+        ? <Grid container alignItems='center' justify='center' style={{ height: '100vh' }}>
+          <CustomLoader size={70} />
+        </Grid>
+        : appSwitch
       }
     </div>
   );
