@@ -93,6 +93,57 @@ const LeadCreationPage = () => {
     }
   }
 
+  const getFrequency = (frequency) => {
+    switch (frequency) {
+      case 'Temps partiel (1 jour)':
+        return (1)
+      case 'Temps partiel (2 jour)':
+        return (2)
+      case 'Temps partiel (3 jour)':
+        return (3)
+      case 'Temps partiel (4 jour)':
+        return (4)
+      case 'Plein temps (5 jours)':
+        return (5)
+      default:
+    }
+  }
+
+  const setEstimatedRate = (values) => {
+    console.log('EEEEEEEEE values :', values);
+
+    let estimatedRate;
+    if (values) {
+      if (values.budget && values.budgetType && values.duration && values.durationType && values.frequency) {
+        let daysNb = getFrequency(values.frequency);
+        if (values.budgetType === 'Taux journalier') {
+          // montant global = budget x durée x nbprofils x 1.15
+          // "Soit un montant global de XXX€, commission acracy incluse."
+          if (values.durationType === 'Mois') {
+            estimatedRate = parseInt(values.budget, 10) * daysNb * parseInt(values.duration, 10) * 4 * parseInt(values.profilesNumber, 10) * 1.15;
+            console.log('estimatedRate months:', estimatedRate);
+          } else if (values.durationType === 'Semaines') {
+            estimatedRate = parseInt(values.budget, 10) * daysNb * parseInt(values.duration, 10) * parseInt(values.profilesNumber, 10) * 1.15;
+            console.log('estimatedRate week:', estimatedRate);
+          } else if (values.durationType === 'Jours') {
+            estimatedRate = parseInt(values.budget, 10) * parseInt(values.duration, 10) * parseInt(values.profilesNumber, 10) * 1.15;
+            console.log('estimatedRate days:', estimatedRate);
+          }
+        } else if (values.budgetType === 'Budget total') {
+          // TMJ = (budgetx0.85) / nb jours / nb profils
+          // "Soit un taux journalier de XX€, une fois la commission acracy déduite."
+          if (values.durationType === 'Mois') {
+            console.log('estimatedRate months:', estimatedRate);
+          } else if (values.durationType === 'Semaines') {
+            console.log('estimatedRate week:', estimatedRate);
+          } else if (values.durationType === 'Jours') {
+            console.log('estimatedRate days:', estimatedRate);
+          }
+        }
+      }
+    }
+  }
+
   leadSave = (leads, deliverables, formData, needHelp) => {
     // console.log('formContent :', formContent);
     console.log('needHelp :', needHelp);
@@ -119,23 +170,6 @@ const LeadCreationPage = () => {
     console.log('getHelp :', getHelp);
     console.log('1')
 
-    getEstimatedRate = (values) => {
-      if (values) {
-        if (values.budget && values.budgetType && values.duration && values.durationType) {
-          if (values.budgetType === 'Taux journalier') {
-            if (values.durationType === 'Mois') {
-
-            } else if (values.durationType === 'Semaines') {
-
-            } else if (values.durationType === 'Jours') {
-
-            }
-          } else if (values.budgetType === 'Budget total') {
-
-          }
-        }
-      }
-    }
     console.log('2')
 
     if (leads && values && deliverables) {
@@ -147,6 +181,8 @@ const LeadCreationPage = () => {
       getSearchResult = setSearchResultType(search);
       console.log('getSearchResult :', getSearchResult);
     }
+
+    getEstimatedRate = setEstimatedRate(values);
 
     console.log('3')
 
@@ -165,7 +201,7 @@ const LeadCreationPage = () => {
           value: values.budget || '',
           type: values.budgetType || ''
         },
-        estimatedAverageDailyRate: '',
+        estimatedAverageDailyRate: getEstimatedRate || '',
         profilNumber: values.profilesNumber || '',
         adress: values.companyAddress || '',
         desireds: getDesireds || '',
