@@ -12,7 +12,7 @@ import {useDispatch} from "react-redux";
 import {getMissionLaunched} from "../../pages/MissionFollowUp/reducer";
 import {downloadFileLaunched} from "./reducer";
 
-export const DownloadModal = ({ open, setOpen, handleClose, files, type, ...props }) => {
+export const DownloadModal = ({ open, setOpen, handleClose, files, type, id, ...props }) => {
   const classes = styles();
   const filesName = files.map((file, index) => file.name);
   const [file, setFile] = React.useState(null);
@@ -52,7 +52,7 @@ export const DownloadModal = ({ open, setOpen, handleClose, files, type, ...prop
         </Typography>
         <CustomSelect label={""} optionsValues={filesName} onChange={(event) => handleSetFile(event.target.value)}/>
         <Grid item container directtion={"row"}>
-          <CustomButton title={"Télécharger"} theme={"filledButton"} style={{position: "relative", bottom: 40}} handleClick={() => downloadFile(file.url)}/>
+          <CustomButton title={"Télécharger"} theme={"filledButton"} style={{position: "relative", bottom: 40}} handleClick={() => downloadFile({type: type, id: id, attachmentId: file.externalId})}/>
           <NavLink to={"/"} className={classes.navLink}>
             {type === "devis" && "Télécharger tout les devis"}
             {type === "facture" && "Télécharger toutes les factures"}

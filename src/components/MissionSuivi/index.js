@@ -126,16 +126,19 @@ export const MissionSuivi = ({briefData, missionData, ...props}) => {
                            files={[missionData.signedQuote]}
                            type={"devis"}
                            setOpen={setDevisOpen}
+                           id={missionData.externalId}
             />
             <DownloadModal open={factureOpen}
                            files={["Facture 20.05.2020", "Facture 05.04.2020", "Facture 14.02.2020"]}
                            type={"factures"}
                            setOpen={setfactureOpen}
+                           id={missionData.externalId}
             />
             <DownloadModal open={briefOpen}
                            files={briefData.missionDetail.sharedDocument}
                            type={"brief"}
                            setOpen={setBriefOpen}
+                           id={missionData.externalId}
             />
         </Grid>
     )
