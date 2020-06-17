@@ -12,7 +12,7 @@ export const WithDefault = () => (
     <div style={{ margin: '3rem' }}>
         <DownloadModal
             open={true}
-            files={["Devis 20.05.2020", "Devis 05.04.2020", "Devis 14.02.2020"]}
+            files={[{name: "Devis 20.05.2020", url: "test.pdf"}, {name: "Devis 05.04.2020", url: "test.pdf"}, {name: "Devis 14.02.2020", url: 'test.pdf'}]}
             type={"devis"}
         />
     </div>

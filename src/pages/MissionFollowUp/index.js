@@ -226,8 +226,8 @@ const MissionFollowUp = () => {
                 }
             </Main>
             <Sidebar>
-                {briefData &&
-                <MissionSuivi briefData={briefData} style={{marginTop: 150}}/>
+                {briefData && missionData &&
+                <MissionSuivi briefData={briefData} missionData={missionData} style={{marginTop: 150}}/>
                 }
             </Sidebar>
         </Grid>

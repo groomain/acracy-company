@@ -24,7 +24,7 @@ import DownloadModal from "../DownloadModal";
 import {getLeadsLaunched} from "../../pages/MissionFollowUp/reducer";
 import {useDispatch, useSelector} from "react-redux";
 
-export const MissionSuivi = ({briefData, ...props}) => {
+export const MissionSuivi = ({briefData, missionData, ...props}) => {
     const classes = styles();
     const dispatch = useDispatch();
 
@@ -39,7 +39,6 @@ export const MissionSuivi = ({briefData, ...props}) => {
         "IN_PROGRESS": 4,
         "CLOSED": 5
     };
-    const sharedDocuments = briefData.missionDetail.sharedDocument;
     const step = briefData ? existingSteps[briefData.status] : 0;
 
     // const getLeadsData = (payload) => {
@@ -49,14 +48,6 @@ export const MissionSuivi = ({briefData, ...props}) => {
     // const {leadsData} = useSelector(state => ({
     //     leadsData: state.getIn(['Mission', 'leadsData']),
     // }));
-
-
-    useEffect( () => {
-        console.log("briefData", briefData);
-        console.log("sharedDocuments", sharedDocuments);
-        // getLeadsData(briefData.externalId);
-    }, []);
-
 
     // console.log("leadsData", leadsData);
     return (
@@ -132,7 +123,7 @@ export const MissionSuivi = ({briefData, ...props}) => {
                 </ListItem>
             </List>
             <DownloadModal open={devisOpen}
-                           files={["Devis 20.05.2020", "Devis 05.04.2020", "Devis 14.02.2020"]}
+                           files={[missionData.signedQuote]}
                            type={"devis"}
                            setOpen={setDevisOpen}
             />
@@ -142,7 +133,7 @@ export const MissionSuivi = ({briefData, ...props}) => {
                            setOpen={setfactureOpen}
             />
             <DownloadModal open={briefOpen}
-                           files={["Brief 20.05.2020"]}
+                           files={briefData.missionDetail.sharedDocument}
                            type={"brief"}
                            setOpen={setBriefOpen}
             />

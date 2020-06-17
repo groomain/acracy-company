@@ -5,6 +5,7 @@ import { routerMiddleware } from 'connected-react-router/immutable';
 import homeSaga from '../components/App/sagas';
 import createRootReducer from './rootReducer';
 import missionSaga from "../pages/MissionFollowUp/sagas";
+import downloadSaga from "../components/DownloadModal/sagas";
 
 const sagaMiddleware = createSagaMiddleware();
 export const history = createBrowserHistory();
@@ -19,6 +20,7 @@ export default function configureStore() {
 
   sagaMiddleware.run(homeSaga);
   sagaMiddleware.run(missionSaga);
+  sagaMiddleware.run(downloadSaga);
 
   return store;
 }
