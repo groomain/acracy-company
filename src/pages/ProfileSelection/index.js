@@ -39,11 +39,13 @@ const ProfileSelection = (props) => {
     }));
 
     let profils = [1, 2, 3, 4];
+    let [noProfilMotif, setNoProfilMotif] = React.useState(null);
     let [checkedProfiles, setCheckedProfiles] = React.useState([]);
     const [elementPosition, setElementPosition] = useState({x: 10, y: 450});
     const [elementHeight, setElementHeight] = useState(0);
     const [noProfileModaleOpen, setNoProfileModaleOpen] = useState(false);
-    const [validateChoiceModaleOpen, setValidateChoiceModaleOpen] = useState(true);
+    const [validateChoiceModaleOpen, setValidateChoiceModaleOpen] = useState(false);
+    const [informationCompleteOpen, setInformationCompleteOpen] = useState(false);
     // const [validateChoiceModaleOpen, setValidateChoiceModaleOpen] = useState(validateError);
     const heightRef = useRef();
     const elementsRef = useRef();
@@ -59,6 +61,10 @@ const ProfileSelection = (props) => {
 
     const handleNoProfileModaleOpen = () => {
         setNoProfileModaleOpen(!noProfileModaleOpen);
+    };
+
+    const handleInformationCompleteOpen = () => {
+        setInformationCompleteOpen(!informationCompleteOpen);
     };
 
     const handleValidateChoiceModaleOpen = () => {
@@ -480,52 +486,61 @@ const ProfileSelection = (props) => {
                         />
                         <CustomButton title={"Valider choix profil.s"} theme={'outlinedBlackBackground'}
                                       style={{width: 219, marginRight: 15}}
-                                      handleClick={() => validateProfiles()}
+                                      handleClick={() => handleValidateChoiceModaleOpen()}
                         />
                     </Grid>
                 }
 
             </Grid>
             }
+            <Dialog open={informationCompleteOpen} onClose={handleInformationCompleteOpen} classes={{ paper: classes.modale}}>
+                <Grid item container direction={'column'} justify={'center'} className={classes.modaleContainer}>
+                    <Typography variant={"h1"}>Validez vos informations entreprise</Typography>
+                    <Typography variant={"body1"} style={{marginBottom: 20}}>Sed ut labore et molestiae consequatur, vel eum fugiat, quo pertineant non fuisse torquem detraxit hosti  :</Typography>
+                    <Typography variant={"body1"}>- Siret</Typography>
+                    <Typography variant={"body1"} style={{marginBottom: 20}}>- Statut</Typography>
+                    <CustomButton theme={"filledButton"} style={{width: 254}} title={"Compléter mes informations"} handleClick={() => console.log("test confirme réponse")} />
+                </Grid>
+            </Dialog>
             <Dialog open={noProfileModaleOpen} onClose={handleNoProfileModaleOpen} classes={{ paper: classes.modale}}>
                 <Grid item container direction={'column'} justify={'center'} className={classes.modaleContainer}>
                     <Typography variant={"h1"}>Aucun profil ne me convient</Typography>
                     <Typography variant={"body1"} style={{marginBottom: 20}}>Afin de pouvoir améliorer nos futures propositions, n’hésitez pas à
                         nous dire la raison du refus de ces profils.</Typography>
                     <CustomSelect placeholder={"Sélectionner raison"} label={"Raison"} optionsValues={['test1', "test2"]}/>
-                    <CustomTextArea style={{height: 241}} placeholder={"Donnez nous plus de détails"} />
-                    <CustomButton theme={"filledButton"} style={{width: 254}} title={"Confirmer et envoyer réponse"} handleClick={() => console.log("test confirme réponse")} />
+                    <CustomTextArea style={{height: 241}} placeholder={"Donnez nous plus de détails"}  noProfilMotif setNoProfilMotif/>
+                    <CustomButton theme={"filledButton"} style={{width: 254}} title={"Confirmer et envoyer réponse"} handleClick={() => console.log("noProfilMotif", noProfilMotif)} />
                 </Grid>
             </Dialog>
             <Dialog open={validateChoiceModaleOpen} onClose={handleValidateChoiceModaleOpen} classes={{ paper: classes.modale}}>
                 <Grid item container direction={'column'} justify={'center'} className={classes.modaleContainer}>
                     <Typography variant={"h1"}>Confirmation sélection</Typography>
-                    <Typography variant={"body1"} style={{marginBottom: 20}}>Vous êtes sur le point de confirmer la sélection de deux profils.
-                        En confirmant, vous recevrez un email sur prénomnom@entreprise.com vous invitant à signer le devis.</Typography>
+                    <Typography variant={"body1"} >Vous êtes sur le point de confirmer la sélection de deux profils.</Typography>
+                    <Typography variant={"body1"} style={{marginBottom: 20}}>En confirmant, vous recevrez un email sur <span style={{color: "#ecf805"}}>prénomnom@entreprise.com</span> vous invitant à signer le devis.</Typography>
                     <Typography variant={"body1"}>Dès la signature de ce dernier, vous pourrez accéder aux profils.</Typography>
                     <Grid item container direction={"row"}>
-                        <Grid item container direction={"column"} xs={6} justify={'flex-end'}>
+                        <Grid item container direction={"column"} xs={7} justify={'flex-end'}>
                         <Typography variant={"body1"} style={{width: 200,  fontSize: 14,
                             fontFamily: 'Basier Medium', marginBottom: 20}}>Vous n’avez pas reçu le devis?</Typography>
                         </Grid>
-                        <Grid item container direction={"column"} xs={6}>
+                        <Grid item container direction={"column"} xs={5}>
 
-                        <CustomButton style={{width: 183}} theme={"filledButton"} title={"Confimer ma sélection"} handleClick={() => console.log("test confirme réponse2")} />
+                        <CustomButton style={{width: 183}} theme={"filledButton"} title={"Confimer ma sélection"} handleClick={() => validateProfiles()} />
                     <CustomButton style={{width: 183}} theme={"filledButton"} title={"Renvoyer email"} handleClick={() => console.log("test confirme réponse3")} />
                         </Grid>
                     </Grid>
                 </Grid>
             </Dialog>
-            <Dialog open={noProfileModaleOpen} onClose={handleNoProfileModaleOpen} classes={{ paper: classes.modale }}>
-                <Grid item container direction={'column'} justify={'center'} className={classes.modaleContainer}>
-                    <Typography variant={"h1"}>Aucun profil ne me convient</Typography>
-                    <Typography variant={"body1"} style={{marginBottom: 20}}>Afin de pouvoir améliorer nos futures propositions, n’hésitez pas à
-                        nous dire la raison du refus de ces profils.</Typography>
-                    <CustomSelect placeholder={"Sélectionner raison"} label={"Raison"} optionsValues={['test1', "test2"]}/>
-                    <CustomTextArea style={{height: 241}} placeholder={"Donnez nous plus de détails"} />
-                    <CustomButton theme={"filledButton"} style={{width: 254}} title={"Confirmer et envoyer réponse"} handleClick={() => console.log("test confirme réponse")} />
-                </Grid>
-            </Dialog>
+            {/*<Dialog open={noProfileModaleOpen} onClose={handleNoProfileModaleOpen} classes={{ paper: classes.modale }}>*/}
+                {/*<Grid item container direction={'column'} justify={'center'} className={classes.modaleContainer}>*/}
+                    {/*<Typography variant={"h1"}>Aucun profil ne me convient</Typography>*/}
+                    {/*<Typography variant={"body1"} style={{marginBottom: 20}}>Afin de pouvoir améliorer nos futures propositions, n’hésitez pas à*/}
+                        {/*nous dire la raison du refus de ces profils.</Typography>*/}
+                    {/*<CustomSelect placeholder={"Sélectionner raison"} label={"Raison"} optionsValues={['test1', "test2"]}/>*/}
+                    {/*<CustomTextArea style={{height: 241}} placeholder={"Donnez nous plus de détails"} />*/}
+                    {/*<CustomButton theme={"filledButton"} style={{width: 254}} title={"Confirmer et envoyer réponse"} handleClick={() => console.log("test confirme réponse")} />*/}
+                {/*</Grid>*/}
+            {/*</Dialog>*/}
         </Grid>
 
     );
