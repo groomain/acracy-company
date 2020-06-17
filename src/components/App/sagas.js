@@ -63,12 +63,13 @@ function* getCurrentSession(action) {
 }
 
 function* doSignIn(action) {
-  const { password, from, email } = action.payload;
+  const { email, password, from } = action.payload;
   try {
     yield Auth.signIn(email, password);
     try {
       yield Auth.currentSession();
       const userInfo = yield Auth.currentUserInfo();
+      // After signin, get the user's infos
       let userDynamo = yield API.post(config.apiGateway.NAME, '/sessions', {
         headers: {
           'x-api-key': config.apiKey
@@ -79,6 +80,7 @@ function* doSignIn(action) {
       });
 
       if (userDynamo) {
+        // Create the company
         if (!userDynamo?.companyId) {
           try {
             userDynamo.companyId = yield API.post(config.apiGateway.NAME, '/companies', {
@@ -94,7 +96,8 @@ function* doSignIn(action) {
             yield put(loginFailure(translateSignInError(error.code)));
           }
         }
-
+        // Create the related employee + create the 1st lead if search infos are present
+        // (the employeeId condition ensures the lead is created only once)
         if (userDynamo.companyId && !userDynamo?.employeeId) {
           try {
             userDynamo.employeeId = yield API.post(config.apiGateway.NAME, '/employees', {
@@ -138,6 +141,7 @@ function* doSignIn(action) {
                 yield put(loginFailure(translateSignInError("Une erreur est survenue lors de la création du brief, merci de réessayer plus tard")));
               }
             }
+            // Final post /sessions to retrieve the required user infos immediately after signin (fired only the 1st time)
             userDynamo = yield API.post(config.apiGateway.NAME, '/sessions', {
               headers: {
                 'x-api-key': config.apiKey
@@ -177,7 +181,7 @@ function* doSignOut() {
 }
 
 function* doSignUp(action) {
-  const { password, companyName, email, firstName, lastName, role, phonePrefix, phoneNumber, searchType, searchValue, searchCode } = action.payload;
+  const { email, password, companyName, firstName, lastName, role, phonePrefix, phoneNumber, searchType, searchValue, searchCode } = action.payload;
   const prefixCode = getPhonePrefixCode(phonePrefix);
 
   try {
@@ -206,8 +210,7 @@ function* doSignUp(action) {
 }
 
 function* doConfirmSignUp(action) {
-  const { code } = action.payload;
-  const username = action.payload.username.trim().toLowerCase();
+  const { username, code } = action.payload;
   try {
     yield Auth.confirmSignUp(username, code);
     yield put(push('/login'));
@@ -219,7 +222,7 @@ function* doConfirmSignUp(action) {
 }
 
 function* doResendCode(action) {
-  const email = action.payload.trim().toLowerCase();
+  const email = action.payload;
   try {
     yield Auth.resendSignUp(email);
     yield put(resendCodeSuccess(translateResendCodeSuccess()));
@@ -231,7 +234,7 @@ function* doResendCode(action) {
 
 function* doRequestPasswordCode(action) {
   console.log(action);
-  const email = action.payload.email.trim().toLowerCase();
+  const { email } = action.payload;
 
   try {
     yield Auth.forgotPassword(email);
@@ -243,8 +246,7 @@ function* doRequestPasswordCode(action) {
 
 function* doSubmitNewPassword(action) {
   console.log(action);
-  const { code, password } = action.payload;
-  const email = action.payload.trim().toLowerCase();
+  const { email, code, password } = action.payload;
   try {
     yield Auth.forgotPasswordSubmit(email, code, password);
     yield put(submitNewPasswordSuccess());
