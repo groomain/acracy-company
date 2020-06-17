@@ -137,13 +137,16 @@ function* doSignIn(action) {
                   }
                 });
                 yield put(loginSuccess())
-                yield put(getCurrentSessionLaunched({ fromPath: from || '/home' })); // Redirection when everything is ok
+                yield put(getCurrentSessionLaunched({ fromPath: from || '/home' })); // Redirection when everything is ok and a search result is present
               } catch (error) {
                 console.log(error);
                 yield put(loginSuccess())
                 yield put(getCurrentSessionLaunched({ fromPath: from || '/home' }));
                 yield put(loginFailure(translateSignInError("leadCreationError"))); // Redirection with error message when lead creation error
               }
+            } else {
+              yield put(loginSuccess())
+              yield put(getCurrentSessionLaunched({ fromPath: from || '/home' })); // Redirection when everything is ok and a search result is not present
             }
             // Final post /sessions to retrieve the required user infos immediately after signin (fired only the 1st time)
             userDynamo = yield API.post(config.apiGateway.NAME, '/sessions', {
