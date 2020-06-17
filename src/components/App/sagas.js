@@ -155,6 +155,9 @@ function* doSignIn(action) {
               }
             });
           }
+        } else {
+          yield put(loginSuccess())
+          yield put(getCurrentSessionLaunched({ fromPath: from || '/home' })); // Redirection when everything is ok after the 1st signin
         }
       };
     } catch (error) {
