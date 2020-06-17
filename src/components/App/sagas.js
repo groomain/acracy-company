@@ -136,9 +136,13 @@ function* doSignIn(action) {
                     }
                   }
                 });
+                yield put(loginSuccess())
+                yield put(getCurrentSessionLaunched({ fromPath: from || '/home' })); // Redirection when everything is ok
               } catch (error) {
                 console.log(error);
-                yield put(loginFailure(translateSignInError("Une erreur est survenue lors de la création du brief, merci de réessayer plus tard")));
+                yield put(loginSuccess())
+                yield put(getCurrentSessionLaunched({ fromPath: from || '/home' }));
+                yield put(loginFailure(translateSignInError("leadCreationError"))); // Redirection with error message when lead creation error
               }
             }
             // Final post /sessions to retrieve the required user infos immediately after signin (fired only the 1st time)
@@ -157,8 +161,6 @@ function* doSignIn(action) {
       console.log(error);
       yield put(getCurrentSessionFailure());
     }
-    yield put(loginSuccess())
-    yield put(getCurrentSessionLaunched({ fromPath: from || '/home' }));
   } catch (err) {
     console.log(err)
     if (err.code === 'UserNotConfirmedException') {

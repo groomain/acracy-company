@@ -51,6 +51,8 @@ const translateSignInError = (errorCode) => {
       return 'Veuillez saisir votre email et mot de passe.';
     case 'UserNotConfirmedException':
       return 'Merci de saisir votre code de validation reçu par email.';
+    case 'leadCreationError':
+      return 'Une erreur est survenue lors de la création du brief, merci de réessayer plus tard'
     default:
       return 'Une erreur est survenue. Merci de réessayer';
   }
