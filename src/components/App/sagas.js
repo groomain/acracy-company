@@ -78,49 +78,53 @@ function* doSignIn(action) {
           email: userInfo.attributes.email
         }
       });
-
       if (userDynamo) {
-        // Create the company
-        if (!userDynamo?.companyId) {
-          try {
-            userDynamo.companyId = yield API.post(config.apiGateway.NAME, '/companies', {
-              headers: {
-                'x-api-key': config.apiKey
-              },
-              body: {
-                'name': userInfo?.attributes['custom:companyName']
-              }
-            })
-          } catch (error) {
-            console.log(error);
-            yield put(loginFailure(translateSignInError(error.code)));
-          }
-        }
-        // Create the related employee + create the 1st lead if search infos are present
-        // (the employeeId condition ensures the lead is created only once)
-        if (userDynamo.companyId && !userDynamo?.employeeId) {
-          try {
-            userDynamo.employeeId = yield API.post(config.apiGateway.NAME, '/employees', {
-              headers: {
-                'x-api-key': config.apiKey
-              },
-              body: {
-                'companyId': userDynamo?.companyId,
-                'email': userInfo?.attributes.email,
-                'firstName': userInfo?.attributes['custom:firstName'],
-                'lastName': userInfo?.attributes['custom:lastName'],
-                'role': userInfo?.attributes['custom:role'],
-                'phoneNumber': {
-                  'code': userInfo?.attributes['custom:phoneNumberCode'],
-                  'number': userInfo?.attributes['custom:phoneNumberNumber']
+        if (userDynamo?.companyId && userDynamo?.employeeId) {
+          yield put(loginSuccess())
+          yield put(getCurrentSessionLaunched({ fromPath: from || '/home' })); // Redirection when everything is ok
+        } else {
+          // Create the company
+          if (!userDynamo?.companyId) {
+            try {
+              userDynamo.companyId = yield API.post(config.apiGateway.NAME, '/companies', {
+                headers: {
+                  'x-api-key': config.apiKey
+                },
+                body: {
+                  'name': userInfo?.attributes['custom:companyName']
                 }
-              }
-            });
-          } catch (error) {
-            console.log(error);
-            yield put(loginFailure(translateSignInError(error.code)));
+              })
+            } catch (error) {
+              console.log(error);
+              yield put(loginFailure(translateSignInError(error.code)));
+            }
           }
-          if (userDynamo?.companyId && userDynamo?.employeeId && !userDynamo?.search) {
+          // Create the related employee
+          if (userDynamo.companyId && !userDynamo?.employeeId) {
+            try {
+              userDynamo.employeeId = yield API.post(config.apiGateway.NAME, '/employees', {
+                headers: {
+                  'x-api-key': config.apiKey
+                },
+                body: {
+                  'companyId': userDynamo?.companyId,
+                  'email': userInfo?.attributes.email,
+                  'firstName': userInfo?.attributes['custom:firstName'],
+                  'lastName': userInfo?.attributes['custom:lastName'],
+                  'role': userInfo?.attributes['custom:role'],
+                  'phoneNumber': {
+                    'code': userInfo?.attributes['custom:phoneNumberCode'],
+                    'number': userInfo?.attributes['custom:phoneNumberNumber']
+                  }
+                }
+              });
+            } catch (error) {
+              console.log(error);
+              yield put(loginFailure(translateSignInError(error.code)));
+            }
+          }
+          // Start the lead creation if the 2 previous steps are ok & search content is present
+          if (userDynamo?.companyId && userDynamo?.employeeId) {
             const userAttributes = userInfo?.attributes;
             if (userAttributes['custom:searchCode'] && userAttributes['custom:searchType'] && userAttributes['custom:searchText']) {
               try {
@@ -136,33 +140,21 @@ function* doSignIn(action) {
                     }
                   }
                 });
-                yield put(loginSuccess())
-                yield put(getCurrentSessionLaunched({ fromPath: from || '/home' })); // Redirection when everything is ok and a search result is present
               } catch (error) {
                 console.log(error);
-                yield put(loginSuccess())
+                yield put(loginSuccess());
                 yield put(getCurrentSessionLaunched({ fromPath: from || '/home' }));
-                yield put(loginFailure(translateSignInError("leadCreationError"))); // Redirection with error message when lead creation error
+                yield put(loginFailure(translateSignInError("leadCreationError"))); // Show error message after redirection when lead creation error
               }
             } else {
-              yield put(loginSuccess())
+              yield put(loginSuccess());
               yield put(getCurrentSessionLaunched({ fromPath: from || '/home' })); // Redirection when everything is ok and a search result is not present
             }
-            // Final post /sessions to retrieve the required user infos immediately after signin (fired only the 1st time)
-            userDynamo = yield API.post(config.apiGateway.NAME, '/sessions', {
-              headers: {
-                'x-api-key': config.apiKey
-              },
-              body: {
-                email: userInfo.attributes.email
-              }
-            });
+          } else {
+            yield put(loginFailure(translateSignInError()));
           }
-        } else {
-          yield put(loginSuccess())
-          yield put(getCurrentSessionLaunched({ fromPath: from || '/home' })); // Redirection when everything is ok after the 1st signin
         }
-      };
+      }
     } catch (error) {
       console.log(error);
       yield put(getCurrentSessionFailure());
