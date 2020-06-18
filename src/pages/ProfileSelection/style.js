@@ -184,6 +184,8 @@ export const styles = makeStyles(theme => ({
     width: "70%"
   },
   cart: {
+    position: 'sticky',
+    bottom: 0,
     backgroundColor: 'yellow',
     width: '100%',
     height: 104,

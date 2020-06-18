@@ -44,7 +44,6 @@ const RevealProfil = ({setCheckedProfiles, index, modeMission, profil, ...props}
               </Grid>
             </Grid>
           </Grid>
-            {modeMission &&
           <Grid container direction={"row"} justify={'center'} alignItems="center"  xs={12} className={classes.customButtonContainer}>
             <Grid xs={4} item container justify={'center'}>
             <CustomButton xs={4} title={'Voir son CV'} style={{marginRight: 'auto', width: 215}}/>
@@ -56,7 +55,7 @@ const RevealProfil = ({setCheckedProfiles, index, modeMission, profil, ...props}
             <CustomButton title={'Voir son Site'} style={{marginLeft: 'auto', width: 215}}/>
             </Grid>
           </Grid>
-            }
+
           <Grid item className={classes.textContainer}>
             <Typography className={classes.text}>
               Bahia est Illustratrice et Directrice Artistique depuis 10 ans, et en freelance depuis peu.

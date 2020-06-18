@@ -14,7 +14,7 @@ import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import ListItemText from "@material-ui/core/ListItemText";
 import {useScrollPosition} from '@n8tb1t/use-scroll-position'
 import {useDispatch, useSelector} from "react-redux";
-import {getSelectionProfilLaunched, validateProfilesLaunched} from "./reducer";
+import {getBriefLaunched, validateProfilesLaunched} from "./reducer";
 import clsx from "clsx";
 import CustomExpansionPanel from "../../components/CustomExpansionPanel";
 import Tag from "../../components/Tags/Tag";
@@ -24,22 +24,23 @@ import * as Scroll from 'react-scroll';
 import checkStatus from "../../assets/icons/small-check.svg";
 import infosSmall from "../../assets/icons/infos-small-copy.svg";
 import CustomButton from "../../components/Button";
-import CustomModal from "../../components/Modal";
 import CustomSelect from "../../components/Inputs/CustomSelect";
 import CustomTextArea from "../../components/Inputs/CustomTextArea";
 import Dialog from '@material-ui/core/Dialog';
-import {loginLaunched} from "../../components/App/reducer";
 
 const ProfileSelection = (props) => {
     const dispatch = useDispatch();
 
-    const {selectionProfilData, validateError} = useSelector(state => ({
-        selectionProfilData: state.getIn(['SelectionProfil', 'selectionProfilData']),
+    const {briefData, quotesData, validateCodeError, companyId} = useSelector(state => ({
+        briefData: state.getIn(['SelectionProfil', 'briefData']),
+        quotesData: state.getIn(['SelectionProfil', 'quotesData']),
         validateCodeError: state.getIn(['SelectionProfil', 'validateCodeError']),
+        companyId: state.getIn(['app', 'validateCodeError']),
     }));
 
     let profils = [1, 2, 3, 4];
-    let [noProfilMotif, setNoProfilMotif] = React.useState(null);
+    let [noProfilMotif, setNoProfilMotif] = React.useState('');
+    let [noProfilSelect, setNoProfilSelect] = React.useState('');
     let [checkedProfiles, setCheckedProfiles] = React.useState([]);
     const [elementPosition, setElementPosition] = useState({x: 10, y: 450});
     const [elementHeight, setElementHeight] = useState(0);
@@ -105,7 +106,7 @@ const ProfileSelection = (props) => {
     );
 
     useEffect(() => {
-        dispatch(getSelectionProfilLaunched())
+        dispatch(getBriefLaunched())
     }, []);
 
     const heightProfilesContainer = elementHeight / profils.length;
@@ -124,7 +125,7 @@ const ProfileSelection = (props) => {
                 direction="row"
                 className={classes.container}
             >
-                {selectionProfilData &&
+                {briefData &&
                 <Grid item container xs={3} direction={'row'} justify="center" alignItems="flex-start">
                     <List className={classes.list}>
                         <ListItem className={classes.listItem} onClick={() => scroll.scrollToTop()}>
@@ -142,7 +143,7 @@ const ProfileSelection = (props) => {
                                               }
                                           }}/>
                         </ListItem>
-                        {profils.map((profil, index) => {
+                        {quotesData.map((profil, index) => {
                             const isActive = elementPosition.y < margin - (index * heightProfilesContainer) && elementPosition.y > margin - ((index + 1) * heightProfilesContainer);
                             return (<Link to={index} smooth={true}>
                                 <ListItem className={classes.listItem}>
@@ -153,9 +154,9 @@ const ProfileSelection = (props) => {
                                         }
                                         <Avatar
                                             className={clsx(classes.avatar, {[classes.avatarActive]: isActive})}
-                                            src={"https://cdn-media.rtl.fr/cache/p0NFoli1OBEqRtMwTbdztw/880v587-0/online/image/2015/0403/loveok_141338438169183900.jpg"}/>
+                                            src={profil.linkedinAvatar}/>
                                     </ListItemAvatar>
-                                    <ListItemText primary="Anh-Dao"
+                                    <ListItemText primary={`${profil.firstName} ${profil.lastName}`}
                                                   primaryTypographyProps={{
                                                       className: {
                                                           [classes.listItemText]: !isActive,
@@ -189,7 +190,7 @@ const ProfileSelection = (props) => {
                 </Grid>}
 
 
-                {selectionProfilData ?
+                {briefData ?
                     <Grid item container xs={6} className={classes.middleContainer} direction="column">
                         <Grid item container direction="column" className={classes.firstMiddleContainer}>
                             <Typography className={classes.mainTitle}>Il est temps de faire votre sélection
@@ -291,14 +292,14 @@ const ProfileSelection = (props) => {
                             <Element name="lastContainer">
                                 <div className={classes.bloc}>
                                     <Typography variant={'h2'}>Détails du profil recherché</Typography>
-                                    <Typography variant={'h1'}>{selectionProfilData.profile.text}</Typography>
+                                    <Typography variant={'h1'}>{briefData.profile.text}</Typography>
                                 </div>
                             </Element>
                             <div className={classes.bloc}>
                                 <Typography variant={'h4'} className={classes.title}>Expertises clés du
                                     profil</Typography>
                                 <Grid item container direction={"row"} spacing={1}>
-                                    {selectionProfilData.missionRequirement.expertises.map((tag, key) => <Grid item><Tag
+                                    {briefData.missionRequirement.expertises.map((tag, key) => <Grid item><Tag
                                         key={key} title={tag.expertise.text} isPrimaryColor
                                         tagType="Prioritaire" isWithCheckbox checked={tag.priority}/></Grid>)}
                                 </Grid>
@@ -307,11 +308,11 @@ const ProfileSelection = (props) => {
                                 <Typography variant={'h4'} className={classes.title}>Langue souhaitée</Typography>
                                 <Grid style={{width: '80%'}} item container direction={"row"} spacing={1}>
                                     <Grid item>
-                                        <Tag title={selectionProfilData.missionRequirement.language.language}
+                                        <Tag title={briefData.missionRequirement.language.language}
                                              isPrimaryColor
                                              tagType="Critère indispensable"
                                              isWithCheckbox
-                                             checked={selectionProfilData.missionRequirement.language.essential}
+                                             checked={briefData.missionRequirement.language.essential}
                                         />
                                     </Grid>
                                 </Grid>
@@ -320,11 +321,11 @@ const ProfileSelection = (props) => {
                                 <Typography variant={'h4'} className={classes.title}>Sensibilité souhaitée</Typography>
                                 <Grid style={{width: '80%'}} item container direction={"row"} spacing={1}>
                                     <Grid item>
-                                        <Tag title={selectionProfilData.missionRequirement.sensitivity.sensitivity.text}
+                                        <Tag title={briefData.missionRequirement.sensitivity.sensitivity.text}
                                              isPrimaryColor
                                              tagType="Critère indispensable"
                                              isWithCheckbox
-                                             checked={selectionProfilData.missionRequirement.sensitivity.essential}
+                                             checked={briefData.missionRequirement.sensitivity.essential}
                                         />
                                     </Grid>
                                 </Grid>
@@ -337,14 +338,14 @@ const ProfileSelection = (props) => {
                                                 padding: 30,
                                                 backgroundColor: "#283028",
                                                 borderRadius: 15
-                                            }}>{selectionProfilData.missionRequirement.seniority}</Typography>
+                                            }}>{briefData.missionRequirement.seniority}</Typography>
                             </div>
                             <div className={classes.secondTitle}>
                                 <Typography variant={'h1'}>Ma Mission</Typography>
                             </div>
                             <div className={classes.bloc}>
                                 <Typography variant={'h2'}>Titre de la mission</Typography>
-                                <Typography variant={'h1'}>{selectionProfilData.missionContext.title}</Typography>
+                                <Typography variant={'h1'}>{briefData.missionContext.title}</Typography>
                             </div>
 
                         </Grid>
@@ -353,33 +354,33 @@ const ProfileSelection = (props) => {
                                 <Grid item className={classes.blocTypoUp}>
                                     <Typography variant={"h4"} className={classes.typo}>Format</Typography>
                                     <Typography variant={"body1"}
-                                                className={classes.typo}>{selectionProfilData.missionContext.format}</Typography>
+                                                className={classes.typo}>{briefData.missionContext.format}</Typography>
                                 </Grid>
                                 <Grid item className={classes.blocTypoDown}>
                                     <Typography variant={"h4"} className={classes.typo}>Rythme</Typography>
                                     <Typography variant={"body1"}
-                                                className={classes.typo}>{selectionProfilData.missionContext.weeklyRythm}</Typography>
+                                                className={classes.typo}>{briefData.missionContext.weeklyRythm}</Typography>
                                 </Grid>
                             </Grid>
                             <Grid container item xs={5} direction={'column'} spacing={2}>
                                 <Grid item className={classes.blocTypoUp}>
                                     <Typography variant={"h4"} className={classes.typo}>Durée</Typography>
                                     <Typography variant={"body1"}
-                                                className={classes.typo}>{selectionProfilData.missionContext.duration.nb}
-                                        {selectionProfilData.missionContext.duration.nb} à partir
-                                        du {selectionProfilData.missionContext.startDate}</Typography>
+                                                className={classes.typo}>{briefData.missionContext.duration.nb}
+                                        {briefData.missionContext.duration.nb} à partir
+                                        du {briefData.missionContext.startDate}</Typography>
                                 </Grid>
                                 <Grid item className={classes.blocTypoDown}>
                                     <Typography variant={"h4"} className={classes.typo}>Adresse</Typography>
                                     <Typography variant={"body1"}
-                                                className={classes.typo}>{selectionProfilData.missionContext.address}</Typography>
+                                                className={classes.typo}>{briefData.missionContext.address}</Typography>
                                 </Grid>
                             </Grid>
                             <Grid container item xs={2} direction={'column'} spacing={2}>
                                 <Grid item container className={classes.blocTypoUp}>
                                     <Typography variant={"h4"} className={classes.typo}>TJM</Typography>
                                     <Typography variant={"body1"}
-                                                className={classes.typo}>{selectionProfilData.missionContext.estimatedAverageDailyRate} €/j</Typography>
+                                                className={classes.typo}>{briefData.missionContext.estimatedAverageDailyRate} €/j</Typography>
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -388,7 +389,7 @@ const ProfileSelection = (props) => {
                             <div className={classes.bloc}>
                                 <Typography variant={'h2'}>Livrable.s</Typography>
                                 <Grid container direction={'row'} style={{width: '80%', marginTop: 5}} spacing={1}>
-                                    {selectionProfilData.deliverables.map((tag, key) =>
+                                    {briefData.deliverables.map((tag, key) =>
                                         <Grid item>
                                             <Tag key={key} title={tag.text} isPrimaryColor={false}/>
                                         </Grid>)}
@@ -399,7 +400,7 @@ const ProfileSelection = (props) => {
                                 <CustomExpansionPanel isTag={false}
                                                       panelTitle="Contexte de la mission et tâches à réaliser">
                                     <Typography>
-                                        {selectionProfilData.missionDetail.contextAndTasks}
+                                        {briefData.missionDetail.contextAndTasks}
                                     </Typography>
                                 </CustomExpansionPanel>
                             </div>
@@ -407,7 +408,7 @@ const ProfileSelection = (props) => {
 
                                 <CustomExpansionPanel isTag={false} panelTitle="Détails des livrables">
                                     <Typography>
-                                        {selectionProfilData.missionDetail.DetailsOfDeliverables}
+                                        {briefData.missionDetail.DetailsOfDeliverables}
                                     </Typography>
                                 </CustomExpansionPanel>
                             </div>
@@ -420,7 +421,7 @@ const ProfileSelection = (props) => {
                     </Grid>
                 }
 
-                {selectionProfilData &&
+                {briefData &&
                 <Grid item container xs={3}>
                     <Grid item container direction={'column'} className={classes.card}>
                         <Typography variant={'h3'} className={classes.cardTitle}>Faites votre choix</Typography>
@@ -434,7 +435,7 @@ const ProfileSelection = (props) => {
             {/*<Grid className={classes.logoAcracyContainer}>*/}
             {/*<img src={acracy} alt="acracy" className={classes.logoAcracy}/>*/}
             {/*</Grid>*/}
-            {selectionProfilData &&
+            {briefData &&
             <Grid item container className={classes.cart} direction={'row'} xs={12}>
                 <Grid container item xs={9} direction={'row'}>
                     <Typography
@@ -442,7 +443,7 @@ const ProfileSelection = (props) => {
                             fontSize: 17,
                             fontFamily: 'Basier Medium',
                             width: 200,
-                            padding: 25,
+                            padding: 15,
                             textAlign: 'left',
                             color: 'black',
                             marginTop: 'auto',
@@ -459,14 +460,9 @@ const ProfileSelection = (props) => {
                                         className={classes.avatar}>
                                         <img
                                             src={"https://cdn-media.rtl.fr/cache/p0NFoli1OBEqRtMwTbdztw/880v587-0/online/image/2015/0403/loveok_141338438169183900.jpg"}
-                                            alt="linkedingProfil" style={{width: 46, height: 46}}/>
+                                            alt="Anh Dao" style={{width: 46, height: 46}}/>
                                     </Avatar>
                                 </ListItemAvatar>
-                                <ListItemText primary={"Anh Dao"}
-                                              primaryTypographyProps={{className: classes.cartText}}
-                                              secondary={'Social Media Strategist'}
-                                              secondaryTypographyProps={{className: classes.cartTextSecondary}}
-                                />
                             </ListItem>
                     )}
                 </Grid>
@@ -507,9 +503,9 @@ const ProfileSelection = (props) => {
                     <Typography variant={"h1"}>Aucun profil ne me convient</Typography>
                     <Typography variant={"body1"} style={{marginBottom: 20}}>Afin de pouvoir améliorer nos futures propositions, n’hésitez pas à
                         nous dire la raison du refus de ces profils.</Typography>
-                    <CustomSelect placeholder={"Sélectionner raison"} label={"Raison"} optionsValues={['test1', "test2"]}/>
-                    <CustomTextArea style={{height: 241}} placeholder={"Donnez nous plus de détails"}  noProfilMotif setNoProfilMotif/>
-                    <CustomButton theme={"filledButton"} style={{width: 254}} title={"Confirmer et envoyer réponse"} handleClick={() => console.log("noProfilMotif", noProfilMotif)} />
+                    <CustomSelect placeholder={"Sélectionner raison"} label={"Raison"} optionsValues={['test1', "test2"]} value={noProfilSelect} handleChangeOut={setNoProfilSelect} />
+                    <CustomTextArea style={{height: 241}} placeholder={"Donnez nous plus de détails"}  valueOut={noProfilMotif} handleChangeOut={setNoProfilMotif}/>
+                    <CustomButton theme={"filledButton"} style={{width: 254}} title={"Confirmer et envoyer réponse"} handleClick={() => console.log("noProfilMotif", noProfilMotif, noProfilSelect)} />
                 </Grid>
             </Dialog>
             <Dialog open={validateChoiceModaleOpen} onClose={handleValidateChoiceModaleOpen} classes={{ paper: classes.modale}}>
@@ -519,15 +515,7 @@ const ProfileSelection = (props) => {
                     <Typography variant={"body1"} style={{marginBottom: 20}}>En confirmant, vous recevrez un email sur <span style={{color: "#ecf805"}}>prénomnom@entreprise.com</span> vous invitant à signer le devis.</Typography>
                     <Typography variant={"body1"}>Dès la signature de ce dernier, vous pourrez accéder aux profils.</Typography>
                     <Grid item container direction={"row"}>
-                        <Grid item container direction={"column"} xs={7} justify={'flex-end'}>
-                        <Typography variant={"body1"} style={{width: 200,  fontSize: 14,
-                            fontFamily: 'Basier Medium', marginBottom: 20}}>Vous n’avez pas reçu le devis?</Typography>
-                        </Grid>
-                        <Grid item container direction={"column"} xs={5}>
-
                         <CustomButton style={{width: 183}} theme={"filledButton"} title={"Confimer ma sélection"} handleClick={() => validateProfiles()} />
-                    <CustomButton style={{width: 183}} theme={"filledButton"} title={"Renvoyer email"} handleClick={() => console.log("test confirme réponse3")} />
-                        </Grid>
                     </Grid>
                 </Grid>
             </Dialog>

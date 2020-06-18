@@ -1,36 +1,65 @@
 import { all, put, takeLatest } from 'redux-saga/effects';
-import {API, Auth} from 'aws-amplify';
+import {API} from 'aws-amplify';
 import {
-  getSelectionProfilSuccess,
-  getSelectionProfilFailure,
-  validateProfilesSuccess,
-  validateProfilesFailure
+  getBriefSuccess, getBriefFailure,
+  validateProfilesSuccess, validateProfilesFailure 
 } from './reducer';
 import {config} from "../../conf/amplify";
 
-function* getSelectionProfil(action) {
+function* getBrief(action) {
   try {
-    let missionId = 'get_IN_PROGRESS';
-    const missionData = yield API.get(config.apiGateway.NAME, `/briefs/${missionId}`, {
+    const {companyId,
+      // briefId,
+      // quotesData
+    } = action.payload;
+
+    // CHECK COMPANY INFORMATIONS
+    const company = yield API.get(config.apiGateway.NAME, `/company/${companyId}`, {
       headers: {
         'x-api-key': config.apiKey
       }
     });
-    console.log("missionData", missionData);
+    if (!company.siret || !company.socialReason || !company.legalForm || !company.shareCapital) {
+      yield put(getBriefFailure({messsage: "MissingInfos", code: 409}));
+    }
+    let briefId = 'get_IN_PROGRESS';
 
-    yield put(getSelectionProfilSuccess(missionData));
+    // GET BRIEF INFORMATIONS
+    const briefData = yield API.get(config.apiGateway.NAME, `/briefs/${briefId}`, {
+      headers: {
+        'x-api-key': config.apiKey
+      }
+    });
+    console.log("missionData", briefData);
+
+    // GET QUOTES DATA
+    const quotesData = yield API.get(config.apiGateway.NAME, `/quotes?briefId=${briefId}`, {
+      headers: {
+        'x-api-key': config.apiKey
+      }
+    });
+    console.log("quotesData", quotesData);
+
+    yield put(getBriefSuccess(briefData, quotesData));
   } catch (err) {
-    yield put(getSelectionProfilFailure(err));
+    yield put(getBriefFailure(err));
   }
 }
 
 function* validateProfiles(action) {
   try {
-    console.log("validateProfiles SAGA");
+    const {types, text, reason} = action.payload;
+    console.log("TEXT", text);
+    console.log("REASON", reason);
     let id = 'get_IN_PROGRESS';
     const validateProfiles = yield API.post(config.apiGateway.NAME, `/quotes`, {
       headers: {
         'x-api-key': config.apiKey
+      },
+      body: {
+        types,
+        text,
+        reason
       }
     });
     console.log("missionData", validateProfiles);
@@ -44,7 +73,7 @@ function* validateProfiles(action) {
 
 export default function* SelectionProfil() {
   yield all([
-    takeLatest('SelectionProfil/getSelectionProfilLaunched', getSelectionProfil),
+    takeLatest('SelectionProfil/getBriefLaunched', getBrief),
     takeLatest('SelectionProfil/validateProfilesLaunched', validateProfiles),
   ]);
 }

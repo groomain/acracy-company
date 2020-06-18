@@ -4,9 +4,10 @@ import Immutable
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = Immutable.Map({
-  selectionProfilData: null,
-  selectionProfilLoading: false,
-  selectionProfilError: null,
+  briefData: null,
+  quotesData: null,
+  briefLoading: false,
+  briefError: null,
   validateResponse: null,
   validateLoading: false,
   validateError: null,
@@ -18,17 +19,18 @@ const { actions, reducer } = createSlice({
   name: 'SelectionProfil',
   initialState,
   reducers: {
-    // GET CURRENT
-    getSelectionProfilLaunched: (state, action) => state
-      .set('selectionProfilLoading', true)
-      .set('selectionProfilData', null),
-    getSelectionProfilSuccess: (state, action) => state
-      .set('selectionProfilLoading', true)
-      .set('selectionProfilData', action.payload),
-    getSelectionProfilFailure: (state, action) => state
-      .set('selectionProfilLoading', false)
-      .set('selectionProfilData', null)
-      .set('selectionProfilError', action.payload),
+    // GET SELECTION PROFIL
+    getBriefLaunched: (state, action) => state
+      .set('briefLoading', true)
+      .set('briefData', null),
+    getBriefSuccess: (state, action) => state
+      .set('briefLoading', true)
+      .set('briefData', action.payload.briefData)
+      .set('briefData', action.payload.briefData),
+    getBriefFailure: (state, action) => state
+      .set('briefLoading', false)
+      .set('briefData', null)
+      .set('briefError', action.payload),
     // VALIDATE PROFIL
     validateProfilesLaunched: (state, action) => state
       .set('validateLoading', true)
@@ -46,9 +48,9 @@ const { actions, reducer } = createSlice({
 });
 
 export const {
-  getSelectionProfilLaunched,
-  getSelectionProfilSuccess,
-  getSelectionProfilFailure,
+  getBriefLaunched,
+  getBriefSuccess,
+  getBriefFailure,
   validateProfilesLaunched,
   validateProfilesSuccess,
   validateProfilesFailure
