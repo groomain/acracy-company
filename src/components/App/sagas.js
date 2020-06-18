@@ -35,6 +35,7 @@ import {
   translateResendCodeError
 } from '../../utils/cognito';
 import { config } from '../../conf/amplify';
+import { getPhonePrefixCode } from '../../utils/services/format';
 
 function* getCurrentSession(action) {
   const { fromPath } = action.payload;
@@ -51,6 +52,7 @@ function* getCurrentSession(action) {
     });
 
     yield put(getCurrentSessionSuccess({ userInfo, userDynamo }));
+
     if (fromPath) {
       yield put(push(fromPath));
     }
@@ -62,13 +64,99 @@ function* getCurrentSession(action) {
 
 function* doSignIn(action) {
   const { email, password, from } = action.payload;
-
   try {
     yield Auth.signIn(email, password);
-    yield put(loginSuccess());
-    yield put(push('/home'));
-    yield Auth.currentUserInfo();
-    // yield call(doSignIn, { payload: { email, password } }); // Commented to avoid sending the verification twice
+    try {
+      yield Auth.currentSession();
+      const userInfo = yield Auth.currentUserInfo();
+      // After signin, get the user's infos
+      let userDynamo = yield API.post(config.apiGateway.NAME, '/sessions', {
+        headers: {
+          'x-api-key': config.apiKey
+        },
+        body: {
+          email: userInfo.attributes.email
+        }
+      });
+      if (userDynamo) {
+        if (userDynamo?.companyId && userDynamo?.employeeId) {
+          yield put(loginSuccess())
+          yield put(getCurrentSessionLaunched({ fromPath: from || '/home' })); // Redirection when everything is ok
+        } else {
+          // Create the company
+          if (!userDynamo?.companyId) {
+            try {
+              userDynamo.companyId = yield API.post(config.apiGateway.NAME, '/companies', {
+                headers: {
+                  'x-api-key': config.apiKey
+                },
+                body: {
+                  'name': userInfo?.attributes['custom:companyName']
+                }
+              })
+            } catch (error) {
+              console.log(error);
+              yield put(loginFailure(translateSignInError(error.code)));
+            }
+          }
+          // Create the related employee
+          if (userDynamo.companyId && !userDynamo?.employeeId) {
+            try {
+              userDynamo.employeeId = yield API.post(config.apiGateway.NAME, '/employees', {
+                headers: {
+                  'x-api-key': config.apiKey
+                },
+                body: {
+                  'companyId': userDynamo?.companyId,
+                  'email': userInfo?.attributes.email,
+                  'firstName': userInfo?.attributes['custom:firstName'],
+                  'lastName': userInfo?.attributes['custom:lastName'],
+                  'role': userInfo?.attributes['custom:role'],
+                  'phoneNumber': {
+                    'code': userInfo?.attributes['custom:phoneNumberCode'],
+                    'number': userInfo?.attributes['custom:phoneNumberNumber']
+                  }
+                }
+              });
+            } catch (error) {
+              console.log(error);
+              yield put(loginFailure(translateSignInError(error.code)));
+            }
+          }
+          // Start the lead creation if the 2 previous steps are ok & search content is present
+          if (userDynamo?.companyId && userDynamo?.employeeId) {
+            const userAttributes = userInfo?.attributes;
+            let errorLeadMessage;
+            if (userAttributes['custom:searchCode'] && userAttributes['custom:searchType'] && userAttributes['custom:searchText']) {
+              try {
+                userDynamo.search = yield API.post(config.apiGateway.NAME, '/leads', {
+                  headers: {
+                    'x-api-key': config.apiKey
+                  },
+                  body: {
+                    'search': {
+                      'code': userAttributes['custom:searchCode'],
+                      'type': userAttributes['custom:searchType'],
+                      'text': userAttributes['custom:searchText']
+                    }
+                  }
+                });
+              } catch (error) {
+                console.log(error);
+                errorLeadMessage = translateSignInError("leadCreationError"); // Create the error message to be passed to the loginSuccess method
+              }
+            }
+            yield put(loginSuccess(errorLeadMessage));
+            yield put(getCurrentSessionLaunched({ fromPath: from || '/home' })); // Redirection with or without lead creation error message
+          } else {
+            yield put(loginFailure(translateSignInError("")));
+          }
+        }
+      }
+    } catch (error) {
+      console.log(error);
+      yield put(getCurrentSessionFailure());
+    }
   } catch (err) {
     console.log(err)
     if (err.code === 'UserNotConfirmedException') {
@@ -92,15 +180,6 @@ function* doSignOut() {
 
 function* doSignUp(action) {
   const { email, password, companyName, firstName, lastName, role, phonePrefix, phoneNumber, searchType, searchValue, searchCode } = action.payload;
-  /**
-   * 
-   * @param {string} prefix - A string formatted as "Fr : +33"
-   * @returns {string} - New string containing everything after the '+' character to only send the number part
-   */
-  const getPhonePrefixCode = prefix => {
-    const regex = /^(.*?)[+]/;
-    return prefix.replace(regex, '');
-  };
   const prefixCode = getPhonePrefixCode(phonePrefix);
 
   try {
@@ -132,7 +211,7 @@ function* doConfirmSignUp(action) {
   const { username, code } = action.payload;
   try {
     yield Auth.confirmSignUp(username, code);
-    yield put(push('/home'));
+    yield put(push('/login'));
     yield put(confirmSignupSuccess(translateConfirmSignUpSuccess()));
   } catch (error) {
     console.log(error);
@@ -165,9 +244,7 @@ function* doRequestPasswordCode(action) {
 
 function* doSubmitNewPassword(action) {
   console.log(action);
-  const {
-    email, code, password
-  } = action.payload;
+  const { email, code, password } = action.payload;
   try {
     yield Auth.forgotPasswordSubmit(email, code, password);
     yield put(submitNewPasswordSuccess());

@@ -54,7 +54,8 @@ const { actions, reducer } = createSlice({
       .set('loginErrorMessage', null),
     loginSuccess: (state, action) => state
       .set('loginLoading', false)
-      .set('loginErrorMessage', null),
+      .set('loginErrorMessage', action.payload)
+      .set('confirmSignupSuccessMessage', null),
     loginFailure: (state, action) => state
       .set('loginLoading', false)
       .set('loginErrorMessage', action.payload),

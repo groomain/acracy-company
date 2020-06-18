@@ -9,7 +9,7 @@ import CustomSelect from "../../Inputs/CustomSelect";
 import CustomNavLink from "../../CustomNavLink";
 import CustomCheckbox from '../../CheckBox';
 import backToTop from '../../../utils/backToTop';
-import { checkLength } from '../../../utils/validationChecks';
+import { checkLength } from '../../../utils/services/validationChecks';
 import { Typography, Grid, Stepper, Step, StepLabel, StepButton, Box, StepConnector } from "@material-ui/core";
 import styles from './styles';
 

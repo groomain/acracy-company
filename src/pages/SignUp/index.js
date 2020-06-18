@@ -19,13 +19,18 @@ const SignUpPage = () => {
 
   // Form data
   const initialValues = {
+    companyName: '',
+    firstName: '',
+    lastName: '',
+    role: '',
+    phoneNumber: '',
     email: '',
     password: '',
     confirmPassword: '',
     phonePrefix: 'Fr : +33',
     searchValue: 'Social Media Strategist',
-    searchType: '',
-    searchCode: '',
+    searchType: 'DELIVERABLE',
+    searchCode: 'BB-8',
     conditions: false
   };
 
@@ -36,67 +41,42 @@ const SignUpPage = () => {
 
   // Form Validation Schema
   const ValidationSchema = Yup.object().shape({
-    email: Yup
-      .string()
-      .required(),
-    companyName: Yup
-      .string()
-      .required(),
-    firstName: Yup
-      .string()
-      .required(),
-    lastName: Yup
-      .string()
-      .required(),
-    role: Yup
-      .string()
-      .required(),
-    phoneNumber: Yup
-      .number()
-      .required(),
-    phonePrefix: Yup
-      .string()
-      .required(),
-    password: Yup
-      .string()
-      .required(),
-    confirmPassword: Yup
-      .string()
-      .test('password-match', t('passwordMismatch'), function (confPass) {
-        return confPass === this.parent.password;
-      })
-      .required(),
-    conditions: Yup
-      .bool()
-      .required(),
+    email: Yup.string().required(),
+    companyName: Yup.string().required(),
+    firstName: Yup.string().required(),
+    lastName: Yup.string().required(),
+    role: Yup.string().required(),
+    phoneNumber: Yup.number().required(),
+    phonePrefix: Yup.string().required(),
+    password: Yup.string().required(),
+    confirmPassword: Yup.string().test('password-match', t('passwordMismatch'), function (confPass) {
+      return confPass === this.parent.password;
+    }).required(),
+    conditions: Yup.bool().required(),
   });
 
   return (
-    <>
-      <Grid
-        container
-        direction="row"
-        justify="center"
-        className={classes.connectionDiv}
-      >
-        <Main>
-          <Formik
-            render={props => <SignUpForm {...props} />}
-            initialValues={initialValues}
-            validationSchema={ValidationSchema}
-            onSubmit={signup}
-          />
-        </Main>
-        <Sidebar>
-          <Grid className={classes.pannel}>
-            <SearchResultPannel
-              searchValue={initialValues.searchValue}
-            />
-            <PartnersList />
-          </Grid>
-        </Sidebar>
-      </Grid>
-    </>
+    <Grid
+      container
+      direction="row"
+      justify="center"
+      className={classes.connectionDiv}
+    >
+      <Main>
+        <Formik
+          render={props => <SignUpForm {...props} />}
+          initialValues={initialValues}
+          validationSchema={ValidationSchema}
+          onSubmit={signup}
+        />
+      </Main>
+      <Sidebar>
+        <Grid className={classes.pannel}>
+          <SearchResultPannel searchValue={initialValues.searchValue} />
+          <PartnersList />
+        </Grid>
+      </Sidebar>
+    </Grid>
   );
 };
 
