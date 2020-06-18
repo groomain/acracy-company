@@ -42,6 +42,9 @@ const translateConfirmSignUpError = (errorCode) => {
 };
 
 const translateSignInError = (errorCode) => {
+  if (errorCode === null) {
+    return 'Erreur';
+  }
   switch (errorCode) {
     case 'UserNotFoundException':
       return 'Aucun compte avec cet email n\'existe, veuillez vérifier votre email.';

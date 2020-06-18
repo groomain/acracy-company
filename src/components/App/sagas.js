@@ -126,6 +126,7 @@ function* doSignIn(action) {
           // Start the lead creation if the 2 previous steps are ok & search content is present
           if (userDynamo?.companyId && userDynamo?.employeeId) {
             const userAttributes = userInfo?.attributes;
+            let errorLeadMessage;
             if (userAttributes['custom:searchCode'] && userAttributes['custom:searchType'] && userAttributes['custom:searchText']) {
               try {
                 userDynamo.search = yield API.post(config.apiGateway.NAME, '/leads', {
@@ -142,16 +143,13 @@ function* doSignIn(action) {
                 });
               } catch (error) {
                 console.log(error);
-                yield put(loginSuccess());
-                yield put(getCurrentSessionLaunched({ fromPath: from || '/home' }));
-                yield put(loginFailure(translateSignInError("leadCreationError"))); // Show error message after redirection when lead creation error
+                errorLeadMessage = translateSignInError("leadCreationError"); // Create the error message to be passed to the loginSuccess method
               }
-            } else {
-              yield put(loginSuccess());
-              yield put(getCurrentSessionLaunched({ fromPath: from || '/home' })); // Redirection when everything is ok and a search result is not present
             }
+            yield put(loginSuccess(errorLeadMessage));
+            yield put(getCurrentSessionLaunched({ fromPath: from || '/home' })); // Redirection with or without lead creation error message
           } else {
-            yield put(loginFailure(translateSignInError()));
+            yield put(loginFailure(translateSignInError("")));
           }
         }
       }
