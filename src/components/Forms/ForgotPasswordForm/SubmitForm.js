@@ -7,7 +7,7 @@ import { CustomButton } from '../../Button/';
 import { Grid, Box, Divider, Typography } from '@material-ui/core/';
 import CustomTextField, { CustomPasswordField } from "../../Inputs/CustomTextField";
 import sharedStyles from '../../../utils/styles';
-import { checkLength } from '../../../utils/validationChecks';
+import { checkLength } from '../../../utils/services/validationChecks';
 
 const SubmitForm = (props) => {
   const { t } = useTranslation();

@@ -15,7 +15,7 @@ import ToValidateIcon from '../../../assets/icons/a-valider.svg';
 import WaitingForCallIcon from '../../../assets/icons/en-attente-de-rappel.svg';
 
 import { setLeadCreationStep } from '../../../pages/HomePage/reducer';
-import { shortenLongText } from '../../../utils/format';
+import { shortenLongText } from '../../../utils/services/format';
 import { deleteLeadLaunched } from '../../../pages/HomePage/reducer';
 
 moment.locale('fr');

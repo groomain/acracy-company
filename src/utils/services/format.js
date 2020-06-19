@@ -34,6 +34,16 @@ export const cutoutLongText = text => {
 }
 
 /**
+ * Formats a phone prefix containing letters and digits to keep the number only
+ * @param {string} prefix - A string formatted as "Fr : +33"
+ * @returns {string} - New string containing everything after the '+' character to only send the number part
+ */
+export const getPhonePrefixCode = prefix => {
+  const regex = /^(.*?)[+]/;
+  return prefix.replace(regex, '');
+};
+
+/**
  * Shortens a long text at the specified length, and completes the string with '...' when the text is too long
  * @param {string} text - The text to be shortened 
  * @param {number} length - The number of characters allowed before shortening the text

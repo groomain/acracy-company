@@ -15,7 +15,7 @@ export const Dashboard = () => {
   const sharedClasses = sharedStyles();
 
   const { userName } = useSelector(state => ({
-    userName: state.getIn(['app', 'userDynamo', 'attributes', 'custom:firstName'])
+    userName: state.getIn(['app', 'userDynamo', 'employeeFirstName'])
   }))
 
   return (

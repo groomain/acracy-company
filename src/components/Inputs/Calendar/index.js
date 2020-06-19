@@ -7,7 +7,7 @@ import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/picker
 import { Agenda } from '../../../assets/icons/Agenda';
 import styles from './styles';
 
-import { capitalize } from '../../../utils/format';
+import { capitalize } from '../../../utils/services/format';
 
 import 'moment/locale/fr';
 moment.locale('fr');

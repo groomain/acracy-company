@@ -17,7 +17,7 @@ import clsx from "clsx";
 import CircularProgress from "@material-ui/core/CircularProgress";
 // import { SettingsOutlined } from '@material-ui/icons';
 
-import { shortenLongText, addTwoWorkingDays } from '../../../utils/format';
+import { shortenLongText, addTwoWorkingDays } from '../../../utils/services/format';
 import * as moment from 'moment';
 moment.locale('fr');
 
