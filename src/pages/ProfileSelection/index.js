@@ -14,7 +14,7 @@ import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import ListItemText from "@material-ui/core/ListItemText";
 import {useScrollPosition} from '@n8tb1t/use-scroll-position'
 import {useDispatch, useSelector} from "react-redux";
-import {getBriefLaunched, validateProfilesLaunched} from "./reducer";
+import {contactAcracyLaunched, getBriefLaunched, setCheckedProfileStore, validateProfilesLaunched} from "./reducer";
 import clsx from "clsx";
 import CustomExpansionPanel from "../../components/CustomExpansionPanel";
 import Tag from "../../components/Tags/Tag";
@@ -27,37 +27,75 @@ import CustomButton from "../../components/Button";
 import CustomSelect from "../../components/Inputs/CustomSelect";
 import CustomTextArea from "../../components/Inputs/CustomTextArea";
 import Dialog from '@material-ui/core/Dialog';
+import Popover from "@material-ui/core/Popover";
 
 const ProfileSelection = (props) => {
+    const classes = styles();
     const dispatch = useDispatch();
-
-    const {briefData, quotesData, validateCodeError, companyId} = useSelector(state => ({
+    const {briefData, quotesData, validateCodeError, validateLoading, companyId, checkedProfilesStore, contactLoading} = useSelector(state => ({
         briefData: state.getIn(['SelectionProfil', 'briefData']),
         quotesData: state.getIn(['SelectionProfil', 'quotesData']),
         validateCodeError: state.getIn(['SelectionProfil', 'validateCodeError']),
-        companyId: state.getIn(['app', 'validateCodeError']),
+        validateLoading: state.getIn(['SelectionProfil', 'validateLoading']),
+        companyId: state.getIn(['app', 'companyId']),
+        checkedProfilesStore: state.getIn(['SelectionProfil', 'checkedProfilesStore']),
+        contactLoading: state.getIn(['SelectionProfil', 'contactLoading']),
     }));
 
-    let profils = [1, 2, 3, 4];
-    let [noProfilMotif, setNoProfilMotif] = React.useState('');
-    let [noProfilSelect, setNoProfilSelect] = React.useState('');
-    let [checkedProfiles, setCheckedProfiles] = React.useState([]);
+    // Scroll
+    let [checkedProfiles, setCheckedProfiles] = React.useState(checkedProfilesStore);
     const [elementPosition, setElementPosition] = useState({x: 10, y: 450});
     const [elementHeight, setElementHeight] = useState(0);
-    const [noProfileModaleOpen, setNoProfileModaleOpen] = useState(false);
-    const [validateChoiceModaleOpen, setValidateChoiceModaleOpen] = useState(false);
-    const [informationCompleteOpen, setInformationCompleteOpen] = useState(false);
-    // const [validateChoiceModaleOpen, setValidateChoiceModaleOpen] = useState(validateError);
     const heightRef = useRef();
     const elementsRef = useRef();
-    const classes = styles();
     let Element = Scroll.Element;
     const [anchorEl, setAnchorEl] = React.useState(null);
-
     const open = Boolean(anchorEl);
 
-    const validateProfiles = (profiles) => {
-        dispatch(validateProfilesLaunched(profiles));
+    // Popover for cart
+    const [anchorElPopover, setAnchorElPopover] = React.useState(null);
+    const openPopover = Boolean(anchorElPopover);
+
+    // No Profile Modale
+    const [noProfileModaleOpen, setNoProfileModaleOpen] = useState(false);
+    let [noProfilMotif, setNoProfilMotif] = React.useState('');
+    let [noProfilSelect, setNoProfilSelect] = React.useState('');
+
+    // Validate Choice Modale
+    const [validateChoiceModaleOpen, setValidateChoiceModaleOpen] = useState(false);
+
+    // Contact Modale
+    const [contactOpen, setContactModaleOpen] = useState(false);
+    const [contactMessage, setContactMessage] = useState('');
+
+    // Contact Modale
+    const [interviewOpen, setInterviewOpen] = useState(false);
+    const [interviewMessage, setInterviewMessage] = useState('');
+
+    const [informationCompleteOpen, setInformationCompleteOpen] = useState(false);
+
+    const validateProfiles = () => {
+        let validateProfiles = [];
+        for (let i = 0; i < checkedProfiles.length; i++) {
+            validateProfiles.push(quotesData[checkedProfiles[i]])
+        }
+        dispatch(validateProfilesLaunched({type: 'ACCEPTE_QUOTES' ,listId: validateProfiles}));
+    };
+
+    const refuseAllProfiles = () => {
+        dispatch(validateProfilesLaunched({type: 'REFUSE_ALL_QUOTES' , text: noProfilMotif, reason: noProfilSelect}));
+    };
+
+    const contactAcracy = (message) => {
+        dispatch(contactAcracyLaunched({message: message}));
+    };
+
+    const handleContactOpen = () => {
+        setContactModaleOpen(!contactOpen);
+    };
+
+    const handleInterviewOpen = () => {
+        setInterviewOpen(!interviewOpen);
     };
 
     const handleNoProfileModaleOpen = () => {
@@ -82,13 +120,13 @@ const ProfileSelection = (props) => {
 
     const handleCheckedProfiles = (index) => {
         if (!checkedProfiles.includes(index)) {
-            console.log("ABSENT");
-            setCheckedProfiles([index, ...checkedProfiles])
+            setCheckedProfiles([index, ...checkedProfiles]);
+            dispatch(setCheckedProfileStore([index, ...checkedProfiles]));
         } else if (checkedProfiles.includes(index)) {
-            console.log("PRESENT");
             const indexToDelete = checkedProfiles.indexOf(index);
             const newCheckedProfiles = [...checkedProfiles.slice(0, indexToDelete), ...checkedProfiles.slice(indexToDelete + 1)];
-            setCheckedProfiles(newCheckedProfiles)
+            setCheckedProfiles(newCheckedProfiles);
+            dispatch(setCheckedProfileStore(newCheckedProfiles));
         }
     };
 
@@ -109,7 +147,7 @@ const ProfileSelection = (props) => {
         dispatch(getBriefLaunched())
     }, []);
 
-    const heightProfilesContainer = elementHeight / profils.length;
+    const heightProfilesContainer = quotesData && elementHeight / quotesData.length;
     const margin = 350;
 
     return (
@@ -154,9 +192,9 @@ const ProfileSelection = (props) => {
                                         }
                                         <Avatar
                                             className={clsx(classes.avatar, {[classes.avatarActive]: isActive})}
-                                            src={profil.linkedinAvatar}/>
+                                            src={profil.serviceProviderProfile.linkedinAvatar}/>
                                     </ListItemAvatar>
-                                    <ListItemText primary={`${profil.firstName} ${profil.lastName}`}
+                                    <ListItemText primary={`${profil.serviceProviderProfile.firstName} ${profil.serviceProviderProfile.lastName}`}
                                                   primaryTypographyProps={{
                                                       className: {
                                                           [classes.listItemText]: !isActive,
@@ -196,11 +234,7 @@ const ProfileSelection = (props) => {
                             <Typography className={classes.mainTitle}>Il est temps de faire votre sélection
                                 !</Typography>
                             <Typography variant={'h2'}>Le mot d'acracy</Typography>
-                            <Typography className={classes.word}>Quae fuerit causa, mox videro; interea hoc epicurus in
-                                bonis sit id, de voluptate ponit, quod maxime placeat, facere nondum depravatum ipsa
-                                natura
-                                incorrupte atque admonitionem altera prompta et quas molestias excepturi sint, obcaecati
-                                cupiditate non provident, similique sunt.</Typography>
+                            <Typography className={classes.word}>{briefData.acracyRecommandation}</Typography>
                             <Grid container direction={'row'} alignItems={'center'} className={classes.authorContainer}>
                                 <CircleImage/>
                                 <Typography variant="body2" className={classes.authorTypo}>Séverine, Chief
@@ -209,7 +243,7 @@ const ProfileSelection = (props) => {
                         </Grid>
                         <div ref={elementsRef}>
                             <div ref={heightRef}>
-                                {profils.map((profil, i) =>
+                                {quotesData.map((profil, i) =>
                                     <Element name={i}>
                                         <Grid item container direction={'column'}
                                               style={{position: 'absolute', marginTop: 70, width: 215, left: '80%'}}>
@@ -242,7 +276,7 @@ const ProfileSelection = (props) => {
                                                 <Typography style={{
                                                     fontSize: 34,
                                                     fontFamily: 'Basier Regular', color: '#ecf805'
-                                                }}>550€/j</Typography>
+                                                }}>{profil.averageDeliverated} €/j</Typography>
                                                 <Grid item container direction={'row'} justify={'center'}
                                                       alignItems={'center'}>
                                                     <Typography style={{
@@ -281,7 +315,7 @@ const ProfileSelection = (props) => {
                                                         style={{color: 'yellow'}}>les CGV</span> du profil</Typography>
                                             </Grid>
                                         </Grid>
-                                        <RevealProfil style={{paddingTop: 70, paddingBottom: 70}} index={i}
+                                        <RevealProfil profil={profil.serviceProviderProfile} style={{paddingTop: 70, paddingBottom: 70}} index={i}
                                                       setCheckedProfiles={handleCheckedProfiles}/>
                                     </Element>
                                 )}
@@ -453,15 +487,38 @@ const ProfileSelection = (props) => {
                         :
                         'Ma pre-sélection'
                     }</Typography>
-                    {checkedProfiles.map((profile, index) =>
+                    {checkedProfiles.map((profileIndex, index) =>
                         <ListItem style={{width: 250}}>
                                 <ListItemAvatar>
                                     <Avatar
+                                        onMouseEnter={(event) => {setAnchorElPopover(event.currentTarget);}}
+                                        onMouseLeave={() => {setAnchorElPopover(null);}}
                                         className={classes.avatar}>
                                         <img
-                                            src={"https://cdn-media.rtl.fr/cache/p0NFoli1OBEqRtMwTbdztw/880v587-0/online/image/2015/0403/loveok_141338438169183900.jpg"}
-                                            alt="Anh Dao" style={{width: 46, height: 46}}/>
+                                            src={quotesData[profileIndex].serviceProviderProfile.linkedinAvatar}
+                                            alt={quotesData[profileIndex].serviceProviderProfile.firstName} style={{width: 46, height: 46}}/>
                                     </Avatar>
+                                    <Popover
+                                        id="mouse-over-popover"
+                                        open={openPopover}
+                                        anchorEl={anchorElPopover}
+                                        onClose={() => setAnchorElPopover(null)}
+                                        anchorOrigin={{
+                                            vertical: 'top',
+                                            horizontal: 'center',
+                                        }}
+                                        transformOrigin={{
+                                            vertical: 'bottom',
+                                            horizontal: 'center',
+                                        }}
+                                        className={classes.popover}
+                                        classes={{
+                                            paper: classes.paperPopover,
+                                        }}
+                                        disableRestoreFocus
+                                    >
+                                        {quotesData[profileIndex].serviceProviderProfile.firstName} {quotesData[profileIndex].serviceProviderProfile.lastName}
+                                    </Popover>
                                 </ListItemAvatar>
                             </ListItem>
                     )}
@@ -472,7 +529,8 @@ const ProfileSelection = (props) => {
                                       style={{width: 221, marginRight: 20}}
                                       handleClick={() => handleNoProfileModaleOpen()}/>
                         <CustomButton title={"Contacter acracy"} theme={'outlinedBlackBorder'}
-                                      style={{width: 172, marginRight: 20}}/>
+                                      style={{width: 172, marginRight: 20}}
+                                      handleClick={() => handleContactOpen()}/>
                     </Grid>
                     :
                     <Grid item container direction={'row'} xs={3}>
@@ -489,12 +547,12 @@ const ProfileSelection = (props) => {
 
             </Grid>
             }
-            <Dialog open={informationCompleteOpen} onClose={handleInformationCompleteOpen} classes={{ paper: classes.modale}}>
+            <Dialog open={validateCodeError === 409} onClose={handleInformationCompleteOpen} classes={{ paper: classes.modale}}>
                 <Grid item container direction={'column'} justify={'center'} className={classes.modaleContainer}>
                     <Typography variant={"h1"}>Validez vos informations entreprise</Typography>
                     <Typography variant={"body1"} style={{marginBottom: 20}}>Sed ut labore et molestiae consequatur, vel eum fugiat, quo pertineant non fuisse torquem detraxit hosti  :</Typography>
-                    <Typography variant={"body1"}>- Siret</Typography>
-                    <Typography variant={"body1"} style={{marginBottom: 20}}>- Statut</Typography>
+                    {/*<Typography variant={"body1"}>- Siret</Typography>*/}
+                    {/*<Typography variant={"body1"} style={{marginBottom: 20}}>- Statut</Typography>*/}
                     <CustomButton theme={"filledButton"} style={{width: 254}} title={"Compléter mes informations"} handleClick={() => console.log("test confirme réponse")} />
                 </Grid>
             </Dialog>
@@ -505,30 +563,34 @@ const ProfileSelection = (props) => {
                         nous dire la raison du refus de ces profils.</Typography>
                     <CustomSelect placeholder={"Sélectionner raison"} label={"Raison"} optionsValues={['test1', "test2"]} value={noProfilSelect} handleChangeOut={setNoProfilSelect} />
                     <CustomTextArea style={{height: 241}} placeholder={"Donnez nous plus de détails"}  valueOut={noProfilMotif} handleChangeOut={setNoProfilMotif}/>
-                    <CustomButton theme={"filledButton"} style={{width: 254}} title={"Confirmer et envoyer réponse"} handleClick={() => console.log("noProfilMotif", noProfilMotif, noProfilSelect)} />
+                    <CustomButton theme={"filledButton"} style={{width: 254}} title={"Confirmer et envoyer réponse"} handleClick={() => refuseAllProfiles()} loading={validateLoading} />
                 </Grid>
             </Dialog>
             <Dialog open={validateChoiceModaleOpen} onClose={handleValidateChoiceModaleOpen} classes={{ paper: classes.modale}}>
                 <Grid item container direction={'column'} justify={'center'} className={classes.modaleContainer}>
                     <Typography variant={"h1"}>Confirmation sélection</Typography>
-                    <Typography variant={"body1"} >Vous êtes sur le point de confirmer la sélection de deux profils.</Typography>
+                    <Typography variant={"body1"} >Vous êtes sur le point de confirmer la sélection des profils.</Typography>
                     <Typography variant={"body1"} style={{marginBottom: 20}}>En confirmant, vous recevrez un email sur <span style={{color: "#ecf805"}}>prénomnom@entreprise.com</span> vous invitant à signer le devis.</Typography>
                     <Typography variant={"body1"}>Dès la signature de ce dernier, vous pourrez accéder aux profils.</Typography>
                     <Grid item container direction={"row"}>
-                        <CustomButton style={{width: 183}} theme={"filledButton"} title={"Confimer ma sélection"} handleClick={() => validateProfiles()} />
+                        <CustomButton style={{width: 183}} theme={"filledButton"} title={"Confimer ma sélection"} handleClick={() => validateProfiles()} loading={validateLoading} />
                     </Grid>
                 </Grid>
             </Dialog>
-            {/*<Dialog open={noProfileModaleOpen} onClose={handleNoProfileModaleOpen} classes={{ paper: classes.modale }}>*/}
-                {/*<Grid item container direction={'column'} justify={'center'} className={classes.modaleContainer}>*/}
-                    {/*<Typography variant={"h1"}>Aucun profil ne me convient</Typography>*/}
-                    {/*<Typography variant={"body1"} style={{marginBottom: 20}}>Afin de pouvoir améliorer nos futures propositions, n’hésitez pas à*/}
-                        {/*nous dire la raison du refus de ces profils.</Typography>*/}
-                    {/*<CustomSelect placeholder={"Sélectionner raison"} label={"Raison"} optionsValues={['test1', "test2"]}/>*/}
-                    {/*<CustomTextArea style={{height: 241}} placeholder={"Donnez nous plus de détails"} />*/}
-                    {/*<CustomButton theme={"filledButton"} style={{width: 254}} title={"Confirmer et envoyer réponse"} handleClick={() => console.log("test confirme réponse")} />*/}
-                {/*</Grid>*/}
-            {/*</Dialog>*/}
+            <Dialog open={contactOpen} onClose={handleContactOpen} classes={{ paper: classes.modale }}>
+                <Grid item container direction={'column'} justify={'center'} className={classes.modaleContainer}>
+                    <Typography variant={"h1"}>Faire une demande à acracy</Typography>
+                    <CustomTextArea style={{height: 328}} placeholder={"Dites nous comment on peut vous aider"} valueOut={contactMessage} handleChangeOut={setContactMessage}/>
+                    <CustomButton theme={"filledButton"} style={{width: 254}} title={"Envoyé"} handleClick={() => contactAcracy(contactMessage)} loading={contactLoading}/>
+                </Grid>
+            </Dialog>
+            <Dialog open={interviewOpen} onClose={handleInterviewOpen} classes={{ paper: classes.modale }}>
+                <Grid item container direction={'column'} justify={'center'} className={classes.modaleContainer}>
+                    <Typography variant={"h1"}>Confirmation d'entretien</Typography>
+                    <CustomTextArea style={{height: 328}} placeholder={"Donnez nous plus de détails sur ces entretiens"} valueOut={interviewMessage} handleChangeOut={setInterviewMessage}/>
+                    <CustomButton theme={"filledButton"} style={{width: 254}} title={"Envoyé"} handleClick={() => contactAcracy(interviewMessage)} loading={contactLoading}/>
+                </Grid>
+            </Dialog>
         </Grid>
 
     );

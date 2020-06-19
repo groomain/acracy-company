@@ -228,4 +228,7 @@ export const styles = makeStyles(theme => ({
     paddingTop: 40,
     textAlign: 'left'
   },
+  paperPopover: {
+    padding: theme.spacing(1),
+  },
 }));
