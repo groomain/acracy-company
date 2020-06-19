@@ -84,7 +84,7 @@ export default makeStyles(theme => ({
     fontSize: 14,
     fontFamily: basierRegular,
     color: '#ecf805',
-    paddingTop: 7,
+    paddingTop: 11,
     textTransform: 'uppercase'
   },
   statusTitleRed: {

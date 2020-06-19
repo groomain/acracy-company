@@ -12,6 +12,7 @@ import {
   getBriefsFailure
 } from './reducer';
 
+// Infos for the "drafts" section (carousel)
 function* doGetLeads(action) {
   try {
     const apiURL = `/leads?include-status[]=DRAFT&exclude-status[]=HELP_NEEDED`;
@@ -34,7 +35,7 @@ function* doDeleteLead(action) {
   const leadId = action.payload;
   console.log('function*doDeleteLead -> leadId', leadId)
   try {
-    const apiURL = `/leads/{leadId}`;
+    const apiURL = `/leads/${leadId}`;
     const params = {
       headers: {
         'x-api-key': config.apiKey
@@ -53,6 +54,7 @@ function* doDeleteLead(action) {
   }
 }
 
+// Every mission except the "profile matching" section
 function* doGetMissions(action) {
   try {
     const apiURL = `/missions`;
@@ -71,6 +73,7 @@ function* doGetMissions(action) {
   }
 }
 
+// Infos for the "profile matching" section
 function* doGetBriefs(action) {
   try {
     const apiURL = `/briefs?exclude-status[]=CLOSED`;

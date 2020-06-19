@@ -20,6 +20,7 @@ const { actions, reducer } = createSlice({
   name: 'Leads',
   initialState,
   reducers: {
+    // Drafts section (carousel)
     getLeadsLaunched: (state, action) => state
       .set('leadsLoading', true)
       .set('leadsData', null),
@@ -38,6 +39,10 @@ const { actions, reducer } = createSlice({
     deleteLeadFailure: (state, action) => state
       .set('deletingLeadLoading', false)
       .set('deletingLeadId', null),
+    setLeadCreationStep: (state, action) => state
+      .set('leadCreationStep', action.payload),
+
+    // Every mission except the "matching profile" section
     getMissionsLaunched: (state, action) => state
       .set('missionsLoading', true)
       .set('missionsData', null),
@@ -47,8 +52,8 @@ const { actions, reducer } = createSlice({
     getMissionsFailure: (state, action) => state
       .set('missionsLoading', false)
       .set('missionsData', null),
-    setLeadCreationStep: (state, action) => state
-      .set('leadCreationStep', action.payload),
+
+    // The "matching profile" section
     getBriefsLaunched: (state, action) => state
       .set('briefsLoading', true)
       .set('briefsData', null),
