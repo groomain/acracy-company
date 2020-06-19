@@ -222,7 +222,8 @@ i18n
               future: " à venir",
               finished: "Historique",
               profileMatching: "Matching de profil",
-              noMission: "Aucune mission en cours.\n Quand vous aurez finalisé votre brief et validé un ou plusieurs profils, la mission apparaîtra ici"
+              noMission: "Aucune mission en cours.\n Quand vous aurez finalisé votre brief et validé un ou plusieurs profils, la mission apparaîtra ici",
+              freelanceInfosModal: 'Voir coordonnées freelance'
             }
           }
         }

@@ -17,10 +17,10 @@ export default makeStyles(theme => ({
     maxHeight: 323,
   },
   gridCenter: {
+    display: 'flex',
+    textDecoration: 'none',
     paddingLeft: '2%',
-    paddingRight: '2%',
     width: '62%',
-    backgroundColor: "#283028"
   },
   gridCenterFinished: {
     backgroundColor: "#151d15"
@@ -55,11 +55,11 @@ export default makeStyles(theme => ({
   },
   blocAvatar: {
     marginTop: '20%',
-    marginBottom: '2%',
+    marginBottom: '4%',
     width: '100%',
   },
   typo: {
-    padding: 3,
+    padding: 5,
     width: '100%',
     textAlign: 'left'
   },
@@ -93,7 +93,10 @@ export default makeStyles(theme => ({
   buttonIcon: {
     width: 25,
     height: 25,
-    marginTop: 6
+    marginTop: 6,
+    '&:hover span svg g g': {
+      fill: theme.palette.primary.main
+    }
   },
   statusContainer: {
     height: '12%',
@@ -122,5 +125,9 @@ export default makeStyles(theme => ({
   },
   outsideTypo: {
     marginLeft: 10
+  },
+  finishedMission: {
+    paddingTop: 11,
+    color: theme.palette.secondary.main
   }
 }));

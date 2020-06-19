@@ -13,24 +13,25 @@ import { EnCoursIcon } from "../../../assets/icons/EnCoursIcon";
 import { TravailIcon } from "../../../assets/icons/TravailIcon";
 import { RetardIcon } from "../../../assets/icons/RetardIcon";
 import { MissionHistoIcon } from "../../../assets/icons/MissionHistoIcon";
+import { WhiteCircle } from '../../../assets/icons/WhiteCircle';
 import clsx from "clsx";
 import CircularProgress from "@material-ui/core/CircularProgress";
 // import { SettingsOutlined } from '@material-ui/icons';
 
-import { shortenLongText, addTwoWorkingDays } from '../../../utils/services/format';
+import { NavLink } from 'react-router-dom';
+
+import { shortenLongText, addTwoWorkingDays, formatDate } from '../../../utils/services/format';
 import * as moment from 'moment';
 moment.locale('fr');
 
 export const Mission = ({ mission, matching, today, ...props }) => {
   const classes = styles();
   const [open, setOpen] = React.useState(false);
-  const [hoveredMenu, setOveredMenu] = React.useState(false);
 
   const weekly = mission?.brief.missionContext.weeklyRythm || matching?.missionContext.weeklyRythm;
   const durationNb = mission?.brief.missionContext.duration.nb || matching?.missionContext.duration.nb;
   const durationUnit = mission?.brief.missionContext.duration.unit || matching?.missionContext.duration.unit;
   const startDate = mission?.brief.missionContext.startDate || matching?.missionContext.startDate;
-  const formattedDate = moment.unix(startDate).format("DD/MM/YYYY");
 
   const getStatusIcon = (status) => {
     switch (status) {
@@ -50,6 +51,8 @@ export const Mission = ({ mission, matching, today, ...props }) => {
         return <RetardIcon className={classes.icon} />;
       case 6:
         return <MissionHistoIcon className={classes.icon} />;
+      case 'FINISHED':
+        return <WhiteCircle className={classes.icon} />;
       default:
         return <EnCoursIcon className={classes.icon} />; ///////////// CHECK IF ALL CASES ARE OK
     }
@@ -92,14 +95,35 @@ export const Mission = ({ mission, matching, today, ...props }) => {
     }
     const result = getBriefStatus(matching?.status);
     setMatchingValues(result);
-  }, [matching, formattedDate, startDate]);
+  }, [matching, startDate]);
 
-  const missionTitle = () => {
+  const missionStatus = () => {
     if (today && mission?.brief.missionContext.startDate > today) {
       const days = Math.floor((mission?.brief.missionContext.startDate - today) / 86400);
       return `Démarre dans ${days} jour${days > 2 ? 's' : ''}`;
+    } else if (mission?.status === 'FINISHED') {
+      return `Mission finalisée le ${formatDate(mission?.brief.dateEnd)}`
     }
-  }
+  };
+
+  const renderMissionButton = (status) => {
+    switch (status) {
+      case 'WAITING_FOR_CUSTOMER_SELECTION':
+      case 'WAITING_FOR_SIGNATURE':
+        return (
+          <Grid container
+            className={clsx(classes.gridRight, { [classes.withoutButton]: props.status === 6 }, { [classes.rightRed]: props.status === 5 })}
+            alignItems={'center'} justify={'center'}>
+            {props.status !== 6 &&
+              <Grid item>
+                <Typography className={classes.button}>{matchingValues?.buttonText}</Typography>
+              </Grid>}
+          </Grid>
+        )
+      default:
+        break;
+    }
+  };
 
   return (
     <Box mt={3} mb={6}>
@@ -109,15 +133,15 @@ export const Mission = ({ mission, matching, today, ...props }) => {
             <Grid container className={clsx(classes.gridLeft, { [classes.gridLeftFinished]: props.status === 6 })}
               direction={'column'}>
               <Grid container item className={classes.statusContainer} direction={'row'}>
-                {getStatusIcon(matching?.status)}
+                {matching ? getStatusIcon(matching?.status) : getStatusIcon(mission?.status)}
                 <Typography
-                  className={clsx(classes.statusTitle, { [classes.statusTitleRed]: props.status === 5 })}>{matchingValues?.status || missionTitle()}</Typography>
+                  className={clsx(classes.statusTitle, mission?.status === 'FINISHED' ? classes.finishedMission : null, { [classes.statusTitleRed]: props.status === 5 })}>
+                  {matchingValues?.status || missionStatus()}
+                </Typography>
                 <div style={{ flexGrow: 1 }} />
                 <IconButton className={classes.buttonIcon} aria-label="display more actions"
                   onClick={() => setOpen(true)} color="secondary">
-                  <MenuIcon className={classes.menuIcon} hovered={hoveredMenu && hoveredMenu}
-                    onMouseEnter={() => setOveredMenu(true)}
-                    onMouseLeave={() => setOveredMenu(false)} />
+                  <MenuIcon className={classes.menuIcon} />
                 </IconButton>
               </Grid>
               <Grid item className={classes.titleContainer}>
@@ -129,14 +153,15 @@ export const Mission = ({ mission, matching, today, ...props }) => {
               </Grid>
               {open && <LeftOverlay setOpen={setOpen} matching={matching} mission={mission} />}
             </Grid>
-            <Grid container direction={'row'}
+
+            <NavLink
+              to={`/mission/${mission?.externalId}` || `/mission/${matching?.externalId}`}
               className={clsx(classes.gridCenter, { [classes.gridCenterFinished]: props.status === 6 })}>
-              <Grid container item xs={4} direction={'column'} alignItems={'center'}>
+              {/* 1st column */}
+              <Grid item xs={4}>
                 <Grid item className={classes.blocAvatar}>
                   <CircleImage theme={'avatarLarge'} src={mission?.serviceProviderProfile.linkedinAvatar || matchingValues?.avatar} icon={matchingValues?.avatar} />
                 </Grid>
-
-
 
                 {/* ///// */}
                 <Grid item className={classes.blocTypoDownAvatar}>
@@ -145,10 +170,10 @@ export const Mission = ({ mission, matching, today, ...props }) => {
                 </Grid>
                 {/* /////// */}
 
-
-
               </Grid>
-              <Grid container item xs={4} direction={'column'} alignItems={'center'}>
+
+              {/* 2nd column */}
+              <Grid item xs={4}>
                 <Grid item className={classes.blocTypoUp}>
                   <Typography variant={"h4"} className={classes.typo}>Format</Typography>
                   <Typography variant={"body1"} className={classes.typo}>{mission?.brief.missionContext.format || matching?.missionContext.format}</Typography>
@@ -160,7 +185,9 @@ export const Mission = ({ mission, matching, today, ...props }) => {
                   </Typography>
                 </Grid>
               </Grid>
-              <Grid container item xs={4} direction={'column'} alignItems={'center'}>
+
+              {/* 3rd column */}
+              <Grid item xs={4}>
                 <Grid item className={classes.blocTypoUp}>
                   <Typography variant={"h4"} className={classes.typo}>Taux journalier</Typography>
                   <Typography variant={"body1"} className={classes.typo}>{mission?.brief.missionContext.estimatedAverageDailyRate || matching?.missionContext.estimatedAverageDailyRate} €/j</Typography>
@@ -168,33 +195,12 @@ export const Mission = ({ mission, matching, today, ...props }) => {
                 <Grid item className={classes.blocTypoDown}>
                   <Typography variant={"h4"} className={classes.typo}>Durée</Typography>
                   <Typography variant={"body1"} className={classes.typo}>
-                    {durationNb}{' '}{durationUnit.toLowerCase()}{durationNb > 1 && 's'} à partir de {formattedDate}
+                    {durationNb}{' '}{durationUnit.toLowerCase()}{durationNb > 1 && 's'} à partir du {formatDate(startDate)}
                   </Typography>
                 </Grid>
               </Grid>
-            </Grid>
-            {matching?.status === 'WAITING_FOR_CUSTOMER_SELECTION' && (
-              <Grid container
-                className={clsx(classes.gridRight, { [classes.withoutButton]: props.status === 6 }, { [classes.rightRed]: props.status === 5 })}
-                alignItems={'center'} justify={'center'}>
-                {props.status !== 6 &&
-                  <Grid item>
-                    <Typography className={classes.button}>{matchingValues?.buttonText}</Typography>
-                  </Grid>
-                }
-              </Grid>
-            )}
-            {matching?.status === 'WAITING_FOR_SIGNATURE' && (
-              <Grid container
-                className={clsx(classes.gridRight, { [classes.withoutButton]: props.status === 6 }, { [classes.rightRed]: props.status === 5 })}
-                alignItems={'center'} justify={'center'}>
-                {props.status !== 6 &&
-                  <Grid item>
-                    <Typography className={classes.button}>{matchingValues?.buttonText}</Typography>
-                  </Grid>
-                }
-              </Grid>
-            )}
+            </NavLink>
+            {renderMissionButton(matching?.status || mission?.status)}
           </Grid>
           :
           <Grid container direction={'row'} justify={'center'} alignItems={'center'} className={classes.container}>
@@ -204,7 +210,7 @@ export const Mission = ({ mission, matching, today, ...props }) => {
         <Grid container direction={'row'} alignItems={'center'} className={classes.outsideContainer}>
           {matching && <CircleImage />}
           <Typography variant="body2" className={classes.outsideTypo}>
-            {mission ? mission?.secondaryTitle || '' : 'Séverine est en charge de votre dossier'}
+            {mission ? mission?.secondaryMessage || '' : 'Séverine est en charge de votre dossier'}
           </Typography>
         </Grid>
       </Grid>

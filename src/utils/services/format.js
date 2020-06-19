@@ -71,3 +71,8 @@ export const addTwoWorkingDays = (date, nbOfDaysToAdd) => {
   }
   return moment(endDate).format('DD/MM/YYYY');
 }
+
+// Returns timestamps to specified date format
+export const formatDate = (date) => {
+  return moment.unix(date).format("DD/MM/YYYY");
+}
