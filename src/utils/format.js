@@ -1,4 +1,6 @@
 import React from 'react';
+import * as moment from 'moment';
+moment.locale('fr');
 
 /**
  * Formats a text in .json format and creates a new line after each \n
@@ -40,4 +42,22 @@ export const cutoutLongText = text => {
 export const shortenLongText = (text, length) => {
   const andSoOn = text.length >= length ? '...' : '';
   return `${text.substring(0, length)} ${andSoOn}`;
+}
+
+/**
+ * Takes a date, adds a specified number of days and returns the new date, weekends excluded
+ * @param {string} date - The original date, in DD/MM/YYYY format 
+ * @param {number} nbOfDaysToAdd - Number of days to be added
+ * @returns {string} - The new date with specified number of days added, excluding weekends
+ */
+export const addTwoWorkingDays = (date, nbOfDaysToAdd) => {
+  date = new Date(date);
+  let endDate = "", count = 0;
+  while (count < nbOfDaysToAdd) {
+    endDate = new Date(date.setDate(date.getDate() + 1));
+    if (endDate.getDay() !== 0 && endDate.getDay() !== 6) {
+      count++;
+    }
+  }
+  return moment(endDate).format('DD/MM/YYYY');
 }

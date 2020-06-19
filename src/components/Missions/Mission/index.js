@@ -17,7 +17,7 @@ import clsx from "clsx";
 import CircularProgress from "@material-ui/core/CircularProgress";
 // import { SettingsOutlined } from '@material-ui/icons';
 
-import { shortenLongText } from '../../../utils/format';
+import { shortenLongText, addTwoWorkingDays } from '../../../utils/format';
 import * as moment from 'moment';
 moment.locale('fr');
 
@@ -31,24 +31,6 @@ export const Mission = ({ mission, matching, today, ...props }) => {
   const durationUnit = mission?.brief.missionContext.duration.unit || matching?.missionContext.duration.unit;
   const startDate = mission?.brief.missionContext.startDate || matching?.missionContext.startDate;
   const formattedDate = moment.unix(startDate).format("DD/MM/YYYY");
-
-  /**
-   * Takes a date, adds a specified number of days and returns the new date, weekends excluded
-   * @param {string} date - The original date, in DD/MM/YYYY format 
-   * @param {number} nbOfDaysToAdd - Number of days to be added
-   * @returns {string} - The new date with specified number of days added, excluding weekends
-   */
-  const inTwoDays = (date, nbOfDaysToAdd) => {
-    date = new Date(date);
-    let endDate = "", count = 0;
-    while (count < nbOfDaysToAdd) {
-      endDate = new Date(date.setDate(date.getDate() + 1));
-      if (endDate.getDay() !== 0 && endDate.getDay() !== 6) {
-        count++;
-      }
-    }
-    return moment(endDate).format('DD/MM/YYYY');
-  }
 
   const getStatusIcon = (status) => {
     switch (status) {
@@ -89,7 +71,7 @@ export const Mission = ({ mission, matching, today, ...props }) => {
             status: 'Matching en cours',
             avatar: match,
             title: 'Matching en cours',
-            subtext: `Garanti en 48h.\n Estimé au ${inTwoDays(formattedDate, 2)}`
+            subtext: `Garanti en 48h.\n Estimé au ${addTwoWorkingDays(startDate * 1000, 2)}`
           };
         case 'WAITING_FOR_CUSTOMER_SELECTION':
           return {
@@ -110,7 +92,7 @@ export const Mission = ({ mission, matching, today, ...props }) => {
     }
     const result = getBriefStatus(matching?.status);
     setMatchingValues(result);
-  }, [matching, formattedDate]);
+  }, [matching, formattedDate, startDate]);
 
   const missionTitle = () => {
     if (today && mission?.brief.missionContext.startDate > today) {
