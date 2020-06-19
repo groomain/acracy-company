@@ -15,7 +15,7 @@ import {
 // Infos for the "drafts" section (carousel)
 function* doGetLeads(action) {
   try {
-    const apiURL = `/leads?include-status[]=DRAFT&exclude-status[]=HELP_NEEDED`;
+    const apiURL = `/leads?include-status[]=DRAFT&include-status[]=HELP_NEEDED`;
     const params = {
       headers: {
         'x-api-key': config.apiKey
@@ -35,13 +35,13 @@ function* doDeleteLead(action) {
   const leadId = action.payload;
   console.log('function*doDeleteLead -> leadId', leadId)
   try {
-    const apiURL = `/leads/${leadId}`;
+    const apiURL = `/leads/${leadId}/actions`;
     const params = {
       headers: {
         'x-api-key': config.apiKey
       },
       body: {
-        'status': 'DELETED'
+        'type': 'DELETE'
       }
     };
 
