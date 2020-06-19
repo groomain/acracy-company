@@ -28,6 +28,8 @@ import CustomSelect from "../../components/Inputs/CustomSelect";
 import CustomTextArea from "../../components/Inputs/CustomTextArea";
 import Dialog from '@material-ui/core/Dialog';
 import Popover from "@material-ui/core/Popover";
+import CloseIcon from '@material-ui/icons/Close';
+import IconButton from "@material-ui/core/IconButton";
 
 const ProfileSelection = (props) => {
     const classes = styles();
@@ -68,7 +70,7 @@ const ProfileSelection = (props) => {
     const [contactOpen, setContactModaleOpen] = useState(false);
     const [contactMessage, setContactMessage] = useState('');
 
-    // Contact Modale
+    // Interview Modale
     const [interviewOpen, setInterviewOpen] = useState(false);
     const [interviewMessage, setInterviewMessage] = useState('');
 
@@ -558,6 +560,9 @@ const ProfileSelection = (props) => {
             </Dialog>
             <Dialog open={noProfileModaleOpen} onClose={handleNoProfileModaleOpen} classes={{ paper: classes.modale}}>
                 <Grid item container direction={'column'} justify={'center'} className={classes.modaleContainer}>
+                    <IconButton aria-label="close" className={classes.iconButton} onClick={handleNoProfileModaleOpen}>
+                        <CloseIcon />
+                    </IconButton>
                     <Typography variant={"h1"}>Aucun profil ne me convient</Typography>
                     <Typography variant={"body1"} style={{marginBottom: 20}}>Afin de pouvoir améliorer nos futures propositions, n’hésitez pas à
                         nous dire la raison du refus de ces profils.</Typography>
@@ -568,6 +573,9 @@ const ProfileSelection = (props) => {
             </Dialog>
             <Dialog open={validateChoiceModaleOpen} onClose={handleValidateChoiceModaleOpen} classes={{ paper: classes.modale}}>
                 <Grid item container direction={'column'} justify={'center'} className={classes.modaleContainer}>
+                    <IconButton aria-label="close" className={classes.iconButton} onClick={handleValidateChoiceModaleOpen}>
+                        <CloseIcon />
+                    </IconButton>
                     <Typography variant={"h1"}>Confirmation sélection</Typography>
                     <Typography variant={"body1"} >Vous êtes sur le point de confirmer la sélection des profils.</Typography>
                     <Typography variant={"body1"} style={{marginBottom: 20}}>En confirmant, vous recevrez un email sur <span style={{color: "#ecf805"}}>prénomnom@entreprise.com</span> vous invitant à signer le devis.</Typography>
@@ -579,6 +587,9 @@ const ProfileSelection = (props) => {
             </Dialog>
             <Dialog open={contactOpen} onClose={handleContactOpen} classes={{ paper: classes.modale }}>
                 <Grid item container direction={'column'} justify={'center'} className={classes.modaleContainer}>
+                    <IconButton aria-label="close" className={classes.iconButton} onClick={handleContactOpen}>
+                        <CloseIcon />
+                    </IconButton>
                     <Typography variant={"h1"}>Faire une demande à acracy</Typography>
                     <CustomTextArea style={{height: 328}} placeholder={"Dites nous comment on peut vous aider"} valueOut={contactMessage} handleChangeOut={setContactMessage}/>
                     <CustomButton theme={"filledButton"} style={{width: 254}} title={"Envoyé"} handleClick={() => contactAcracy(contactMessage)} loading={contactLoading}/>
@@ -586,6 +597,9 @@ const ProfileSelection = (props) => {
             </Dialog>
             <Dialog open={interviewOpen} onClose={handleInterviewOpen} classes={{ paper: classes.modale }}>
                 <Grid item container direction={'column'} justify={'center'} className={classes.modaleContainer}>
+                    <IconButton aria-label="close" className={classes.iconButton} onClick={handleInterviewOpen}>
+                        <CloseIcon />
+                    </IconButton>
                     <Typography variant={"h1"}>Confirmation d'entretien</Typography>
                     <CustomTextArea style={{height: 328}} placeholder={"Donnez nous plus de détails sur ces entretiens"} valueOut={interviewMessage} handleChangeOut={setInterviewMessage}/>
                     <CustomButton theme={"filledButton"} style={{width: 254}} title={"Envoyé"} handleClick={() => contactAcracy(interviewMessage)} loading={contactLoading}/>

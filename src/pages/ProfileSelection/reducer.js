@@ -11,7 +11,7 @@ const initialState = Immutable.Map({
   validateResponse: null,
   validateLoading: false,
   validateError: null,
-  validateCodeError: 409,
+  validateCodeError: null,
   checkedProfilesStore: [],
   contactResponse: null,
   contactLoading: false,

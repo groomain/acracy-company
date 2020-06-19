@@ -231,4 +231,10 @@ export const styles = makeStyles(theme => ({
   paperPopover: {
     padding: theme.spacing(1),
   },
+  iconButton: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    color: theme.palette.secondary.main,
+  }
 }));
