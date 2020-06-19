@@ -12,13 +12,20 @@ export default makeStyles(theme => ({
     padding: '54px 0'
   },
   row: {
+    display: 'flex',
+    alignItems: 'center',
     cursor: 'pointer',
     padding: '8px 25px',
+    color: theme.palette.secondary.main,
+    textDecoration: 'none',
     '&:hover svg g, &:hover svg path': {
       stroke: theme.palette.primary.main
     },
     '&:hover': {
       color: theme.palette.primary.main
+    },
+    '& svg': {
+      marginTop: 6
     }
   },
   closeIcon: {

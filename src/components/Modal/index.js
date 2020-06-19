@@ -1,8 +1,7 @@
 import React from 'react';
 import Dialog from '@material-ui/core/Dialog';
-import MuiDialogTitle from '@material-ui/core/DialogTitle';
-import Typography from '@material-ui/core/Typography';
-import IconButton from '@material-ui/core/IconButton';
+import { DialogTitle, Typography, Grid, IconButton } from '@material-ui/core/';
+
 import CloseIcon from '@material-ui/icons/Close';
 import styles from './styles';
 
@@ -15,7 +14,7 @@ export const CustomModal = ({ open, handleClose, title, text, children, ...props
       onClose={handleClose}
       classes={{ paper: classes.root }}
     >
-      <MuiDialogTitle id="max-width-dialog-title" className={classes.dialog}>
+      <DialogTitle id="max-width-dialog-title" >
         <IconButton aria-label="close" className={classes.iconButton} onClick={handleClose}>
           <CloseIcon className={classes.iconLabel} />
         </IconButton>
@@ -23,9 +22,9 @@ export const CustomModal = ({ open, handleClose, title, text, children, ...props
         <Typography variant='h1'>
           {title}
         </Typography>
-      </MuiDialogTitle>
-      {children}
-    </Dialog >
+      </DialogTitle>
+      <Grid>{children}</Grid>
+    </Dialog>
   );
 }
 

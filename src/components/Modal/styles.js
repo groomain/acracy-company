@@ -4,14 +4,10 @@ export default makeStyles(theme => ({
   root: {
     margin: 0,
     borderRadius: 15,
-    backgroundColor: 'transparent'
-  },
-  dialog: {
-    borderRadius: 15,
-    backgroundColor: theme.palette.secondary.modalGreen,
-    padding: 30,
     minHeight: '30vh',
     minWidth: '30vw',
+    backgroundColor: theme.palette.secondary.modalGreen,
+    padding: 15,
   },
   iconButton: {
     position: 'absolute',
@@ -19,5 +15,4 @@ export default makeStyles(theme => ({
     right: 0,
     color: theme.palette.secondary.main,
   },
-
 }));
