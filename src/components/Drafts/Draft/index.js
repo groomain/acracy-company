@@ -33,64 +33,52 @@ const Draft = ({ draft }) => {
     deletingLeadLoading: state.getIn(['leads', 'deletingLeadLoading']),
   }));
   const [open, setOpen] = useState(false);
-  const [newDraft, setNewDraft] = useState(false);
   const [getStatusResult, setGetStatusResult] = useState();
-  const [path, setPath] = useState([]);
 
   const startDate = draft?.missionContext.startDate;
   const date = moment.unix(startDate).format("MM.DD à hh:mm");
 
   /**
-   * Goes through an object (nested or not) to check for empty values
-   * @param {object} obj - The object to check for empty values 
+   * Goes through a complex object (with nested objects) to check for empty values
+   * @param {object} obj - The complex object to check for empty values 
    * @param {string} path - The base string to be concatenated with the path of the missing values
    * @returns {array} - A list of all missing values, the path of the key being represented as a string separated by '.' (ex : obj.draft.status)
    */
-  useEffect(() => {
-    const getPath = (obj, path) => {
-      var props = [];
-      for (var key in obj) {
-        if (obj[key] === "") {
-          props.push(path + '.' + key);
-        }
-        if (obj[key] instanceof Object) {
-          props.push.apply(props, getPath(obj[key], path + '.' + key));
-        }
+  const getPath = (obj, path) => {
+    var props = [];
+    for (var key in obj) {
+      if (obj[key] === "" || obj[key].length === 0) {
+        props.push(path + '.' + key);
       }
-      return props;
-    };
-    setPath(getPath(draft, "obj"));
-  }, [draft]);
-
-  useEffect(() => {
-    if (path.length > 1 && !path["obj.search.text"]) {
-      setNewDraft(true);
+      if (obj[key] instanceof Object) {
+        props.push.apply(props, getPath(obj[key], path + '.' + key));
+      }
     }
-  }, [path, dispatch]);
+    return props;
+  };
+
+  const missionContextLength = getPath(draft?.missionContext, 'missionContext').length;
+  const missionDetailEmpty = getPath(draft?.missionDetail, 'missionDetail').length > 1;
 
   useEffect(() => {
-    const getStatus = (draftStatus, path) => {
+    const getStatus = (draftStatus) => {
       let status;
       if (draftStatus === 'DRAFT') {
-        if (path.length < 1) {
+        if (missionContextLength !== 0) {
           return status = {
             title: START_LEAD,
             progress: 10,
             status: 'lead'
           }
-        } else if (path.length > 1 && !path["obj.search.text"]) {
-          return status = {
-            title: START_LEAD,
-            progress: 30
-          }
-        } else {
+        }
+        else {
           return status = {
             title: FINALIZE_BRIEF,
             progress: 80
           }
         }
       } else if (draftStatus === 'HELP_NEEDED') {
-        if (path.length < 1) {
+        if (missionContextLength !== 0) {
           return status = {
             title: GET_CALLED,
             progress: 40
@@ -103,9 +91,9 @@ const Draft = ({ draft }) => {
         }
       }
     }
-    const result = getStatus(draft?.status, path);
+    const result = getStatus(draft?.status);
     setGetStatusResult(result);
-  }, [FINALIZE_BRIEF, GET_CALLED, START_LEAD, draft, draft.status, path]);
+  }, [FINALIZE_BRIEF, GET_CALLED, START_LEAD, draft, draft.status, missionContextLength]);
 
   const renderIcon = (getStatusResult) => {
     if (getStatusResult?.title === GET_CALLED) {
@@ -122,7 +110,7 @@ const Draft = ({ draft }) => {
   };
 
   const setLeadStep = () => {
-    if (getStatusResult?.status === 'lead' || newDraft) {
+    if (getStatusResult?.status === 'lead' || !draft?.missionContext.title) {
       dispatch(setLeadCreationStep(null))
     } else {
       dispatch(setLeadCreationStep(2))
@@ -153,12 +141,9 @@ const Draft = ({ draft }) => {
         onClick={setLeadStep}
       >
         <Box className={classes.titleBox}>
-          {newDraft
-            ? <Typography variant='h3' className={classes.newDraft}>
-              {t('draft.newBriefTitle')}
-            </Typography>
-            : <Typography variant='h3'>{shortenLongText(draft?.missionContext.title, 37)}</Typography>
-          }
+          <Typography variant='h3' className={draft?.missionContext.title ? null : classes.newDraft}>
+            {draft?.missionContext.title ? shortenLongText(draft?.missionContext.title, 42) : t('draft.newBriefTitle')}
+          </Typography>
         </Box>
       </NavLink>
       <Grid container>

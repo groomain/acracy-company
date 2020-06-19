@@ -10,9 +10,10 @@ export default makeStyles(theme => ({
     padding: '10px 20px',
     position: 'relative',
     margin: 15,
+    alignContent: 'space-between'
   },
   titleBox: {
-    margin: '27px 50px 15px 0',
+    margin: '0 20px 0 0',
     '& h3': {
       lineHeight: 1.55
     }
