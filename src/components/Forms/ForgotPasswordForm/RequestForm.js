@@ -7,7 +7,7 @@ import styles from '../../../utils/styles';
 import { CustomButton } from '../../Button';
 import CustomTextField from '../../Inputs/CustomTextField';
 
-import { checkLength } from '../../../utils/validationChecks';
+import { checkLength } from '../../../utils/services/validationChecks';
 
 const RequestForm = (props) => {
   const { t } = useTranslation();

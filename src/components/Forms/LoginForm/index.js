@@ -5,7 +5,7 @@ import { CustomButton } from '../../Button';
 import Grid from '@material-ui/core/Grid';
 import CustomTextField, { CustomPasswordField } from "../../Inputs/CustomTextField";
 import { NavLink } from "react-router-dom";
-import { checkLength } from '../../../utils/validationChecks';
+import { checkLength } from '../../../utils/services/validationChecks';
 
 import styles from "./styles";
 

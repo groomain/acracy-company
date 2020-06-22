@@ -6,7 +6,7 @@ import { CustomButton } from '../../Button';
 import { Grid } from '@material-ui/core';
 import CustomTextField from "../../Inputs/CustomTextField";
 
-import { checkLength } from '../../../utils/validationChecks';
+import { checkLength } from '../../../utils/services/validationChecks';
 
 const ConfirmSignupForm = (props) => {
   const { t } = useTranslation();
