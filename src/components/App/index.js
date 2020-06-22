@@ -34,7 +34,7 @@ function App() {
       <PublicRoute exact path="/signup" fixed component={SignUpPage} />
       <PublicRoute exact path="/confirm-signup" fixed component={ConfirmSignupPage} />
       <PublicRoute exact path="/password" fixed component={ForgotPassword} />
-      <PublicRoute exact path="/newbrief" fixed component={LeadCreationPage} />
+      <PublicRoute exact path="/lead" fixed component={LeadCreationPage} />
       <PrivateRoute exact path="/firstlogin" fixed component={FirstLoginPage} />
       <PrivateRoute exact path="/home" fixed component={HomePage} />
       <PrivateRoute exact path="/account" fixed component={MyAccount} />
