@@ -9,7 +9,11 @@ import {
   getMissionsSuccess,
   getMissionsFailure,
   getBriefsSuccess,
-  getBriefsFailure
+  getBriefsFailure,
+  getQuotesSuccess,
+  getQuotesFailure,
+  getCompaniesSuccess,
+  getCompaniesFailure
 } from './reducer';
 
 // Infos for the "drafts" section (carousel)
@@ -76,7 +80,7 @@ function* doGetMissions(action) {
 // Infos for the "profile matching" section
 function* doGetBriefs(action) {
   try {
-    const apiURL = `/briefs?exclude-status[]=CLOSED`;
+    const apiURL = `/briefs?exclude-status[]=CLOSED&exculde-status[]=ABANDONED&exclude-status[]=IN_PROGRESS`;
     const params = {
       headers: {
         'x-api-key': config.apiKey
@@ -92,11 +96,53 @@ function* doGetBriefs(action) {
   }
 }
 
+// Get infos on the associated freelance
+function* doGetQuotes(action) {
+  const briefId = action.payload;
+  try {
+    const apiURL = `/quotes?briefId=${briefId}`;
+    const params = {
+      headers: {
+        'x-api-key': config.apiKey
+      },
+      body: {}
+    };
+
+    const quotes = yield API.get(config.apiGateway.NAME, apiURL, params);
+    yield put(getQuotesSuccess(quotes));
+  } catch (error) {
+    console.log(error);
+    yield put(getQuotesFailure());
+  }
+}
+
+// Get the company's infos before redirection to the reveals page
+function* doGetCompanies(action) {
+  const companyId = action.payload;
+  try {
+    const apiURL = `/companies/${companyId}`;
+    const params = {
+      headers: {
+        'x-api-key': config.apiKey
+      },
+      body: {}
+    };
+
+    const companies = yield API.get(config.apiGateway.NAME, apiURL, params);
+    yield put(getCompaniesSuccess(companies));
+  } catch (error) {
+    console.log(error);
+    yield put(getCompaniesFailure());
+  }
+}
+
 export default function* dashboardSagas() {
   yield all([
     takeLatest('Leads/getLeadsLaunched', doGetLeads),
     takeLatest('Leads/deleteLeadLaunched', doDeleteLead),
     takeLatest('Leads/getMissionsLaunched', doGetMissions),
     takeLatest('Leads/getBriefsLaunched', doGetBriefs),
+    takeLatest('Leads/getQuotesLaunched', doGetQuotes),
+    takeLatest('Leads/getCompaniesLaunched', doGetCompanies)
   ])
 }

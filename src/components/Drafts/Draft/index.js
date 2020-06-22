@@ -17,6 +17,7 @@ import WaitingForCallIcon from '../../../assets/icons/en-attente-de-rappel.svg';
 import { setLeadCreationStep } from '../../../pages/HomePage/reducer';
 import { shortenLongText } from '../../../utils/services/format';
 import { deleteLeadLaunched } from '../../../pages/HomePage/reducer';
+import { getPath } from '../../../utils/services/validationChecks';
 
 moment.locale('fr');
 
@@ -38,27 +39,7 @@ const Draft = ({ draft }) => {
   const startDate = draft?.missionContext.startDate;
   const date = moment.unix(startDate).format("MM.DD à hh:mm");
 
-  /**
-   * Goes through a complex object (with nested objects) to check for empty values
-   * @param {object} obj - The complex object to check for empty values 
-   * @param {string} path - The base string to be concatenated with the path of the missing values
-   * @returns {array} - A list of all missing values, the path of the key being represented as a string separated by '.' (ex : obj.draft.status)
-   */
-  const getPath = (obj, path) => {
-    var props = [];
-    for (var key in obj) {
-      if (obj[key] === "" || obj[key].length === 0) {
-        props.push(path + '.' + key);
-      }
-      if (obj[key] instanceof Object) {
-        props.push.apply(props, getPath(obj[key], path + '.' + key));
-      }
-    }
-    return props;
-  };
-
   const missionContextLength = getPath(draft?.missionContext, 'missionContext').length;
-  const missionDetailEmpty = getPath(draft?.missionDetail, 'missionDetail').length > 1;
 
   useEffect(() => {
     const getStatus = (draftStatus) => {

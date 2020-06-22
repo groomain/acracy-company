@@ -2,12 +2,13 @@ import React, { useState } from 'react';
 import styles from './styles';
 import { useTranslation } from "react-i18next";
 
-import { Grid } from "@material-ui/core";
+import { Grid, Typography } from "@material-ui/core";
 import { IncidentIcon } from "../../../../assets/icons/IncidentIcon";
 import { AdresseIcon } from "../../../../assets/icons/AdresseIcon";
 import { DownloadIcon } from "../../../../assets/icons/DownloadIcon";
 import { CloseIcon } from "../../../../assets/icons/CloseIcon";
 import CustomModal from '../../../Modal';
+import CircleImage from '../../../CircleImage';
 
 export const LeftOverlay = ({ matching, mission, ...props }) => {
   const { t } = useTranslation();
@@ -32,10 +33,13 @@ export const LeftOverlay = ({ matching, mission, ...props }) => {
     if (mission) {
       return (
         <>
-          <Grid item container direction={'row'} className={classes.row}>
+          <a href={mission?.brief?.signedQuotes?.name}
+            rel="noopener noreferrer"
+            target='_blank'
+            className={classes.row}>
             <DownloadIcon />
               Télécharger devis
-          </Grid>
+          </a>
           <Grid item container direction={'row'} className={classes.row}
             onClick={() => setFreelanceInfosOpen(true)}>
             <AdresseIcon />
@@ -74,12 +78,16 @@ export const LeftOverlay = ({ matching, mission, ...props }) => {
           open={freelanceInfosOpen}
           handleClose={() => setFreelanceInfosOpen(false)}
         >
-          {/* get /serviceProviders/${serviceProviderId} <-- quel id depuis mission ?}
-
-
-          <Typography variant="subtitle1">{mission?.serviceProviderProfile.firstName}</Typography>
-          <Typography>{mission?.serviceProviderProfile.linkedinLink}</Typography>
-          <Typography>{mission?.serviceProviderProfile.linkedinLink}</Typography> */}
+          <Grid container>
+            <Grid item container xs={4} alignItems='center'>
+              <CircleImage theme="avatarMedium" src={mission?.serviceProviderProfile.linkedinAvatar} />
+            </Grid>
+            <Grid item>
+              <Typography variant="subtitle1">{mission?.serviceProviderProfile.firstName}</Typography>
+              <Typography>{mission?.serviceProviderProfile?.email}</Typography>
+              <Typography>(+{mission?.serviceProviderProfile?.phoneNumber?.code}) {mission?.serviceProviderProfile?.phoneNumber?.number.match(/.{2}/g).join(' ').substring(1)}</Typography>
+            </Grid>
+          </Grid>
         </CustomModal>
       )}
     </>

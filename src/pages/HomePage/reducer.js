@@ -12,7 +12,12 @@ const initialState = Immutable.Map({
   missionsData: null,
   leadCreationStep: null,
   briefsLoading: false,
-  briefsData: null
+  briefsData: null,
+  quotes: null,
+  quotesLoading: false,
+  companiesData: null,
+  companiesLoading: false,
+  comingFromDashboard: false
 });
 
 const { actions, reducer } = createSlice({
@@ -63,6 +68,28 @@ const { actions, reducer } = createSlice({
     getBriefsFailure: (state, action) => state
       .set('briefsLoading', false)
       .set('briefsData', null),
+    getQuotesLaunched: (state, action) => state
+      .set('quotesLoading', true)
+      .set('quotes', null),
+    getQuotesSuccess: (state, action) => state
+      .set('quotes', action.payload.quotes)
+      .set('quotesLoading', false),
+    getQuotesFailure: (state, action) => state
+      .set('quotes', null)
+      .set('quotesLoading', false),
+
+    // Companies infos for before redirection
+    getCompaniesLaunched: (state, action) => state
+      .set('companiesData', null)
+      .set('companiesLoading', true),
+    getCompaniesSuccess: (state, action) => state
+      .set('companiesData', action.payload.companies)
+      .set('companiesLoading', false),
+    getCompaniesFailure: (state, action) => state
+      .set('companiesData', null)
+      .set('companiesLoading', false),
+    setComingFromDashboard: (state, action) => state
+      .set('comingFromDashboard', action.payload)
   }
 });
 
@@ -80,6 +107,13 @@ export const {
   getBriefsLaunched,
   getBriefsSuccess,
   getBriefsFailure,
+  getQuotesLaunched,
+  getQuotesSuccess,
+  getQuotesFailure,
+  getCompaniesLaunched,
+  getCompaniesSuccess,
+  getCompaniesFailure,
+  setComingFromDashboard
 } = actions;
 
 export default reducer;
