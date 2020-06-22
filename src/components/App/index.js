@@ -15,7 +15,6 @@ import FirstLoginPage from '../../pages/FirstLogin';
 import MyAccount from "../../pages/MyAccount";
 import CustomAppBar from "../AppBar";
 import ProgressBar from "../ProgressBar";
-// import Dashboard from '../../pages/HomePage/dashboard';
 import CustomLoader from '../Loader';
 
 function App() {
@@ -36,7 +35,6 @@ function App() {
       <PublicRoute exact path="/password" fixed component={ForgotPassword} />
       <PrivateRoute exact path="/firstlogin" fixed component={FirstLoginPage} />
       <PrivateRoute exact path="/home" fixed component={HomePage} />
-      {/* <PublicRoute path='/dashboard' component={Dashboard} /> */}
       <PrivateRoute exact path="/account" fixed component={MyAccount} />
     </Switch>
   );

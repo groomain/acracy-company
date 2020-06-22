@@ -5,7 +5,7 @@ import { DialogTitle, Typography, Grid, IconButton } from '@material-ui/core/';
 import CloseIcon from '@material-ui/icons/Close';
 import styles from './styles';
 
-export const CustomModal = ({ open, handleClose, title, text, children, isCloseButton, disableBackdrop, ...props }) => {
+export const CustomModal = ({ open, handleClose, title, text, children, withoutButton, disableBackdrop, ...props }) => {
   const classes = styles();
 
   return (
@@ -16,7 +16,7 @@ export const CustomModal = ({ open, handleClose, title, text, children, isCloseB
       disableBackdropClick={disableBackdrop}
     >
       <DialogTitle className={classes.dialogTitleBox} >
-        {isCloseButton && <IconButton aria-label="close" className={classes.iconButton} onClick={handleClose}>
+        {!withoutButton && <IconButton aria-label="close" className={classes.iconButton} onClick={handleClose}>
           <CloseIcon className={classes.iconLabel} />
         </IconButton>}
         <br />

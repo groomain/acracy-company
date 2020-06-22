@@ -134,7 +134,7 @@ export const Mission = ({ mission, matching, today, ...props }) => {
     } else {
       setLoadingButton(true);
       dispatch(getCompaniesLaunched());
-      if (companiesData && getPath(companiesData, 'companiesData').length !== 0) {
+      if (!companiesData || getPath(companiesData, 'companiesData').length !== 0) {
         setRedirectionPopupOpen(true);
       } else {
         dispatch(setComingFromDashboard(true)); // Initialize the redirection from the administrative page -> true ? push('/reveal')
@@ -275,7 +275,7 @@ export const Mission = ({ mission, matching, today, ...props }) => {
             open={redirectionPopupOpen}
             handleClose={() => setRedirectionPopupOpen(false)}
             title="Avant d’accéder à la sélection nous avons besoin de vos informations administratives"
-            isCloseButton={false}
+            withoutButton
             disableBackdrop
           >
             <Typography>Cela ne prend que quelques minutes, nous avons une page dédiée pour ça.</Typography>
