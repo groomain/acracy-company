@@ -12,6 +12,10 @@ export default makeStyles(theme => ({
     height: '122px',
     backgroundColor: theme.palette.secondary.mid
   },
+  avatarMedium: {
+    width: 91,
+    height: 91
+  },
   avatarSmall: {
     width: '50px',
     height: '50px',

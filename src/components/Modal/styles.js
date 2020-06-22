@@ -7,7 +7,13 @@ export default makeStyles(theme => ({
     minHeight: '30vh',
     minWidth: '30vw',
     backgroundColor: theme.palette.secondary.modalGreen,
-    padding: 15,
+    padding: '0 30px 45px 30px',
+  },
+  dialogTitleBox: {
+    padding: '30px 0'
+  },
+  dialogTitle: {
+    fontSize: 34
   },
   iconButton: {
     position: 'absolute',
