@@ -26,12 +26,13 @@ const LeadCreationPage = () => {
   const dispatch = useDispatch();
   const ref = useRef();
 
-  const { leadSaveLoading, leadDraftData, deliverablesArray, dateFromCalendar, missionTitle } = useSelector(state => ({
+  const { leadSaveLoading, leadDraftData, deliverablesArray, dateFromCalendar, missionTitle, dailyRate } = useSelector(state => ({
     leadSaveLoading: state.getIn(['leadCreation', 'leadSaveLoading']),
     leadDraftData: state.getIn(['leadCreation', 'leadDraftData']),
     deliverablesArray: state.getIn(['leadCreation', 'deliverablesArray']),
     dateFromCalendar: state.getIn(['leadCreation', 'dateFromCalendar']),
-    missionTitle: state.getIn(['leadCreation', 'missionTitle'])
+    missionTitle: state.getIn(['leadCreation', 'missionTitle']),
+    dailyRate: state.getIn(['leadCreation', 'dailyRate'])
   }));
 
   const setDesireds = (leads, values, deliverables) => {
@@ -93,59 +94,7 @@ const LeadCreationPage = () => {
     }
   }
 
-  const getFrequency = (frequency) => {
-    switch (frequency) {
-      case 'Temps partiel (1 jour)':
-        return (1)
-      case 'Temps partiel (2 jour)':
-        return (2)
-      case 'Temps partiel (3 jour)':
-        return (3)
-      case 'Temps partiel (4 jour)':
-        return (4)
-      case 'Plein temps (5 jours)':
-        return (5)
-      default:
-    }
-  }
-
-  const setEstimatedRate = (values) => {
-    console.log('EEEEEEEEE values :', values);
-
-    let estimatedRate;
-    if (values) {
-      if (values.budget && values.budgetType && values.duration && values.durationType && values.frequency) {
-        let daysNb = getFrequency(values.frequency);
-        if (values.budgetType === 'Taux journalier') {
-          // montant global = budget x durée x nbprofils x 1.15
-          // "Soit un montant global de XXX€, commission acracy incluse."
-          if (values.durationType === 'Mois') {
-            estimatedRate = parseInt(values.budget, 10) * daysNb * parseInt(values.duration, 10) * 4 * parseInt(values.profilesNumber, 10) * 1.15;
-            console.log('estimatedRate months:', estimatedRate);
-          } else if (values.durationType === 'Semaines') {
-            estimatedRate = parseInt(values.budget, 10) * daysNb * parseInt(values.duration, 10) * parseInt(values.profilesNumber, 10) * 1.15;
-            console.log('estimatedRate week:', estimatedRate);
-          } else if (values.durationType === 'Jours') {
-            estimatedRate = parseInt(values.budget, 10) * parseInt(values.duration, 10) * parseInt(values.profilesNumber, 10) * 1.15;
-            console.log('estimatedRate days:', estimatedRate);
-          }
-        } else if (values.budgetType === 'Budget total') {
-          // TMJ = (budgetx0.85) / nb jours / nb profils
-          // "Soit un taux journalier de XX€, une fois la commission acracy déduite."
-          if (values.durationType === 'Mois') {
-            console.log('estimatedRate months:', estimatedRate);
-          } else if (values.durationType === 'Semaines') {
-            console.log('estimatedRate week:', estimatedRate);
-          } else if (values.durationType === 'Jours') {
-            console.log('estimatedRate days:', estimatedRate);
-          }
-        }
-      }
-    }
-  }
-
   leadSave = (leads, deliverables, formData, needHelp) => {
-    // console.log('formContent :', formContent);
     console.log('needHelp :', needHelp);
     console.log("leads (algolia): ", leads);              // resultat algolia
     console.log(" ref formik", ref.current.state.values);  // data formulaire
@@ -159,32 +108,30 @@ const LeadCreationPage = () => {
     };
 
     console.log('values :', values);
-    // let customDeliverable = values.customDeliverable;
     let getSearchResult;
     let getDesireds;
     let getEstimatedRate;
-    let getHelp = '';
+    let getStatus = '';
     if (needHelp === true) {
-      getHelp = 'HELP_NEEDED';
+      getStatus = 'HELP_NEEDED';
+    } else {
+      getStatus = 'DRAFT';
     }
-    console.log('getHelp :', getHelp);
-    console.log('1')
-
-    console.log('2')
+    console.log('getStatus :', getStatus);
 
     if (leads && values && deliverables) {
       getDesireds = setDesireds(leads, values, deliverables);
       console.log('getDesireds :', getDesireds);
     }
-    // search n'a pas la meme forme quand saisie libre !!!!!!!!!!!!!!!!!!!
+
+    // search results don't have the same content when the user searches with his own words. 
+    // checking search results:
     if (search) {
       getSearchResult = setSearchResultType(search);
       console.log('getSearchResult :', getSearchResult);
     }
 
-    getEstimatedRate = setEstimatedRate(values);
-
-    console.log('3')
+    // getEstimatedRate = setEstimatedRate(values);////////////////////////////////////////////
 
     let leadDraft = {
       search: getSearchResult || '',
@@ -201,11 +148,11 @@ const LeadCreationPage = () => {
           value: values.budget || '',
           type: values.budgetType || ''
         },
-        estimatedAverageDailyRate: getEstimatedRate || '',
+        estimatedAverageDailyRate: dailyRate,
         profilNumber: values.profilesNumber || '',
         adress: values.companyAddress || '',
         desireds: getDesireds || '',
-        status: getHelp
+        status: getStatus
       },
     };
     console.log('leadDraft :', leadDraft);
