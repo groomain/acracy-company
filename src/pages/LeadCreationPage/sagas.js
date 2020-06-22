@@ -14,7 +14,7 @@ function* doLeadSave(action) {
       body: action.payload
     });
 
-    yield put(leadSaveSuccess());
+    yield put(leadSaveSuccess(leads));
   } catch (error) {
     console.log(error);
     yield put(leadSaveFailure());
