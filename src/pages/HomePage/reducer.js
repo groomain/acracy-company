@@ -91,7 +91,15 @@ const { actions, reducer } = createSlice({
       .set('companiesData', null)
       .set('companiesLoading', false),
     setComingFromDashboard: (state, action) => state
-      .set('comingFromDashboard', action.payload)
+      .set('comingFromDashboard', action.payload),
+
+    // Send Incident Message
+    sendIncidentMessageLaunched: (state, action) => state
+      .set('sendMessageLoading', true),
+    sendIncidentMessageSuccess: (state, action) => state
+      .set('sendMessageLoading', false),
+    sendIncidentMessageFailure: (state, action) => state
+      .set('sendMessageLoading', false),
   }
 });
 
@@ -115,7 +123,10 @@ export const {
   getCompaniesLaunched,
   getCompaniesSuccess,
   getCompaniesFailure,
-  setComingFromDashboard
+  setComingFromDashboard,
+  sendIncidentMessageLaunched,
+  sendIncidentMessageSuccess,
+  sendIncidentMessageFailure
 } = actions;
 
 export default reducer;

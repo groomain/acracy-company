@@ -13,7 +13,9 @@ import {
   getQuotesSuccess,
   getQuotesFailure,
   getCompaniesSuccess,
-  getCompaniesFailure
+  getCompaniesFailure,
+  sendIncidentMessageSuccess,
+  sendIncidentMessageFailure
 } from './reducer';
 
 // Infos for the "drafts" section (carousel)
@@ -136,6 +138,29 @@ function* doGetCompanies(action) {
   }
 }
 
+// 
+function* doSendIncidenMessage(action) {
+  const message = action.payload;
+  try {
+    const apiURL = `/messages`;
+    const params = {
+      headers: {
+        'x-api-key': config.apiKey
+      },
+      body: {
+        type: 'COMPANY_MISSION_INCIDENT',
+        message: message
+      }
+    };
+
+    yield API.post(config.apiGateway.NAME, apiURL, params);
+    yield put(sendIncidentMessageSuccess());
+  } catch (error) {
+    console.log(error);
+    yield put(sendIncidentMessageFailure());
+  }
+}
+
 export default function* dashboardSagas() {
   yield all([
     takeLatest('Leads/getLeadsLaunched', doGetLeads),
@@ -143,6 +168,7 @@ export default function* dashboardSagas() {
     takeLatest('Leads/getMissionsLaunched', doGetMissions),
     takeLatest('Leads/getBriefsLaunched', doGetBriefs),
     takeLatest('Leads/getQuotesLaunched', doGetQuotes),
-    takeLatest('Leads/getCompaniesLaunched', doGetCompanies)
+    takeLatest('Leads/getCompaniesLaunched', doGetCompanies),
+    takeLatest('Leads/sendIncidentMessageLaunched', doSendIncidenMessage)
   ])
 }

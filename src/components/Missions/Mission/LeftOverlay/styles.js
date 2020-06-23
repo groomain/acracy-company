@@ -36,5 +36,8 @@ export default makeStyles(theme => ({
     '&:hover g': {
       stroke: `${theme.palette.primary.main}`,
     },
+  },
+  w100: {
+    width: '100%'
   }
 }));

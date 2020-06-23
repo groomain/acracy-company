@@ -1,6 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from './styles';
 import { useTranslation } from "react-i18next";
+import { useSelector, useDispatch } from 'react-redux';
+import { Formik } from 'formik';
+import * as Yup from 'yup';
 
 import { Grid, Typography } from "@material-ui/core";
 import { IncidentIcon } from "../../../../assets/icons/IncidentIcon";
@@ -9,12 +12,37 @@ import { DownloadIcon } from "../../../../assets/icons/DownloadIcon";
 import { CloseIcon } from "../../../../assets/icons/CloseIcon";
 import CustomModal from '../../../Modal';
 import CircleImage from '../../../CircleImage';
+import IncidentMessageForm from './IncidentMessageForm';
+import { sendIncidentMessageLaunched } from '../../../../pages/HomePage/reducer';
 
 export const LeftOverlay = ({ matching, mission, ...props }) => {
   const { t } = useTranslation();
   const classes = styles();
+  const dispatch = useDispatch();
+
+  const { sendMessageLoading } = useSelector(state => ({
+    sendMessageLoading: state.getIn(['dashboard', 'sendMessageLoading']),
+  }));
 
   const [freelanceInfosOpen, setFreelanceInfosOpen] = useState(false);
+  const [incidentOpen, setIncidentOpen] = useState(false);
+
+  useEffect(() => {
+    if (!sendMessageLoading) {
+      setIncidentOpen(false)
+    }
+  }, [sendMessageLoading]);
+
+  const initialValues = {
+    message: ''
+  }
+  const ValidationSchema = Yup.object().shape({
+    message: Yup.string().required(),
+  });
+
+  const sendIncidentMessage = ({ message }) => {
+    dispatch(sendIncidentMessageLaunched(message));
+  }
 
   const renderMenuLinks = () => {
     const today = Date.now() / 1000;
@@ -44,7 +72,8 @@ export const LeftOverlay = ({ matching, mission, ...props }) => {
           </Grid>
             {mission?.brief.missionContext.startDate < today ? (
               <>
-                <Grid item container direction={'row'} className={classes.row}>
+                <Grid item container direction={'row'} className={classes.row}
+                  onClick={() => setIncidentOpen(true)}>
                   <IncidentIcon />
                   Déclarer un incident
               </Grid>
@@ -85,6 +114,22 @@ export const LeftOverlay = ({ matching, mission, ...props }) => {
               <Typography>{mission?.serviceProviderProfile?.email}</Typography>
               <Typography>(+{mission?.serviceProviderProfile?.phoneNumber?.code}) {mission?.serviceProviderProfile?.phoneNumber?.number.match(/.{2}/g).join(' ').substring(1)}</Typography>
             </Grid>
+          </Grid>
+        </CustomModal>
+      )}
+      {incidentOpen && (
+        <CustomModal
+          title={t('dashboard.missions.incidentModalTitle')}
+          open={incidentOpen}
+          handleClose={() => setIncidentOpen(false)}
+        >
+          <Grid container>
+            <Formik
+              render={props => <IncidentMessageForm {...props} loading={sendMessageLoading} />}
+              onSubmit={sendIncidentMessage}
+              initialValues={initialValues}
+              validationSchema={ValidationSchema}>
+            </Formik>
           </Grid>
         </CustomModal>
       )}
