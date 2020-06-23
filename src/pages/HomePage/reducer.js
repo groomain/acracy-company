@@ -17,6 +17,7 @@ const initialState = Immutable.Map({
   quotesLoading: false,
   companiesData: null,
   companiesLoading: false,
+  companiesDataFetched: false,
   comingFromDashboard: false
 });
 
@@ -84,6 +85,7 @@ const { actions, reducer } = createSlice({
       .set('companiesLoading', true),
     getCompaniesSuccess: (state, action) => state
       .set('companiesData', action.payload.companies)
+      .set('companiesDataFetched', true)
       .set('companiesLoading', false),
     getCompaniesFailure: (state, action) => state
       .set('companiesData', null)

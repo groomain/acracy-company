@@ -18,8 +18,9 @@ export const LeftOverlay = ({ matching, mission, ...props }) => {
 
   const renderMenuLinks = () => {
     const today = Date.now() / 1000;
-    if (matching) {
-      return (
+
+    return (
+      <>
         <a href={matching?.briefSummary}
           rel="noopener noreferrer"
           target='_blank'
@@ -27,40 +28,37 @@ export const LeftOverlay = ({ matching, mission, ...props }) => {
           <DownloadIcon />
              Télécharger PDF
         </a>
-      )
-    }
-
-    if (mission) {
-      return (
-        <>
-          <a href={mission?.brief?.signedQuotes?.name}
-            rel="noopener noreferrer"
-            target='_blank'
-            className={classes.row}>
-            <DownloadIcon />
+        {mission && (
+          <>
+            <a href={mission?.brief?.signedQuotes?.name}
+              rel="noopener noreferrer"
+              target='_blank'
+              className={classes.row}>
+              <DownloadIcon />
               Télécharger devis
           </a>
-          <Grid item container direction={'row'} className={classes.row}
-            onClick={() => setFreelanceInfosOpen(true)}>
-            <AdresseIcon />
+            <Grid item container direction={'row'} className={classes.row}
+              onClick={() => setFreelanceInfosOpen(true)}>
+              <AdresseIcon />
               Voir coordonnées freelance
           </Grid>
-          {mission?.brief.missionContext.startDate < today ? (
-            <>
-              <Grid item container direction={'row'} className={classes.row}>
-                <IncidentIcon />
+            {mission?.brief.missionContext.startDate < today ? (
+              <>
+                <Grid item container direction={'row'} className={classes.row}>
+                  <IncidentIcon />
                   Déclarer un incident
               </Grid>
 
-              <Grid item container direction={'row'} className={classes.row}>
-                <DownloadIcon />
+                <Grid item container direction={'row'} className={classes.row}>
+                  <DownloadIcon />
                   Télécharger facture
               </Grid>
-            </>
-          ) : null}
-        </>
-      )
-    }
+              </>
+            ) : null}
+          </>
+        )}
+      </>
+    )
   };
 
   return (

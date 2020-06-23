@@ -94,7 +94,7 @@ const Draft = ({ draft }) => {
     if (getStatusResult?.status === 'lead' || !draft?.missionContext.title) {
       dispatch(setLeadCreationStep(null))
     } else {
-      dispatch(setLeadCreationStep(2))
+      dispatch(setLeadCreationStep(1))
     }
   };
 

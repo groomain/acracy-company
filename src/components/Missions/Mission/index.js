@@ -44,11 +44,12 @@ export const Mission = ({ mission, matching, today, ...props }) => {
   const durationUnit = mission?.brief.missionContext.duration.unit || matching?.missionContext.duration.unit;
   const startDate = mission?.brief.missionContext.startDate || matching?.missionContext.startDate;
 
-  const { quotes, quotesLoading, companiesData, companiesLoading } = useSelector(state => ({
+  const { quotes, quotesLoading, companiesData, companiesLoading, companiesDataFetched } = useSelector(state => ({
     quotes: state.getIn(['dashboard', 'quotes']),
     quotesLoading: state.getIn(['dashboard', 'quotesLoading']),
     companiesData: state.getIn(['dashboard', 'companiesData']),
-    companiesLoading: state.getIn(['dashboard', 'companiesLoading'])
+    companiesLoading: state.getIn(['dashboard', 'companiesLoading']),
+    companiesDataFetched: state.getIn(['dashboard', 'companiesDataFetched'])
   }));
 
   const getStatusIcon = (status) => {
@@ -133,15 +134,20 @@ export const Mission = ({ mission, matching, today, ...props }) => {
       setInfosOpen(true)
     } else {
       setLoadingButton(true);
-      dispatch(getCompaniesLaunched());
-      if (!companiesData || getPath(companiesData, 'companiesData').length !== 0) {
+    }
+  }
+
+  // 
+  useEffect(() => {
+    if (companiesDataFetched && loadingButton) {
+      if (getPath(companiesData, 'companiesData').length !== 0) {
         setRedirectionPopupOpen(true);
-      } else {
         dispatch(setComingFromDashboard(true)); // Initialize the redirection from the administrative page -> true ? push('/reveal')
+      } else {
         dispatch(push('/reveal'));
       }
     }
-  }
+  }, [companiesDataFetched, companiesData, dispatch, loadingButton])
 
   const renderMissionButton = (status) => {
     switch (status) {
@@ -154,7 +160,7 @@ export const Mission = ({ mission, matching, today, ...props }) => {
             onClick={() => handleClick(status)}
           >
             <Grid item>
-              {companiesLoading & loadingButton
+              {loadingButton && companiesLoading
                 ? <CustomLoader />
                 : <Typography className={classes.button}>{matchingValues?.buttonText}</Typography>
               }
