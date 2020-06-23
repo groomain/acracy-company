@@ -13,6 +13,8 @@ import { CloseIcon } from "../../../../assets/icons/CloseIcon";
 import CustomModal from '../../../Modal';
 import CircleImage from '../../../CircleImage';
 import IncidentMessageForm from './IncidentMessageForm';
+import DownloadModal from '../../../DownloadModal';
+
 import { sendIncidentMessageLaunched } from '../../../../pages/HomePage/reducer';
 
 export const LeftOverlay = ({ matching, mission, ...props }) => {
@@ -26,6 +28,7 @@ export const LeftOverlay = ({ matching, mission, ...props }) => {
 
   const [freelanceInfosOpen, setFreelanceInfosOpen] = useState(false);
   const [incidentOpen, setIncidentOpen] = useState(false);
+  const [invoicesOpen, setInvoicesOpen] = useState(false);
 
   useEffect(() => {
     if (!sendMessageLoading) {
@@ -58,7 +61,7 @@ export const LeftOverlay = ({ matching, mission, ...props }) => {
         </a>
         {mission && (
           <>
-            <a href={mission?.brief?.signedQuotes?.name}
+            <a href={mission?.brief?.signedQuotes?.link}
               rel="noopener noreferrer"
               target='_blank'
               className={classes.row}>
@@ -78,10 +81,13 @@ export const LeftOverlay = ({ matching, mission, ...props }) => {
                   Déclarer un incident
               </Grid>
 
-                <Grid item container direction={'row'} className={classes.row}>
-                  <DownloadIcon />
+                {mission?.invoices?.length > 0 && (
+                  <Grid item container direction={'row'} className={classes.row}
+                    onClick={() => setInvoicesOpen(true)}>
+                    <DownloadIcon />
                   Télécharger facture
-              </Grid>
+                  </Grid>
+                )}
               </>
             ) : null}
           </>
@@ -132,6 +138,13 @@ export const LeftOverlay = ({ matching, mission, ...props }) => {
             </Formik>
           </Grid>
         </CustomModal>
+      )}
+      {invoicesOpen && (
+        <DownloadModal
+          open={invoicesOpen}
+          handleClose={() => setInvoicesOpen(false)}
+          files={mission?.invoices}
+        />
       )}
     </>
   )

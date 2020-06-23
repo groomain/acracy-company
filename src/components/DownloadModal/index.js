@@ -7,10 +7,13 @@ import styles from './styles';
 import CustomSelect from "../Inputs/CustomSelect";
 import Grid from "@material-ui/core/Grid";
 import CustomButton from "../Button";
-import {NavLink} from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 export const DownloadModal = ({ open, handleClose, files, ...props }) => {
+  const invoicesNames = files.map(name => name.attachment.name);
   const classes = styles();
+  const invoiceFile = files.filter(x => x.attachment.name === '1').map(x => x.attachment.link);
+  const [extractedFile] = invoiceFile;
 
   return (
     <Dialog
@@ -19,19 +22,24 @@ export const DownloadModal = ({ open, handleClose, files, ...props }) => {
       classes={{ paper: classes.root }}
     >
       <Grid container direction={"column"}>
-        <Grid item container justify={'end'}>
+        <Grid item container justify={'flex-end'}>
           <IconButton aria-label="close" className={classes.iconButton} onClick={handleClose}>
             <CloseIcon />
           </IconButton>
         </Grid>
         <Typography variant='h1' className={classes.title}>
-          Télécharger devis
+          Télécharger factures
         </Typography>
-        <Typography>Choisir mon devis à télécharger</Typography>
-        <CustomSelect label={""} optionsValues={files}/>
+        <Typography>Choisir ma facture à télécharger</Typography>
+        <CustomSelect label={""} optionsValues={invoicesNames} />
         <Grid item container directtion={"row"}>
-          <CustomButton title={"Télécharger"} theme={"filledButton"} style={{position: "relative", bottom: 40}}/>
-          <NavLink to={"/"} className={classes.navLink}>Télécharger tout les devis</NavLink>
+          <CustomButton
+            title={"Télécharger"}
+            theme={"filledButton"}
+            style={{ position: "relative", bottom: 40 }}
+            onClick={() => window.open(extractedFile)}
+          />
+          <NavLink to={"/"} className={classes.navLink}>Télécharger toutes les factures</NavLink>
         </Grid>
       </Grid>
     </Dialog >
