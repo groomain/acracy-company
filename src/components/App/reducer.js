@@ -37,7 +37,8 @@ const { actions, reducer } = createSlice({
       .set('isAuthenticating', true)
       .set('isAuthenticated', false)
       .set('userInfo', null)
-      .set('userDynamo', null),
+      .set('userDynamo', null)
+      .set('loginLoading', false),
     getCurrentSessionSuccess: (state, action) => state
       .set('isAuthenticated', true)
       .set('isAuthenticating', false)

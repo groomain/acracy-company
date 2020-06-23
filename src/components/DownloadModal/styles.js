@@ -3,7 +3,6 @@ import makeStyles from '@material-ui/core/styles/makeStyles';
 export default makeStyles(theme => ({
   root: {
     width: 519,
-    height: 419,
     minHeight: '30vh',
     minWidth: '30vw',
     margin: 0,

@@ -46,7 +46,7 @@ export const CustomSelect = ({ label, value, placeholder, type, error, isMulti, 
         }}
         {...props}
       >
-        {!isMulti && optionsValues.map((option) => <MenuItem key={option}
+        {!isMulti && optionsValues?.map((option) => <MenuItem key={option}
           value={option}
           classes={{ root: `${classes.menuItem} ${classes.menutItemWithFocus}` }}
         >
