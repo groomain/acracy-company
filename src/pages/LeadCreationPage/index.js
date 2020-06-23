@@ -1,4 +1,6 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
+import { useDispatch, useSelector } from "react-redux";
+import { useLocation } from 'react-router';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import Sidebar from '../../components/Layout/Sidebar';
@@ -14,8 +16,7 @@ import CustomButton from "../../components/Button";
 import { useTranslation } from "react-i18next";
 import acracyLogo from "../../assets/icons/logo-acracy.svg";
 import { NavLink } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { leadSaveLaunched } from "./reducer";
+import { leadSaveLaunched, getLeadDraftLaunched } from "./reducer";
 
 let leadSave;
 let needhelp = false;
@@ -24,14 +25,23 @@ const LeadCreationPage = () => {
   const classes = styles();
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  let location = useLocation();
+  console.log('location :', location);
   const ref = useRef();
 
-  const { leadSaveLoading, leadDraftData, deliverablesArray, dateFromCalendar, dailyRate } = useSelector(state => ({
+  useEffect(() => {
+    if (location.pathname !== "/lead") {
+      dispatch(getLeadDraftLaunched(location.search.split('=')[1]))
+    }
+  }, [dispatch]);
+
+  const { leadSaveLoading, leadDraftData, leadDraftSearchData, deliverablesArray, dateFromCalendar, dailyRate } = useSelector(state => ({
     leadSaveLoading: state.getIn(['leadCreation', 'leadSaveLoading']),
-    leadDraftData: state.getIn(['leadCreation', 'leadDraftData']),
+    leadDraftSearchData: state.getIn(['leadCreation', 'leadDraftSearchData']),
     deliverablesArray: state.getIn(['leadCreation', 'deliverablesArray']),
     dateFromCalendar: state.getIn(['leadCreation', 'dateFromCalendar']),
     dailyRate: state.getIn(['leadCreation', 'dailyRate']),
+    leadDraftData: state.getIn(['leadCreation', 'leadDraftData'])
   }));
 
   const setDesireds = (leads, values, deliverables) => {
@@ -43,38 +53,53 @@ const LeadCreationPage = () => {
     if (leads.search === null) {
       const desireds = []
       return desireds;
-    } else
-
-      if (leadType === 'PROFILE') {
-        // console.log('PROFILE :');
-        let desiredDeliverables = [];
-        for (let i = 0; i < leads.search.DELIVERABLES.length; i++) {
-          if (deliverables.includes(leads.search.DELIVERABLES[i].TEXT)) {
-            desiredDeliverables.push(leads.search.DELIVERABLES[i]);
-          }
-        }
-        // console.log('desiredDeliverables :', desiredDeliverables);
-        if (values?.customDeliverable !== '') {
+    } else if (leadType === 'PROFILE') {
+      // console.log('PROFILE :');
+      let desiredDeliverables = [];
+      for (let i = 0; i < leads.search.DELIVERABLES.length; i++) {
+        if (deliverables.includes(leads.search.DELIVERABLES[i].TEXT)) {
           desiredDeliverables.push({
-            "type": "",
-            "text": values.customDeliverable,
-            "code": ""
-          })
-          // console.log('custom desiredDeliverables :', desiredDeliverables);
+            "type": "DELIVERABLE",
+            "text": leads.search.DELIVERABLES[i].TEXT,
+            "code": leads.search.DELIVERABLES[i].KEY
+          });
         }
-        return desiredDeliverables;
-      } else if (leadType === 'DELIVERABLE') {
-        // console.log('DELIVERABLE :');
-        let desiredProfiles = [];
-        for (let i = 0; i < leads.search.PROFILES.length; i++) {
-          if ((values.profile).includes(leads.search.PROFILES[i].TEXT)) {
-            desiredProfiles.push(leads.search.PROFILES[i])
-          }
-        }
-        // console.log('desiredProfiles :', desiredProfiles);
-        return desiredProfiles;
       }
+      // console.log('desiredDeliverables :', desiredDeliverables);
+      if (values?.customDeliverable !== '') {
+        desiredDeliverables.push({
+          "type": "DELIVERABLE",
+          "text": values.customDeliverable,
+          "code": ""
+        })
+        // console.log('custom desiredDeliverables :', desiredDeliverables);
+      }
+      return desiredDeliverables;
+    } else if (leadType === 'DELIVERABLE') {
+      // console.log('DELIVERABLE :');
+      let desiredProfiles = [];
+      for (let i = 0; i < leads.search.PROFILES.length; i++) {
+        if ((values.profile).includes(leads.search.PROFILES[i].TEXT)) {
+          console.log('leads.search.PROFILES[i].TEXT :', leads.search.PROFILES[i].TEXT);
+          desiredProfiles.push({
+            "type": "PROFILE",
+            "text": leads.search.PROFILES[i].TEXT,
+            "code": leads.search.PROFILES[i].KEY
+          })
+        }
+      }
+      if ((values.profile).includes("Recevoir une recommandation acracy")) {
+        desiredProfiles.push({
+          "type": "PROFILE",
+          "text": "Recevoir une recommandation acracy",
+          "code": ""
+        })
+      }
+      // console.log('desiredProfiles :', desiredProfiles);
+      return desiredProfiles;
+    }
   }
+
 
   const setSearchResultType = (search) => {
     // console.log('set draft search :', search.TEXT);
@@ -95,7 +120,7 @@ const LeadCreationPage = () => {
 
   leadSave = (leads, deliverables, formData, needHelp) => {
     // console.log('needHelp :', needHelp);
-    // console.log("leads (algolia): ", leads);              // resultat algolia
+    console.log("leads (algolia): ", leads);              // resultat algolia
     // console.log(" ref formik", ref.current.state.values);  // data formulaire
     let search = leads.search;
     // console.log('deliverables from redux:', deliverables);
@@ -110,13 +135,6 @@ const LeadCreationPage = () => {
     let getSearchResult;
     let getDesireds;
     let getEstimatedRate;
-    let getStatus = '';
-    if (needHelp === true) {
-      getStatus = 'HELP_NEEDED';
-    } else {
-      getStatus = 'DRAFT';
-    }
-    // console.log('getStatus :', getStatus);
 
     if (leads && values && deliverables) {
       getDesireds = setDesireds(leads, values, deliverables);
@@ -151,29 +169,31 @@ const LeadCreationPage = () => {
         profilNumber: values.profilesNumber || '',
         adress: values.companyAddress || '',
         desireds: getDesireds || '',
-        status: getStatus
       },
     };
     console.log('leadDraft :', leadDraft);
-    // dispatch(leadSaveLaunched(leadDraft));
+    dispatch(leadSaveLaunched(leadDraft));
   };
   const [open, setOpen] = React.useState(false);
 
+  const isItADeliverable = (leadDraftData?.search?.type === "DELIVERABLE") ? leadDraftData?.search : leadDraftData?.desireds;
+
+
   const initialValues = {
-    deliverable: '',
-    researchValue: {},
+    deliverable: isItADeliverable || '',
+    researchValue: leadDraftData?.search || {},
     customDeliverable: '',
-    profile: 'Recevoir une recommandation acracy',
-    missionTitle: '',
-    missionStartDate: '',
-    workspace: '',
-    companyAddress: '',
-    frequency: '',
-    duration: '',
-    durationType: 'Jours',
-    budget: '',
-    budgetType: '',
-    profilesNumber: 1,
+    profile: leadDraftData?.profilNumber || 'Recevoir une recommandation acracy',
+    missionTitle: leadDraftData?.missionContext?.title || '',
+    missionStartDate: leadDraftData?.missionContext?.startDate || '',
+    workspace: leadDraftData?.missionContext?.format || '',
+    companyAddress: leadDraftData?.missionContext?.adress || '',
+    frequency: leadDraftData?.missionContext?.weeklyRythm || '',
+    duration: leadDraftData?.missionContext?.duration?.nb || '',
+    durationType: leadDraftData?.missionContext?.duration?.unit || 'Jours',
+    budget: leadDraftData?.missionContext?.budget?.value || '',
+    budgetType: leadDraftData?.missionContext?.budget?.type || '',
+    profilesNumber: leadDraftData?.profilNumber || 1,
   };
 
   // Form Validation Schema
@@ -211,7 +231,7 @@ const LeadCreationPage = () => {
           <div className={classes.save}>
             <CustomButton title={t('saveAndClose')}
               className={classes.buttonSave}
-              handleClick={() => leadSave(leadDraftData, deliverablesArray, formData, needhelp)}
+              handleClick={() => leadSave(leadDraftSearchData, deliverablesArray, formData)}
               loading={leadSaveLoading} />
           </div>
           <div className={classes.grow} />
@@ -245,5 +265,5 @@ const LeadCreationPage = () => {
   )
 }
 
-export { leadSave };
+// export { leadSave };
 export default LeadCreationPage;

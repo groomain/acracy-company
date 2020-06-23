@@ -9,10 +9,11 @@ import CustomSelect from "../Inputs/CustomSelect";
 import Calendar from "../Inputs/Calendar";
 import Tag from '../Tags/Tag';
 import backToTop from '../../utils/backToTop';
+import CustomModal from '../Modal';
 import EuroSymbolIcon from '@material-ui/icons/EuroSymbol';
 import { Typography, Grid, Stepper, Step, StepLabel, StepButton, Box, InputAdornment } from "@material-ui/core";
-import { setLeadDraft, setDeliverablesArray, setMissionTitle, dateFromCalendar, setDailyRate } from '../../pages/LeadCreationPage/reducer';
-import { leadSave } from '../../pages/LeadCreationPage/index';
+import { setLeadDraftSearchData, setDeliverablesArray, setMissionTitle, dateFromCalendar, setDailyRate, changeLeadStatusLaunched, putLeadDraftLaunched, leadSaveLaunched } from '../../pages/LeadCreationPage/reducer';
+// import { leadSave } from '../../pages/LeadCreationPage/index';
 import { getPath } from '../../utils/services/validationChecks';
 import clsx from 'clsx';
 import styles from './styles';
@@ -32,6 +33,7 @@ const LeadCreationForm = ({ sendValues, ...props }) => {
   const [disabled, setDisabled] = useState(false);
   const [dailyCost, setDailyCost] = useState();
   const [withCommission, setWithCommission] = useState();
+  const [openCallMeModal, setOpenCallMeModal] = useState(false);
 
   const { dateFromCalendar, leadDraftData, deliverablesArray, leadCreationStep } = useSelector(state => ({
     dateFromCalendar: state.getIn(['leadCreation', 'dateFromCalendar']),
@@ -65,9 +67,10 @@ const LeadCreationForm = ({ sendValues, ...props }) => {
   };
 
   const handleCallMe = () => {
-    const needHelp = true
+    setOpenCallMeModal(true)
     console.log('component values :', values);
-    leadSave(leadDraftData, deliverablesArray, values, needHelp)
+    // leadSave(leadDraftData, deliverablesArray, values)   /// # autre saga à utiliser
+    // dispatch(changeLeadStatusLaunched)
     // algolia, livrables, données formulaire, needhelp, date????
   }
 
@@ -175,7 +178,7 @@ const LeadCreationForm = ({ sendValues, ...props }) => {
 
   const handleUpdateResearch = (e) => {
     setSearchedCategory(e);  // type, text and objectID
-    dispatch(setLeadDraft({ search: e }))
+    dispatch(setLeadDraftSearchData({ search: e }))
   }
 
   const showDeliverablesSettings = () => {
@@ -221,8 +224,10 @@ const LeadCreationForm = ({ sendValues, ...props }) => {
   }
 
   const showProfilesSettings = () => {
-    const selectableProfiles = searchedCategory.PROFILES;
-    const profilesList = selectableProfiles.map((item) => {
+    let selectableProfiles = searchedCategory.PROFILES;
+    let selectableProfilesCopy = [...selectableProfiles];
+    let enhancedList = selectableProfilesCopy.concat({ "TEXT": "Recevoir une recommandation acracy" })
+    const profilesList = enhancedList.map((item) => {
       return item.TEXT;
     });
     return (
@@ -416,6 +421,34 @@ const LeadCreationForm = ({ sendValues, ...props }) => {
           </Grid>
 
         </Grid>
+        {<CustomModal
+          title="En attente de wording, Souhaitez-vous enregistrer en l' état et obtenir l'aide de l'un de nos conseillers ?"
+          open={openCallMeModal}
+          handleClose={() => setOpenCallMeModal(false)}
+        >
+          <Grid container justify='space-between' className={classes.marginTop}>
+            <Grid item>
+              <CustomButton
+                type="button"
+                theme='primaryButton'
+                handleClick={() => dispatch(changeLeadStatusLaunched('HELP_NEEDED'))}
+                title={'Je souhaite être rappelé.e.'}
+              >
+              </CustomButton>
+            </Grid>
+            <Grid item style={{ paddingLeft: '1.2rem' }}>
+              <CustomButton
+                type="button"
+                theme="filledButton"
+                handleClick={() => setOpenCallMeModal(false)}
+                title={'Annuler'}
+                disabled={disabled}
+              >
+              </CustomButton>
+            </Grid>
+          </Grid>
+        </CustomModal>
+        }
         <br />
         <br />
         <br />
