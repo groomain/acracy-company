@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { Grid, Typography, FilledInput, InputLabel, Box } from '@material-ui/core';
 import styles from './styles';
 
-export const CustomTextArea = ({ label, placeholder, error, helperText, maxLength, valueOut, ...props }) => {
+export const CustomTextArea = ({ label, placeholder, error, helperText, maxLength, valueOut, handleChangeOut, ...props }) => {
 
   const classes = styles();
   const { t } = useTranslation();
@@ -31,7 +31,7 @@ export const CustomTextArea = ({ label, placeholder, error, helperText, maxLengt
         fullWidth
         multiline
         // value={valueOut || ''}
-        // onChange={(event) => handleChangeOut(event.target.value)}
+        onChange={(event) => handleChangeOut(event.target.value)}
         error={error}
         inputProps={{ maxLength: maxLength }}
         {...props}
