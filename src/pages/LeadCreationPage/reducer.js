@@ -4,11 +4,11 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = Immutable.Map({
   leadSaveLoading: false,
   leadSaveErrorMessage: false,
-  leadSaveData: null,
+  leadDraftId: null,
   //
   getLeadDraftLoading: false,
   getLeadDraftErrorMessage: null,
-  LeadDraftId: null,
+  leadDraftData: null,
   //
   updateLeadDraftLoading: false,
   updateLeadDraftErrorMessage: null,
@@ -37,7 +37,7 @@ const { actions, reducer } = createSlice({
       .set('leadSaveErrorMessage', null),
     leadSaveSuccess: (state, action) => state
       .set('leadSaveLoading', false)
-      .set('leadSaveData', action.payload) // leadId
+      .set('leadDraftId', action.payload) // leadId
       .set('leadSaveErrorMessage', null),
     leadSaveFailure: (state, action) => state
       .set('leadSaveLoading', false)
@@ -49,7 +49,7 @@ const { actions, reducer } = createSlice({
     getLeadDraftSuccess: (state, action) => state
       .set('getLeadDraftLoading', false)
       .set('getLeadDraftErrorMessage', null)
-      .set('LeadDraftId', action.payload),
+      .set('leadDraftData', action.payload),
     getLeadDraftFailure: (state, action) => state
       .set('getLeadDraftLoading', false)
       .set('getLeadDraftErrorMessage', action.payload),
@@ -92,9 +92,9 @@ export const {
   leadSaveSuccess,
   leadSaveFailure,
   //
-  setLeadDraftSearchData,
-  setDeliverablesArray,
-  setDateFromCalendar,
+  getLeadDraftLaunched,
+  getLeadDraftSuccess,
+  getLeadDraftFailure,
   //
   putLeadDraftLaunched,
   putLeadDraftSuccess,
@@ -105,9 +105,10 @@ export const {
   changeLeadStatusFailure,
   //
   setDailyRate,
-  getLeadDraftLaunched,
-  getLeadDraftSuccess,
-  getLeadDraftFailure
+  setLeadDraftSearchData,
+  setDeliverablesArray,
+  setDateFromCalendar,
+
 } = actions;
 
 export default reducer;
