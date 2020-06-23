@@ -29,15 +29,15 @@ const LeadCreationForm = ({ sendValues, ...props }) => {
   const [activeStep, setActiveStep] = useState(0);
   const [searchedCategory, setSearchedCategory] = useState({});
   const [deliverables, setDeliverables] = useState([]);
-  const [missionTitleInput, setMissionTitleInput] = useState('');
   const [disabled, setDisabled] = useState(false);
   const [dailyCost, setDailyCost] = useState();
   const [withCommission, setWithCommission] = useState();
 
-  const { dateFromCalendar, leadDraftData, deliverablesArray } = useSelector(state => ({
+  const { dateFromCalendar, leadDraftData, deliverablesArray, leadCreationStep } = useSelector(state => ({
     dateFromCalendar: state.getIn(['leadCreation', 'dateFromCalendar']),
     leadDraftData: state.getIn(['leadCreation', 'leadDraftData']),
     deliverablesArray: state.getIn(['leadCreation', 'deliverablesArray']),
+    leadCreationStep: state.getIn(['leadCreation', 'leadCreationStep'])
   }));
 
   const getSteps = () => {
@@ -169,12 +169,6 @@ const LeadCreationForm = ({ sendValues, ...props }) => {
     setDeliverables(e);
   }
 
-  const handleUpdateMissionTitle = e => {
-    console.log('e :', e);
-    setMissionTitleInput(e);
-    dispatch(setMissionTitle(e));
-  }
-
   useEffect(() => {
     dispatch(setDeliverablesArray(deliverables))
   }, [deliverables, dispatch]);
@@ -288,8 +282,8 @@ const LeadCreationForm = ({ sendValues, ...props }) => {
               placeholder={t('leadCreation.missionPlaceholder')}
               name='missionTitle'
               maxLength={200}
-              valueOut={missionTitleInput}
-              handleChangeOut={handleUpdateMissionTitle}
+              valueOut={missionTitle}
+              onChange={handleChange}
             ></CustomTextArea>
           </Grid>
 

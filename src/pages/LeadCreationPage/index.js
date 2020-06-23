@@ -26,59 +26,58 @@ const LeadCreationPage = () => {
   const dispatch = useDispatch();
   const ref = useRef();
 
-  const { leadSaveLoading, leadDraftData, deliverablesArray, dateFromCalendar, missionTitle, dailyRate } = useSelector(state => ({
+  const { leadSaveLoading, leadDraftData, deliverablesArray, dateFromCalendar, dailyRate } = useSelector(state => ({
     leadSaveLoading: state.getIn(['leadCreation', 'leadSaveLoading']),
     leadDraftData: state.getIn(['leadCreation', 'leadDraftData']),
     deliverablesArray: state.getIn(['leadCreation', 'deliverablesArray']),
     dateFromCalendar: state.getIn(['leadCreation', 'dateFromCalendar']),
-    missionTitle: state.getIn(['leadCreation', 'missionTitle']),
-    dailyRate: state.getIn(['leadCreation', 'dailyRate'])
+    dailyRate: state.getIn(['leadCreation', 'dailyRate']),
   }));
 
   const setDesireds = (leads, values, deliverables) => {
-    console.log('setDesireds values :', values);
-    console.log('setDesireds leads :', leads);
-    console.log('setDesireds deliverables: ', deliverables);
+    // console.log('setDesireds values :', values);
+    // console.log('setDesireds leads :', leads);
+    // console.log('setDesireds deliverables: ', deliverables);
     let leadType = leads.search?.TYPE;
-    console.log('setDesireds leadType :', leadType);
+    // console.log('setDesireds leadType :', leadType);
     if (leads.search === null) {
       const desireds = []
       return desireds;
     } else
 
       if (leadType === 'PROFILE') {
-        console.log('PROFILE :');
+        // console.log('PROFILE :');
         let desiredDeliverables = [];
         for (let i = 0; i < leads.search.DELIVERABLES.length; i++) {
           if (deliverables.includes(leads.search.DELIVERABLES[i].TEXT)) {
             desiredDeliverables.push(leads.search.DELIVERABLES[i]);
           }
         }
-        console.log('desiredDeliverables :', desiredDeliverables);
+        // console.log('desiredDeliverables :', desiredDeliverables);
         if (values?.customDeliverable !== '') {
           desiredDeliverables.push({
             "type": "",
             "text": values.customDeliverable,
             "code": ""
           })
-          console.log('custom desiredDeliverables :', desiredDeliverables);
+          // console.log('custom desiredDeliverables :', desiredDeliverables);
         }
         return desiredDeliverables;
       } else if (leadType === 'DELIVERABLE') {
-        console.log('DELIVERABLE :');
+        // console.log('DELIVERABLE :');
         let desiredProfiles = [];
         for (let i = 0; i < leads.search.PROFILES.length; i++) {
           if ((values.profile).includes(leads.search.PROFILES[i].TEXT)) {
             desiredProfiles.push(leads.search.PROFILES[i])
           }
         }
-        console.log('desiredProfiles :', desiredProfiles);
+        // console.log('desiredProfiles :', desiredProfiles);
         return desiredProfiles;
       }
   }
 
   const setSearchResultType = (search) => {
-    console.log('set draft search :', search.TEXT);
+    // console.log('set draft search :', search.TEXT);
     if (search.label) {
       return ({
         type: '',
@@ -95,11 +94,11 @@ const LeadCreationPage = () => {
   }
 
   leadSave = (leads, deliverables, formData, needHelp) => {
-    console.log('needHelp :', needHelp);
-    console.log("leads (algolia): ", leads);              // resultat algolia
-    console.log(" ref formik", ref.current.state.values);  // data formulaire
+    // console.log('needHelp :', needHelp);
+    // console.log("leads (algolia): ", leads);              // resultat algolia
+    // console.log(" ref formik", ref.current.state.values);  // data formulaire
     let search = leads.search;
-    console.log('deliverables from redux:', deliverables);
+    // console.log('deliverables from redux:', deliverables);
     let values;
     if (formData === false) {
       values = ref.current.state.values;
@@ -107,7 +106,7 @@ const LeadCreationPage = () => {
       values = formData;
     };
 
-    console.log('values :', values);
+    // console.log('values :', values);
     let getSearchResult;
     let getDesireds;
     let getEstimatedRate;
@@ -117,18 +116,18 @@ const LeadCreationPage = () => {
     } else {
       getStatus = 'DRAFT';
     }
-    console.log('getStatus :', getStatus);
+    // console.log('getStatus :', getStatus);
 
     if (leads && values && deliverables) {
       getDesireds = setDesireds(leads, values, deliverables);
-      console.log('getDesireds :', getDesireds);
+      // console.log('getDesireds :', getDesireds);
     }
 
     // search results don't have the same content when the user searches with his own words. 
     // checking search results:
     if (search) {
       getSearchResult = setSearchResultType(search);
-      console.log('getSearchResult :', getSearchResult);
+      // console.log('getSearchResult :', getSearchResult);
     }
 
     // getEstimatedRate = setEstimatedRate(values);////////////////////////////////////////////
@@ -136,7 +135,7 @@ const LeadCreationPage = () => {
     let leadDraft = {
       search: getSearchResult || '',
       missionContext: {
-        title: missionTitle,
+        title: values.missionTitle || '',
         startDate: dateFromCalendar || '', // operateur ternaire pour remettre profil à 0 quand profil a été recherché
         format: values.workspace || '',
         weeklyRythm: values.frequency || '',
