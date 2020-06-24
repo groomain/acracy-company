@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from 'react-router';
 import { Formik } from 'formik';
@@ -16,24 +16,26 @@ import CustomButton from "../../components/Button";
 import { useTranslation } from "react-i18next";
 import acracyLogo from "../../assets/icons/logo-acracy.svg";
 import { NavLink } from "react-router-dom";
-import { leadSaveLaunched, getLeadDraftLaunched } from "./reducer";
+import { leadSaveLaunched, getLeadDraftLaunched, putLeadDraftLaunched } from "./reducer";
 
 let leadSave;
-let needhelp = false;
 let formData = false;
+let leadId = null;
 const LeadCreationPage = () => {
   const classes = styles();
   const { t } = useTranslation();
   const dispatch = useDispatch();
   let location = useLocation();
-  console.log('location :', location);
   const ref = useRef();
 
+  const [disableAppbarSaveBtn, setDisableAppbarSaveBtn] = useState(true);
+
   useEffect(() => {
-    if (location.pathname !== "/lead") {
-      dispatch(getLeadDraftLaunched(location.search.split('=')[1]))
+    if (location.search) {
+      leadId = location.search.split('=')[1];
+      dispatch(getLeadDraftLaunched(leadId))
     }
-  }, [dispatch]);
+  }, [dispatch, location.search]);
 
   const { leadSaveLoading, leadDraftData, leadDraftSearchData, deliverablesArray, dateFromCalendar, dailyRate } = useSelector(state => ({
     leadSaveLoading: state.getIn(['leadCreation', 'leadSaveLoading']),
@@ -44,17 +46,20 @@ const LeadCreationPage = () => {
     leadDraftData: state.getIn(['leadCreation', 'leadDraftData'])
   }));
 
+  useEffect(() => {
+    if (leadDraftSearchData?.search !== null) {
+      setDisableAppbarSaveBtn(false)
+    } else if (leadDraftSearchData?.search === null) {
+      setDisableAppbarSaveBtn(true)
+    }
+  }, [leadDraftSearchData]);
+
   const setDesireds = (leads, values, deliverables) => {
-    // console.log('setDesireds values :', values);
-    // console.log('setDesireds leads :', leads);
-    // console.log('setDesireds deliverables: ', deliverables);
     let leadType = leads.search?.TYPE;
-    // console.log('setDesireds leadType :', leadType);
     if (leads.search === null) {
       const desireds = []
       return desireds;
     } else if (leadType === 'PROFILE') {
-      // console.log('PROFILE :');
       let desiredDeliverables = [];
       for (let i = 0; i < leads.search.DELIVERABLES.length; i++) {
         if (deliverables.includes(leads.search.DELIVERABLES[i].TEXT)) {
@@ -65,22 +70,18 @@ const LeadCreationPage = () => {
           });
         }
       }
-      // console.log('desiredDeliverables :', desiredDeliverables);
       if (values?.customDeliverable !== '') {
         desiredDeliverables.push({
           "type": "DELIVERABLE",
           "text": values.customDeliverable,
           "code": ""
         })
-        // console.log('custom desiredDeliverables :', desiredDeliverables);
       }
       return desiredDeliverables;
     } else if (leadType === 'DELIVERABLE') {
-      // console.log('DELIVERABLE :');
       let desiredProfiles = [];
       for (let i = 0; i < leads.search.PROFILES.length; i++) {
         if ((values.profile).includes(leads.search.PROFILES[i].TEXT)) {
-          console.log('leads.search.PROFILES[i].TEXT :', leads.search.PROFILES[i].TEXT);
           desiredProfiles.push({
             "type": "PROFILE",
             "text": leads.search.PROFILES[i].TEXT,
@@ -95,17 +96,14 @@ const LeadCreationPage = () => {
           "code": ""
         })
       }
-      // console.log('desiredProfiles :', desiredProfiles);
       return desiredProfiles;
     }
   }
 
-
   const setSearchResultType = (search) => {
-    // console.log('set draft search :', search.TEXT);
     if (search.label) {
       return ({
-        type: '',
+        type: 'OTHER',
         text: search.label,
         code: ''
       })
@@ -118,12 +116,12 @@ const LeadCreationPage = () => {
     }
   }
 
-  leadSave = (leads, deliverables, formData, needHelp) => {
-    // console.log('needHelp :', needHelp);
-    console.log("leads (algolia): ", leads);              // resultat algolia
+  let redirect = true;
+  leadSave = (leads, deliverables, formData, redirect) => {
+    // console.log("leads (algolia): ", leads);              // resultat algolia
     // console.log(" ref formik", ref.current.state.values);  // data formulaire
-    let search = leads.search;
     // console.log('deliverables from redux:', deliverables);
+    let search = leads.search;
     let values;
     if (formData === false) {
       values = ref.current.state.values;
@@ -131,24 +129,18 @@ const LeadCreationPage = () => {
       values = formData;
     };
 
-    // console.log('values :', values);
     let getSearchResult;
     let getDesireds;
-    let getEstimatedRate;
 
     if (leads && values && deliverables) {
       getDesireds = setDesireds(leads, values, deliverables);
-      // console.log('getDesireds :', getDesireds);
     }
 
     // search results don't have the same content when the user searches with his own words. 
     // checking search results:
     if (search) {
       getSearchResult = setSearchResultType(search);
-      // console.log('getSearchResult :', getSearchResult);
     }
-
-    // getEstimatedRate = setEstimatedRate(values);////////////////////////////////////////////
 
     let leadDraft = {
       search: getSearchResult || '',
@@ -171,8 +163,12 @@ const LeadCreationPage = () => {
         desireds: getDesireds || '',
       },
     };
-    console.log('leadDraft :', leadDraft);
-    dispatch(leadSaveLaunched(leadDraft));
+    // console.log('leadDraft :', redirect, leadDraft);
+    if (leadId) {
+      dispatch(putLeadDraftLaunched(leadDraft, redirect))
+    } else {
+      dispatch(leadSaveLaunched(leadDraft, redirect));
+    }
   };
   const [open, setOpen] = React.useState(false);
 
@@ -230,8 +226,10 @@ const LeadCreationPage = () => {
           <div className={classes.grow} />
           <div className={classes.save}>
             <CustomButton title={t('saveAndClose')}
+              theme={disableAppbarSaveBtn ? 'disabledOutlined' : 'secondaryButton'}
               className={classes.buttonSave}
-              handleClick={() => leadSave(leadDraftSearchData, deliverablesArray, formData)}
+              disabled={disableAppbarSaveBtn}
+              handleClick={() => leadSave(leadDraftSearchData, deliverablesArray, formData, redirect)}
               loading={leadSaveLoading} />
           </div>
           <div className={classes.grow} />
@@ -265,5 +263,5 @@ const LeadCreationPage = () => {
   )
 }
 
-// export { leadSave };
+export { leadSave };
 export default LeadCreationPage;

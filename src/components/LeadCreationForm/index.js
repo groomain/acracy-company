@@ -12,9 +12,8 @@ import backToTop from '../../utils/backToTop';
 import CustomModal from '../Modal';
 import EuroSymbolIcon from '@material-ui/icons/EuroSymbol';
 import { Typography, Grid, Stepper, Step, StepLabel, StepButton, Box, InputAdornment } from "@material-ui/core";
-import { setLeadDraftSearchData, setDeliverablesArray, setMissionTitle, dateFromCalendar, setDailyRate, changeLeadStatusLaunched, putLeadDraftLaunched, leadSaveLaunched } from '../../pages/LeadCreationPage/reducer';
-// import { leadSave } from '../../pages/LeadCreationPage/index';
-import { getPath } from '../../utils/services/validationChecks';
+import { setLeadDraftSearchData, setDeliverablesArray, setDailyRate, changeLeadStatusLaunched } from '../../pages/LeadCreationPage/reducer';
+import { leadSave } from '../../pages/LeadCreationPage/index';
 import clsx from 'clsx';
 import styles from './styles';
 
@@ -25,22 +24,31 @@ const LeadCreationForm = ({ sendValues, ...props }) => {
   const classes = styles();
 
   const { values, errors, touched, handleBlur, handleChange } = props;
-  const { frequency, searchedValue, workspace, companyAddress, duration, durationType, missionTitle, budget, budgetType, deliverable, customDeliverable, profile, profilesNumber } = values;
+  const { frequency, workspace, duration, durationType, missionTitle, budgetType, profile, profilesNumber } = values;
 
   const [activeStep, setActiveStep] = useState(0);
   const [searchedCategory, setSearchedCategory] = useState({});
   const [deliverables, setDeliverables] = useState([]);
-  const [disabled, setDisabled] = useState(false);
+  const [disabled, setDisabled] = useState(false); // to be used with step 2
   const [dailyCost, setDailyCost] = useState();
   const [withCommission, setWithCommission] = useState();
   const [openCallMeModal, setOpenCallMeModal] = useState(false);
+  const [disableCallMeBtn, setDisableCallMeBtn] = useState(true);
 
-  const { dateFromCalendar, leadDraftData, deliverablesArray, leadCreationStep } = useSelector(state => ({
+  const { leadDraftSearchData, deliverablesArray } = useSelector(state => ({
     dateFromCalendar: state.getIn(['leadCreation', 'dateFromCalendar']),
-    leadDraftData: state.getIn(['leadCreation', 'leadDraftData']),
+    leadDraftSearchData: state.getIn(['leadCreation', 'leadDraftSearchData']),
     deliverablesArray: state.getIn(['leadCreation', 'deliverablesArray']),
     leadCreationStep: state.getIn(['leadCreation', 'leadCreationStep'])
   }));
+
+  useEffect(() => {
+    if (leadDraftSearchData?.search !== null) {
+      setDisableCallMeBtn(false)
+    } else if (leadDraftSearchData?.search === null) {
+      setDisableCallMeBtn(true)
+    }
+  }, [leadDraftSearchData]);
 
   const getSteps = () => {
     return [t('leadCreation.synthesis'), t('leadCreation.details')];
@@ -60,35 +68,25 @@ const LeadCreationForm = ({ sendValues, ...props }) => {
   //   backToTop();
   // };
   const handleStep = (step) => () => {
-    // if (deliverables && searchedCategory) {
     setActiveStep(step);
-    // }
     backToTop();
   };
 
   const handleCallMe = () => {
     setOpenCallMeModal(true)
-    console.log('component values :', values);
-    // leadSave(leadDraftData, deliverablesArray, values)   /// # autre saga à utiliser
-    // dispatch(changeLeadStatusLaunched)
-    // algolia, livrables, données formulaire, needhelp, date????
+  }
+
+  const handleDispatchHelp = () => {
+    let redirect = false;
+    leadSave(leadDraftSearchData, deliverablesArray, values, redirect)
+    dispatch(changeLeadStatusLaunched('HELP_NEEDED'));
+    setOpenCallMeModal(false)
+
   }
 
   useEffect(() => {
     dispatch(setDailyRate(dailyCost));
   }, [dailyCost, dispatch]);
-
-  // useEffect(() => {
-  //   let delivLenght = getPath(deliverables, 'deliverables');
-  //   console.log('deliverables :', deliverables);
-  //   console.log('delivLenght :', delivLenght);
-  //   let serachlenfth = getPath(searchedCategory, 'search');
-  //   console.log('serachlenfth :', serachlenfth);
-  //   console.log('searchedValue :', searchedValue);
-  //   if (missionTitle.length === 0 || dateFromCalendar === null || deliverablesArray.length === 0) {
-  //     setDisabled(true);
-  //   }
-  // }, [deliverables, searchedValue, deliverablesArray, searchedCategory, missionTitle, dateFromCalendar]);
 
   const getFrequency = (frequency) => {
     switch (frequency) {
@@ -115,11 +113,11 @@ const LeadCreationForm = ({ sendValues, ...props }) => {
           if (values.budgetType === 'Taux journalier') {  // DAILY_RATE
             // montant global = budget x durée x nbprofils x 1.15
             if (values.durationType === 'Mois') {
-              preciseRate = parseInt(values.budget, 10) * daysNb * parseInt(values.duration, 10) * 4 * parseInt(values.profilesNumber, 10) * 1.15; // OK
+              preciseRate = parseInt(values.budget, 10) * daysNb * parseInt(values.duration, 10) * 4 * parseInt(values.profilesNumber, 10) * 1.15;
             } else if (values.durationType === 'Semaines') {
-              preciseRate = parseInt(values.budget, 10) * daysNb * parseInt(values.duration, 10) * parseInt(values.profilesNumber, 10) * 1.15; // OK
+              preciseRate = parseInt(values.budget, 10) * daysNb * parseInt(values.duration, 10) * parseInt(values.profilesNumber, 10) * 1.15;
             } else if (values.durationType === 'Jours') {
-              preciseRate = parseInt(values.budget, 10) * parseInt(values.duration, 10) * parseInt(values.profilesNumber, 10) * 1.15; // OK
+              preciseRate = parseInt(values.budget, 10) * parseInt(values.duration, 10) * parseInt(values.profilesNumber, 10) * 1.15;
             }
             let budget = values.budget;
             setDailyCost(budget);
@@ -403,6 +401,7 @@ const LeadCreationForm = ({ sendValues, ...props }) => {
               <CustomButton
                 type="button"
                 theme='primaryButton'
+                disabled={disableCallMeBtn}
                 handleClick={handleCallMe}
                 title={t('leadCreation.callMe')}
               >
@@ -422,27 +421,17 @@ const LeadCreationForm = ({ sendValues, ...props }) => {
 
         </Grid>
         {<CustomModal
-          title="En attente de wording, Souhaitez-vous enregistrer en l' état et obtenir l'aide de l'un de nos conseillers ?"
+          title="Au clic sur “Confirmer”, le remplissage de brief se mettra en pause, et vous serez rappelé par l’un des account managers d’acracy qui le finalisera au téléphone avec vous"
           open={openCallMeModal}
           handleClose={() => setOpenCallMeModal(false)}
         >
-          <Grid container justify='space-between' className={classes.marginTop}>
+          <Grid container className={classes.marginTop}>
             <Grid item>
               <CustomButton
                 type="button"
                 theme='primaryButton'
-                handleClick={() => dispatch(changeLeadStatusLaunched('HELP_NEEDED'))}
-                title={'Je souhaite être rappelé.e.'}
-              >
-              </CustomButton>
-            </Grid>
-            <Grid item style={{ paddingLeft: '1.2rem' }}>
-              <CustomButton
-                type="button"
-                theme="filledButton"
-                handleClick={() => setOpenCallMeModal(false)}
-                title={'Annuler'}
-                disabled={disabled}
+                handleClick={handleDispatchHelp}
+                title={'Confirmer'}
               >
               </CustomButton>
             </Grid>
