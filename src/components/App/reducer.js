@@ -19,8 +19,10 @@ const initialState = Immutable.Map({
   submitPasswordErrorMessage: null,
   forgotPasswordStep: 1,
   updateUserLoading: false,
-  updateUserErrorMessage: null
-
+  updateUserErrorMessage: null,
+  snackBarOpen: false,
+  snackBarMessage: null,
+  snackBarError: null
 });
 
 const { actions, reducer } = createSlice({
@@ -104,6 +106,16 @@ const { actions, reducer } = createSlice({
       .set('activeStep', action.payload + 1),
     handlePreviousStep: (state, action) => state
       .set('activeStep', action.payload - 1),
+    // SnackBar
+    openSnackBar: (state, action) => state
+      .set('snackBarOpen', true)
+      .set('snackBarMessage', action.payload.message)
+      .set('snackBarError', action.payload.error),
+    closeSnackBar: (state, action) => state
+      .set('snackBarOpen', false),
+    clearSnackBar: (state, action) => state
+      .set('snackBarMessage', null)
+      .set('snackBarError', null),
   }
 });
 
@@ -130,7 +142,10 @@ export const {
   updateUserSuccess,
   updateUserFailure,
   handleNextStep,
-  handlePreviousStep
+  handlePreviousStep,
+  openSnackBar,
+  closeSnackBar,
+  clearSnackBar
 } = actions;
 
 export default reducer;

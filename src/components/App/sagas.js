@@ -1,5 +1,5 @@
 import {
-  all, put, takeLatest, call
+  all, put, takeLatest, call, delay
 } from 'redux-saga/effects';
 import { API, Auth } from 'aws-amplify';
 import { push } from 'connected-react-router';
@@ -18,7 +18,7 @@ import {
   submitNewPasswordSuccess,
   submitNewPasswordFaliure,
   updateUserFailure,
-  updateUserSuccess
+  updateUserSuccess, closeSnackBar, clearSnackBar
 } from './reducer';
 import {
   translateSignInError,
@@ -169,6 +169,13 @@ function* doUpdateUser(action) {
   yield put(getCurrentSessionLaunched('/home'));
 }
 
+function* setSnackBar() {
+  yield delay(5000);
+  yield put(closeSnackBar());
+  yield delay(200);
+  yield put(clearSnackBar());
+}
+
 
 export default function* rootSaga() {
   yield all([
@@ -178,6 +185,7 @@ export default function* rootSaga() {
     takeLatest('App/signupLaunched', doSignUp),
     takeLatest('App/requestPasswordCodeLaunched', doRequestPasswordCode),
     takeLatest('App/submitNewPasswordLaunched', doSubmitNewPassword),
-    takeLatest('App/updateUserLaunched', doUpdateUser)
+    takeLatest('App/updateUserLaunched', doUpdateUser),
+    takeLatest('App/openSnackBar', setSnackBar)
   ]);
 }

@@ -14,11 +14,9 @@ export const styles = makeStyles(theme => ({
     height: 100
   },
   logoAcracy: {
-    position: 'absolute',
-    left: 20,
-    top: '103vh',
-    width: 35,
-    height: 36
+    width: 17,
+    height: 17,
+    paddingLeft: 2
   },
   bottomContainer: {
 
@@ -236,5 +234,107 @@ export const styles = makeStyles(theme => ({
     top: 0,
     right: 0,
     color: theme.palette.secondary.main,
-  }
+  },
+  tjmContainer: {
+    backgroundColor: theme.palette.secondary.mid,
+    width: 215,
+    height: 141,
+    borderRadius: '15px 15px 0 0',
+    marginBottom: 2,
+    padding: 20
+  },
+  infoTjm: {
+    position: 'absolute',
+    top: 10,
+    right: 10
+  },
+  tjm: {
+    fontSize: 34,
+    fontFamily: 'Basier Regular',
+    color: theme.palette.primary.main
+  },
+  tjmWithTax: {
+    fontFamily: 'Basier Regular',
+    color: theme.palette.secondary.black,
+    fontSize: 14,
+    textAlign: 'center'
+  },
+  tjmWithTaxContainer: {
+    color: 'black',
+    backgroundColor: theme.palette.primary.main,
+    borderRadius: '15px',
+    width: 70,
+    marginLeft: 5,
+    marginRight: 5
+  },
+  tjmText: {
+    fontSize: 14,
+    fontFamily: 'Basier Regular',
+    color: theme.palette.primary.main
+  },
+  firstGridElement: {
+    position: 'absolute',
+    marginTop: 70,
+    width: 215,
+    left: '80%'
+  },
+  tjmSecondContainer: {
+    backgroundColor: '#1b251c',
+    width: 215,
+    height: 123,
+    borderRadius: '0 0 15px 15px'
+  },
+  tjmSecondtext: {
+    width: 165, textAlign: 'center'
+  },
+  revealProfil: {
+    paddingTop: 70, paddingBottom: 70
+  },
+  briefContainer: {
+    width: '70%', marginLeft: "5%"
+  },
+  briefSeniority: {
+    width: '100%',
+    padding: 30,
+    backgroundColor: theme.palette.secondary.modalGreen,
+    borderRadius: 15
+  },
+  tagContainer: {
+    width: '80%', marginTop: 5
+  },
+  miniSwitch: {
+    width: 34,
+    height: 17,
+    top: 4,
+    position: 'relative'
+  },
+  cartTitle: {
+    fontSize: 17,
+    fontFamily: 'Basier Medium',
+    width: 200,
+    padding: 15,
+    textAlign: 'left',
+    color: 'black',
+    marginTop: 'auto',
+    marginBottom: 'auto'
+  },
+  cartAvatar: {
+    width: 46,
+    height: 46
+  },
+  cartList: {
+    width: 250
+  },
+  cartButton1: {
+    width: 221, marginRight: 20
+  },
+  cartButton2: {
+    width: 172, marginRight: 20
+  },
+  cartButton3: {
+    width: 219, marginRight: 20
+  },
+  cartButton4: {
+    width: 219, marginRight: 15
+  },
 }));

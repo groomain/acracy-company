@@ -15,7 +15,7 @@ const initialState = Immutable.Map({
   checkedProfilesStore: [],
   contactResponse: null,
   contactLoading: false,
-  contactError: null,
+  contactError: {code: 500, message: 'TEST ERROR'},
 });
 
 const { actions, reducer } = createSlice({

@@ -6,6 +6,8 @@ import {
 } from './reducer';
 import {config} from "../../conf/amplify";
 import quotesMock from '../../mock/quotes'
+import briefMock from '../../mock/brief'
+import {openSnackBar} from "../../components/App/reducer";
 
 function* getBrief(action) {
   try {
@@ -26,22 +28,23 @@ function* getBrief(action) {
     let briefId = 'get_IN_PROGRESS';
 
     // GET BRIEF INFORMATIONS
-    const briefData = yield API.get(config.apiGateway.NAME, `/briefs/${briefId}`, {
-      headers: {
-        'x-api-key': config.apiKey
-      }
-    });
+    // const briefData = yield API.get(config.apiGateway.NAME, `/briefs/${briefId}`, {
+    //   headers: {
+    //     'x-api-key': config.apiKey
+    //   }
+    // });
 
     // GET QUOTES DATA
-    const quotesData = yield API.get(config.apiGateway.NAME, `/quotes?briefId=${briefId}`, {
-      headers: {
-        'x-api-key': config.apiKey
-      }
-    });
+    // const quotesData = yield API.get(config.apiGateway.NAME, `/quotes?briefId=${briefId}`, {
+    //   headers: {
+    //     'x-api-key': config.apiKey
+    //   }
+    // });
 
-    yield put(getBriefSuccess({briefData: briefData, quotesData: quotesMock}));
+    yield put(getBriefSuccess({briefData: briefMock, quotesData: quotesMock}));
   } catch (err) {
     yield put(getBriefFailure(err));
+    yield put(openSnackBar({message: "Une erreur est survenue", error: true}));
   }
 }
 
@@ -70,12 +73,13 @@ function* validateProfiles(action) {
   } catch (err) {
     console.log(err);
     yield put(validateProfilesFailure(err));
+    yield put(openSnackBar({message: "Une erreur est survenue", error: true}));
   }
 }
 
 function* contactAcracy(action) {
   try {
-    const {message} = action.payload;
+    const {message, interview} = action.payload;
     let id = 'get_IN_PROGRESS';
     const validateProfiles = yield API.post(config.apiGateway.NAME, `/message`, {
       headers: {
@@ -87,6 +91,9 @@ function* contactAcracy(action) {
     });
 
     yield put(contactAcracySuccess(validateProfiles));
+    if (interview) {
+      yield put(openSnackBar({message: "👉 N’oubliez pas de metre à jour votre sélection de profils une fois les entretiens passés"}));
+    }
   } catch (err) {
     console.log(err);
     yield put(contactAcracyFailure(err));

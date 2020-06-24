@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { useLocation, withRouter } from "react-router";
 import clsx from "clsx";
 import { Link as RouterLink } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import {useSelector} from 'react-redux';
 
 import { AppBar, Toolbar, Typography } from '@material-ui/core';
 import styles from "./styles";
@@ -16,13 +16,14 @@ export const CustomAppBar = (props) => {
   let location = useLocation();
   const { t } = useTranslation();
   const classes = styles();
-  const [welcomeMessageOpen, setWelcomeMessageOpen] = React.useState(false);
-  const [errorMessageOpen, setErrorMessageOpen] = React.useState(false);
 
-  const { loginErrorMessage, signupErrorMessage } = useSelector(state => ({
+  const { loginErrorMessage, signupErrorMessage} = useSelector(state => ({
     loginErrorMessage: state.getIn(['app', 'loginErrorMessage']),
     signupErrorMessage: state.getIn(['app', 'signupErrorMessage']),
   }));
+
+  const [welcomeMessageOpen, setWelcomeMessageOpen] = React.useState(false);
+  const [errorMessageOpen, setErrorMessageOpen] = React.useState(false);
 
   useEffect(() => {
     if (loginErrorMessage || signupErrorMessage) {
@@ -71,6 +72,7 @@ export const CustomAppBar = (props) => {
       {welcomeMessageOpen && <CustomSnackBar message={t('welcomeMessage')} open={welcomeMessageOpen} setOpen={setWelcomeMessageOpen} />}
       {signupErrorMessage && <CustomSnackBar message={signupErrorMessage} open={errorMessageOpen} setOpen={setErrorMessageOpen} error />}
       {loginErrorMessage && <CustomSnackBar message={loginErrorMessage} open={errorMessageOpen} setOpen={setErrorMessageOpen} error />}
+      <CustomSnackBar/>
     </>
   );
 

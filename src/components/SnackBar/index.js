@@ -5,24 +5,24 @@ import styles from './styles';
 import Typography from '@material-ui/core/Typography';
 import { Collapse } from "@material-ui/core";
 import clsx from "clsx";
+import {closeSnackBar} from "../App/reducer";
+import {useDispatch, useSelector} from "react-redux";
 
-export const CustomSnackBar = ({ message, open, setOpen, error, ...props }) => {
+export const CustomSnackBar = ({ ...props }) => {
   const classes = styles();
+  const dispatch = useDispatch();
 
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  // const handleOpen = () => {
-  //     setOpen(true);
-  //     setTimeout(() => setOpen(false), 5000)
-  // };
+  const { snackBarOpen, snackBarError, snackBarMessage } = useSelector(state => ({
+    snackBarOpen: state.getIn(['app', 'snackBarOpen']),
+    snackBarMessage: state.getIn(['app', 'snackBarMessage']),
+    snackBarError: state.getIn(['app', 'snackBarError'])
+  }));
 
   return (
-    <Collapse in={open}>
-      <div className={clsx(classes.snackbar, { [classes.redSnack]: error })}>
-        <Typography className={classes.typo}>{message}</Typography>
-        <IconButton size="small" className={classes.iconButton} aria-label="close" onClick={handleClose}>
+    <Collapse in={snackBarOpen}>
+      <div className={clsx(classes.snackbar, { [classes.redSnack]: snackBarError })}>
+        <Typography className={classes.typo}>{snackBarMessage}</Typography>
+        <IconButton size="small" className={classes.iconButton} aria-label="close" onClick={() => dispatch(closeSnackBar())}>
           <CloseIcon fontSize="small" />
         </IconButton>
       </div>
