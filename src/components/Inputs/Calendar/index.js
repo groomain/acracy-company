@@ -9,7 +9,7 @@ import { Agenda } from '../../../assets/icons/Agenda';
 import { setDateFromCalendar } from '../../../pages/LeadCreationPage/reducer';
 import styles from './styles';
 
-import { capitalize } from '../../../utils/format';
+import { capitalize } from '../../../utils/services/format';
 
 import 'moment/locale/fr';
 moment.locale('fr');
