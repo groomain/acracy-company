@@ -2,8 +2,8 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import Typography from '@material-ui/core/Typography';
-import { CustomButton } from '../Button';
-import CustomTextField from '../Inputs/CustomTextField';
+import { CustomButton } from '../../Button';
+import CustomTextField from '../../Inputs/CustomTextField';
 
 
 const FirstLoginForm = (props) => {

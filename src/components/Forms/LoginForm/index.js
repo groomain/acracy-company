@@ -1,20 +1,23 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import { CustomButton } from '../Button/';
+import { CustomButton } from '../../Button';
 import Grid from '@material-ui/core/Grid';
-import CustomTextField, { CustomPasswordField } from "../Inputs/CustomTextField";
+import CustomTextField, { CustomPasswordField } from "../../Inputs/CustomTextField";
 import { NavLink } from "react-router-dom";
+import { checkLength } from '../../../utils/services/validationChecks';
 
 import styles from "./styles";
 
 const LoginForm = (props) => {
+  const { t } = useTranslation();
   const classes = styles();
 
   const { loginLoading } = useSelector(state => ({
-    loginErrorMessage: state.getIn(['app', 'loginErrorMessage']),
     loginLoading: state.getIn(['app', 'loginLoading'])
   }));
+
+  const [disabled, setDisabled] = useState(true);
 
   const {
     values,
@@ -26,7 +29,16 @@ const LoginForm = (props) => {
   } = props;
   const { email, password } = values;
 
-  const { t } = useTranslation();
+  useEffect(() => {
+    if (
+      checkLength(email, 0) &&
+      checkLength(password, 7)
+    ) {
+      setDisabled(false);
+    } else {
+      setDisabled(true)
+    }
+  }, [email, password])
 
   return (
     <Grid
@@ -57,13 +69,14 @@ const LoginForm = (props) => {
           error={!!touched.password && !!errors.password}
           helperText={touched.password && errors.password ? t(errors.password) : ''}
         />
-        <NavLink to={'/password'} className={classes.navLink}>{t('forgotPasswordButton')}</NavLink>
+        <NavLink to={'/password'} className={classes.navLink}>{t('forgotPassword.forgotPasswordButton')}</NavLink>
         <Grid container direction={'row'} justify={'flex-end'}>
           <CustomButton
             type="submit"
             loading={loginLoading}
             title={t('loginSubmit')}
-            theme="filledButton"
+            theme={disabled ? "disabledFilled" : "filledButton"}
+            disabled={disabled}
           />
         </Grid>
       </form>

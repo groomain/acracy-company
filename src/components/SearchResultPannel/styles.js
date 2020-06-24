@@ -21,12 +21,5 @@ export default makeStyles(theme => ({
     color: theme.palette.primary.main,
     height: 22,
     margin: '.5rem .5rem 0 0'
-  },
-  collaboratorsGridItem: {
-    padding: '35px 0'
-  },
-  iconContainer: {
-    height: '30vh',
-    alignItems: 'center'
   }
 }));
