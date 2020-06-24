@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Switch, Route, Redirect, useLocation } from 'react-router';
 // import { useTranslation } from 'react-i18next';
+import { Grid } from '@material-ui/core';
 import HomePage from '../../pages/HomePage';
 import PrivateRoute from '../PrivateRoute';
 import PublicRoute from '../PublicRoute';
@@ -15,13 +16,13 @@ import MyAccount from "../../pages/MyAccount";
 import LeadCreationPage from "../../pages/LeadCreationPage";
 import CustomAppBar from "../AppBar";
 import ProgressBar from "../ProgressBar";
+import CustomLoader from '../Loader';
 
 function App() {
   let location = useLocation();
   const dispatch = useDispatch();
   const isAuthenticating = useSelector(state => state.getIn(['app', 'isAuthenticating']), null);
   const isAuthenticated = useSelector(state => state.getIn(['app', 'isAuthenticated']), null);
-  // const { i18n } = useTranslation();
 
   useEffect(() => {
     dispatch(getCurrentSessionLaunched({ fromPath: '/' }));
@@ -62,13 +63,17 @@ function App() {
       {/*</div>*/}
       {/*/!* __NavbarEnd__ *!/*/}
       {
-        (!isAuthenticated && location.pathname !== "/newbrief") && <CustomAppBar />
+        (!isAuthenticated && location.pathname !== "/lead") && <CustomAppBar />
       }
       <ProgressBar />
       {
-        isAuthenticating ? 'Loading...' : appSwitch
+        isAuthenticating
+          ? <Grid container alignItems='center' justify='center' style={{ height: '100vh' }}>
+            <CustomLoader size={70} />
+          </Grid>
+          : appSwitch
       }
-    </div>
+    </div >
   );
 }
 

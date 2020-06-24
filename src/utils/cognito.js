@@ -23,7 +23,7 @@ const translateResendCodeSuccess = () => {
 };
 
 const translateResendCodeError = () => {
-  return 'Error'
+  return 'Erreur'
 };
 
 const translateConfirmSignUpError = (errorCode) => {
@@ -42,6 +42,9 @@ const translateConfirmSignUpError = (errorCode) => {
 };
 
 const translateSignInError = (errorCode) => {
+  if (errorCode === null) {
+    return 'Erreur';
+  }
   switch (errorCode) {
     case 'UserNotFoundException':
       return 'Aucun compte avec cet email n\'existe, veuillez vérifier votre email.';
@@ -51,8 +54,10 @@ const translateSignInError = (errorCode) => {
       return 'Veuillez saisir votre email et mot de passe.';
     case 'UserNotConfirmedException':
       return 'Merci de saisir votre code de validation reçu par email.';
+    case 'leadCreationError':
+      return 'Une erreur est survenue lors de la création du brief, merci de réessayer plus tard'
     default:
-      return 'Erreur';
+      return 'Une erreur est survenue. Merci de réessayer';
   }
 };
 
