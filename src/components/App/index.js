@@ -34,7 +34,7 @@ function App() {
       <PrivateRoute exact path="/firstlogin" fixed component={FirstLoginPage} />
       <PrivateRoute exact path="/home" fixed component={HomePage} />
       <PrivateRoute exact path="/account" fixed component={MyAccount} />
-      <PublicRoute exact path="/selection" fixed component={ProfileSelection} />
+      <PrivateRoute exact path="/selection" fixed component={ProfileSelection} />
     </Switch>
   );
 

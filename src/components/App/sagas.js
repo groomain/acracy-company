@@ -18,7 +18,7 @@ import {
   submitNewPasswordSuccess,
   submitNewPasswordFaliure,
   updateUserFailure,
-  updateUserSuccess, closeSnackBar, clearSnackBar
+  updateUserSuccess, closeSnackBar, clearSnackBar, openSnackBar
 } from './reducer';
 import {
   translateSignInError,
@@ -66,8 +66,10 @@ function* doSignIn(action) {
       yield Auth.resendSignUp(email)
       yield put(push('/confirm-signup', { email: email }));
       yield put(loginFailure(translateSignInError(err.code)));
+      yield put(openSnackBar({message: translateSignInError(error.code), error: true}));
     }
     yield put(loginFailure(translateSignInError(err.code)));
+    yield put(openSnackBar({message: translateSignInError(error.code), error: true}));
   }
   yield put(getCurrentSessionLaunched({ fromPath: from || '/home' }));
 }
@@ -118,6 +120,8 @@ function* doSignUp(action) {
   } catch (error) {
     console.log(error);
     yield put(signupFailure(translateSignUpError(error.code)));
+    yield put(openSnackBar({message: translateSignUpError(error.code), error: true}));
+
   }
 }
 

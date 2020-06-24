@@ -17,19 +17,8 @@ export const CustomAppBar = (props) => {
   const { t } = useTranslation();
   const classes = styles();
 
-  const { loginErrorMessage, signupErrorMessage} = useSelector(state => ({
-    loginErrorMessage: state.getIn(['app', 'loginErrorMessage']),
-    signupErrorMessage: state.getIn(['app', 'signupErrorMessage']),
-  }));
-
   const [welcomeMessageOpen, setWelcomeMessageOpen] = React.useState(false);
   const [errorMessageOpen, setErrorMessageOpen] = React.useState(false);
-
-  useEffect(() => {
-    if (loginErrorMessage || signupErrorMessage) {
-      setErrorMessageOpen(true);
-    }
-  }, [loginErrorMessage, signupErrorMessage]);
 
   const renderButtons = () => {
     switch (props.path || location.pathname) {
@@ -70,8 +59,6 @@ export const CustomAppBar = (props) => {
   const renderSnackbar = () => (
     <>
       {welcomeMessageOpen && <CustomSnackBar message={t('welcomeMessage')} open={welcomeMessageOpen} setOpen={setWelcomeMessageOpen} />}
-      {signupErrorMessage && <CustomSnackBar message={signupErrorMessage} open={errorMessageOpen} setOpen={setErrorMessageOpen} error />}
-      {loginErrorMessage && <CustomSnackBar message={loginErrorMessage} open={errorMessageOpen} setOpen={setErrorMessageOpen} error />}
       <CustomSnackBar/>
     </>
   );

@@ -23,7 +23,7 @@ function* getBrief(action) {
     //   }
     // });
     // if (!company.siret || !company.socialReason || !company.legalForm || !company.shareCapital) {
-    //   yield put(getBriefFailure({messsage: "MissingInfos", code: 409}));
+    //   yield put(getBriefFailure({message: "MissingInfos", code: 409}));
     // }
     let briefId = 'get_IN_PROGRESS';
 
