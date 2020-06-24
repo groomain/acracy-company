@@ -1,5 +1,5 @@
 import {
-  all, put, takeLatest, call
+  all, put, takeLatest
 } from 'redux-saga/effects';
 import { API, Auth } from 'aws-amplify';
 import { push } from 'connected-react-router';
@@ -61,7 +61,9 @@ function* getCurrentSession(action) {
 }
 
 function* doSignIn(action) {
-  const { email, password, from } = action.payload;
+  const { email, password
+    // , from 
+  } = action.payload;
 
   try {
     yield Auth.signIn(email, password);

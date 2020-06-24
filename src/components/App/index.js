@@ -41,7 +41,7 @@ function App() {
     </Switch>
   );
 
-  console.log("PATHNAME", location.pathname);
+  // console.log("PATHNAME", location.pathname);
   return (
     <div>
       {/*/!* __NavbarStart__ Replace this whit your navbar *!/*/}

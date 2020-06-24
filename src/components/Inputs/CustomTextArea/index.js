@@ -30,7 +30,7 @@ export const CustomTextArea = ({ label, placeholder, error, helperText, maxLengt
         rowsMin={4}
         fullWidth
         multiline
-        // value={valueOut || ''}
+        value={valueOut || ''}
         onChange={(event) => handleChangeOut(event.target.value)}
         error={error}
         inputProps={{ maxLength: maxLength }}

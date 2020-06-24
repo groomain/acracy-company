@@ -30,7 +30,7 @@ const ProfileElement = ({ category, item1, item2 }) => {
           <Typography variant='h4'>{category}</Typography>
         </Grid>
         <Grid item>
-          <Typography vrariant='body2'>
+          <Typography variant='body2'>
             {item1}
             {item2 && ` ; ${item2}`}
           </Typography>
