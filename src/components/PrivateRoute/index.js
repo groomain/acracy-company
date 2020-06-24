@@ -10,9 +10,11 @@ const privateRender = (Component, isAuthenticated, isAuthenticating, userDynamo,
     // DO NOTHING
   } else if (isAuthenticated === true) {
     // User Authentified
-    if (!userDynamo.user.lastName && props.location.pathname !== '/firstlogin') {
-      result = <Redirect to="/firstlogin" />;
-    } else if (fixed) {
+    // if (!userDynamo.user.lastName && props.location.pathname !== '/firstlogin') {
+    //   result = <Redirect to="/firstlogin" />;
+    // } else
+
+    if (fixed) {
       result = (
         <div>
           <Component {...props} />

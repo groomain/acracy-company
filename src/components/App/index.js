@@ -8,18 +8,20 @@ import PublicRoute from '../PublicRoute';
 import { getCurrentSessionLaunched } from './reducer';
 import SignInPage from '../../pages/SignIn';
 import SignUpPage from '../../pages/SignUp';
+import ConfirmSignupPage from '../../pages/ConfirmSignUp';
 import ForgotPassword from '../../pages/ForgotPassword';
 import FirstLoginPage from '../../pages/FirstLogin';
 import MyAccount from "../../pages/MyAccount";
 import CustomAppBar from "../AppBar";
 import ProgressBar from "../ProgressBar";
 import ProfileSelection from "../../pages/ProfileSelection";
+import CustomLoader from '../Loader';
+import Grid from "@material-ui/core/Grid";
 
 function App() {
   const dispatch = useDispatch();
   const isAuthenticating = useSelector(state => state.getIn(['app', 'isAuthenticating']), null);
   const isAuthenticated = useSelector(state => state.getIn(['app', 'isAuthenticated']), null);
-  // const { i18n } = useTranslation();
 
   useEffect(() => {
     dispatch(getCurrentSessionLaunched({ fromPath: '/' }));
@@ -30,6 +32,7 @@ function App() {
       <Route exact path="/" render={() => <Redirect to="/home" />} />
       <PublicRoute exact path="/login" fixed component={SignInPage} />
       <PublicRoute exact path="/signup" fixed component={SignUpPage} />
+      <PublicRoute exact path="/confirm-signup" fixed component={ConfirmSignupPage} />
       <PublicRoute exact path="/password" fixed component={ForgotPassword} />
       <PrivateRoute exact path="/firstlogin" fixed component={FirstLoginPage} />
       <PrivateRoute exact path="/home" fixed component={HomePage} />
@@ -61,8 +64,11 @@ function App() {
         !isAuthenticated && <CustomAppBar />
       }
       <ProgressBar />
-      {
-        isAuthenticating ? 'Loading...' : appSwitch
+      {isAuthenticating
+        ? <Grid container alignItems='center' justify='center' style={{ height: '100vh' }}>
+          <CustomLoader size={70} />
+        </Grid>
+        : appSwitch
       }
     </div>
   );

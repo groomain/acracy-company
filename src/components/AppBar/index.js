@@ -3,7 +3,6 @@ import { useTranslation } from "react-i18next";
 import { useLocation, withRouter } from "react-router";
 import clsx from "clsx";
 import { Link as RouterLink } from 'react-router-dom';
-import {useSelector} from 'react-redux';
 
 import { AppBar, Toolbar, Typography } from '@material-ui/core';
 import styles from "./styles";
@@ -17,9 +16,6 @@ export const CustomAppBar = (props) => {
   const { t } = useTranslation();
   const classes = styles();
 
-  const [welcomeMessageOpen, setWelcomeMessageOpen] = React.useState(false);
-  const [errorMessageOpen, setErrorMessageOpen] = React.useState(false);
-
   const renderButtons = () => {
     switch (props.path || location.pathname) {
       case '/login':
@@ -30,6 +26,7 @@ export const CustomAppBar = (props) => {
           </div>
         );
       case '/signup':
+      case '/confirm-signup':
         return (
           <div className={clsx(classes.div, classes.signup)}>
             <CustomNavLink to={'/login'} text={t('login')} theme="navLink" />
@@ -47,7 +44,7 @@ export const CustomAppBar = (props) => {
         return (
           <div className={clsx(classes.div, classes.password)}>
             <CustomNavLink to={'/login'} text={t('login')} theme="navLink" />
-            <CustomButton theme={"filledButton"} title={t('signUp')} />
+            <CustomButton theme={"filledButton"} title={t('signUp')} component={RouterLink} to="/signup" />
             <CustomButton title={t('contactUs')} />
           </div>
         );
@@ -57,10 +54,7 @@ export const CustomAppBar = (props) => {
   };
 
   const renderSnackbar = () => (
-    <>
-      {welcomeMessageOpen && <CustomSnackBar message={t('welcomeMessage')} open={welcomeMessageOpen} setOpen={setWelcomeMessageOpen} />}
       <CustomSnackBar/>
-    </>
   );
 
   return (
