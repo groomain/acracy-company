@@ -15,7 +15,7 @@ export const withLogin = () => (
 
 export const withSignUp = () => (
   ProviderWrapper(
-    <CustomAppBar path={"/signup"} />
+    <CustomAppBar path={"/createAccount"} />
   )
 );
 
@@ -27,7 +27,7 @@ export const withHome = () => (
 
 export const withForgotPassword = () => (
   ProviderWrapper(
-    <CustomAppBar path={"/password"} />
+    <CustomAppBar path={"/forgotPassword"} />
   )
 );
 

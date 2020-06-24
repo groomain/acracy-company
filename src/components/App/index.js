@@ -30,12 +30,12 @@ function App() {
     <Switch>
       <Route exact path="/" render={() => <Redirect to="/home" />} />
       <PublicRoute exact path="/login" fixed component={SignInPage} />
-      <PublicRoute exact path="/signup" fixed component={SignUpPage} />
-      <PublicRoute exact path="/confirm-signup" fixed component={ConfirmSignupPage} />
-      <PublicRoute exact path="/password" fixed component={ForgotPassword} />
+      <PublicRoute exact path="/createAccount" fixed component={SignUpPage} />
+      <PublicRoute exact path="/confirmAccount" fixed component={ConfirmSignupPage} />
+      <PublicRoute exact path="/forgotPassword" fixed component={ForgotPassword} />
       <PrivateRoute exact path="/firstlogin" fixed component={FirstLoginPage} />
       <PrivateRoute exact path="/home" fixed component={HomePage} />
-      <PrivateRoute exact path="/account" fixed component={MyAccount} />
+      <PrivateRoute exact path="/myProfile" fixed component={MyAccount} />
     </Switch>
   );
 

@@ -39,12 +39,12 @@ export const CustomAppBar = (props) => {
       case '/login':
         return (
           <div className={clsx(classes.div, classes.login)}>
-            <CustomButton theme={"filledButton"} title={t('signUp')} component={RouterLink} to="/signup" />
+            <CustomButton theme={"filledButton"} title={t('signUp')} component={RouterLink} to="/createAccount" />
             <CustomButton title={t('contactUs')} />
           </div>
         );
-      case '/signup':
-      case '/confirm-signup':
+      case '/createAccount':
+      case '/confirmAccount':
         return (
           <div className={clsx(classes.div, classes.signup)}>
             <CustomNavLink to={'/login'} text={t('login')} theme="navLink" />
@@ -58,11 +58,11 @@ export const CustomAppBar = (props) => {
             <ProfilMenu />
           </div>
         );
-      case '/password':
+      case '/forgotPassword':
         return (
           <div className={clsx(classes.div, classes.password)}>
             <CustomNavLink to={'/login'} text={t('login')} theme="navLink" />
-            <CustomButton theme={"filledButton"} title={t('signUp')} component={RouterLink} to="/signup" />
+            <CustomButton theme={"filledButton"} title={t('signUp')} component={RouterLink} to="/createAccount" />
             <CustomButton title={t('contactUs')} />
           </div>
         );
