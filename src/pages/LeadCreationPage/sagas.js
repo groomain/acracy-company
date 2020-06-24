@@ -2,20 +2,23 @@ import { all, put, takeLatest } from 'redux-saga/effects';
 import { API } from 'aws-amplify';
 import { push } from 'connected-react-router';
 import { config } from '../../conf/amplify';
-import { leadSaveSuccess, leadSaveFailure, getLeadDraftSuccess, getLeadDraftFailure, changeLeadStatusSuccess, changeLeadStatusFailure } from "./reducer";
+import { leadSaveSuccess, leadSaveFailure, getLeadDraftSuccess, getLeadDraftFailure, putLeadDraftSuccess, putLeadDraftFailure, changeLeadStatusSuccess, changeLeadStatusFailure } from "./reducer";
 
 function* doLeadSave(action) { // create a new lead
   // console.log('action: ', action.payload)
+  const { form, redirect } = action.payload;
   try {
     const leadId = yield API.post(config.apiGateway.NAME, '/leads', {
       headers: {
         'x-api-key': config.apiKey
       },
-      body: action.payload
+      body: form
     });
 
     yield put(leadSaveSuccess(leadId));
-    yield put(push('/home'));
+    if (redirect) {
+      yield put(push('/home'));
+    }
   } catch (error) {
     console.log(error);
     yield put(leadSaveFailure());
@@ -42,7 +45,7 @@ function* doGetLeadDraft(action) { // get a lead's data
 
 function* doUpdateLeadDraft(action) { // update an existing lead
   // console.log('action: ', action.payload)
-  const { id, form } = action.payload;
+  const { id, form, redirect } = action.payload;
   try {
     const draft = yield API.put(config.apiGateway.NAME, encodeURI(`/leads/${id}`),
       {
@@ -53,11 +56,13 @@ function* doUpdateLeadDraft(action) { // update an existing lead
 
       });
 
-    yield put(getLeadDraftSuccess(draft));
-    yield put(push('/home'));
+    yield put(putLeadDraftSuccess(draft));
+    if (redirect) {
+      yield put(push('/home'));
+    }
   } catch (error) {
     console.log(error);
-    yield put(getLeadDraftFailure());
+    yield put(putLeadDraftFailure());
   }
 }
 
@@ -72,7 +77,6 @@ function* doChangeLeadStatus(action) {  // modify the status of a lead
         },
         body: { 'type': status }
       });
-
     yield put(changeLeadStatusSuccess(update));
     yield put(push('/home'));
   } catch (error) {
