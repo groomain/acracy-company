@@ -7,6 +7,7 @@ import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 
 import { getLeadsLaunched } from '../../../pages/HomePage/reducer';
+import { leads } from '../../../mocks/leads';
 
 import DarkWrapper from '../../Layout/DarkWrapper/';
 import FirstDraft from '../Draft/FirstDraft';
@@ -19,21 +20,18 @@ const Drafts = ({ ...props }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
-  const [currentDrafts, setCurrentDrafts] = useState();
+  // delete when connecting to the DB
+  const [leadsData] = useState(leads);
+  const leadsLoading = false;
 
-  const { leadsData, leadsLoading } = useSelector(state => ({
-    leadsData: state.getIn(['dashboard', 'leadsData']),
-    leadsLoading: state.getIn(['dashboard', 'leadsLoading']),
-  }));
+  // const { leadsData, leadsLoading } = useSelector(state => ({
+  //   leadsData: state.getIn(['dashboard', 'leadsData']),
+  //   leadsLoading: state.getIn(['dashboard', 'leadsLoading']),
+  // }));
 
   useEffect(() => {
     dispatch(getLeadsLaunched());
   }, [dispatch])
-
-  useEffect(() => {
-    setCurrentDrafts(leadsData);
-    // setCurrentDrafts([]);
-  }, [leadsData]);
 
   const responsive = {
     desktop: {
@@ -66,7 +64,7 @@ const Drafts = ({ ...props }) => {
     </DarkWrapper>
   );
 
-  if (currentDrafts?.length > 0 && !leadsLoading) {
+  if (leadsData?.length > 0 && !leadsLoading) {
     draftsList = (
       <Carousel
         responsive={responsive}
@@ -78,12 +76,12 @@ const Drafts = ({ ...props }) => {
         infinite={false}
         {...props}
       >
-        {currentDrafts?.map((draft, key) => <Draft key={key} draft={draft} />)}
+        {leadsData?.map((draft, key) => <Draft key={key} draft={draft} />)}
       </Carousel>
     )
   };
 
-  const draftsNumber = currentDrafts?.length > 0 ? ('0' + currentDrafts?.length).slice(-2) : null
+  const draftsNumber = leadsData?.length > 0 ? ('0' + leadsData?.length).slice(-2) : null
 
   return (
     <Box my={4}>

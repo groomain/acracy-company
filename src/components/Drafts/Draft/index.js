@@ -37,7 +37,7 @@ const Draft = ({ draft }) => {
   const [getStatusResult, setGetStatusResult] = useState();
 
   const startDate = draft?.missionContext.startDate;
-  const date = moment.unix(startDate).format("MM.DD à hh:mm");
+  const date = moment(startDate).format("MM.DD à hh:mm");
 
   const missionContextLength = getPath(draft?.missionContext, 'missionContext').length;
 
