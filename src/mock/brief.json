@@ -1,0 +1,118 @@
+{
+  "externalId": "{{$randomInt}}",
+  "profile": {
+    "code": "PR-{{$randomInt}}",
+    "text": "{{$randomJobTitle}}"
+  },
+  "deliverables": [
+    {
+      "type": "DELIVERABLE",
+      "code": "DE-{{$randomInt}}",
+      "text": "{{$randomWords}}"
+    },
+    {
+      "type": "DELIVERABLE",
+      "code": "DE-{{$randomInt}}",
+      "text": "{{$randomWords}}"
+    },
+    {
+      "type": "DELIVERABLE",
+      "code": "DE-{{$randomInt}}",
+      "text": "{{$randomWords}}"
+    },
+    {
+      "type": "DELIVERABLE",
+      "code": "",
+      "text": "{{$randomWords}}"
+    },
+    {
+      "type": "DELIVERABLE",
+      "code": "DE-{{$randomInt}}",
+      "text": "{{$randomWords}}"
+    }
+  ],
+  "missionContext": {
+    "title": "{{$randomPhrase}}",
+    "startDate": "2025-01-01",
+    "format": "{{BOTH}}",
+    "address": "{{$randomCity}} - {{$randomStreetAddress}}",
+    "weeklyRythm": 5,
+    "duration": {
+      "nb": "4,",
+      "unit": "WEEK"
+    },
+    "budget": {
+      "value": "500.00,",
+      "type": "DAILY_RATE"
+    },
+    "estimatedAverageDailyRate": 500,
+    "profileNumber": 1
+  },
+  "missionDetail": {
+    "contextAndTasks": "{{$$randomPhrase}}.<br><br>{{$$randomPhrase}}",
+    "DetailsOfDeliverables": "{{$$randomPhrase}}.<br><br>{{$$randomPhrase}}<br>{{$$randomPhrase}}",
+    "sharedDocument": [
+      {
+        "externalId": "{{$randomUUID}}",
+        "name": "{{$randomFileName}}"
+      },
+      {
+        "externalId": "{{$randomUUID}}",
+        "name": "{{$randomFileName}}"
+      },
+      {
+        "externalId": "{{$randomUUID}}",
+        "name": "{{$randomFileName}}"
+      }
+    ]
+  },
+  "missionRequirement": {
+    "expertises": [
+      {
+        "expertise": {
+          "code": "EX-{{$randomInt}}",
+          "text": "{{$randomNoun}}"
+        },
+        "priority": true
+      },
+      {
+        "expertise": {
+          "code": "EX-{{$randomInt}}",
+          "text": "{{$randomNoun}}"
+        },
+        "priority": false
+      },
+      {
+        "expertise": {
+          "code": "EX-{{$randomInt}}",
+          "text": "{{$randomNoun}}"
+        },
+        "priority": false
+      },
+      {
+        "expertise": {
+          "code": "EX-{{$randomInt}}",
+          "text": "{{$randomNoun}}"
+        },
+        "priority": true
+      }
+    ],
+    "sensitivity": {
+      "sensitivity": {
+        "code": "SE-{{$randomInt}}",
+        "text": "{{$randomNoun}}"
+      },
+      "essential": true
+    },
+    "language": {
+      "language": "FLUENT_ENGLISH",
+      "essential": true
+    },
+    "seniority": "WHATEVER"
+  },
+  "customerProfile": {
+    "name": "{{$randomCompanyName}}",
+    "logo": "{{$randomBusinessImage}}",
+    "description": "{{$randomBs}}"
+  }
+}
