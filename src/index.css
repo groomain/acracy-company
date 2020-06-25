@@ -13,6 +13,11 @@
   src: url('./assets/fonts/BasierCircleBold.otf');
 }
 
+@font-face {
+  font-family: 'Bodoni Book';
+  src: url('assets/fonts/BodoniBookSSiBook.ttf');
+}
+
 html, body, #app, #app> div {
   margin: 0;
   height: 100%;

@@ -67,7 +67,7 @@ export default makeStyles(theme => ({
     minWidth: 337,
   },
   name: {
-    fontFamily: 'basierRegular',
+    fontFamily: "BodoniBook",
     fontSize: 68,
     lineHeight: 1
   },
@@ -79,7 +79,7 @@ export default makeStyles(theme => ({
     marginBottom: 15
   },
   text: {
-    fontFamily: 'basierRegular',
+    fontFamily: "BodoniBook",
     fontSize: 32,
     textAlign: 'justify'
   },

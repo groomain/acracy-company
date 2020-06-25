@@ -8,16 +8,13 @@ import CustomButton from "../Button";
 import styles from './styles'
 import Avatar from "@material-ui/core/Avatar";
 import ProfileElement from "../ProfileElement";
-import langues from "../../assets/icons/langues.svg";
 import star from "../../assets/icons/expertises.svg";
 import checkStatus from "../../assets/icons/check-statut.svg";
 import clsx from "clsx";
 import CustomLoader from "../Loader";
-import {Redirect} from "react-router";
 
 const RevealProfil = (props) => {
   const classes = styles();
-  const photoLink = 'https://cdn-media.rtl.fr/cache/p0NFoli1OBEqRtMwTbdztw/880v587-0/online/image/2015/0403/loveok_141338438169183900.jpg';
   const [checked, setChecked] = React.useState(false);
   const {modeMission, profil} = props;
 
@@ -103,7 +100,7 @@ const RevealProfil = (props) => {
                         <Tag key={key} title={tag.text} isPrimaryColor className={classes.tag}/>
                     )}
                   </Grid>
-                </Grid>
+              </Grid>
 
                 <Grid item container xs={6} direction={"column"} justify={'space-between'} spacing={0}
                       className={clsx(classes.profilElementContainer, {[classes.profilElementContainerModeMission]: modeMission})}>

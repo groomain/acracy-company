@@ -14,6 +14,7 @@ import FirstLoginPage from '../../pages/FirstLogin';
 import MyAccount from "../../pages/MyAccount";
 import CustomAppBar from "../AppBar";
 import ProgressBar from "../ProgressBar";
+import ProfileSelection from "../../pages/ProfileSelection";
 import CustomLoader from '../Loader';
 import MissionFollowUp from "../../pages/MissionFollowUp";
 
@@ -37,6 +38,7 @@ function App() {
       <PrivateRoute exact path="/firstlogin" fixed component={FirstLoginPage} />
       <PrivateRoute exact path="/home" fixed component={HomePage} />
       <PrivateRoute exact path="/account" fixed component={MyAccount} />
+      <PrivateRoute exact path="/selection" fixed component={ProfileSelection} />
     </Switch>
   );
 
