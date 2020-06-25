@@ -48,7 +48,7 @@ export const LeftOverlay = ({ matching, mission, ...props }) => {
   }
 
   const renderMenuLinks = () => {
-    const today = Date.now() / 1000;
+    const today = new Date(Date.now()).toISOString();
 
     return (
       <>
@@ -73,14 +73,13 @@ export const LeftOverlay = ({ matching, mission, ...props }) => {
               <AdresseIcon />
               Voir coordonnées freelance
           </Grid>
-            {mission?.brief.missionContext.startDate < today ? (
+            {mission?.dateStart < today ? (
               <>
                 <Grid item container direction={'row'} className={classes.row}
                   onClick={() => setIncidentOpen(true)}>
                   <IncidentIcon />
                   Déclarer un incident
               </Grid>
-
                 {mission?.invoices?.length > 0 && (
                   <Grid item container direction={'row'} className={classes.row}
                     onClick={() => setInvoicesOpen(true)}>
