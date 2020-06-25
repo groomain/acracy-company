@@ -76,4 +76,16 @@ export default makeStyles(theme => ({
       justifyContent: 'flex-start'
     }
   },
+  outlinedBlackBorder: {
+    borderColor: theme.palette.secondary.black,
+    color: theme.palette.secondary.black
+  },
+  outlinedBlackBackground: {
+    borderColor: theme.palette.secondary.black,
+    backgroundColor: theme.palette.secondary.black,
+    color: theme.palette.primary.main,
+      '&:hover, &:active': {
+          background: `${theme.palette.secondary.dark}`
+      }
+  }
 }));

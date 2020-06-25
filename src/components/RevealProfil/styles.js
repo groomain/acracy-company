@@ -52,6 +52,7 @@ export default makeStyles(theme => ({
     alignItems: 'center'
   },
   name: {
+    fontFamily: "BodoniBook",
     fontSize: 68,
     lineHeight: 1
   },
@@ -60,6 +61,7 @@ export default makeStyles(theme => ({
     marginBottom: 15
   },
   text: {
+    fontFamily: "BodoniBook",
     fontSize: 32,
     textAlign: 'justify'
   },
