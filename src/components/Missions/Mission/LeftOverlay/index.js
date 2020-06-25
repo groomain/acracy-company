@@ -57,7 +57,7 @@ export const LeftOverlay = ({ matching, mission, ...props }) => {
           target='_blank'
           className={classes.row}>
           <DownloadIcon />
-             Télécharger PDF
+             Télécharger brief
         </a>
         {mission && (
           <>

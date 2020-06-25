@@ -18,7 +18,6 @@ import { EnCoursIcon } from "../../../assets/icons/EnCoursIcon";
 import { TravailIcon } from "../../../assets/icons/TravailIcon";
 import { RetardIcon } from "../../../assets/icons/RetardIcon";
 import { MissionHistoIcon } from "../../../assets/icons/MissionHistoIcon";
-import { WhiteCircle } from '../../../assets/icons/WhiteCircle';
 import CustomLoader from '../../Loader';
 import CustomModal from '../../Modal';
 import CustomButton from '../../Button';
@@ -32,6 +31,20 @@ import * as moment from 'moment';
 moment.locale('fr');
 
 export const Mission = ({ mission, matching, today, ...props }) => {
+  console.log('Mission -> matching', matching)
+
+  const PAID = "PAID";
+  const WAITING_FOR_VALIDATION = "WAITING_FOR_VALIDATION";
+  const WAITING_FOR_PAYMENT = "WAITING_FOR_PAYMENT";
+  const WAITING_FOR_ACCEPTANCE = "WAITING_FOR_ACCEPTANCE";
+  const WAITING_FOR_SIGNATURE = "WAITING_FOR_SIGNATURE";
+  const WAITING_FOR_MATCHING = "WAITING_FOR_MATCHING";
+  const WAITING_FOR_CUSTOMER_SELECTION = "WAITING_FOR_CUSTOMER_SELECTION";
+  const FINISHED = 'FINISHED';
+  const IN_PROGRESS = 'IN_PROGRESS';
+  const WAITING_FOR_QUOTES = 'WAITING_FOR_QUOTES';
+
+  // get quotes
 
   const dispatch = useDispatch();
   const classes = styles();
@@ -39,10 +52,10 @@ export const Mission = ({ mission, matching, today, ...props }) => {
   const [infosOpen, setInfosOpen] = useState(false);
   const [redirectionPopupOpen, setRedirectionPopupOpen] = useState(false);
 
-  const weekly = mission?.brief.missionContext.weeklyRythm || matching?.missionContext.weeklyRythm;
-  const durationNb = mission?.brief.missionContext.duration.nb || matching?.missionContext.duration.nb;
-  const durationUnit = mission?.brief.missionContext.duration.unit || matching?.missionContext.duration.unit;
-  const startDate = mission?.brief.missionContext.startDate || matching?.missionContext.startDate;
+  const weekly = mission?.brief?.missionContext?.weeklyRythm || matching?.missionContext?.weeklyRythm;
+  const durationNb = mission?.brief?.missionContext?.duration?.nb || matching?.missionContext?.duration?.nb;
+  const durationUnit = mission?.brief?.missionContext?.duration?.unit || matching?.missionContext?.duration?.unit;
+  const startDate = mission?.brief?.missionContext?.startDate || matching?.missionContext?.startDate;
 
   const { quotes, quotesLoading, companiesData, companiesLoading, companiesDataFetched } = useSelector(state => ({
     quotes: state.getIn(['dashboard', 'quotes']),
@@ -52,28 +65,35 @@ export const Mission = ({ mission, matching, today, ...props }) => {
     companiesDataFetched: state.getIn(['dashboard', 'companiesDataFetched'])
   }));
 
-  const getStatusIcon = (status) => {
-    switch (status) {
-      case 0:
-        return <AValiderIcon className={classes.icon} />;
-      case 'WAITING_FOR_MATCHING':
-      case 'WAITING_FOR_CUSTOMER_SELECTION':
-        return <MatchingIcon className={classes.icon} />;
-      case 2:
-        return <DemarreIcon className={classes.icon} />;
-      case 'WAITING_FOR_ACCEPTANCE':
-      case 'WAITING_FOR_SIGNATURE':
-        return <EnCoursIcon className={classes.icon} />;
-      case 4:
-        return <TravailIcon className={classes.icon} />;
-      case 5:
-        return <RetardIcon className={classes.icon} />;
-      case 6:
+  const getStatusIcon = (mission) => {
+    const status = mission?.status;
+    if (status === WAITING_FOR_ACCEPTANCE || status === WAITING_FOR_SIGNATURE) {
+      return <AValiderIcon className={classes.icon} />;
+    } else if (status === WAITING_FOR_MATCHING || status === WAITING_FOR_CUSTOMER_SELECTION) {
+      return <MatchingIcon className={classes.icon} />;
+    } else if (mission?.invoices?.find(x => x.status === WAITING_FOR_PAYMENT)) {
+      if (mission?.dateStart)
+        if (mission?.invoices?.find(x => x.paymentDate < today)) {
+          return <RetardIcon className={classes.icon} />;
+        } else {
+          if (getPath(mission?.invoices?.attachement).length > 0 || !mission?.invoices?.attachment) {
+            if (status === FINISHED) {
+              return <TravailIcon className={classes.icon} />;
+            } else {
+              return <EnCoursIcon className={classes.icon} />;
+            }
+          }
+        }
+    } else if (status === FINISHED) {
+      if (mission?.dateEnd.length > 1) {
         return <MissionHistoIcon className={classes.icon} />;
-      case 'FINISHED':
-        return <WhiteCircle className={classes.icon} />;
-      default:
-        return <EnCoursIcon className={classes.icon} />; ///////////// CHECK IF ALL CASES ARE OK
+      } else {
+        return <TravailIcon className={classes.icon} />;
+      }
+    } else if (mission?.dateStart > today) {
+      return <DemarreIcon className={classes.icon} />;
+    } else {
+      return <EnCoursIcon className={classes.icon} />;
     }
   };
 
@@ -81,34 +101,35 @@ export const Mission = ({ mission, matching, today, ...props }) => {
   useEffect(() => {
     const getBriefStatus = (briefStatus) => {
       switch (briefStatus) {
-        case 'WAITING_FOR_ACCEPTANCE':
+        case WAITING_FOR_ACCEPTANCE:
           return {
             status: 'Validation du brief en cours',
             avatar: match,
             title: ''
           };
-        case 'WAITING_FOR_MATCHING':
-        case 'WAITING_FOR_QUOTES':
+        case WAITING_FOR_MATCHING:
+        case WAITING_FOR_QUOTES:
           return {
             status: 'Matching en cours',
             avatar: match,
             title: 'Matching en cours',
-            subtext: `Garanti en 48h.\n Estimé au ${addTwoWorkingDays(startDate * 1000, 2)}`
+            subtext: `Garanti en 48h.\n Estimé au ${addTwoWorkingDays(startDate, 2)
+              }`
           };
-        case 'WAITING_FOR_CUSTOMER_SELECTION':
+        case WAITING_FOR_CUSTOMER_SELECTION:
           return {
             status: 'Faites votre sélection',
             avatar: '?',
             title: `Découvrir les profils`,
-            subtext: `Nous vous proposons ${quotes?.length ?? 0} top freelance !`,
+            subtext: `Nous vous proposons ${quotes?.length ?? 0} top freelance!`,
             buttonText: 'Sélectionner profil'
           };
-        case 'WAITING_FOR_SIGNATURE':
+        case WAITING_FOR_SIGNATURE:
           return {
             status: 'Devis à valider',
             buttonText: 'Valider devis',
             avatar: quotes?.brief.serviceProviderProfile.linkedinAvatar,
-            title: `${quotes?.brief.serviceProviderProfile.firstName}  ${quotes?.brief.serviceProviderProfile.lastName}`,
+            title: `${quotes?.brief.serviceProviderProfile.firstName} ${quotes?.brief.serviceProviderProfile.lastName} `,
             subtext: quotes?.brief.serviceProviderProfile.profile.text
           };
         default:
@@ -119,18 +140,64 @@ export const Mission = ({ mission, matching, today, ...props }) => {
     setMatchingValues(result);
   }, [matching, startDate, quotes]);
 
-  const missionStatus = () => {
-    if (today && mission?.brief.missionContext.startDate > today) {
-      const days = Math.floor((mission?.brief.missionContext.startDate - today) / 86400);
-      return `Démarre dans ${days} jour${days > 2 ? 's' : ''} `;
-    } else if (mission?.status === 'FINISHED') {
-      return `Mission finalisée le ${formatDate(mission?.brief.dateEnd)} `
+  const [missionStatus, setMissionStatus] = useState();
+  useEffect(() => {
+    const getMissionStatus = (missionInvoiceStatus, mission) => {
+
+      const futureMission = mission?.dateStart > today;
+      const days = Math.floor((mission?.dateStart - today) / 86400);
+
+      if (futureMission) {
+        return {
+          status: `Démarre dans ${days} jour${days > 2 ? 's' : ''} `,
+          color: 'primary'
+        }
+      }
+
+      // No invoice with "WAITING_FOR_PAYMENT" status
+      if (!mission?.invoices?.find(x => x.status === WAITING_FOR_PAYMENT)) {
+        if (mission?.status === FINISHED) {
+          if (mission?.dateEnd?.length < 1) {
+            return {
+              status: `Mission finalisée le ${formatDate(mission?.dateEnd)} `,
+            }
+          } else {
+            return {
+              status: 'Travail terminé'
+            }
+          }
+        }
+
+        if (mission?.status === IN_PROGRESS) {
+          return {
+            status: 'Mission en cours'
+          }
+        }
+      } else {
+        // At least 1 invoice has "WAITING_FOR_PAYMENT" status
+        if (mission?.invoices?.find(x => x.paymentDate < today)) {
+          return {
+            status: 'Retard de paiement',
+            color: 'primary.danger',
+            buttonTitle: 'Payer facture'
+          }
+        }
+        if (mission?.invoices?.find(x => x.status === WAITING_FOR_VALIDATION)) {
+          return {
+            status: 'Valider CRA',
+            buttonTitle: 'CRA à valider'
+          }
+        }
+      }
+      // when no attachment ? when at least 1 attachment ?
     }
-  };
+    const result = getMissionStatus(mission?.invoices?.map(x => x.status), mission);
+    setMissionStatus(result);
+  }, [mission, today]);
 
   const [loadingButton, setLoadingButton] = useState(false);
   const handleClick = (status) => {
-    if (status === 'WAITING_FOR_SIGNATURE') {
+    if (status === WAITING_FOR_SIGNATURE) {
       setInfosOpen(true)
     } else {
       setLoadingButton(true);
@@ -144,15 +211,15 @@ export const Mission = ({ mission, matching, today, ...props }) => {
         setRedirectionPopupOpen(true);
         dispatch(setComingFromDashboard(true)); // Initialize the redirection from the administrative page -> true ? push('/reveal')
       } else {
-        dispatch(push('/reveal'));
+        dispatch(push(`/reveal/${mission?.externalId || matching?.externa}`));
       }
     }
   }, [companiesDataFetched, companiesData, dispatch, loadingButton])
 
   const renderMissionButton = (status) => {
     switch (status) {
-      case 'WAITING_FOR_CUSTOMER_SELECTION':
-      case 'WAITING_FOR_SIGNATURE':
+      case WAITING_FOR_CUSTOMER_SELECTION:
+      case WAITING_FOR_SIGNATURE:
         return (
           <Grid container
             className={clsx(classes.gridRight, { [classes.withoutButton]: props.status === 6 }, { [classes.rightRed]: props.status === 5 })}
@@ -174,8 +241,8 @@ export const Mission = ({ mission, matching, today, ...props }) => {
 
   // Retrieve quotes for the specified "profile matching" missions
   useEffect(() => {
-    if (matching?.status === 'WAITING_FOR_CUSTOMER_SELECTION' || matching?.status === 'WAITING_FOR_SIGNATURE') {
-      dispatch(getQuotesLaunched(matching?.externalId));
+    if (matching?.status === WAITING_FOR_CUSTOMER_SELECTION || matching?.status === WAITING_FOR_SIGNATURE) {
+      // dispatch(getQuotesLaunched(matching?.externalId));
     }
   }, [matching, dispatch]);
 
@@ -187,10 +254,10 @@ export const Mission = ({ mission, matching, today, ...props }) => {
             <Grid container className={clsx(classes.gridLeft, { [classes.gridLeftFinished]: props.status === 6 })}
               direction={'column'}>
               <Grid container item className={classes.statusContainer} direction={'row'}>
-                {matching ? getStatusIcon(matching?.status) : getStatusIcon(mission?.status)}
+                {matching ? getStatusIcon(matching) : getStatusIcon(mission)}
                 <Typography
-                  className={clsx(classes.statusTitle, mission?.status === 'FINISHED' ? classes.finishedMission : null, { [classes.statusTitleRed]: props.status === 5 })}>
-                  {matchingValues?.status || missionStatus()}
+                  className={clsx(classes.statusTitle, mission?.status === FINISHED ? classes.finishedMission : null, { [classes.statusTitleRed]: props.status === 5 })}>
+                  {matchingValues?.status || missionStatus?.status}
                 </Typography>
                 <div style={{ flexGrow: 1 }} />
                 <IconButton className={classes.buttonIcon} aria-label="display more actions"
@@ -199,38 +266,34 @@ export const Mission = ({ mission, matching, today, ...props }) => {
                 </IconButton>
               </Grid>
               <Grid item className={classes.titleContainer}>
-                <Typography className={classes.title}>{shortenLongText(mission?.brief.missionContext.title || matching?.missionContext.title, 42)}</Typography>
+                <Typography className={classes.title}>{shortenLongText(mission?.brief?.missionContext?.title || matching?.brief?.missionContext?.title || matching?.missionContext?.title, 42)}</Typography>
               </Grid>
               <Grid item className={classes.description}>
                 <Typography variant="body2">
-                  {(matching?.deliverables || mission?.brief.deliverables).map((x, key) => `0${key + 1} ${x.text} ${key + 1 !== (matching?.deliverables.length || mission?.brief.deliverables.length) ? '- ' : ''} `)}</Typography>
+                  {(matching?.deliverables || mission?.brief?.deliverables || matching?.brief?.deliverables)?.map((x, key) => `0${key + 1} ${x.text} ${key + 1 !== (matching?.deliverables?.length || matching?.brief?.deliverables.length || mission?.brief?.deliverables?.length) ? '- ' : ''} `)}</Typography>
               </Grid>
               {open && <LeftOverlay setOpen={setOpen} matching={matching} mission={mission} />}
             </Grid>
 
             <NavLink
-              to={`/mission/${mission?.externalId}` || `/mission/${matching?.externalId}`}
+              to={mission ? `/ mission / ${mission?.externalId} ` : ` / brief / ${matching?.externalId} `}
               className={clsx(classes.gridCenter, { [classes.gridCenterFinished]: props.status === 6 })}>
               {/* 1st column */}
               <Grid item xs={4}>
                 <Grid item className={classes.blocAvatar}>
-                  <CircleImage theme={'avatarLarge'} src={mission?.serviceProviderProfile.linkedinAvatar || matchingValues?.avatar} icon={matchingValues?.avatar} />
+                  <CircleImage theme={'avatarLarge'} src={mission?.serviceProviderProfile?.linkedinAvatar || matchingValues?.avatar} icon={matchingValues?.avatar} />
                 </Grid>
-
-                {/* ///// */}
                 <Grid item className={classes.blocTypoDownAvatar}>
-                  <Typography variant={"h4"} className={classes.typo}>{mission?.serviceProviderProfile.firstName || matchingValues?.title} {mission?.serviceProviderProfile.lastName}</Typography>
-                  <Typography variant={"body1"} className={classes.typo}>{mission?.brief.profile.text || matchingValues?.subtext}</Typography>
+                  <Typography variant={"h4"} className={classes.typo}>{mission?.serviceProviderProfile?.firstName || matchingValues?.title} {mission?.serviceProviderProfile?.lastName}</Typography>
+                  <Typography variant={"body1"} className={classes.typo}>{mission?.brief?.profile?.text || matchingValues?.subtext}</Typography>
                 </Grid>
-                {/* /////// */}
-
               </Grid>
 
               {/* 2nd column */}
               <Grid item xs={4}>
                 <Grid item className={classes.blocTypoUp}>
                   <Typography variant={"h4"} className={classes.typo}>Format</Typography>
-                  <Typography variant={"body1"} className={classes.typo}>{mission?.brief.missionContext.format || matching?.missionContext.format}</Typography>
+                  <Typography variant={"body1"} className={classes.typo}>{mission?.brief?.missionContext?.format || matching?.missionContext?.format}</Typography>
                 </Grid>
                 <Grid item className={classes.blocTypoDown}>
                   <Typography variant={"h4"} className={classes.typo}>Rythme</Typography>
@@ -244,12 +307,12 @@ export const Mission = ({ mission, matching, today, ...props }) => {
               <Grid item xs={4}>
                 <Grid item className={classes.blocTypoUp}>
                   <Typography variant={"h4"} className={classes.typo}>Taux journalier</Typography>
-                  <Typography variant={"body1"} className={classes.typo}>{mission?.brief.missionContext.estimatedAverageDailyRate || matching?.missionContext.estimatedAverageDailyRate} €/j</Typography>
+                  <Typography variant={"body1"} className={classes.typo}>{mission?.brief?.missionContext?.estimatedAverageDailyRate || matching?.missionContext?.estimatedAverageDailyRate} €/j</Typography>
                 </Grid>
                 <Grid item className={classes.blocTypoDown}>
                   <Typography variant={"h4"} className={classes.typo}>Durée</Typography>
                   <Typography variant={"body1"} className={classes.typo}>
-                    {durationNb}{' '}{durationUnit.toLowerCase()}{durationNb > 1 && 's'} à partir du {formatDate(startDate)}
+                    {durationNb}{' '}{durationUnit?.toLowerCase()}{durationNb > 1 && 's'} à partir du {formatDate(startDate)}
                   </Typography>
                 </Grid>
               </Grid>

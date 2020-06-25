@@ -61,7 +61,7 @@ export const shortenLongText = (text, length) => {
  * @returns {string} - The new date with specified number of days added, excluding weekends
  */
 export const addTwoWorkingDays = (date, nbOfDaysToAdd) => {
-  date = new Date(Math.round(new Date(date).getTime() / 1000));
+  date = new Date(Math.round(new Date(date).getTime()));
   let endDate = "", count = 0;
   while (count < nbOfDaysToAdd) {
     endDate = new Date(date.setDate(date.getDate() + 1));

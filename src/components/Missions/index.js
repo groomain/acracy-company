@@ -20,9 +20,10 @@ export const Missions = () => {
   const sharedClasses = sharedStyles();
 
   const today = new Date(Date.now()).toISOString();
+  const WAITING_FOR_SIGNATURE = 'WAITING_FOR_SIGNATURE';
 
   // Delete when connecting to the DB
-  const [briefsData, setBriefsData] = useState(briefs);
+  const [briefsList, setBriefsList] = useState();
   const missionsLoading = false;
   const briefsLoading = false;
 
@@ -38,6 +39,19 @@ export const Missions = () => {
   //   dispatch(getMissionsLaunched());
   //   dispatch(getBriefsLaunched());
   // }, [dispatch]);
+
+  const toValidateMission = missions?.filter(x => x.status === WAITING_FOR_SIGNATURE);
+  const [missionBrief] = toValidateMission;
+
+  const missionAsMatchingProfile = {
+    externalId: missionBrief.externalId,
+    status: missionBrief.status,
+    brief: missionBrief.brief
+  }
+
+  useEffect(() => {
+    setBriefsList(briefs.concat(missionAsMatchingProfile))
+  }, [])
 
   const inProgressMissions = missions?.filter(x => (x.status === 'IN_PROGRESS' && x.dateStart < today) || (x.status === 'FINISHED' && x.dateEnd?.length < 1));
   const futureMissions = missions?.filter(x => x.status === 'IN_PROGRESS' && x.dateStart > today);
@@ -66,17 +80,17 @@ export const Missions = () => {
         </DarkWrapper>
       </>
     );
-    if (inProgressMissions?.length > 0 || futureMissions?.length > 0 || finishedMissions?.length > 0 || briefsData?.length > 0) {
+    if (inProgressMissions?.length > 0 || futureMissions?.length > 0 || finishedMissions?.length > 0 || briefsList?.length > 0) {
       missionsList = (
         <Grid item>
           <Box my={6}>
-            {briefsData?.length > 0 && (
+            {briefsList?.length > 0 && (
               <>
                 <Typography variant="h2">
                   {t('dashboard.missions.profileMatching')}
                 </Typography>
-                {briefsData
-                  .sort((a, b) => a.missionContext.startDate - b.missionContext.startDate)
+                {briefsList
+                  // .sort((a, b) => a.missionContext.startDate - b.missionContext.startDate)
                   .map((matching, key) => <Mission key={key} matching={matching} today={today} />)
                 }
               </>
@@ -106,7 +120,7 @@ export const Missions = () => {
                   {t('dashboard.missions.finished')}
                 </Typography>
                 {finishedMissions
-                  .sort((a, b) => a.dateStart - b.brief.missionContext.startDate)
+                  .sort((a, b) => a.dateStart - b.dateStart)
                   .map((mission, key) => <Mission key={key} mission={mission} today={today} />)}
               </>
             )}
