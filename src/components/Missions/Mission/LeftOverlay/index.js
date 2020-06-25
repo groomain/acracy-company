@@ -13,7 +13,7 @@ import { CloseIcon } from "../../../../assets/icons/CloseIcon";
 import CustomModal from '../../../Modal';
 import CircleImage from '../../../CircleImage';
 import IncidentMessageForm from './IncidentMessageForm';
-import DownloadModal from '../../../DownloadModal';
+import InvoiceManagementModal from '../../../InvoiceManagementModal';
 
 import { sendIncidentMessageLaunched } from '../../../../pages/HomePage/reducer';
 
@@ -139,7 +139,7 @@ export const LeftOverlay = ({ matching, mission, ...props }) => {
         </CustomModal>
       )}
       {invoicesOpen && (
-        <DownloadModal
+        <InvoiceManagementModal
           open={invoicesOpen}
           handleClose={() => setInvoicesOpen(false)}
           files={mission?.invoices}

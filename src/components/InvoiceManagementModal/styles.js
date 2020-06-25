@@ -1,9 +1,16 @@
 import makeStyles from '@material-ui/core/styles/makeStyles';
 
 export default makeStyles(theme => ({
+  container: {
+    overflowStyle: 'none', // IE scrollbar
+    scrollbarWidth: 'none', // Firefox scrollbar
+    scrollbarColor: 'transparent transparent', // Firefox scrollbar
+    '& ::-webkit-scrollbar': {
+      width: 0,
+    }
+  },
   root: {
     width: 519,
-    height: 419,
     minHeight: '30vh',
     minWidth: '30vw',
     margin: 0,

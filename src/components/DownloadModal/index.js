@@ -10,10 +10,7 @@ import CustomButton from "../Button";
 import { NavLink } from "react-router-dom";
 
 export const DownloadModal = ({ open, handleClose, files, ...props }) => {
-  const invoicesNames = files.map(name => name.attachment.name);
   const classes = styles();
-  const invoiceFile = files.filter(x => x.attachment.name === '1').map(x => x.attachment.link);
-  const [extractedFile] = invoiceFile;
 
   return (
     <Dialog
@@ -28,18 +25,13 @@ export const DownloadModal = ({ open, handleClose, files, ...props }) => {
           </IconButton>
         </Grid>
         <Typography variant='h1' className={classes.title}>
-          Télécharger factures
+          Télécharger devis
         </Typography>
-        <Typography>Choisir ma facture à télécharger</Typography>
-        <CustomSelect label={""} optionsValues={invoicesNames} />
+        <Typography>Choisir mon devis à télécharger</Typography>
+        <CustomSelect label={""} optionsValues={files} />
         <Grid item container directtion={"row"}>
-          <CustomButton
-            title={"Télécharger"}
-            theme={"filledButton"}
-            style={{ position: "relative", bottom: 40 }}
-            onClick={() => window.open(extractedFile)}
-          />
-          <NavLink to={"/"} className={classes.navLink}>Télécharger toutes les factures</NavLink>
+          <CustomButton title={"Télécharger"} theme={"filledButton"} style={{ position: "relative", bottom: 40 }} />
+          <NavLink to={"/"} className={classes.navLink}>Télécharger tout les devis</NavLink>
         </Grid>
       </Grid>
     </Dialog >
