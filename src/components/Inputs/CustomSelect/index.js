@@ -4,7 +4,7 @@ import styles from '../styles';
 import KeyboardArrowDownRoundedIcon from '@material-ui/icons/KeyboardArrowDownRounded';
 import CustomCheckbox from '../../CheckBox';
 
-export const CustomSelect = ({ label, value, placeholder, onUpdateSelection, context, type, error, isMulti, optionsValues, ...props }) => {
+export const CustomSelect = ({ label, value, placeholder, type, error, isMulti, onUpdateSelection, optionsValues, handleChangeOut, context, ...props }) => {
   const classes = styles();
 
   const [open, setOpen] = useState(false);
@@ -22,7 +22,7 @@ export const CustomSelect = ({ label, value, placeholder, onUpdateSelection, con
     const len = options.length;
     return (
       !options ?
-        (<Typography>toto</Typography>) : (<Typography>{len} livrable{len > 1 ? <span>s</span> : null} sélectionné{len > 1 ? <span>s</span> : null}</Typography>)
+        null : (<Typography>{len} livrable{len > 1 ? <span>s</span> : null} sélectionné{len > 1 ? <span>s</span> : null}</Typography>)
     )
   }
 
@@ -39,7 +39,7 @@ export const CustomSelect = ({ label, value, placeholder, onUpdateSelection, con
         error={error}
         onOpen={() => setOpen(true)}
         onClose={() => setOpen(false)}
-        onChange={isMulti && handleChange}
+        onChange={isMulti ? handleChange : (event) => handleChangeOut(event.target.value)}
         classes={{ root: open ? `${classes.root} ${classes.open}` : classes.root }}
         disableUnderline
         IconComponent={KeyboardArrowDownRoundedIcon}

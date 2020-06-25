@@ -16,6 +16,7 @@ import MyAccount from "../../pages/MyAccount";
 import LeadCreationPage from "../../pages/LeadCreationPage";
 import CustomAppBar from "../AppBar";
 import ProgressBar from "../ProgressBar";
+import ProfileSelection from "../../pages/ProfileSelection";
 import CustomLoader from '../Loader';
 
 function App() {
@@ -39,6 +40,7 @@ function App() {
       <PrivateRoute exact path="/firstlogin" fixed component={FirstLoginPage} />
       <PrivateRoute exact path="/home" fixed component={HomePage} />
       <PrivateRoute exact path="/account" fixed component={MyAccount} />
+      <PrivateRoute exact path="/selection" fixed component={ProfileSelection} />
     </Switch>
   );
 

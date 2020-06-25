@@ -1,0 +1,454 @@
+{
+  "quotes": [
+    {
+      "serviceProviderId": "ID75272725",
+      "serviceProviderProfile": {
+        "firstName": "Armando",
+      "lastName": "Rogahn",
+      "profile": {
+        "code": "PR-246",
+        "text": "Chief Response Technician"
+      },
+      "linkedinLink": "http://duane.com",
+      "linkedinAvatar": "https://s3.amazonaws.com/uifaces/faces/twitter/alek_djuric/128.jpg",
+      "portfolioLink": "https://abbey.biz",
+      "portfolioUpload": {
+        "url": "sd-s3-818",
+        "name": "falkland_islands_(malvinas)_botswana_representative.sxi"
+      },
+      "webSite": "https://www.google.fr",
+      "seniority": "MIDDLE",
+      "languages": [
+        "FLUENT_ENGLISH",
+        "NATIVE_FRENCH",
+        "FLUENT_ITALIAN"
+      ],
+      "expertises": [
+        {
+          "expertise":
+          {
+            "code": "EX-268",
+            "text": "transmitter"
+          },
+          "priority": true
+        },
+        {
+          "expertise": {
+            "code": "EX-818",
+            "text": "hard drive"
+          },
+          "priority": true
+        },
+        {
+          "expertise": {
+            "code": "EX-208",
+            "text": "pixel"
+          },
+          "priority": true
+        },
+        {
+          "expertise": {
+            "code": "EX-485",
+            "text": "port"
+          },
+          "priority": false
+        },
+        {
+          "expertise": {
+            "code": "EX-468",
+            "text": "card"
+          },
+          "priority": false
+        }
+      ],
+      "sensitivity": [
+        {
+          "code": "SE-279",
+          "text": "hard drive"
+        },
+        {
+          "code": "SE-557",
+          "text": "microchip"
+        }
+      ],
+      "acracyBlurb": "{{$$randomPhrase}}.<br><br>{{$$randomPhrase}}"
+      },
+      "averageDeliverated": 420
+    },
+    {
+      "serviceProviderId": "IDnj8545313",
+      "serviceProviderProfile": {
+        "firstName": "Armando",
+        "lastName": "Rogahn",
+        "profile": {
+          "code": "PR-246",
+          "text": "Chief Response Technician"
+        },
+        "linkedinLink": "http://duane.com",
+        "linkedinAvatar": "https://s3.amazonaws.com/uifaces/faces/twitter/alek_djuric/128.jpg",
+        "portfolioLink": "https://abbey.biz",
+        "portfolioUpload": {
+          "url": "sd-s3-818",
+          "name": "falkland_islands_(malvinas)_botswana_representative.sxi"
+        },
+        "webSite": "https://www.google.fr",
+        "seniority": "MIDDLE",
+        "languages": [
+          "FLUENT_ENGLISH",
+          "NATIVE_FRENCH",
+          "FLUENT_ITALIAN"
+        ],
+        "expertises": [
+          {
+            "expertise":
+            {
+              "code": "EX-268",
+              "text": "transmitter"
+            },
+            "priority": true
+          },
+          {
+            "expertise": {
+              "code": "EX-818",
+              "text": "hard drive"
+            },
+            "priority": true
+          },
+          {
+            "expertise": {
+              "code": "EX-208",
+              "text": "pixel"
+            },
+            "priority": true
+          },
+          {
+            "expertise": {
+              "code": "EX-485",
+              "text": "port"
+            },
+            "priority": false
+          },
+          {
+            "expertise": {
+              "code": "EX-468",
+              "text": "card"
+            },
+            "priority": false
+          }
+        ],
+        "sensitivity": [
+          {
+            "code": "SE-279",
+            "text": "hard drive"
+          },
+          {
+            "code": "SE-557",
+            "text": "microchip"
+          }
+        ],
+        "acracyBlurb": "{{$$randomPhrase}}.<br><br>{{$$randomPhrase}}"
+      },
+      "averageDeliverated": 420
+    },
+    {
+      "serviceProviderId": "IDnjledgfhj,dthgjz",
+      "serviceProviderProfile": {
+        "firstName": "Armando",
+        "lastName": "Rogahn",
+        "profile": {
+          "code": "PR-246",
+          "text": "Chief Response Technician"
+        },
+        "linkedinLink": "http://duane.com",
+        "linkedinAvatar": "https://s3.amazonaws.com/uifaces/faces/twitter/alek_djuric/128.jpg",
+        "portfolioLink": "https://abbey.biz",
+        "portfolioUpload": {
+          "url": "sd-s3-818",
+          "name": "falkland_islands_(malvinas)_botswana_representative.sxi"
+        },
+        "webSite": "https://www.google.fr",
+        "seniority": "MIDDLE",
+        "languages": [
+          "FLUENT_ENGLISH",
+          "NATIVE_FRENCH",
+          "FLUENT_ITALIAN"
+        ],
+        "expertises": [
+          {
+            "expertise":
+            {
+              "code": "EX-268",
+              "text": "transmitter"
+            },
+            "priority": true
+          },
+          {
+            "expertise": {
+              "code": "EX-818",
+              "text": "hard drive"
+            },
+            "priority": true
+          },
+          {
+            "expertise": {
+              "code": "EX-208",
+              "text": "pixel"
+            },
+            "priority": true
+          },
+          {
+            "expertise": {
+              "code": "EX-485",
+              "text": "port"
+            },
+            "priority": false
+          },
+          {
+            "expertise": {
+              "code": "EX-468",
+              "text": "card"
+            },
+            "priority": false
+          }
+        ],
+        "sensitivity": [
+          {
+            "code": "SE-279",
+            "text": "hard drive"
+          },
+          {
+            "code": "SE-557",
+            "text": "microchip"
+          }
+        ],
+        "acracyBlurb": "{{$$randomPhrase}}.<br><br>{{$$randomPhrase}}"
+      },
+      "averageDeliverated": 420
+    },
+    {
+      "serviceProviderId": "ID245046351",
+      "serviceProviderProfile": {
+        "firstName": "Armando",
+        "lastName": "Rogahn",
+        "profile": {
+          "code": "PR-246",
+          "text": "Chief Response Technician"
+        },
+        "linkedinLink": "http://duane.com",
+        "linkedinAvatar": "https://s3.amazonaws.com/uifaces/faces/twitter/alek_djuric/128.jpg",
+        "portfolioLink": "https://abbey.biz",
+        "portfolioUpload": {
+          "url": "sd-s3-818",
+          "name": "falkland_islands_(malvinas)_botswana_representative.sxi"
+        },
+        "webSite": "https://www.google.fr",
+        "seniority": "MIDDLE",
+        "languages": [
+          "FLUENT_ENGLISH",
+          "NATIVE_FRENCH",
+          "FLUENT_ITALIAN"
+        ],
+        "expertises": [
+          {
+            "expertise":
+            {
+              "code": "EX-268",
+              "text": "transmitter"
+            },
+            "priority": true
+          },
+          {
+            "expertise": {
+              "code": "EX-818",
+              "text": "hard drive"
+            },
+            "priority": true
+          },
+          {
+            "expertise": {
+              "code": "EX-208",
+              "text": "pixel"
+            },
+            "priority": true
+          },
+          {
+            "expertise": {
+              "code": "EX-485",
+              "text": "port"
+            },
+            "priority": false
+          },
+          {
+            "expertise": {
+              "code": "EX-468",
+              "text": "card"
+            },
+            "priority": false
+          }
+        ],
+        "sensitivity": [
+          {
+            "code": "SE-279",
+            "text": "hard drive"
+          },
+          {
+            "code": "SE-557",
+            "text": "microchip"
+          }
+        ],
+        "acracyBlurb": "{{$$randomPhrase}}.<br><br>{{$$randomPhrase}}"
+      },
+      "averageDeliverated": 420
+    },
+    {
+      "serviceProviderId": "IDnjd35fghjn1",
+      "serviceProviderProfile": {
+        "firstName": "Armando",
+        "lastName": "Rogahn",
+        "profile": {
+          "code": "PR-246",
+          "text": "Chief Response Technician"
+        },
+        "linkedinLink": "http://duane.com",
+        "linkedinAvatar": "https://s3.amazonaws.com/uifaces/faces/twitter/alek_djuric/128.jpg",
+        "portfolioLink": "https://abbey.biz",
+        "portfolioUpload": {
+          "url": "sd-s3-818",
+          "name": "falkland_islands_(malvinas)_botswana_representative.sxi"
+        },
+        "webSite": "https://www.google.fr",
+        "seniority": "MIDDLE",
+        "languages": [
+          "FLUENT_ENGLISH",
+          "NATIVE_FRENCH",
+          "FLUENT_ITALIAN"
+        ],
+        "expertises": [
+          {
+            "expertise":
+            {
+              "code": "EX-268",
+              "text": "transmitter"
+            },
+            "priority": true
+          },
+          {
+            "expertise": {
+              "code": "EX-818",
+              "text": "hard drive"
+            },
+            "priority": true
+          },
+          {
+            "expertise": {
+              "code": "EX-208",
+              "text": "pixel"
+            },
+            "priority": true
+          },
+          {
+            "expertise": {
+              "code": "EX-485",
+              "text": "port"
+            },
+            "priority": false
+          },
+          {
+            "expertise": {
+              "code": "EX-468",
+              "text": "card"
+            },
+            "priority": false
+          }
+        ],
+        "sensitivity": [
+          {
+            "code": "SE-279",
+            "text": "hard drive"
+          },
+          {
+            "code": "SE-557",
+            "text": "microchip"
+          }
+        ],
+        "acracyBlurb": "{{$$randomPhrase}}.<br><br>{{$$randomPhrase}}"
+      },
+      "averageDeliverated": 420
+    },
+    {
+      "serviceProviderId": "IDnjledfbnezlvz",
+      "serviceProviderProfile": {
+        "firstName": "Armando",
+        "lastName": "Rogahn",
+        "profile": {
+          "code": "PR-246",
+          "text": "Chief Response Technician"
+        },
+        "linkedinLink": "http://duane.com",
+        "linkedinAvatar": "https://s3.amazonaws.com/uifaces/faces/twitter/alek_djuric/128.jpg",
+        "portfolioLink": "https://abbey.biz",
+        "portfolioUpload": {
+          "url": "sd-s3-818",
+          "name": "falkland_islands_(malvinas)_botswana_representative.sxi"
+        },
+        "webSite": "https://www.google.fr",
+        "seniority": "MIDDLE",
+        "languages": [
+          "FLUENT_ENGLISH",
+          "NATIVE_FRENCH",
+          "FLUENT_ITALIAN"
+        ],
+        "expertises": [
+          {
+            "expertise":
+            {
+              "code": "EX-268",
+              "text": "transmitter"
+            },
+            "priority": true
+          },
+          {
+            "expertise": {
+              "code": "EX-818",
+              "text": "hard drive"
+            },
+            "priority": true
+          },
+          {
+            "expertise": {
+              "code": "EX-208",
+              "text": "pixel"
+            },
+            "priority": true
+          },
+          {
+            "expertise": {
+              "code": "EX-485",
+              "text": "port"
+            },
+            "priority": false
+          },
+          {
+            "expertise": {
+              "code": "EX-468",
+              "text": "card"
+            },
+            "priority": false
+          }
+        ],
+        "sensitivity": [
+          {
+            "code": "SE-279",
+            "text": "hard drive"
+          },
+          {
+            "code": "SE-557",
+            "text": "microchip"
+          }
+        ],
+        "acracyBlurb": "{{$$randomPhrase}}.<br><br>{{$$randomPhrase}}"
+      },
+      "averageDeliverated": 420
+    }
+  ]
+}
