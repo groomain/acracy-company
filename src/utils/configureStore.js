@@ -7,6 +7,7 @@ import SelectionProfil from '../pages/ProfileSelection/sagas';
 import createRootReducer from './rootReducer';
 import missionSaga from "../pages/MissionFollowUp/sagas";
 import downloadSaga from "../components/DownloadModal/sagas";
+import leadCreationSaga from "../pages/LeadCreationPage/sagas";
 
 const sagaMiddleware = createSagaMiddleware();
 export const history = createBrowserHistory();
@@ -22,6 +23,7 @@ export default function configureStore() {
   sagaMiddleware.run(homeSaga);
   sagaMiddleware.run(missionSaga);
   sagaMiddleware.run(downloadSaga);
+  sagaMiddleware.run(leadCreationSaga);
   sagaMiddleware.run(SelectionProfil);
 
   return store;

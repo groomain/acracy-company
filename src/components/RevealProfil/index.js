@@ -13,10 +13,9 @@ import checkStatus from "../../assets/icons/check-statut.svg";
 import clsx from "clsx";
 import CustomLoader from "../Loader";
 
-const RevealProfil = (props) => {
+const RevealProfil = ({setCheckedProfiles, index, modeMission, profil, ...props}) => {
   const classes = styles();
   const [checked, setChecked] = React.useState(false);
-  const {modeMission, profil} = props;
 
   return (
       <div className={clsx(classes.root, {[classes.rootModeMission]: modeMission})}>
@@ -44,7 +43,7 @@ const RevealProfil = (props) => {
                         <Typography variant={"body2"} className={classes.noSelect}>Profil non séléctionné</Typography>
                       </Grid>
                       <Grid item>
-                        <CustomSwitch className={classes.switch} checked={checked} setChecked={setChecked}
+                        <CustomSwitch className={classes.switch} checked={checked} setChecked={setChecked} onChange={() => setCheckedProfiles(index)}
                                       switchSize="large"/>
                       </Grid>
                       <Grid item>
@@ -87,20 +86,26 @@ const RevealProfil = (props) => {
               </Grid>
               <Grid container direction={"row"} justify={'space-between'} spacing={1} xs={12}>
 
-                <Grid item container xs={6} direction="column" justify={'center'}
-                      className={clsx(classes.blackCard, {[classes.blackCardModeMission]: modeMission})}>
-                  <Grid item className={classes.star}>
-                    <img src={star} alt="Star"/>
-                  </Grid>
-                  <Grid item>
-                    <Typography variant='h4'>Expertises</Typography>
-                  </Grid>
-                  <Grid container direction={"row"} justify={'center'} className={classes.tagContainer}>
-                    {profil.expertises.map((tag, key) =>
-                        <Tag key={key} title={tag.text} isPrimaryColor className={classes.tag}/>
-                    )}
-                  </Grid>
-              </Grid>
+          <Grid item container xs={6} direction="column" justify={'center'} className={clsx(classes.blackCard, {[classes.blackCardModeMission]: modeMission})}>
+            <Grid item className={classes.star}>
+              <img src={star} alt="Star" />
+            </Grid>
+            <Grid item>
+              <Typography variant='h4'>Expertises</Typography>
+            </Grid>
+            <Grid container direction={"row"} justify={'center'} className={classes.tagContainer}>
+              {
+                profil.expertises.map((item, index) =>
+                  <Tag title={item.expertise.text} className={classes.tag} isPrimaryColor={item.priority} />
+                )
+              }
+              {/*<Tag title="Influence" isPrimaryColor className={classes.tag}/>*/}
+              {/*<Tag title="Brand Content" isPrimaryColor className={classes.tag}/>*/}
+              {/*<Tag title="Présentation écrite" isPrimaryColor className={classes.tag}/>*/}
+              {/*<Tag title="Activation" className={classes.tag}/>*/}
+              {/*<Tag title="Créativité" className={classes.tag}/>*/}
+            </Grid>
+          </Grid>
 
                 <Grid item container xs={6} direction={"column"} justify={'space-between'} spacing={0}
                       className={clsx(classes.profilElementContainer, {[classes.profilElementContainerModeMission]: modeMission})}>

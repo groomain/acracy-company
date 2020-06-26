@@ -31,7 +31,7 @@ const ProfileElement = ({ category, item1, item2, modeMission }) => {
           <Typography variant='h4'>{category}</Typography>
         </Grid>
         <Grid item>
-          <Typography vrariant='body2' className={clsx({[classes.smallSize]: modeMission})}>
+          <Typography variant='body2' className={clsx({[classes.smallSize]: modeMission})}>
             {item1}
             {item2 && ` ; ${item2}`}
           </Typography>

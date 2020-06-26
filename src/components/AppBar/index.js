@@ -4,12 +4,15 @@ import { useLocation, withRouter } from "react-router";
 import clsx from "clsx";
 import { Link as RouterLink } from 'react-router-dom';
 
-import { AppBar, Toolbar, Typography } from '@material-ui/core';
+import { AppBar, Toolbar } from '@material-ui/core';
 import styles from "./styles";
 import CustomButton from "../Button";
 import CustomNavLink from "../CustomNavLink";
 import CustomSnackBar from "../SnackBar";
-import ProfilMenu from "../ProfilMenu";
+import { NavLink } from "react-router-dom";
+import acracyLogo from "../../assets/icons/logo-acracy.svg";
+import { CustomIconButton } from "../IconButton";
+import profilIcon from '../../assets/icons/ProfilIcon';
 
 export const CustomAppBar = (props) => {
   let location = useLocation();
@@ -37,7 +40,7 @@ export const CustomAppBar = (props) => {
         return (
           <div className={clsx(classes.div, classes.home)}>
             <CustomButton theme={"filledButton"} title={"Nouveau brief"} />
-            <ProfilMenu />
+            <CustomIconButton icon={profilIcon} />
           </div>
         );
       case '/password':
@@ -61,9 +64,9 @@ export const CustomAppBar = (props) => {
     <AppBar position="fixed" className={classes.appbar}>
       {renderSnackbar()}
       <Toolbar className={classes.toolbar}>
-        <Typography className={classes.title} variant="h1" noWrap>
-          acracy
-            </Typography>
+        <NavLink to={'/'} className={classes.logo}>
+          <img src={acracyLogo} alt="acracyLogo" />
+        </NavLink>
         <div className={classes.grow} />
         {renderButtons()}
       </Toolbar>

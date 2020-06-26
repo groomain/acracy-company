@@ -4,7 +4,7 @@ import styles from '../styles';
 import KeyboardArrowDownRoundedIcon from '@material-ui/icons/KeyboardArrowDownRounded';
 import CustomCheckbox from '../../CheckBox';
 
-export const CustomSelect = ({ label, value, placeholder, type, error, isMulti, optionsValues, handleChangeOut, ...props }) => {
+export const CustomSelect = ({ label, value, placeholder, type, error, isMulti, onUpdateSelection, optionsValues, handleChangeOut, context, ...props }) => {
   const classes = styles();
 
   const [open, setOpen] = useState(false);
@@ -12,8 +12,19 @@ export const CustomSelect = ({ label, value, placeholder, type, error, isMulti, 
   // Keep state + handleChange for the multi-select component for now
   const [options, setOptions] = useState([]);
   const handleChange = (event) => {
-    setOptions(event.target.value);
+    if (event.target.value.length <= 5) {
+      setOptions(event.target.value);
+      onUpdateSelection(event.target.value); // used in lead creation form component
+    }
   };
+
+  const renderCounter = (options) => {
+    const len = options.length;
+    return (
+      !options ?
+        null : (<Typography>{len} livrable{len > 1 ? <span>s</span> : null} sélectionné{len > 1 ? <span>s</span> : null}</Typography>)
+    )
+  }
 
   return (
     <Box style={{ height: '140px' }}>
@@ -22,12 +33,13 @@ export const CustomSelect = ({ label, value, placeholder, type, error, isMulti, 
         type={type}
         fullWidth
         multiple={isMulti}
-        renderValue={isMulti && ((selected) => selected.join(' '))}
+        context={context}
+        renderValue={isMulti && (context === 'deliverables' ? renderCounter : ((selected) => selected.join(' ')))}
         value={isMulti ? options : value}
         error={error}
         onOpen={() => setOpen(true)}
         onClose={() => setOpen(false)}
-        onChange={isMulti ? handleChange: (event) => handleChangeOut(event.target.value)}
+        onChange={isMulti ? handleChange : (event) => handleChangeOut(event.target.value)}
         classes={{ root: open ? `${classes.root} ${classes.open}` : classes.root }}
         disableUnderline
         IconComponent={KeyboardArrowDownRoundedIcon}
