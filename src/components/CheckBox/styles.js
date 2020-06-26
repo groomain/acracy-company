@@ -1,6 +1,6 @@
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import icon from '../../assets/icons/checkbox-checked.svg'
-import smallIcon from '../../assets/icons/checkbox-checked-black.svg';
+// import smallIcon from '../../assets/icons/checkbox-checked-black.svg';
 
 export default makeStyles(theme => ({
   root: {
@@ -38,7 +38,7 @@ export default makeStyles(theme => ({
     height: 28,
     '&:before': {
       backgroundImage:
-        `url(${smallIcon})`,
+        `url(${icon})`,
       backgroundSize: '60%',
       backgroundRepeat: 'no-repeat',
       backgroundPosition: '-15% -15%'

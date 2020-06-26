@@ -4,7 +4,7 @@ import { Grid, Box, Typography } from '@material-ui/core';
 
 import DraftWrapper from './DraftWrapper';
 import Button from '../../Button';
-import { formatWithLineBreak } from '../../../utils/format';
+import { formatWithLineBreak } from '../../../utils/services/format';
 import styles from './styles';
 
 const FirstDraft = () => {

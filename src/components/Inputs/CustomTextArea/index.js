@@ -8,14 +8,14 @@ export const CustomTextArea = ({ label, placeholder, error, helperText, maxLengt
   const classes = styles();
   const { t } = useTranslation();
 
-  const [value, setValue] = useState({
-    missionDescription: '',
-  });
+  // const [value, setValue] = useState({
+  //   missionDescription: '',
+  // });
   const [currentInputLength, setCurrentInputLength] = useState(0);
 
   const handleChange = prop => (event) => {
     setCurrentInputLength(event.target.value.length);
-    setValue({ ...value, [prop]: event.target.value });
+    // setValue({ ...value, [prop]: event.target.value });
   };
 
   return (
@@ -26,11 +26,11 @@ export const CustomTextArea = ({ label, placeholder, error, helperText, maxLengt
         label={label}
         placeholder={placeholder}
         disableUnderline
-        rowsMin={3}
+        rowsMin={4}
         fullWidth
         multiline
-        value={valueOut || null}
-        onChange={handleChangeOut ? (event) => handleChangeOut(event.target.value) : handleChange('value') }
+        value={valueOut || ''}
+        onChange={handleChangeOut ? (event) => handleChangeOut(event.target.value) : handleChange('value')}
         error={error}
         inputProps={{ maxLength: maxLength }}
         {...props}
@@ -38,9 +38,9 @@ export const CustomTextArea = ({ label, placeholder, error, helperText, maxLengt
       {maxLength && (
         <Grid container justify='flex-end'>
           <Typography variant='body2' className={classes.inputLength}>{valueOut ? valueOut.length : currentInputLength.length} / {maxLength} {t('characters')}</Typography>
-        </Grid>
+        </Grid >
       )}
-    </Box>
+    </Box >
   );
 
 };

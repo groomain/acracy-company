@@ -6,6 +6,7 @@ export default makeStyles(theme => ({
     border: `1px solid ${theme.palette.secondary.medium}`,
     borderRadius: 15,
     minHeight: 140,
+    minWidth: 350,
     margin: '.8rem auto',
     backgroundColor: `${fade(theme.palette.secondary.inputFadeFilter, 0.1)}`,
     color: theme.palette.secondary.main,

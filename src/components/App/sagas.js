@@ -1,5 +1,5 @@
 import {
-  all, put, takeLatest, call, delay
+  all, put, takeLatest, delay
 } from 'redux-saga/effects';
 import { API, Auth } from 'aws-amplify';
 import { push } from 'connected-react-router';
@@ -162,10 +162,10 @@ function* doSignIn(action) {
       yield Auth.resendSignUp(email)
       yield put(push('/confirm-signup', { email: email }));
       yield put(loginFailure(translateSignInError(err.code)));
-      yield put(openSnackBar({message: translateSignInError(err.code), error: true}));
+      yield put(openSnackBar({ message: translateSignInError(err.code), error: true }));
     }
     yield put(loginFailure(translateSignInError(err.code)));
-    yield put(openSnackBar({message: translateSignInError(err.code), error: true}));
+    yield put(openSnackBar({ message: translateSignInError(err.code), error: true }));
   }
 }
 
@@ -205,7 +205,7 @@ function* doSignUp(action) {
   } catch (error) {
     console.log(error);
     yield put(signupFailure(translateSignUpError(error.code)));
-    yield put(openSnackBar({message: translateSignUpError(error.code), error: true}));
+    yield put(openSnackBar({ message: translateSignUpError(error.code), error: true }));
 
   }
 }
@@ -216,11 +216,11 @@ function* doConfirmSignUp(action) {
     yield Auth.confirmSignUp(username, code);
     yield put(push('/login'));
     yield put(confirmSignupSuccess(translateConfirmSignUpSuccess()));
-    yield put(openSnackBar({message: translateConfirmSignUpSuccess(), error: false}));
+    yield put(openSnackBar({ message: translateConfirmSignUpSuccess(), error: false }));
   } catch (error) {
     console.log(error);
     yield put(confirmSignupFailure(translateConfirmSignUpError(error.code)));
-    yield put(openSnackBar({message: translateConfirmSignUpError(error.code), error: true}));
+    yield put(openSnackBar({ message: translateConfirmSignUpError(error.code), error: true }));
   }
 }
 
@@ -242,10 +242,10 @@ function* doRequestPasswordCode(action) {
   try {
     yield Auth.forgotPassword(email);
     yield put(requestPasswordCodeSuccess(translateResendCodeSuccess()));
-    yield put(openSnackBar({message: translateResendCodeSuccess(), error: false}));
+    yield put(openSnackBar({ message: translateResendCodeSuccess(), error: false }));
   } catch (error) {
     yield put(requestPasswordCodeFailure(translateForgotPassword(error.code)));
-    yield put(openSnackBar({message: translateForgotPassword(error.code), error: true}));
+    yield put(openSnackBar({ message: translateForgotPassword(error.code), error: true }));
   }
 }
 
@@ -255,11 +255,11 @@ function* doSubmitNewPassword(action) {
   try {
     yield Auth.forgotPasswordSubmit(email, code, password);
     yield put(submitNewPasswordSuccess());
-    yield put(openSnackBar({message: submitNewPasswordSuccess(), error: false}));
+    yield put(openSnackBar({ message: submitNewPasswordSuccess(), error: false }));
     yield put(push('/home'));
   } catch (error) {
     yield put(submitNewPasswordFaliure(translateConfirmForgotPassword(error.code)));
-    yield put(openSnackBar({message: translateConfirmForgotPassword(error.code), error: true}));
+    yield put(openSnackBar({ message: translateConfirmForgotPassword(error.code), error: true }));
   }
 }
 

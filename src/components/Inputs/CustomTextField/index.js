@@ -6,8 +6,13 @@ import styles from '../styles';
 // import eyeOpened from '../../../assets/icons/eye-opened.svg';
 // import eyeClosed from '../../../assets/icons/eye-closed.svg';
 
-export const CustomTextField = ({ label, placeholder, type, error, helperText, ...props }) => {
+export const CustomTextField = ({ label, placeholder, type, onUpdateFieldValue, error, helperText, ...props }) => {
   const classes = styles();
+
+  const handleChange = (event) => {
+    onUpdateFieldValue(event.target.value);
+  };
+
   return (
     <Box style={{ height: '140px' }}>
       <Typography variant='h4'>{label}</Typography >
@@ -20,6 +25,7 @@ export const CustomTextField = ({ label, placeholder, type, error, helperText, .
         disableUnderline
         {...props}
       />
+      <Typography style={{ marginTop: '0.8rem' }}>{helperText}</Typography>
     </Box >
   );
 };

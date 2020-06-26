@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Switch, Route, Redirect } from 'react-router';
+import { Switch, Route, Redirect, useLocation } from 'react-router';
 // import { useTranslation } from 'react-i18next';
+import { Grid } from '@material-ui/core';
 import HomePage from '../../pages/HomePage';
 import PrivateRoute from '../PrivateRoute';
 import PublicRoute from '../PublicRoute';
@@ -12,13 +13,14 @@ import ConfirmSignupPage from '../../pages/ConfirmSignUp';
 import ForgotPassword from '../../pages/ForgotPassword';
 import FirstLoginPage from '../../pages/FirstLogin';
 import MyAccount from "../../pages/MyAccount";
+import LeadCreationPage from "../../pages/LeadCreationPage";
 import CustomAppBar from "../AppBar";
 import ProgressBar from "../ProgressBar";
 import ProfileSelection from "../../pages/ProfileSelection";
 import CustomLoader from '../Loader';
-import Grid from "@material-ui/core/Grid";
 
 function App() {
+  let location = useLocation();
   const dispatch = useDispatch();
   const isAuthenticating = useSelector(state => state.getIn(['app', 'isAuthenticating']), null);
   const isAuthenticated = useSelector(state => state.getIn(['app', 'isAuthenticated']), null);
@@ -34,6 +36,7 @@ function App() {
       <PublicRoute exact path="/signup" fixed component={SignUpPage} />
       <PublicRoute exact path="/confirm-signup" fixed component={ConfirmSignupPage} />
       <PublicRoute exact path="/password" fixed component={ForgotPassword} />
+      <PublicRoute exact path="/lead" fixed component={LeadCreationPage} />
       <PrivateRoute exact path="/firstlogin" fixed component={FirstLoginPage} />
       <PrivateRoute exact path="/home" fixed component={HomePage} />
       <PrivateRoute exact path="/account" fixed component={MyAccount} />
@@ -41,6 +44,7 @@ function App() {
     </Switch>
   );
 
+  // console.log("PATHNAME", location.pathname);
   return (
     <div>
       {/*/!* __NavbarStart__ Replace this whit your navbar *!/*/}
@@ -61,16 +65,17 @@ function App() {
       {/*</div>*/}
       {/*/!* __NavbarEnd__ *!/*/}
       {
-        !isAuthenticated && <CustomAppBar />
+        (!isAuthenticated && location.pathname !== "/lead") && <CustomAppBar />
       }
       <ProgressBar />
-      {isAuthenticating
-        ? <Grid container alignItems='center' justify='center' style={{ height: '100vh' }}>
-          <CustomLoader size={70} />
-        </Grid>
-        : appSwitch
+      {
+        isAuthenticating
+          ? <Grid container alignItems='center' justify='center' style={{ height: '100vh' }}>
+            <CustomLoader size={70} />
+          </Grid>
+          : appSwitch
       }
-    </div>
+    </div >
   );
 }
 
