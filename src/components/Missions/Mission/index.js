@@ -21,6 +21,7 @@ import { MissionHistoIcon } from "../../../assets/icons/MissionHistoIcon";
 import CustomLoader from '../../Loader';
 import CustomModal from '../../Modal';
 import CustomButton from '../../Button';
+import InvoiceManagementModal from '../../InvoiceManagementModal';
 import styles from './styles';
 
 import { getQuotesLaunched, getCompaniesLaunched, setComingFromDashboard } from '../../../pages/HomePage/reducer';
@@ -28,28 +29,27 @@ import severinePicture from '../../../assets/pics/severine/severine-small.png';
 import { shortenLongText, addTwoWorkingDays, formatDate } from '../../../utils/services/format';
 import { getPath } from '../../../utils/services/validationChecks';
 import * as moment from 'moment';
+import {
+  WAITING_FOR_VALIDATION,
+  WAITING_FOR_PAYMENT,
+  WAITING_FOR_ACCEPTANCE,
+  WAITING_FOR_SIGNATURE,
+  WAITING_FOR_MATCHING,
+  WAITING_FOR_CUSTOMER_SELECTION,
+  FINISHED,
+  IN_PROGRESS,
+  WAITING_FOR_QUOTES
+} from '../constants';
 moment.locale('fr');
 
 export const Mission = ({ mission, matching, today, ...props }) => {
-
-  const PAID = "PAID";
-  const WAITING_FOR_VALIDATION = "WAITING_FOR_VALIDATION";
-  const WAITING_FOR_PAYMENT = "WAITING_FOR_PAYMENT";
-  const WAITING_FOR_ACCEPTANCE = "WAITING_FOR_ACCEPTANCE";
-  const WAITING_FOR_SIGNATURE = "WAITING_FOR_SIGNATURE";
-  const WAITING_FOR_MATCHING = "WAITING_FOR_MATCHING";
-  const WAITING_FOR_CUSTOMER_SELECTION = "WAITING_FOR_CUSTOMER_SELECTION";
-  const FINISHED = 'FINISHED';
-  const IN_PROGRESS = 'IN_PROGRESS';
-  const WAITING_FOR_QUOTES = 'WAITING_FOR_QUOTES';
-
-  // get quotes
 
   const dispatch = useDispatch();
   const classes = styles();
   const [open, setOpen] = useState(false);
   const [infosOpen, setInfosOpen] = useState(false);
   const [redirectionPopupOpen, setRedirectionPopupOpen] = useState(false);
+  const [invoicesModalOpen, setInvoicesModalOpen] = useState(false);
 
   const weekly = mission?.brief?.missionContext?.weeklyRythm || matching?.missionContext?.weeklyRythm;
   const durationNb = mission?.brief?.missionContext?.duration?.nb || matching?.missionContext?.duration?.nb;
@@ -77,18 +77,22 @@ export const Mission = ({ mission, matching, today, ...props }) => {
         return <TravailIcon className={classes.icon} />;
       }
     } else {
-      if (mission?.invoices?.find(x => x.status === WAITING_FOR_VALIDATION)) {
-        // icon not specified
+      if (mission?.invoices?.find(x => x.paymentDate < today)) {
+        return <RetardIcon className={classes.icon} />;
       } else {
-        if (mission?.invoices?.find(x => x.paymentDate < today)) {
-          return <RetardIcon className={classes.icon} />;
+        if (getPath(mission?.invoices?.attachement).length > 0 || !mission?.invoices?.attachment) {
+          return <TravailIcon className={classes.icon} />;
         } else {
-          if (getPath(mission?.invoices?.attachement).length > 0 || !mission?.invoices?.attachment) {
-            return <TravailIcon className={classes.icon} />;
-          } else {
-            if (status === IN_PROGRESS) {
+          if (status === IN_PROGRESS) {
+            if (mission?.dateStart > today) {
+              return <DemarreIcon className={classes.icon} />
+            } else {
               return <EnCoursIcon className={classes.icon} />;
-            } else if (status === FINISHED) {
+            }
+          } else if (status === FINISHED) {
+            if (mission?.dateEnd.length > 1) {
+              return <MissionHistoIcon className={classes.icon} />;
+            } else {
               return <TravailIcon className={classes.icon} />;
             }
           }
@@ -180,17 +184,22 @@ export const Mission = ({ mission, matching, today, ...props }) => {
           return {
             status: 'Retard de paiement',
             color: 'danger',
-            buttonTitle: 'Payer facture'
+            buttonText: 'Payer facture'
           }
         }
-        if (mission?.invoices?.find(x => x.status === WAITING_FOR_VALIDATION)) {
+        if (mission?.invoices?.find(x => x.status === WAITING_FOR_VALIDATION && getPath(x.attachment, "attachment").length > 0)) {
+          return {
+            status: 'Facture à payer',
+            buttonText: 'Payer facture'
+          }
+        }
+        if (mission?.invoices?.find(x => x.status === WAITING_FOR_VALIDATION && (!x.attachment || getPath(x.attachment, "attachment").length === 0))) {
           return {
             status: 'Valider CRA',
-            buttonTitle: 'CRA à valider'
+            buttonText: 'CRA à valider'
           }
         }
       }
-      // when no attachment ? when at least 1 attachment ?
     }
     const result = getMissionStatus(mission?.invoices?.map(x => x.status), mission);
     setMissionStatus(result);
@@ -200,7 +209,9 @@ export const Mission = ({ mission, matching, today, ...props }) => {
   const handleClick = (status) => {
     if (status === WAITING_FOR_SIGNATURE) {
       setInfosOpen(true)
-    } else {
+    } else if (status?.invoices?.find(x => x.status === WAITING_FOR_PAYMENT) || status?.invoices?.find(x => x.status === WAITING_FOR_VALIDATION))
+      setInvoicesModalOpen(true);
+    else {
       setLoadingButton(true);
     }
   }
@@ -218,25 +229,21 @@ export const Mission = ({ mission, matching, today, ...props }) => {
   }, [companiesDataFetched, companiesData, dispatch, loadingButton, mission, matching])
 
   const renderMissionButton = (status) => {
-    switch (status) {
-      case WAITING_FOR_CUSTOMER_SELECTION:
-      case WAITING_FOR_SIGNATURE:
-        return (
-          <Grid container
-            className={clsx(classes.gridRight, { [classes.withoutButton]: props.status === 6 }, { [classes.rightRed]: props.status === 5 })}
-            alignItems={'center'} justify={'center'}
-            onClick={() => handleClick(status)}
-          >
-            <Grid item>
-              {loadingButton && companiesLoading
-                ? <CustomLoader />
-                : <Typography className={classes.button}>{matchingValues?.buttonText}</Typography>
-              }
-            </Grid>
-          </Grid >
-        )
-      default:
-        break;
+    if (status === WAITING_FOR_CUSTOMER_SELECTION || status === WAITING_FOR_SIGNATURE || status?.invoices?.find(x => x.status === WAITING_FOR_PAYMENT) || status?.invoices?.find(x => x.status === WAITING_FOR_VALIDATION)) {
+      return (
+        <Grid container
+          className={clsx(classes.gridRight, status?.invoices?.find(x => x.paymentDate < today) ? classes.rightRed : classes.primary)}
+          alignItems={'center'} justify={'center'}
+          onClick={() => handleClick(status)}
+        >
+          <Grid item>
+            {loadingButton && companiesLoading
+              ? <CustomLoader />
+              : <Typography className={classes.button}>{matchingValues?.buttonText || missionStatus?.buttonText}</Typography>
+            }
+          </Grid>
+        </Grid >
+      )
     }
   };
 
@@ -257,7 +264,12 @@ export const Mission = ({ mission, matching, today, ...props }) => {
               <Grid container item className={classes.statusContainer} direction={'row'}>
                 {matching ? getStatusIcon(matching) : getStatusIcon(mission)}
                 <Typography
-                  className={clsx(classes.statusTitle, mission?.status === FINISHED ? classes.finishedMission : null, { [classes.statusTitleRed]: props.status === 5 })}>
+                  className={clsx(classes.statusTitleBase,
+                    mission?.status === FINISHED
+                      ? classes.finishedMission
+                      : missionStatus?.color === 'danger'
+                        ? classes.statusTitleRed
+                        : classes.statusTitle)}>
                   {matchingValues?.status || missionStatus?.status}
                 </Typography>
                 <div style={{ flexGrow: 1 }} />
@@ -319,7 +331,7 @@ export const Mission = ({ mission, matching, today, ...props }) => {
                 </Grid>
               </Grid>
             </NavLink>
-            {renderMissionButton(matching?.status || mission?.status)}
+            {renderMissionButton(matching?.status || mission)}
           </Grid>
           :
           <Grid container direction={'row'} justify={'center'} alignItems={'center'} className={classes.container}>
@@ -354,6 +366,13 @@ export const Mission = ({ mission, matching, today, ...props }) => {
           </CustomModal>
         }
       </Grid>
+      {invoicesModalOpen && (
+        <InvoiceManagementModal
+          open={invoicesModalOpen}
+          handleClose={() => setInvoicesModalOpen(false)}
+          files={mission?.invoices}
+        />
+      )}
     </Box>
   )
 };

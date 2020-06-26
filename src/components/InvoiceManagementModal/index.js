@@ -12,6 +12,7 @@ import CustomTextField from '../Inputs/CustomTextField';
 import CustomCheckBox from '../CheckBox';
 
 import { getPath } from '../../utils/services/validationChecks';
+import { PAID, WAITING_FOR_PAYMENT, WAITING_FOR_VALIDATION } from '../Missions/constants';
 
 export const InvoiceManagementModal = ({ open, handleClose, files, ...props }) => {
   const invoicesNames = files.map(name => name.missionTitle);
@@ -67,9 +68,6 @@ const InvoicesDownloadForm = ({ values, errors, touched, handleBlur, handleChang
   const { selectedFile, orderFormNumber, workDone } = values;
   const invoiceFile = files.filter(x => x.missionTitle === selectedFile);
   const [extractedFile] = invoiceFile;
-  const PAID = "PAID";
-  const WAITING_FOR_PAYMENT = "WAITING_FOR_PAYMENT";
-  const WAITING_FOR_VALIDATION = "WAITING_FOR_VALIDATION";
 
   const renderInvoicesContent = () => {
     if (extractedFile?.status === WAITING_FOR_PAYMENT) {

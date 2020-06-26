@@ -13,6 +13,7 @@ import sharedStyles from "../../utils/styles";
 import { formatWithLineBreak } from '../../utils/services/format';
 import { missions } from '../../mocks/missions';
 import { briefs } from '../../mocks/briefs';
+import { WAITING_FOR_SIGNATURE, FINISHED, IN_PROGRESS } from './constants';
 
 export const Missions = () => {
   const { t } = useTranslation();
@@ -20,7 +21,6 @@ export const Missions = () => {
   const sharedClasses = sharedStyles();
 
   const today = new Date(Date.now()).toISOString();
-  const WAITING_FOR_SIGNATURE = 'WAITING_FOR_SIGNATURE';
 
   // Delete when connecting to the DB
   const [briefsList, setBriefsList] = useState();
@@ -53,9 +53,9 @@ export const Missions = () => {
     setBriefsList(briefs.concat(missionAsMatchingProfile))
   }, [])
 
-  const inProgressMissions = missions?.filter(x => (x.status === 'IN_PROGRESS' && x.dateStart < today) || (x.status === 'FINISHED' && x.dateEnd?.length < 1));
-  const futureMissions = missions?.filter(x => x.status === 'IN_PROGRESS' && x.dateStart > today);
-  const finishedMissions = missions?.filter(x => x.status === 'FINISHED' && x.dateEnd?.length > 0);
+  const inProgressMissions = missions?.filter(x => (x.status === IN_PROGRESS && x.dateStart < today) || (x.status === FINISHED && x.dateEnd?.length < 1));
+  const futureMissions = missions?.filter(x => x.status === IN_PROGRESS && x.dateStart > today);
+  const finishedMissions = missions?.filter(x => x.status === FINISHED && x.dateEnd?.length > 0);
 
   const displayInProgressMissionsTitle = () => {
     return (

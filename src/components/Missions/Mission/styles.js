@@ -31,7 +31,6 @@ export default makeStyles(theme => ({
   gridRight: {
     borderRadius: '0 15px 15px 0',
     width: '10%',
-    backgroundColor: `${theme.palette.primary.main}`,
     '&:hover': {
       cursor: 'pointer',
     },
@@ -41,6 +40,9 @@ export default makeStyles(theme => ({
     '&:hover': {
       cursor: 'initial'
     },
+  },
+  primary: {
+    backgroundColor: `${theme.palette.primary.main}`,
   },
   rightRed: {
     backgroundColor: "#ff565c",
@@ -80,12 +82,14 @@ export default makeStyles(theme => ({
     position: 'relative',
     top: 11
   },
-  statusTitle: {
+  statusTitleBase: {
+    textTransform: 'uppercase',
     fontSize: 14,
-    fontFamily: basierRegular,
-    color: '#ecf805',
     paddingTop: 11,
-    textTransform: 'uppercase'
+    fontFamily: basierRegular
+  },
+  statusTitle: {
+    color: '#ecf805'
   },
   statusTitleRed: {
     color: '#ff565c',

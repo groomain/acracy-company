@@ -22,9 +22,9 @@ const IncidentMessageForm = ({ values, errors, touched, handleBlur, handleChange
       />
       <CustomButton
         title="Envoyer"
-        theme={message.length < 1 ? "disabledFilled" : "filledButton"}
+        theme={message.trim().length < 1 ? "disabledFilled" : "filledButton"}
         type="submit" loading={loading}
-        disabled={message.length < 1} />
+        disabled={message.trim().length < 1} />
     </form>
   )
 }
