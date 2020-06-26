@@ -152,9 +152,12 @@ export const Mission = ({ mission, matching, today, ...props }) => {
     const getMissionStatus = (missionInvoiceStatus, mission) => {
 
       const futureMission = mission?.dateStart > today;
-      const days = Math.floor((mission?.dateStart - today) / 86400);
 
       if (futureMission) {
+        const startingPoint = new Date(mission?.dateStart).getTime();
+        const todayInTimestamp = new Date(today).getTime();
+        const days = Math.floor((startingPoint - todayInTimestamp) / 86400000);
+
         return {
           status: `Démarre dans ${days} jour${days > 2 ? 's' : ''} `,
           color: 'primary'
@@ -164,7 +167,7 @@ export const Mission = ({ mission, matching, today, ...props }) => {
       // No invoice with "WAITING_FOR_PAYMENT" status
       if (!mission?.invoices?.find(x => x.status === WAITING_FOR_PAYMENT)) {
         if (mission?.status === FINISHED) {
-          if (mission?.dateEnd?.length < 1) {
+          if (mission?.dateEnd?.length > 1) {
             return {
               status: `Mission finalisée le ${formatDate(mission?.dateEnd)} `,
             }
@@ -214,6 +217,7 @@ export const Mission = ({ mission, matching, today, ...props }) => {
     } else if (status?.invoices?.find(x => x.status === WAITING_FOR_PAYMENT) || status?.invoices?.find(x => x.status === WAITING_FOR_VALIDATION))
       setInvoicesModalOpen(true);
     else {
+      dispatch(getCompaniesLaunched())
       setLoadingButton(true);
     }
   }
