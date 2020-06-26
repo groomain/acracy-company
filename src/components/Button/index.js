@@ -1,12 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
 import Button from '@material-ui/core/Button';
 import styles from './styles';
 import CustomLoader from '../Loader';
 
 
-export const CustomButton = ({ loading, title, theme, rippleDisabled, type, handleClick, className, ...props }) => {
+export const CustomButton = ({ loading, title, theme, rippleDisabled, type, handleClick, className,  ...props }) => {
   const classes = styles();
 
   return (

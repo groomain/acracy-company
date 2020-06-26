@@ -12,5 +12,11 @@ export default makeStyles(theme => ({
   },
   text: {
     padding: '8px 0'
+  },
+  textSmallSize: {
+    paddingLeft: 6
+  },
+  smallSize: {
+    fontSize: 14,
   }
 }));
