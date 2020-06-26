@@ -73,7 +73,7 @@ const { actions, reducer } = createSlice({
       .set('quotesLoading', true)
       .set('quotes', null),
     getQuotesSuccess: (state, action) => state
-      .set('quotes', action.payload.quotes)
+      .set('quotes', [...state, action.payload.quotes])
       .set('quotesLoading', false),
     getQuotesFailure: (state, action) => state
       .set('quotes', null)

@@ -31,7 +31,6 @@ import * as moment from 'moment';
 moment.locale('fr');
 
 export const Mission = ({ mission, matching, today, ...props }) => {
-  console.log('Mission -> matching', matching)
 
   const PAID = "PAID";
   const WAITING_FOR_VALIDATION = "WAITING_FOR_VALIDATION";
@@ -71,31 +70,33 @@ export const Mission = ({ mission, matching, today, ...props }) => {
       return <AValiderIcon className={classes.icon} />;
     } else if (status === WAITING_FOR_MATCHING || status === WAITING_FOR_CUSTOMER_SELECTION) {
       return <MatchingIcon className={classes.icon} />;
-    } else if (mission?.invoices?.find(x => x.status === WAITING_FOR_PAYMENT)) {
-      if (mission?.dateStart)
+    } else if (!mission?.invoices?.find(x => x.status === WAITING_FOR_PAYMENT)) {
+      if (status === IN_PROGRESS) {
+        return <EnCoursIcon className={classes.icon} />;
+      } else if (status === FINISHED) {
+        return <TravailIcon className={classes.icon} />;
+      }
+    } else {
+      if (mission?.invoices?.find(x => x.status === WAITING_FOR_VALIDATION)) {
+        // icon not specified
+      } else {
         if (mission?.invoices?.find(x => x.paymentDate < today)) {
           return <RetardIcon className={classes.icon} />;
         } else {
           if (getPath(mission?.invoices?.attachement).length > 0 || !mission?.invoices?.attachment) {
-            if (status === FINISHED) {
-              return <TravailIcon className={classes.icon} />;
-            } else {
+            return <TravailIcon className={classes.icon} />;
+          } else {
+            if (status === IN_PROGRESS) {
               return <EnCoursIcon className={classes.icon} />;
+            } else if (status === FINISHED) {
+              return <TravailIcon className={classes.icon} />;
             }
           }
         }
-    } else if (status === FINISHED) {
-      if (mission?.dateEnd.length > 1) {
-        return <MissionHistoIcon className={classes.icon} />;
-      } else {
-        return <TravailIcon className={classes.icon} />;
       }
-    } else if (mission?.dateStart > today) {
-      return <DemarreIcon className={classes.icon} />;
-    } else {
-      return <EnCoursIcon className={classes.icon} />;
     }
-  };
+    return <EnCoursIcon className={classes.icon} />;
+  }
 
   const [matchingValues, setMatchingValues] = useState();
   useEffect(() => {
@@ -178,7 +179,7 @@ export const Mission = ({ mission, matching, today, ...props }) => {
         if (mission?.invoices?.find(x => x.paymentDate < today)) {
           return {
             status: 'Retard de paiement',
-            color: 'primary.danger',
+            color: 'danger',
             buttonTitle: 'Payer facture'
           }
         }
@@ -214,7 +215,7 @@ export const Mission = ({ mission, matching, today, ...props }) => {
         dispatch(push(`/reveal/${mission?.externalId || matching?.externa}`));
       }
     }
-  }, [companiesDataFetched, companiesData, dispatch, loadingButton])
+  }, [companiesDataFetched, companiesData, dispatch, loadingButton, mission, matching])
 
   const renderMissionButton = (status) => {
     switch (status) {
@@ -241,10 +242,10 @@ export const Mission = ({ mission, matching, today, ...props }) => {
 
   // Retrieve quotes for the specified "profile matching" missions
   useEffect(() => {
-    if (matching?.status === WAITING_FOR_CUSTOMER_SELECTION || matching?.status === WAITING_FOR_SIGNATURE) {
-      // dispatch(getQuotesLaunched(matching?.externalId));
+    if (matching?.status === WAITING_FOR_CUSTOMER_SELECTION || mission?.status === WAITING_FOR_SIGNATURE) {
+      dispatch(getQuotesLaunched(matching?.externalId));
     }
-  }, [matching, dispatch]);
+  }, [matching, mission, dispatch]);
 
   return (
     <Box mt={3} mb={6}>
@@ -270,13 +271,14 @@ export const Mission = ({ mission, matching, today, ...props }) => {
               </Grid>
               <Grid item className={classes.description}>
                 <Typography variant="body2">
-                  {(matching?.deliverables || mission?.brief?.deliverables || matching?.brief?.deliverables)?.map((x, key) => `0${key + 1} ${x.text} ${key + 1 !== (matching?.deliverables?.length || matching?.brief?.deliverables.length || mission?.brief?.deliverables?.length) ? '- ' : ''} `)}</Typography>
+                  {(matching?.deliverables || mission?.brief?.deliverables || matching?.brief?.deliverables)?.map((x, key) => `0${key + 1} ${x.text} ${key + 1 !== (matching?.deliverables?.length || matching?.brief?.deliverables.length || mission?.brief?.deliverables?.length) ? '- ' : ''} `)}
+                </Typography>
               </Grid>
               {open && <LeftOverlay setOpen={setOpen} matching={matching} mission={mission} />}
             </Grid>
 
             <NavLink
-              to={mission ? `/ mission / ${mission?.externalId} ` : ` / brief / ${matching?.externalId} `}
+              to={mission ? `/mission/${mission?.externalId}` : `/brief/${matching?.externalId}`}
               className={clsx(classes.gridCenter, { [classes.gridCenterFinished]: props.status === 6 })}>
               {/* 1st column */}
               <Grid item xs={4}>
