@@ -1,4 +1,5 @@
 import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { NavLink } from "react-router-dom";
 import { Formik } from 'formik';
 import * as Yup from 'yup';
@@ -11,10 +12,12 @@ import CustomButton from "../Button";
 import CustomTextField from '../Inputs/CustomTextField';
 import CustomCheckBox from '../CheckBox';
 
+import { updateMissionLaunched } from '../../pages/HomePage/reducer';
 import { getPath } from '../../utils/services/validationChecks';
 import { PAID, WAITING_FOR_PAYMENT, WAITING_FOR_VALIDATION } from '../Missions/constants';
 
-export const InvoiceManagementModal = ({ open, handleClose, files, ...props }) => {
+export const InvoiceManagementModal = ({ open, handleClose, files, missionId, ...props }) => {
+  const dispatch = useDispatch();
   const invoicesNames = files.map(name => name.missionTitle);
   const classes = styles();
 
@@ -24,14 +27,17 @@ export const InvoiceManagementModal = ({ open, handleClose, files, ...props }) =
     workDone: false
   }
   const ValidationSchema = Yup.object().shape({
-    selectedFile: Yup.string().required(),
-    orderFormNumber: Yup.string().required(),
-    workDone: Yup.bool().required(),
+    selectedFile: Yup.string(),
+    orderFormNumber: Yup.string(),
+    workDone: Yup.boolean(),
   });
 
   const updateInvoice = (data) => {
-    console.log('updateInvoice -> data', data)
-
+    const allData = {
+      id: missionId,
+      ...data
+    }
+    dispatch(updateMissionLaunched(allData))
   }
 
   return (
@@ -64,6 +70,11 @@ export const InvoiceManagementModal = ({ open, handleClose, files, ...props }) =
 
 const InvoicesDownloadForm = ({ values, errors, touched, handleBlur, handleChange, handleSubmit, files, options }) => {
   const classes = styles();
+
+  const { updateMissionLoading, updateMissionSent } = useSelector(state => ({
+    updateMissionLoading: state.getIn(['dashboard', 'updateMissionLoading']),
+    updateMissionSent: state.getIn(['dashboard', 'updateMissionSent'])
+  }));
 
   const { selectedFile, orderFormNumber, workDone } = values;
   const invoiceFile = files.filter(x => x.missionTitle === selectedFile);
@@ -98,15 +109,21 @@ const InvoicesDownloadForm = ({ values, errors, touched, handleBlur, handleChang
                 onChange={handleChange}
               />
               <Grid container alignItems='center'>
-                <Typography>Le travail est terminé ?</Typography>
+                <Typography>Mission terminée ?</Typography>
                 <CustomCheckBox
                   name="workDone"
                   onChange={handleChange}
                 />
               </Grid>
               <Grid>
-                <CustomButton title="Valider" theme="filledButton" type="submit" />
+                <CustomButton title="Valider"
+                  theme={orderFormNumber.trim().length < 1 && !workDone ? 'disabledFilled' : 'filledButton'}
+                  type="submit"
+                  loading={updateMissionLoading}
+                  disabled={orderFormNumber.trim().length < 1 && !workDone}
+                />
               </Grid>
+              <Typography>{updateMissionSent ? 'La mission a bien été mise à jour !' : null}</Typography>
             </form>
           </Box>
         </>

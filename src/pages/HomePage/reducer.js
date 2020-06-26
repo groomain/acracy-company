@@ -18,7 +18,9 @@ const initialState = Immutable.Map({
   companiesData: null,
   companiesLoading: false,
   companiesDataFetched: false,
-  comingFromDashboard: false
+  comingFromDashboard: false,
+  updateMissionLoading: false,
+  updateMissionSent: false
 });
 
 const { actions, reducer } = createSlice({
@@ -100,6 +102,15 @@ const { actions, reducer } = createSlice({
       .set('sendMessageLoading', false),
     sendIncidentMessageFailure: (state, action) => state
       .set('sendMessageLoading', false),
+
+    // Update Mission
+    updateMissionLaunched: (state, action) => state
+      .set('updateMissionLoading', true),
+    updateMissionSuccess: (state, action) => state
+      .set('updateMissionLoading', false)
+      .set('updateMissionSent', true),
+    updateMissionFailure: (state, action) => state
+      .set('updateMissionLoading', false)
   }
 });
 
@@ -126,7 +137,10 @@ export const {
   setComingFromDashboard,
   sendIncidentMessageLaunched,
   sendIncidentMessageSuccess,
-  sendIncidentMessageFailure
+  sendIncidentMessageFailure,
+  updateMissionLaunched,
+  updateMissionSuccess,
+  updateMissionFailure
 } = actions;
 
 export default reducer;

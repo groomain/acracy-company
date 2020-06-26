@@ -43,9 +43,9 @@ import {
 moment.locale('fr');
 
 export const Mission = ({ mission, matching, today, ...props }) => {
-
   const dispatch = useDispatch();
   const classes = styles();
+
   const [open, setOpen] = useState(false);
   const [infosOpen, setInfosOpen] = useState(false);
   const [redirectionPopupOpen, setRedirectionPopupOpen] = useState(false);
@@ -56,12 +56,14 @@ export const Mission = ({ mission, matching, today, ...props }) => {
   const durationUnit = mission?.brief?.missionContext?.duration?.unit || matching?.missionContext?.duration?.unit;
   const startDate = mission?.brief?.missionContext?.startDate || matching?.missionContext?.startDate;
 
-  const { quotes, quotesLoading, companiesData, companiesLoading, companiesDataFetched } = useSelector(state => ({
+  const { quotes, quotesLoading, companiesData, companiesLoading, companiesDataFetched, updateMissionLoading, updateMissionSent } = useSelector(state => ({
     quotes: state.getIn(['dashboard', 'quotes']),
     quotesLoading: state.getIn(['dashboard', 'quotesLoading']),
     companiesData: state.getIn(['dashboard', 'companiesData']),
     companiesLoading: state.getIn(['dashboard', 'companiesLoading']),
-    companiesDataFetched: state.getIn(['dashboard', 'companiesDataFetched'])
+    companiesDataFetched: state.getIn(['dashboard', 'companiesDataFetched']),
+    updateMissionLoading: state.getIn(['dashboard', 'updateMissionLoading']),
+    updateMissionSent: state.getIn(['dashboard', 'updateMissionSent'])
   }));
 
   const getStatusIcon = (mission) => {
@@ -371,6 +373,7 @@ export const Mission = ({ mission, matching, today, ...props }) => {
           open={invoicesModalOpen}
           handleClose={() => setInvoicesModalOpen(false)}
           files={mission?.invoices}
+          missionId={mission?.externalId}
         />
       )}
     </Box>
