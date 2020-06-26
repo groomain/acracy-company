@@ -1,7 +1,6 @@
 import React from 'react';
 import Dialog from '@material-ui/core/Dialog';
 import { DialogTitle, Typography, Grid, IconButton } from '@material-ui/core/';
-
 import CloseIcon from '@material-ui/icons/Close';
 import styles from './styles';
 
@@ -28,5 +27,4 @@ export const CustomModal = ({ open, handleClose, title, text, children, withoutB
     </Dialog>
   );
 }
-
 export default CustomModal;

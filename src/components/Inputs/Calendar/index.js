@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
+import { useDispatch } from "react-redux";
 import moment from 'moment';
 import MomentUtils from '@date-io/moment';
 
 import { Typography, Grid } from '@material-ui/core';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 import { Agenda } from '../../../assets/icons/Agenda';
+import { setDateFromCalendar } from '../../../pages/LeadCreationPage/reducer';
 import styles from './styles';
 
 import { capitalize } from '../../../utils/services/format';
@@ -21,12 +23,19 @@ class LocalizedUtils extends MomentUtils {
 
 export const Calendar = ({ error, label }) => {
   const classes = styles();
+  const dispatch = useDispatch();
 
   const [selectedDate, setSelectedDate] = useState();
 
+  const setDate = (e) => {
+    setSelectedDate(e);
+    const timestamp = Date.parse(e._d);
+    dispatch(setDateFromCalendar(timestamp))
+  }
+
   return (
     <MuiPickersUtilsProvider utils={LocalizedUtils} locale={'fr'}>
-      <Typography variant="h4">{label}*</Typography>
+      <Typography variant="h4">{label}</Typography>
       <Grid container justify="space-around">
         <KeyboardDatePicker
           // disableToolbar
@@ -37,7 +46,7 @@ export const Calendar = ({ error, label }) => {
           margin="normal"
           id="date-picker-inline"
           value={selectedDate}
-          onChange={setSelectedDate}
+          onChange={setDate}
           KeyboardButtonProps={{
             'aria-label': 'change date',
           }}
@@ -46,7 +55,6 @@ export const Calendar = ({ error, label }) => {
           minDate={new Date()}
           style={{ width: '100%' }}
           invalidDateMessage=""
-
         />
       </Grid>
     </MuiPickersUtilsProvider>

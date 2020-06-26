@@ -5,11 +5,18 @@ import { useTranslation } from 'react-i18next';
 import styles from './styles';
 import CircleImage from '../CircleImage';
 
+import publicis from '../../assets/icons/publicis.svg';
+import bnp from '../../assets/icons/bnp.svg';
+import romance from '../../assets/icons/romance.svg';
+import accenture from '../../assets/icons/accenture.svg';
+import ledger from '../../assets/icons/ledger.png';
+import ratp from '../../assets/icons/ratp.svg';
+
 const PartnersList = () => {
   const classes = styles();
   const { t } = useTranslation();
 
-  const logos = ['', '', '', '', '', ''];
+  const logos = [publicis, bnp, romance, accenture, ledger, ratp];
 
   return (
     <>
@@ -23,7 +30,7 @@ const PartnersList = () => {
         {logos.map((logo, i) => {
           return (
             <Grid key={i} item xs={4} >
-              <CircleImage theme='partner' alt='partner' />
+              <CircleImage theme='partner' alt='partner' src={logo} />
             </Grid>
           )
         })}

@@ -1,7 +1,6 @@
 import React from 'react';
 import { Grid, Typography } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
-
 import SearchIcon from '../../assets/icons/searchIcon';
 import styles from './styles';
 

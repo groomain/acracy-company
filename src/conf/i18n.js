@@ -129,6 +129,7 @@ i18n
           lastNameRequired: 'Veuillez saisir votre nom',
           search: 'Rechercher…',
           refresh: 'Rafraîchir',
+          saveAndClose: 'Sauvegarder et fermer',
           draft: {
             confirmDelete: 'Confirmer la suppression',
             cancel: 'Annuler',
@@ -173,11 +174,11 @@ i18n
           searchbar: {
             placeholder: 'Quel profil ou livrable recherchez-vous ?',
             noOptions: 'Aucun résultat ne correspond à votre recherche.',
-            profileLabel: 'Profils',
-            briefsLabel: 'Livrables',
+            profileLabel: 'Profil recherché',
+            briefsLabel: 'Livrable recherché',
             loading: 'Chargement...',
             createMessage: 'Créer',
-            newOption: "n'existe pas"
+            newOption: "ne figure pas dans notre liste de profils ou livrables mais nous allons faire notre maximum pour vous aider."
           },
           yourEmail: 'Votre email',
           yourPassword: 'Votre mot de passe',
@@ -187,6 +188,30 @@ i18n
             fieldTitleStarted: "Modifier ma sélection",
             fieldTitleNewSelection: "Démarrer ma sélection",
             minMaxInfo: "5 maximum dont 3 prioritaires"
+          },
+          leadCreation: {
+            synthesis: 'Synthèse Brief',
+            details: 'Détails Brief',
+            missionLabel: 'Donnez un titre à votre mission*',
+            missionPlaceholder: 'Ex: Motion design pour stories Instagram',
+            workspaceLabel: 'Format souhaité*',
+            locationLabel: 'Merci d’indiquer l\'adresse des locaux où la mission aura lieu*',
+            locationPlaceholder: '133 avenue des Champs Elysées - 75008 Paris',
+            frequencyLabel: 'Rythme hebdomadaire',
+            durationLabel: 'Durée de la mission',
+            durationPlaceholder: 'Indiquez nombre',
+            budgetLabel: 'Budget',
+            budgetPlaceholder: 'Votre budget',
+            profilesLabel: 'Nombre de profils ou teams*',
+            callMe: 'Être rappelé.e.',
+            selectDeliverables: 'Sélectionner jusqu\'à 5 livrables souhaités*',
+            modifyDeliverables: 'Modifier ma sélection',
+            customDeliverablePlaceholder: 'Livrable souhaité',
+            customDeliverableLabel: 'Précisez la nature du livrable qui ne figure pas dans la liste*',
+            selectProfile: 'Sélectionnez un profil souhaité pour la mission*',
+            calendarLabel: 'Date de démarrage*',
+            reseachLabel: 'Précisez votre recherche',
+            finishBrief: 'Finaliser le brief'
           },
           upload: {
             title: "Documents partagés",

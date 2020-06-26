@@ -6,7 +6,7 @@ import styles from './styles';
 import CustomLoader from '../Loader';
 
 
-export const CustomButton = ({ loading, title, theme, rippleDisabled, type, handleClick, ...props }) => {
+export const CustomButton = ({ loading, title, theme, rippleDisabled, type, handleClick, className, ...props }) => {
   const classes = styles();
 
   return (
@@ -14,7 +14,7 @@ export const CustomButton = ({ loading, title, theme, rippleDisabled, type, hand
       type={type}
       onClick={handleClick}
       disableRipple={rippleDisabled}
-      className={`${classes.button} ${classes[theme]}`}
+      className={`${classes.button} ${classes[theme]} ${className}`}
       {...props}
     >
       {loading

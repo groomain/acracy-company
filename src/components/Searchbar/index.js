@@ -17,8 +17,10 @@ import SearchIcon from '../../assets/icons/searchIcon';
 import styles, { reactSelectStyles } from './styles';
 import profilIcon from '../../assets/icons/profil-roll-out-black.svg';
 import projectIcon from '../../assets/icons/livrable-black.svg';
+import profilIconYellow from '../../assets/icons/profil-roll-out-yellow.svg';
+import livrableYellow from '../../assets/icons/livrable-yellow.svg';
 
-const Searchbar = () => {
+const Searchbar = ({ onUpdateChosenCategory }) => {
 
   const searchClient = algoliasearch(
     process.env.REACT_APP_ALGOLIA,
@@ -31,19 +33,20 @@ const Searchbar = () => {
       indexName={process.env.REACT_APP_ALGOLIA_INDEX_NAME}
     >
       <Configure hitsPerPage={12} />
-      <CustomSearchbar />
+      <CustomSearchbar onUpdateChosenCategory={onUpdateChosenCategory} />
     </InstantSearch>
   );
 }
 
-const SearchResults = ({ searchResults, ...props }) => {
+const SearchResults = ({ searchResults, onUpdateChosenCategory, context, ...props }) => {
   const classes = styles();
   const { t } = useTranslation();
 
   const [resultsList, setResultsList] = useState([]);
   const [loading, setIsLoading] = useState(true);
   const [searchValue, setSearchValue] = useState();
-  const [newOption, setNewOption] = useState();
+  const [newOption, setNewOption] = useState({ title: t('leadCreation.reseachLabel') });
+
 
   useEffect(() => {
     if (searchResults) {
@@ -128,17 +131,28 @@ const SearchResults = ({ searchResults, ...props }) => {
       setNewOption({ title: "Vous avez recherché", value: newValue.value })
     }
     if (actionMeta.action === 'clear') {
-      setNewOption('')
+      setNewOption({ title: t('leadCreation.reseachLabel') })
     }
-    setSearchValue(newValue || null)
-  };
+    setSearchValue(newValue || null);
+    onUpdateChosenCategory(newValue);
+  }
 
   const renderTitle = (title) => {
     switch (title) {
       case "PROFILE":
-        return t('searchbar.profileLabel');
+        return (
+          <Grid container alignItems='center'>
+            <img src={profilIconYellow} alt='profil' className={classes.img} />
+            <Typography variant="h2">&nbsp;{t('searchbar.profileLabel')}</Typography>
+          </Grid>
+        )
       case "DELIVERABLE":
-        return t('searchbar.briefsLabel');
+        return (
+          <Grid container alignItems='center'>
+            <img src={livrableYellow} alt='livrable' className={classes.img} />
+            <Typography variant="h2">&nbsp;{t('searchbar.briefsLabel')}</Typography>
+          </Grid>
+        )
       default:
         break;
     }
@@ -147,7 +161,9 @@ const SearchResults = ({ searchResults, ...props }) => {
   return (
     <Box my={4}>
       <Box my={2} style={{ height: 30 }}>
-        <Typography variant="h2">{renderTitle(searchValue?.TYPE) || newOption?.title}</Typography>
+        <Typography variant="h2">
+          {renderTitle(searchValue?.TYPE) || newOption?.title}
+        </Typography>
       </Box>
       <CreatableSelect
         onChange={handleOnChange}
@@ -173,7 +189,12 @@ const SearchResults = ({ searchResults, ...props }) => {
       />
       {newOption && (
         <Box my={2}>
-          <Typography variant="h2">« {newOption.value} » {t('searchbar.newOption')}</Typography>
+          <Typography variant="h2">
+            {newOption.title !== (t('leadCreation.reseachLabel')) ?
+              ('« ' + newOption.value + ' » ' + t('searchbar.newOption'))
+              :
+              ''}
+          </Typography>
         </Box>
       )}
     </Box>

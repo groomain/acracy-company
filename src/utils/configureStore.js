@@ -4,7 +4,9 @@ import { createBrowserHistory } from 'history';
 import { routerMiddleware } from 'connected-react-router/immutable';
 import homeSaga from '../components/App/sagas';
 import dashboardSagas from '../pages/HomePage/sagas';
+import SelectionProfil from '../pages/ProfileSelection/sagas';
 import createRootReducer from './rootReducer';
+import leadCreationSaga from "../pages/LeadCreationPage/sagas";
 
 const sagaMiddleware = createSagaMiddleware();
 export const history = createBrowserHistory();
@@ -19,6 +21,8 @@ export default function configureStore() {
 
   sagaMiddleware.run(homeSaga);
   sagaMiddleware.run(dashboardSagas);
+  sagaMiddleware.run(leadCreationSaga);
+  sagaMiddleware.run(SelectionProfil);
 
   return store;
 }

@@ -22,7 +22,7 @@ export const TagsList = ({ tags }) => {
         <CustomExpansionPanel isTag panelTitle={started ? t('tagsList.fieldTitleStarted') : t('tagsList.fieldTitleNewSelection')}>
           <Grid>
             <div>
-              {tags && tags.map((tag, key) => <CheckableTag key={key} title={tag.title} />)}
+              {tags?.map((tag, key) => <CheckableTag key={key} title={tag.title} />)}
               <CustomButton
                 title={t('buttonTitles.validate')}
                 theme="asLink"
