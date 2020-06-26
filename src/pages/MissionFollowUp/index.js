@@ -12,33 +12,44 @@ import Tag from "../../components/Tags/Tag";
 import CircleImage from "../../components/CircleImage";
 import RevealProfil from "../../components/RevealProfil";
 import infosIcon from '../../assets/icons/infos.svg'
+import matchIcon from '../../assets/icons/match.svg'
 import IconButton from "@material-ui/core/IconButton";
 import {getBriefLaunched, getMissionLaunched} from "./reducer";
 import CustomLoader from "../../components/Loader";
+import {useLocation} from "react-router";
 
-const MissionFollowUp = () => {
+const MissionFollowUp = (props) => {
     const classes = styles();
     const dispatch = useDispatch();
-
-    const getMissionData = (payload) => {
-        dispatch(getMissionLaunched(payload));
-    };
-
-    const getBriefData = (payload) => {
-        dispatch(getBriefLaunched(payload));
-    };
+    const id = props?.match?.params;
+    let location = useLocation();
+    const {t} = useTranslation();
 
     const {briefData, missionData} = useSelector(state => ({
         briefData: state.getIn(['Mission', 'briefData']),
         missionData: state.getIn(['Mission', 'missionData'])
     }));
-
-    const {t} = useTranslation();
-    const [step, setStepper] = React.useState(2);
+    const data = missionData || (briefData &&
+        {
+            externalId: briefData.externalId,
+            status: briefData.status,
+            brief: {
+                profile: briefData.profile,
+                deliverables: briefData.deliverables,
+                missionContext: briefData.missionContext,
+                missionDetail: briefData.missionDetail,
+                missionRequirements: briefData.missionRequirements
+            },
+            customerProfile: briefData.customerProfile
+        });
 
     useEffect( () => {
-        getBriefData();
-        getMissionData()
+        const isMission = location.pathname?.includes('mission');
+        if (isMission) {
+            dispatch(getMissionLaunched(id));
+        } else {
+            dispatch(getBriefLaunched(id));
+        }
     }, []);
 
     const renderContent = (status) => {
@@ -50,7 +61,7 @@ const MissionFollowUp = () => {
             default:
                 return (
                     <Grid container direction={'column'} justify={'center'} alignItems={'center'} className={classes.waitingProfile}>
-                        <CircleImage theme={'avatarLarge'}/>
+                        <CircleImage theme={'avatarLarge'} src={matchIcon}/>
                         <Typography variant={'h4'} className={classes.waitingProfilTitle}>Matching en cours</Typography>
                         <Typography variant={'h4'} className={classes.waitingProfileText}>
                             Commencez par rechercher un type de profil ou livrable
@@ -60,7 +71,7 @@ const MissionFollowUp = () => {
             case 'IN_PROGRESS':
                 return (
                     <div className={classes.bloc}>
-                        <Grid item container direction={'row'} justify={"space-between"} style={{maxHeight: 80}}>
+                        <Grid item container direction={'row'} justify={"space-between"} className={classes.infoContainer}>
                             <Typography variant={'h2'} className={classes.titleFreelance}>Votre Freelance</Typography>
                             <div style={{display: 'flex'}}>
                                 <Typography variant={'body2'}>Contact</Typography>
@@ -92,19 +103,18 @@ const MissionFollowUp = () => {
         <Grid
             container
             direction="row"
-
             className={classes.container}
         >
             <Main>
-                {briefData ?
+                {data ?
                     <Grid>
-                        <Grid container direction={'column'} style={{width: '95%', marginLeft: "5%", marginTop: 150}}>
+                        <Grid container direction={'column'} className={classes.containerWithMargin}>
                             <div className={classes.title}>
                                 <Typography variant={'h1'}>Ma Mission</Typography>
                             </div>
                             <div className={classes.bloc}>
                                 <Typography variant={'h2'}>Titre de la mission</Typography>
-                                <Typography variant={'h1'}>{briefData.missionContext.title}</Typography>
+                                <Typography variant={'h1'}>{data.brief.missionContext.title}</Typography>
                             </div>
                         </Grid>
                         <Grid container direction={'row'} className={classes.card}>
@@ -112,52 +122,51 @@ const MissionFollowUp = () => {
                                 <Grid item className={classes.blocTypoUp}>
                                     <Typography variant={"h4"} className={classes.typo}>Format</Typography>
                                     <Typography variant={"body1"}
-                                                className={classes.typo}>{briefData.missionContext.format}</Typography>
+                                                className={classes.typo}>{data.brief.missionContext.format}</Typography>
                                 </Grid>
                                 <Grid item className={classes.blocTypoDown}>
                                     <Typography variant={"h4"} className={classes.typo}>Rythme</Typography>
                                     <Typography variant={"body1"}
-                                                className={classes.typo}>{briefData.missionContext.weeklyRythm}</Typography>
+                                                className={classes.typo}>{data.brief.missionContext.weeklyRythm}</Typography>
                                 </Grid>
                             </Grid>
                             <Grid container item xs={5} direction={'column'} spacing={2}>
                                 <Grid item className={classes.blocTypoUp}>
                                     <Typography variant={"h4"} className={classes.typo}>Durée</Typography>
                                     <Typography variant={"body1"}
-                                                className={classes.typo}>{briefData.missionContext.duration.nb}
-                                        {briefData.missionContext.duration.nb} à partir
-                                        du {briefData.missionContext.startDate}</Typography>
+                                                className={classes.typo}>{data.brief.missionContext.duration.nb}
+                                        {data.brief.missionContext.duration.nb} à partir
+                                        du {data.brief.missionContext.startDate}</Typography>
                                 </Grid>
                                 <Grid item className={classes.blocTypoDown}>
                                     <Typography variant={"h4"} className={classes.typo}>Adresse</Typography>
                                     <Typography variant={"body1"}
-                                                className={classes.typo}>{briefData.missionContext.address}</Typography>
+                                                className={classes.typo}>{data.brief.missionContext.address}</Typography>
                                 </Grid>
                             </Grid>
                             <Grid container item xs={2} direction={'column'} spacing={2}>
                                 <Grid item container className={classes.blocTypoUp}>
                                     <Typography variant={"h4"} className={classes.typo}>TJM</Typography>
                                     <Typography variant={"body1"}
-                                                className={classes.typo}>{briefData.missionContext.estimatedAverageDailyRate} €/j</Typography>
+                                                className={classes.typo}>{data.brief.missionContext.estimatedAverageDailyRate} €/j</Typography>
                                 </Grid>
                             </Grid>
                         </Grid>
-                        <Grid container direction={'column'} style={{width: '95%', marginLeft: "5%"}}>
+                        <Grid container direction={'column'} className={classes.containerWithMargin2}>
                             <div className={classes.bloc}>
                                 <Typography variant={'h2'}>Livrable.s</Typography>
-                                <Grid container direction={'row'} style={{width: '80%', marginTop: 5}} spacing={1}>
-                                    {briefData.deliverables.map((tag, key) =>
+                                <Grid container direction={'row'} className={classes.deliverablesContainer} spacing={1}>
+                                    {data.brief.deliverables.map((tag, key) =>
                                         <Grid item>
                                             <Tag key={key} title={tag.text} isPrimaryColor={false}/>
                                         </Grid>)}
                                 </Grid>
                             </div>
                             <div className={classes.bloc}>
-
                                 <CustomExpansionPanel isTag={false}
                                                       panelTitle="Contexte de la mission et tâches à réaliser">
                                     <Typography>
-                                        {briefData.missionDetail.contextAndTasks}
+                                        {data.brief.missionDetail.contextAndTasks}
                                     </Typography>
                                 </CustomExpansionPanel>
                             </div>
@@ -165,19 +174,19 @@ const MissionFollowUp = () => {
 
                                 <CustomExpansionPanel isTag={false} panelTitle="Détails des livrables">
                                     <Typography>
-                                        {briefData.missionDetail.DetailsOfDeliverables}
+                                        {data.brief.missionDetail.DetailsOfDeliverables}
                                     </Typography>
                                 </CustomExpansionPanel>
                             </div>
                             <div className={classes.bloc}>
                                 <Typography variant={'h2'}>Détails du profil recherché</Typography>
-                                <Typography variant={'h1'}>{briefData.profile.text}</Typography>
+                                <Typography variant={'h1'}>{data.brief.profile.text}</Typography>
                             </div>
                             <div className={classes.bloc}>
                                 <Typography variant={'h4'} className={classes.title}>Expertises clés du
                                     profil</Typography>
                                 <Grid item container direction={"row"} spacing={1}>
-                                    {briefData.missionRequirement.expertises.map((tag, key) => <Grid item><Tag
+                                    {data.brief.missionRequirements.expertises.map((tag, key) => <Grid item><Tag
                                         key={key} title={tag.expertise.text} isPrimaryColor
                                         tagType="Prioritaire" isWithCheckbox checked={tag.priority}/></Grid>)}
                                 </Grid>
@@ -186,11 +195,11 @@ const MissionFollowUp = () => {
                                 <Typography variant={'h4'} className={classes.title}>Langue souhaitée</Typography>
                                 <Grid style={{width: '80%'}} item container direction={"row"} spacing={1}>
                                     <Grid item>
-                                        <Tag title={briefData.missionRequirement.language.language}
+                                        <Tag title={data.brief.missionRequirements.languages.language}
                                              isPrimaryColor
                                              tagType="Critère indispensable"
                                              isWithCheckbox
-                                             checked={briefData.missionRequirement.language.essential}
+                                             checked={data.brief.missionRequirements.languages.essential}
                                         />
                                     </Grid>
                                 </Grid>
@@ -199,11 +208,11 @@ const MissionFollowUp = () => {
                                 <Typography variant={'h4'} className={classes.title}>Sensibilité souhaitée</Typography>
                                 <Grid style={{width: '80%'}} item container direction={"row"} spacing={1}>
                                     <Grid item>
-                                        <Tag title={briefData.missionRequirement.sensitivity.sensitivity.text}
+                                        <Tag title={data.brief.missionRequirements.sensitivity.sensitivity.text}
                                              isPrimaryColor
                                              tagType="Critère indispensable"
                                              isWithCheckbox
-                                             checked={briefData.missionRequirement.sensitivity.essential}
+                                             checked={data.brief.missionRequirements.sensitivity.essential}
                                         />
                                     </Grid>
                                 </Grid>
@@ -216,18 +225,18 @@ const MissionFollowUp = () => {
                                                 padding: 30,
                                                 backgroundColor: "#283028",
                                                 borderRadius: 15
-                                            }}>{briefData.missionRequirement.seniority}</Typography>
+                                            }}>{data.brief.missionRequirements.seniority}</Typography>
                             </div>
                         </Grid>
-                        {renderContent(briefData.status)}
+                        {renderContent(data.status)}
                     </Grid>
                     :
                     <Grid container justify={'center'} alignItems={'center'} style={{minHeight: '100vh'}}><CustomLoader/></Grid>
                 }
             </Main>
             <Sidebar>
-                {briefData && missionData &&
-                <MissionSuivi briefData={briefData} missionData={missionData} style={{marginTop: 150}}/>
+                {data &&
+                <MissionSuivi data={data} pathname={location.pathname} style={{marginTop: 150}}/>
                 }
             </Sidebar>
         </Grid>

@@ -9,12 +9,12 @@ import Grid from "@material-ui/core/Grid";
 import CustomButton from "../Button";
 import {NavLink} from "react-router-dom";
 import {useDispatch} from "react-redux";
-import {getMissionLaunched} from "../../pages/MissionFollowUp/reducer";
 import {downloadFileLaunched} from "./reducer";
 
-export const DownloadModal = ({ open, setOpen, handleClose, files, type, id, ...props }) => {
+export const DownloadModal = ({ open, setOpen, handleClose, files, type, ...props }) => {
   const classes = styles();
   const filesName = files.map((file, index) => file.name);
+  const filesId = files.map((file, index) => file.externalId);
   const [file, setFile] = React.useState(null);
   const dispatch = useDispatch();
 
@@ -52,12 +52,12 @@ export const DownloadModal = ({ open, setOpen, handleClose, files, type, id, ...
         </Typography>
         <CustomSelect label={""} optionsValues={filesName} onChange={(event) => handleSetFile(event.target.value)}/>
         <Grid item container directtion={"row"}>
-          <CustomButton title={"Télécharger"} theme={"filledButton"} style={{position: "relative", bottom: 40}} handleClick={() => downloadFile({type: type, id: id, attachmentId: file.externalId})}/>
-          <NavLink to={"/"} className={classes.navLink}>
+          <CustomButton title={"Télécharger"} theme={"filledButton"} style={{position: "relative", bottom: 40}} handleClick={() => downloadFile({type: type, attachmentId: file.externalId})}/>
+          <Typography onClick={() => downloadFile({type: type, attachmentId: filesId})} className={classes.navLink}>
             {type === "devis" && "Télécharger tout les devis"}
             {type === "facture" && "Télécharger toutes les factures"}
             {type === "brief" && "Télécharger tout les briefs"}
-          </NavLink>
+          </Typography>
         </Grid>
       </Grid>
     </Dialog >

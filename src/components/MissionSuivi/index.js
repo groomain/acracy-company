@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import styles from './styles';
 import Grid from "@material-ui/core/Grid";
 import List from '@material-ui/core/List';
@@ -21,12 +21,9 @@ import {FactureIcon} from "../../assets/icons/FactureIcon";
 import {BriefIcon} from "../../assets/icons/BriefIcon";
 import {DevisIcon} from "../../assets/icons/DevisIcon";
 import DownloadModal from "../DownloadModal";
-import {getLeadsLaunched} from "../../pages/MissionFollowUp/reducer";
-import {useDispatch, useSelector} from "react-redux";
 
-export const MissionSuivi = ({briefData, missionData, ...props}) => {
+export const MissionSuivi = ({data, pathname, ...props}) => {
     const classes = styles();
-    const dispatch = useDispatch();
 
     const [devisOpen, setDevisOpen] = React.useState(false);
     const [factureOpen, setfactureOpen] = React.useState(false);
@@ -39,17 +36,8 @@ export const MissionSuivi = ({briefData, missionData, ...props}) => {
         "IN_PROGRESS": 4,
         "CLOSED": 5
     };
-    const step = briefData ? existingSteps[briefData.status] : 0;
+    const step = data.status ? existingSteps[data.status] : 0;
 
-    // const getLeadsData = (payload) => {
-    //     dispatch(getLeadsLaunched(payload));
-    // };
-
-    // const {leadsData} = useSelector(state => ({
-    //     leadsData: state.getIn(['Mission', 'leadsData']),
-    // }));
-
-    // console.log("leadsData", leadsData);
     return (
         <Grid container direction={'column'} className={classes.root} {...props}>
             <Typography variant={"h1"} className={classes.title}>Suivi</Typography>
@@ -65,7 +53,7 @@ export const MissionSuivi = ({briefData, missionData, ...props}) => {
                         secondaryTypographyProps={{className: clsx(classes.secondaryText, {[classes.textDone]: step >= 0})}}
                         primary="Brief"
                         secondary={step >= 0 && "Validation en cours"}/>
-                    {step >= 0 && <BriefIcon number={1} onClick={() => setBriefOpen(true)} className={classes.downloadIcon}/>}
+                    {step >= 0 && <BriefIcon number={data.brief.missionDetail.sharedDocuments.length} onClick={() => setBriefOpen(true)} className={classes.downloadIcon}/>}
                 </ListItem>
                 <ListItem className={classes.listItem}>
                     <ListItemAvatar className={classes.avatar}>
@@ -105,7 +93,7 @@ export const MissionSuivi = ({briefData, missionData, ...props}) => {
                         primaryTypographyProps={{className: clsx(classes.text, {[classes.textDone]: step >= 3})}}
                         secondaryTypographyProps={{className: clsx(classes.secondaryText, {[classes.textDone]: step >= 3})}}
                         primary="Début de la mission"
-                        secondary={step >= 3 && briefData.missionContext.startDate}/>
+                        secondary={step >= 3 && data.brief.missionContext.startDate}/>
                 </ListItem>
                 <ListItem className={classes.listItem}>
                     <ListItemAvatar className={classes.avatar}>
@@ -118,27 +106,26 @@ export const MissionSuivi = ({briefData, missionData, ...props}) => {
                         primaryTypographyProps={{className: clsx(classes.text, {[classes.textDone]: step >= 4})}}
                         secondaryTypographyProps={{className: clsx(classes.secondaryText, {[classes.textDone]: step >= 4})}}
                         primary="Fin de la mission"
-                        secondary={step >= 4 && "XX factures à télécharger"}/>
-                    {step >= 4 && <FactureIcon number={2} onClick={() => (setfactureOpen(true))} className={classes.downloadIcon}/>}
+                        secondary={step >= 4 && `${data.invoices.length} facture(s) à télécharger`}/>
+                    {step >= 4 && <FactureIcon number={data.invoices.length} onClick={() => (setfactureOpen(true))} className={classes.downloadIcon}/>}
                 </ListItem>
             </List>
+            {step >= 2 &&
             <DownloadModal open={devisOpen}
-                           files={[missionData.signedQuote]}
+                           files={[data.signedQuote]}
                            type={"devis"}
                            setOpen={setDevisOpen}
-                           id={missionData.externalId}
-            />
+            />}
+            {step >= 4 &&
             <DownloadModal open={factureOpen}
-                           files={["Facture 20.05.2020", "Facture 05.04.2020", "Facture 14.02.2020"]}
-                           type={"factures"}
+                           files={data.invoices.map((invoice) => invoice.attachment)}
+                           type={"facture"}
                            setOpen={setfactureOpen}
-                           id={missionData.externalId}
-            />
+            />}
             <DownloadModal open={briefOpen}
-                           files={briefData.missionDetail.sharedDocument}
+                           files={data.brief.missionDetail.sharedDocuments}
                            type={"brief"}
                            setOpen={setBriefOpen}
-                           id={missionData.externalId}
             />
         </Grid>
     )

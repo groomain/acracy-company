@@ -8,16 +8,22 @@ import {downloadFileSuccess} from "./reducer";
 
 function* downloadFile(action) {
   try {
-    const {type, id, attachmentId} = action.payload;
-    console.log("DOWNLOADFILE", action.payload);
-    let url;
-    if (type === "brief") {
-      url = `/leads/${id}/attachments/${attachmentId}`
-    } else if (type === "devis") {
-      url = `/leads/${id}/attachments/${attachmentId}`
-    } else if (type === "facture") {
-      url = `/leads/${id}/attachments/${attachmentId}`
+    console.log("DOWNLOADFILE SAGA");
+    const {type, attachmentId} = action.payload;
+    let url = `/attachments`;
+
+    if (Array.isArray(attachmentId)) {
+      for (let i = 0; i < attachmentId.length; i++) {
+        if (i === 0){
+          url += `?id=${attachmentId[i]}`
+        } else {
+          url += `,${attachmentId[i]}`
+        }
+      }
+    } else {
+      url += `/${attachmentId}`
     }
+    console.log("DOWNLOADFILE", action.payload);
     const file = yield API.get(config.apiGateway.NAME, url, {
       headers: {
         'x-api-key': config.apiKey

@@ -96,7 +96,7 @@ const RevealProfil = (props) => {
                     <Typography variant='h4'>Expertises</Typography>
                   </Grid>
                   <Grid container direction={"row"} justify={'center'} className={classes.tagContainer}>
-                    {profil.expertise.map((tag, key) =>
+                    {profil.expertises.map((tag, key) =>
                         <Tag key={key} title={tag.text} isPrimaryColor className={classes.tag}/>
                     )}
                   </Grid>

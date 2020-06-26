@@ -5,6 +5,15 @@ export default makeStyles(theme => ({
     backgroundColor: `${theme.palette.secondary.black}`,
     height: '100%',
   },
+  containerWithMargin: {
+    width: '95%',
+    marginLeft: "5%",
+    marginTop: 150
+  },
+  containerWithMargin2: {
+    width: '95%',
+    marginLeft: "5%",
+  },
   card: {
     padding: 25,
     width: '100%',
@@ -57,5 +66,13 @@ export default makeStyles(theme => ({
   waitingProfileText: {
     color: `${theme.palette.secondary.medium}`,
     width: "70%"
+  },
+  infoContainer: {
+    maxHeight: 80
+  },
+  deliverablesContainer: {
+    width: '80%',
+    marginTop: 5
   }
+
 }));

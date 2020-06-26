@@ -1,5 +1,6 @@
 {
   "externalId": "{{$randomInt}}",
+  "status": "WAITING_FOR_MATCHING",
   "profile": {
     "code": "PR-{{$randomInt}}",
     "text": "{{$randomJobTitle}}"
@@ -51,7 +52,7 @@
   "missionDetail": {
     "contextAndTasks": "{{$$randomPhrase}}.<br><br>{{$$randomPhrase}}",
     "DetailsOfDeliverables": "{{$$randomPhrase}}.<br><br>{{$$randomPhrase}}<br>{{$$randomPhrase}}",
-    "sharedDocument": [
+    "sharedDocuments": [
       {
         "externalId": "{{$randomUUID}}",
         "name": "{{$randomFileName}}"
@@ -66,7 +67,7 @@
       }
     ]
   },
-  "missionRequirement": {
+  "missionRequirements": {
     "expertises": [
       {
         "expertise": {
@@ -104,10 +105,10 @@
       },
       "essential": true
     },
-    "language": {
+    "languages": [{
       "language": "FLUENT_ENGLISH",
       "essential": true
-    },
+    }],
     "seniority": "WHATEVER"
   },
   "customerProfile": {
