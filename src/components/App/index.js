@@ -1,7 +1,5 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Switch, Route, Redirect } from 'react-router';
-import { Grid } from '@material-ui/core';
 import { Switch, Route, Redirect, useLocation } from 'react-router';
 import { Grid } from '@material-ui/core';
 import HomePage from '../../pages/HomePage';
@@ -39,8 +37,8 @@ function App() {
       <PublicRoute exact path="/confirm-signup" fixed component={ConfirmSignupPage} />
       <PublicRoute exact path="/password" fixed component={ForgotPassword} />
       <PublicRoute exact path="/lead" fixed component={LeadCreationPage} />
-      <PublicRoute exact path="/brief/:id" fixed component={MissionFollowUp}/>
-      <PublicRoute exact path="/mission/:id" fixed component={MissionFollowUp}/>
+      <PublicRoute exact path="/brief/:id" fixed component={MissionFollowUp} />
+      <PublicRoute exact path="/mission/:id" fixed component={MissionFollowUp} />
       <PrivateRoute exact path="/firstlogin" fixed component={FirstLoginPage} />
       <PrivateRoute exact path="/home" fixed component={HomePage} />
       <PrivateRoute exact path="/account" fixed component={MyAccount} />
