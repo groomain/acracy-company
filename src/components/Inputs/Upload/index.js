@@ -69,7 +69,7 @@ export const Upload = () => {
       <Box my={2}>
         <Typography variant="body1">{t('upload.subtitle')}</Typography>
       </Box>
-      <DarkWrapper justify='center'>
+      <DarkWrapper justify='center' alignItems='center'>
         <form className="form" onSubmit={onSubmit}>
           <Grid container>
             {uploadedFiles?.map(({ file, src, id }, index) => {
