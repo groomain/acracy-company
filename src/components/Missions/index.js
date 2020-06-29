@@ -44,16 +44,16 @@ export const Missions = () => {
   const [missionBrief] = toValidateMission;
 
   const missionAsMatchingProfile = {
-    externalId: missionBrief.externalId,
-    status: missionBrief.status,
-    brief: missionBrief.brief
+    externalId: missionBrief?.externalId,
+    status: missionBrief?.status,
+    brief: missionBrief?.brief
   }
 
   useEffect(() => {
     setBriefsList(briefs.concat(missionAsMatchingProfile))
   }, [])
 
-  const inProgressMissions = missions?.filter(x => (x.status === IN_PROGRESS && x.dateStart < today) || (x.status === FINISHED && x.dateEnd?.length < 1));
+  const inProgressMissions = missions?.filter(x => (x.status === IN_PROGRESS && x.dateStart < today && x.dateEnd.length < 1) || (x.status === FINISHED && x.dateEnd?.length < 1));
   const futureMissions = missions?.filter(x => x.status === IN_PROGRESS && x.dateStart > today);
   const finishedMissions = missions?.filter(x => x.status === FINISHED && x.dateEnd?.length > 0);
 

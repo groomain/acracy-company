@@ -79,16 +79,11 @@ export default makeStyles(theme => ({
   },
   icon: {
     width: 40,
-    position: 'relative',
-    top: 11
   },
   statusTitleBase: {
     textTransform: 'uppercase',
     fontSize: 14,
-    paddingTop: 11,
-    fontFamily: basierRegular
-  },
-  statusTitle: {
+    fontFamily: basierRegular,
     color: '#ecf805'
   },
   statusTitleRed: {
@@ -97,18 +92,20 @@ export default makeStyles(theme => ({
   buttonIcon: {
     width: 25,
     height: 25,
-    marginTop: 6,
+    position: 'absolute',
+    top: 10,
+    right: 10,
     '&:hover span svg g g': {
       fill: theme.palette.primary.main
     }
   },
   statusContainer: {
-    height: '12%',
-    padding: 5,
-    paddingLeft: 15
+    height: '20%',
+    padding: '15px 5px 0',
+    position: 'relative',
   },
   titleContainer: {
-    padding: '8% 38px 8% 30px'
+    padding: '15px 30px'
   },
   title: {
     fontSize: 22,
@@ -119,11 +116,6 @@ export default makeStyles(theme => ({
     paddingLeft: 30,
     paddingRight: 38
   },
-  menuIcon: {
-    position: 'absolute',
-    top: 6,
-    left: 10
-  },
   outsideContainer: {
     marginTop: 8
   },
@@ -131,7 +123,6 @@ export default makeStyles(theme => ({
     marginLeft: 10
   },
   finishedMission: {
-    paddingTop: 11,
     color: theme.palette.secondary.main
   }
 }));

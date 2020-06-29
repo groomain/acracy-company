@@ -38,7 +38,8 @@ import {
   WAITING_FOR_CUSTOMER_SELECTION,
   FINISHED,
   IN_PROGRESS,
-  WAITING_FOR_QUOTES
+  WAITING_FOR_QUOTES,
+  PAID
 } from '../constants';
 moment.locale('fr');
 
@@ -72,36 +73,32 @@ export const Mission = ({ mission, matching, today, ...props }) => {
       return <AValiderIcon className={classes.icon} />;
     } else if (status === WAITING_FOR_MATCHING || status === WAITING_FOR_CUSTOMER_SELECTION) {
       return <MatchingIcon className={classes.icon} />;
-    } else if (!mission?.invoices?.find(x => x.status === WAITING_FOR_PAYMENT)) {
-      if (status === IN_PROGRESS) {
-        return <EnCoursIcon className={classes.icon} />;
-      } else if (status === FINISHED) {
-        return <TravailIcon className={classes.icon} />;
-      }
     } else {
-      if (mission?.invoices?.find(x => x.paymentDate < today)) {
-        return <RetardIcon className={classes.icon} />;
-      } else {
-        if (getPath(mission?.invoices?.attachement).length > 0 || !mission?.invoices?.attachment) {
-          return <TravailIcon className={classes.icon} />;
+      if (status === IN_PROGRESS && mission?.dateStart > today) {
+        return <DemarreIcon className={classes.icon} />
+      }
+      if (!mission?.invoices?.find(x => x.status === WAITING_FOR_PAYMENT)) {
+        if (status === IN_PROGRESS) {
+          return <EnCoursIcon className={classes.icon} />;
         } else {
-          if (status === IN_PROGRESS) {
-            if (mission?.dateStart > today) {
-              return <DemarreIcon className={classes.icon} />
-            } else {
-              return <EnCoursIcon className={classes.icon} />;
-            }
-          } else if (status === FINISHED) {
-            if (mission?.dateEnd.length > 1) {
-              return <MissionHistoIcon className={classes.icon} />;
-            } else {
-              return <TravailIcon className={classes.icon} />;
-            }
+          if (mission?.dateEnd?.length < 1) {
+            return <TravailIcon className={classes.icon} />;
+          } else {
+            return <MissionHistoIcon className={classes.icon} />;
+          }
+        }
+      } else {
+        if (mission?.invoices?.find(x => x.paymentDate < today)) {
+          return <RetardIcon className={classes.icon} />
+        } else {
+          if (status === IN_PROGRESS && (getPath(mission?.invoices?.attachement).length > 0 || !mission?.invoices?.attachment)) {
+            return <EnCoursIcon className={classes.icon} />;
+          } else {
+            return <TravailIcon className={classes.icon} />;
           }
         }
       }
     }
-    return <EnCoursIcon className={classes.icon} />;
   }
 
   const [matchingValues, setMatchingValues] = useState();
@@ -164,21 +161,28 @@ export const Mission = ({ mission, matching, today, ...props }) => {
         }
       }
 
+      if (mission?.invoices?.find(x => x.status === WAITING_FOR_VALIDATION && (!x.attachment || getPath(x.attachment, "attachment").length === 0))) {
+        return {
+          status: 'Valider CRA',
+          buttonText: 'CRA à valider'
+        }
+      }
+
       // No invoice with "WAITING_FOR_PAYMENT" status
       if (!mission?.invoices?.find(x => x.status === WAITING_FOR_PAYMENT)) {
         if (mission?.status === FINISHED) {
           if (mission?.dateEnd?.length > 1) {
             return {
               status: `Mission finalisée le ${formatDate(mission?.dateEnd)} `,
+              color: 'secondary'
             }
-          } else {
+          }
+          else {
             return {
               status: 'Travail terminé'
             }
           }
-        }
-
-        if (mission?.status === IN_PROGRESS) {
+        } else if (mission?.status === IN_PROGRESS) {
           return {
             status: 'Mission en cours'
           }
@@ -192,16 +196,21 @@ export const Mission = ({ mission, matching, today, ...props }) => {
             buttonText: 'Payer facture'
           }
         }
-        if (mission?.invoices?.find(x => x.status === WAITING_FOR_VALIDATION && getPath(x.attachment, "attachment").length > 0)) {
+        if (mission?.invoices?.find(x => x.attachment && getPath(x.attachment, "attachment").length === 0)) {
           return {
             status: 'Facture à payer',
             buttonText: 'Payer facture'
           }
-        }
-        if (mission?.invoices?.find(x => x.status === WAITING_FOR_VALIDATION && (!x.attachment || getPath(x.attachment, "attachment").length === 0))) {
-          return {
-            status: 'Valider CRA',
-            buttonText: 'CRA à valider'
+        } else {
+          if (mission?.status === FINISHED) {
+            return {
+              status: 'Travail terminé',
+              color: 'blue'
+            }
+          } else {
+            return {
+              status: 'Mission en cours'
+            }
           }
         }
       }
@@ -229,13 +238,13 @@ export const Mission = ({ mission, matching, today, ...props }) => {
         setRedirectionPopupOpen(true);
         dispatch(setComingFromDashboard(true)); // Initialize the redirection from the administrative page -> true ? push('/reveal')
       } else {
-        dispatch(push(`/reveal/${mission?.externalId || matching?.externa}`));
+        dispatch(push(`/reveal/${mission?.externalId || matching?.externalId}`));
       }
     }
   }, [companiesDataFetched, companiesData, dispatch, loadingButton, mission, matching])
 
   const renderMissionButton = (status) => {
-    if (status === WAITING_FOR_CUSTOMER_SELECTION || status === WAITING_FOR_SIGNATURE || status?.invoices?.find(x => x.status === WAITING_FOR_PAYMENT) || status?.invoices?.find(x => x.status === WAITING_FOR_VALIDATION)) {
+    if (status === WAITING_FOR_CUSTOMER_SELECTION || status === WAITING_FOR_SIGNATURE || status?.invoices?.find(x => x.status === WAITING_FOR_PAYMENT && x.attachment) || status?.invoices?.find(x => x.status === WAITING_FOR_VALIDATION && x.attachment)) {
       return (
         <Grid container
           className={clsx(classes.gridRight, status?.invoices?.find(x => x.paymentDate < today) ? classes.rightRed : classes.primary)}
@@ -260,30 +269,37 @@ export const Mission = ({ mission, matching, today, ...props }) => {
     }
   }, [matching, mission, dispatch]);
 
+  const missionDone = mission?.status === FINISHED && mission?.invoices?.every(x => x.status === PAID)
   return (
     <Box mt={3} mb={6}>
       <Grid container direction={'column'}>
         {!quotesLoading ?
-          <Grid container direction={'row'} className={classes.container}>
-            <Grid container className={clsx(classes.gridLeft, { [classes.gridLeftFinished]: props.status === 6 })}
+          <Grid container direction={'row'} className={clsx(classes.container, missionDone ? classes.gridCenterFinished : null)}>
+            <Grid container className={clsx(classes.gridLeft, missionDone ? classes.gridLeftFinished : null)}
               direction={'column'}>
-              <Grid container item className={classes.statusContainer} direction={'row'}>
-                {matching ? getStatusIcon(matching) : getStatusIcon(mission)}
-                <Typography
-                  className={clsx(classes.statusTitleBase,
-                    mission?.status === FINISHED
-                      ? classes.finishedMission
-                      : missionStatus?.color === 'danger'
-                        ? classes.statusTitleRed
-                        : classes.statusTitle)}>
-                  {matchingValues?.status || missionStatus?.status}
-                </Typography>
-                <div style={{ flexGrow: 1 }} />
+              <Grid container item
+                className={classes.statusContainer}
+                alignItems='center'>
+                <Grid item xs={2}>
+                  {matching ? getStatusIcon(matching) : getStatusIcon(mission)}
+                </Grid>
+                <Grid item xs={8}>
+                  <Typography
+                    className={clsx(classes.statusTitleBase,
+                      mission?.status === FINISHED && mission?.dateEnd && missionStatus?.color === 'secondary'
+                        ? classes.finishedMission
+                        : missionStatus?.color === 'danger'
+                          ? classes.statusTitleRed
+                          : null)}>
+                    {matchingValues?.status || missionStatus?.status}
+                  </Typography>
+                </Grid>
                 <IconButton className={classes.buttonIcon} aria-label="display more actions"
                   onClick={() => setOpen(true)} color="secondary">
-                  <MenuIcon className={classes.menuIcon} />
+                  <MenuIcon />
                 </IconButton>
               </Grid>
+
               <Grid item className={classes.titleContainer}>
                 <Typography className={classes.title}>{shortenLongText(mission?.brief?.missionContext?.title || matching?.brief?.missionContext?.title || matching?.missionContext?.title, 42)}</Typography>
               </Grid>
@@ -297,7 +313,7 @@ export const Mission = ({ mission, matching, today, ...props }) => {
 
             <NavLink
               to={mission ? `/mission/${mission?.externalId}` : `/brief/${matching?.externalId}`}
-              className={clsx(classes.gridCenter, { [classes.gridCenterFinished]: props.status === 6 })}>
+              className={clsx(classes.gridCenter, missionDone ? classes.gridCenterFinished : null)}>
               {/* 1st column */}
               <Grid item xs={4}>
                 <Grid item className={classes.blocAvatar}>
