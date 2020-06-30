@@ -6,21 +6,19 @@ export default makeStyles(theme => ({
     minHeight: 800
   },
   briefTipRoot: {
-    backgroundColor: theme.palette.secondary.dark,
-    minHeight: 185,
-    minWidth: 139,
+    minHeight: 5,
+    minWidth: '100%',
     borderRadius: 15,
-    // padding: 20,
-    // padding: '15.3rem 0 5rem 0',
-    position: 'sticky',
-    top: '10rem',
   },
   icon: {
     padding: ' 2rem 0 0 2rem',
     margin: 0,
   },
   description: {
-    padding: '2rem 2rem'
+    padding: '2rem'
+  },
+  description2: {
+    padding: '1rem 0'
   },
   yellowText: {
     fontSize: 17,

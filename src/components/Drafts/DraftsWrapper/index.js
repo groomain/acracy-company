@@ -34,7 +34,7 @@ const Drafts = ({ drafts, loading, ...props }) => {
   };
 
   let draftsList = (
-    <DarkWrapper>
+    <DarkWrapper alignItems='center'>
       {!loading ? (
         <FirstDraft />
       ) : (

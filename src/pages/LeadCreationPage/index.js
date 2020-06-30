@@ -1,21 +1,23 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { useDispatch, useSelector } from "react-redux";
+import { NavLink } from "react-router-dom";
 import { useLocation } from 'react-router';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
-import Sidebar from '../../components/Layout/Sidebar';
-import Main from '../../components/Layout/Main';
-import LeadCreationForm from '../../components/LeadCreationForm';
 import { Grid, Typography } from '@material-ui/core';
-import phonecall from '../../assets/icons/phone-call.svg';
-import styles from './styles';
-import CustomSnackBar from "../../components/SnackBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import AppBar from "@material-ui/core/AppBar";
+import Sidebar from '../../components/Layout/Sidebar';
+import LeadCreationForm from '../../components/LeadCreationForm';
+import CustomSnackBar from "../../components/SnackBar";
+import Main from '../../components/Layout/Main';
+import Tip from '../../components/Tip';
+import DarkWrapper from '../../components/Layout/DarkWrapper';
 import CustomButton from "../../components/Button";
-import { useTranslation } from "react-i18next";
 import acracyLogo from "../../assets/icons/logo-acracy.svg";
-import { NavLink } from "react-router-dom";
+import phonecall from '../../assets/icons/phone-call.svg';
+import { useTranslation } from "react-i18next";
+import styles from './styles';
 import { leadSaveLaunched, getLeadDraftLaunched, putLeadDraftLaunched } from "./reducer";
 
 let leadSave;
@@ -37,13 +39,14 @@ const LeadCreationPage = () => {
     }
   }, [dispatch, location.search]);
 
-  const { leadSaveLoading, leadDraftData, leadDraftSearchData, deliverablesArray, dateFromCalendar, dailyRate } = useSelector(state => ({
+  const { leadSaveLoading, leadDraftData, leadDraftSearchData, deliverablesArray, dateFromCalendar, dailyRate, leadCreationStep } = useSelector(state => ({
     leadSaveLoading: state.getIn(['leadCreation', 'leadSaveLoading']),
     leadDraftSearchData: state.getIn(['leadCreation', 'leadDraftSearchData']),
     deliverablesArray: state.getIn(['leadCreation', 'deliverablesArray']),
     dateFromCalendar: state.getIn(['leadCreation', 'dateFromCalendar']),
     dailyRate: state.getIn(['leadCreation', 'dailyRate']),
-    leadDraftData: state.getIn(['leadCreation', 'leadDraftData'])
+    leadDraftData: state.getIn(['leadCreation', 'leadDraftData']),
+    leadCreationStep: state.getIn(['leadCreation', 'leadCreationStep'])
   }));
 
   useEffect(() => {
@@ -245,18 +248,33 @@ const LeadCreationPage = () => {
         />
       </Main>
       <Sidebar>
-        <Grid
-          container
-          direction='column'
-          className={classes.briefTipRoot}
-        >
-          <Grid item className={classes.icon}>
-            <img src={phonecall} alt="Appel téléphonique" />
-          </Grid>
-          <Typography variant='body1' className={classes.description}>Cliquez sur Cliquez sur «
-          <span className={classes.yellowText}> être rappelé.e. </span>»
-          en bas de page et nous finaliserons le brief ensemble.</Typography>
-
+        <Grid container style={{ position: 'sticky', top: '10rem' }}>
+          {(leadCreationStep == 1) ? (
+            <>
+              <Grid item className={classes.briefTipRoot}>
+                <Tip title='#01' subtitle='Mieux vaut trop' description={t('leadCreation.tip1')} />
+              </Grid>
+              <Grid item className={classes.briefTipRoot} style={{ marginTop: '2rem' }}>
+                <Tip title='#02' subtitle='Donnez envie' description={t('leadCreation.tip2')} Url='/dunno' linkTitle={t('leadCreation.discoverTips')} />
+              //TODO change URL
+              </Grid>
+            </>
+          ) : (
+              <Grid item direction='column' className={classes.briefTipRoot}>
+                <DarkWrapper
+                  direction='column'
+                  className={classes.briefTipRoot}
+                >
+                  <Grid item className={classes.icon}>
+                    <img src={phonecall} alt="Appel téléphonique" />
+                  </Grid>
+                  <Typography variant='body1' className={classes.description}>Cliquez sur Cliquez sur «
+                <span className={classes.yellowText}> être rappelé.e. </span>»
+                en bas de page et nous finaliserons le brief ensemble.
+              </Typography>
+                </DarkWrapper>
+              </Grid>
+            )}
         </Grid>
       </Sidebar>
     </Grid >

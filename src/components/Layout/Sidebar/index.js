@@ -8,10 +8,10 @@ const Sidebar = ({ children }) => {
   return (
     <Grid item xs={5} container className={classes.sidebarDiv}>
       <Grid item xs={2}></Grid>
-      <Grid item xs={7}>
+      <Grid item xs={6}>
         {children}
       </Grid>
-      <Grid item xs={3}></Grid>
+      <Grid item xs={4}></Grid>
     </Grid>
   );
 };

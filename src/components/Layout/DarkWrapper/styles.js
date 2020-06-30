@@ -7,7 +7,6 @@ export default makeStyles(theme => ({
     borderRadius: 15,
     padding: '15px',
     margin: '1rem 0',
-    alignItems: 'center',
     position: 'relative'
   }
 }));
