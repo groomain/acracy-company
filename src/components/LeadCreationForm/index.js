@@ -478,7 +478,7 @@ const LeadCreationForm = ({ sendValues, ...props }) => {
 
   return (
     <Grid item className={classes.formGridItem}>
-      <Stepper nonLinear={false} activeStep={activeStep} className={classes.stepper}>
+      <Stepper nonLinear={false} activeStep={activeStep} className={classes.stepper} connector={disabled}>
         {steps.map((label, index) => {
           return (
             <Step key={label} className={classes.step}>
