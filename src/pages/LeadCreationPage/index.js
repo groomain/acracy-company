@@ -166,7 +166,7 @@ const LeadCreationPage = () => {
         desireds: getDesireds || '',
       },
     };
-    // console.log('leadDraft :', redirect, leadDraft);
+    console.log('leadDraft :', redirect, leadDraft);
     if (leadId) {
       dispatch(putLeadDraftLaunched(leadDraft, redirect))
     } else {
@@ -256,7 +256,7 @@ const LeadCreationPage = () => {
               </Grid>
               <Grid item className={classes.briefTipRoot} style={{ marginTop: '2rem' }}>
                 <Tip title='#02' subtitle='Donnez envie' description={t('leadCreation.tip2')} Url='/dunno' linkTitle={t('leadCreation.discoverTips')} />
-              //TODO change URL
+                {/* TODO change URL */}
               </Grid>
             </>
           ) : (
