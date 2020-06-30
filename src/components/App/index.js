@@ -13,6 +13,7 @@ import ForgotPassword from '../../pages/ForgotPassword';
 import FirstLoginPage from '../../pages/FirstLogin';
 import MyAccount from "../../pages/MyAccount";
 import LeadCreationPage from "../../pages/LeadCreationPage";
+import MyProfilePage from "../../pages/MyProfile";
 import CustomAppBar from "../AppBar";
 import ProgressBar from "../ProgressBar";
 import ProfileSelection from "../../pages/ProfileSelection";
@@ -43,6 +44,7 @@ function App() {
       <PrivateRoute exact path="/home" fixed component={HomePage} />
       <PrivateRoute exact path="/account" fixed component={MyAccount} />
       <PrivateRoute exact path="/selection" fixed component={ProfileSelection} />
+      <PrivateRoute exact path="/myProfile" fixed component={MyProfilePage} />
     </Switch>
   );
 
