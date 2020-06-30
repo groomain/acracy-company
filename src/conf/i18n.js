@@ -211,7 +211,9 @@ i18n
             finishBrief: 'Finaliser le brief',
             tip1: "Donnez le plus d\'informations possible sur la mission et vos attentes, mais aussi sur le contexte du projet (équipe, objectifs, format du travail, deadlines).",
             tip2: "Nos freelances sont très demandés, et souvent très occupés. N'hésitez pas à mentionner les avantages de travailler sur votre projet pour les aider à se décider.",
-            discoverTips: "Découvrez nos conseils pour les briefs parfaits"
+            discoverTips: "Découvrez nos conseils pour les briefs parfaits",
+            // step 2
+            profileDetails: "Détails du profil recherché",
           },
           upload: {
             title: "Documents partagés",
