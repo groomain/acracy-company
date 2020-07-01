@@ -7,7 +7,7 @@ import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 
 import { getLeadsLaunched } from '../../../pages/HomePage/reducer';
-import { leads } from '../../../mocks/leads';
+import { leads } from '../../../mock/leads';
 
 import DarkWrapper from '../../Layout/DarkWrapper/';
 import FirstDraft from '../Draft/FirstDraft';

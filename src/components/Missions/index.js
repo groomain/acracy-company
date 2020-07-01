@@ -11,8 +11,8 @@ import CustomLoader from '../Loader';
 import sharedStyles from "../../utils/styles";
 
 import { formatWithLineBreak } from '../../utils/services/format';
-import { missions } from '../../mocks/missions';
-import { briefs } from '../../mocks/briefs';
+import { missions } from '../../mock/missions';
+import { briefs } from '../../mock/briefs';
 import { WAITING_FOR_SIGNATURE, FINISHED, IN_PROGRESS } from './constants';
 import { dateToTimestamp } from '../../utils/services/format';
 

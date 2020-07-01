@@ -1,11 +1,11 @@
 export const leads = [
   {
-    "externalId": "",
+    "externalId": "here",
     "status": "DRAFT",
     "search": {
-      "type": "",
-      "code": "",
-      "text": "fdqfs  fdsf"
+      "type": "jljkml",
+      "code": "jlj",
+      "text": "kmkm"
     },
     "desireds": [
       {
@@ -15,8 +15,8 @@ export const leads = [
       }
     ],
     "missionContext": {
-      "title": "",
-      "startDate": "25-03-2021",
+      "title": "This is a title",
+      "startDate": "2020-06-19T12:32:24.724Z",
       "format": "",
       "address": "",
       "weeklyRythm": "",
@@ -31,8 +31,16 @@ export const leads = [
       "estimatedAverageDailyRate": "",
       "profileNumber": ""
     },
-    "missionDetail": {},
-    "missionRequirement": {}
+    "missionDetail": {
+      "contextAndTasks": "",
+      "detailsOfDeliverables": "",
+      "sharedDocument": []
+    },
+    "missionRequirement": {
+      "contextAndTasks": "",
+      "detailsOfDeliverables": "",
+      "sharedDocument": []
+    }
   },
   {
     "externalId": "get_DRAFT_SearchDeliverable_2",
@@ -51,8 +59,8 @@ export const leads = [
     ],
     "missionContext": {
       "title": "If we transmit the protocol, we can get to the HTTP sensor through the online COM capacitor!",
-      "startDate": "2025-01-01",
-      "format": "INPLACE_ONLY",
+      "startDate": "",
+      "format": "",
       "address": "North Lydafort - 2382 O'Keefe Stravenue",
       "weeklyRythm": 5,
       "duration": {
@@ -67,22 +75,9 @@ export const leads = [
       "profileNumber": 2
     },
     "missionDetail": {
-      "contextAndTasks": "{{$$randomPhrase}}.<br><br>{{$$randomPhrase}}",
-      "detailsOfDeliverables": "{{$$randomPhrase}}.<br><br>{{$$randomPhrase}}<br>{{$$randomPhrase}}",
-      "sharedDocument": [
-        {
-          "url": "sd-s3-2",
-          "name": "zero_defect_clothing.ssdl"
-        },
-        {
-          "url": "sd-s3-45",
-          "name": "bulgarian_lev.dotm"
-        },
-        {
-          "url": "sd-s3-40",
-          "name": "key_united_arab_emirates.ifm"
-        }
-      ]
+      "contextAndTasks": "",
+      "detailsOfDeliverables": "",
+      "sharedDocument": []
     },
     "missionRequirement": {
       "expertises": [
@@ -188,7 +183,24 @@ export const leads = [
       "estimatedAverageDailyRate": 500.00,
       "profileNumber": 1
     },
-    "missionDetail": {},
+    "missionDetail": {
+      "contextAndTasks": "{{$$randomPhrase}}.<br><br>{{$$randomPhrase}}",
+      "detailsOfDeliverables": "{{$$randomPhrase}}.<br><br>{{$$randomPhrase}}<br>{{$$randomPhrase}}",
+      "sharedDocument": [
+        {
+          "url": "sd-s3-2",
+          "name": "zero_defect_clothing.ssdl"
+        },
+        {
+          "url": "sd-s3-45",
+          "name": "bulgarian_lev.dotm"
+        },
+        {
+          "url": "sd-s3-40",
+          "name": "key_united_arab_emirates.ifm"
+        }
+      ]
+    },
     "missionRequirement": {}
   },
   {
@@ -324,7 +336,7 @@ export const leads = [
     "desireds": [],
     "missionContext": {
       "title": "You can't parse the firewall without generating the back-end SDD program!",
-      "startDate": "2025-01-01",
+      "startDate": "",
       "format": "BOTH",
       "address": "North Jaquelineland - 138 Joel Manors",
       "weeklyRythm": 4,
@@ -339,7 +351,24 @@ export const leads = [
       "estimatedAverageDailyRate": 500.00,
       "profileNumber": 1
     },
-    "missionDetail": {},
+    "missionDetail": {
+      "contextAndTasks": "{{$$randomPhrase}}.<br><br>{{$$randomPhrase}}",
+      "detailsOfDeliverables": "{{$$randomPhrase}}.<br><br>{{$$randomPhrase}}<br>{{$$randomPhrase}}",
+      "sharedDocument": [
+        {
+          "url": "sd-s3-242",
+          "name": "modular_upgradable.f"
+        },
+        {
+          "url": "sd-s3-707",
+          "name": "orchestrate.emma"
+        },
+        {
+          "url": "sd-s3-46",
+          "name": "compatible_engineer_handmade_metal_chips.cab"
+        }
+      ]
+    },
     "missionRequirement": {}
   }
 ];

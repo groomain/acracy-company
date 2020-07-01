@@ -34,8 +34,8 @@ export const briefs = [
       }
     ],
     "missionContext": {
-      "title": "I'll calculate the neural FTP matrix, that should sensor the XML pixel!",
-      "startDate": "2025-01-01",
+      "title": "Perfect brief",
+      "startDate": "2020-08-10T12:32:24.724Z",
       "format": "WHATEVER",
       "address": "Selmerburgh - 008 Lesley Ferry",
       "weeklyRythm": 5,
@@ -124,7 +124,10 @@ export const briefs = [
       "logo": "http://lorempixel.com/640/480/business",
       "description": "leading-edge grow metrics"
     },
-    "acracyRecommandation": "{{$$randomPhrase}}.<br>{{$$randomPhrase}}.<br>{{$$randomPhrase}}"
+    "acracyRecommandation": "{{$$randomPhrase}}.<br>{{$$randomPhrase}}.<br>{{$$randomPhrase}}",
+    "briefSummary": {
+      "externalId": "fdskjl"
+    }
   },
   {
     "externalId": "get_WAITING_FOR_ACCEPTANCE",
@@ -162,7 +165,7 @@ export const briefs = [
     ],
     "missionContext": {
       "title": "If we quantify the bus, we can get to the SDD monitor through the auxiliary SQL bus!",
-      "startDate": "2025-01-01",
+      "startDate": "2020-06-19T12:32:24.724Z",
       "format": "REMOTE_ONLY",
       "address": "",
       "weeklyRythm": 5,
@@ -289,7 +292,7 @@ export const briefs = [
     ],
     "missionContext": {
       "title": "You can't copy the array without generating the haptic JBOD monitor!",
-      "startDate": "2025-01-01",
+      "startDate": "2020-06-29T12:32:24.724Z",
       "format": "INPLACE_ONLY",
       "address": "Kleintown - 442 Tremblay Fields",
       "weeklyRythm": 3,
@@ -416,7 +419,7 @@ export const briefs = [
     ],
     "missionContext": {
       "title": "If we quantify the array, we can get to the SDD bandwidth through the optical JBOD panel!",
-      "startDate": 1591628900,
+      "startDate": "2020-06-19T12:32:24.724Z",
       "format": "BOTH",
       "address": "New Rettaview - 12190 Dudley Keys",
       "weeklyRythm": 2,
@@ -509,7 +512,7 @@ export const briefs = [
   },
   {
     "externalId": "get_WAITING_FOR_QUOTES",
-    "status": "WAITING_FOR_QUOTES",
+    "status": "WAITING_FOR_ACCEPTANCE",
     "profile": {
       "code": "PR-849",
       "text": "Dynamic Factors Planner"
@@ -528,7 +531,7 @@ export const briefs = [
     ],
     "missionContext": {
       "title": "I'll parse the 1080p GB program, that should application the SSL monitor!",
-      "startDate": 1596899300,
+      "startDate": "2020-06-10T12:32:24.724Z",
       "format": "BOTH",
       "address": "Lake Watson - 33054 Cole Plaza",
       "weeklyRythm": 5,
