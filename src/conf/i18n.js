@@ -72,7 +72,8 @@ i18n
             label: "Key profile expertise",
             fieldTitleStarted: "Change my selection",
             fieldTitleNewSelection: "Start my selection",
-            minMaxInfo: "5 maximum, including 3 high priority"
+            minMaxInfo: "5 maximum, including 3 high priority",
+            button: "Send"
           },
           upload: {
             title: "Shared documents",
@@ -256,6 +257,12 @@ i18n
               freelanceInfosModal: 'Voir coordonnées freelance',
               incidentModalTitle: 'Déclarer un incident'
             }
+          },
+          header: {
+            login: 'Se connecter',
+            signUp: "S'inscrire",
+            newBrief: 'Nouveau brief',
+            contactUs: 'Nous contacter',
           }
         }
       }
