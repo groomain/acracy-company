@@ -214,6 +214,7 @@ i18n
             discoverTips: "Découvrez nos conseils pour les briefs parfaits",
             // step 2
             profileDetails: "Détails du profil recherché",
+            profileexpertises: " Expertises clés du profil*"
           },
           upload: {
             title: "Documents partagés",
