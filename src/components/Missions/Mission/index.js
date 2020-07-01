@@ -21,7 +21,8 @@ import { MissionHistoIcon } from "../../../assets/icons/MissionHistoIcon";
 import CustomLoader from '../../Loader';
 import CustomModal from '../../Modal';
 import CustomButton from '../../Button';
-import InvoiceManagementModal from '../../InvoiceManagementModal';
+import InvoiceManagementModal from '../../../pages/HomePage/Modals/InvoiceManagementModal';
+import ValidationModal from '../../../pages/HomePage/Modals/ValidationModal'
 import styles from './styles';
 
 import { getQuotesLaunched, getCompaniesLaunched, setComingFromDashboard } from '../../../pages/HomePage/reducer';
@@ -49,15 +50,23 @@ export const Mission = ({ mission, matching, today, ...props }) => {
 
   const [open, setOpen] = useState(false);
   const [infosOpen, setInfosOpen] = useState(false);
+  const [missionStatus, setMissionStatus] = useState();
+  const [matchingValues, setMatchingValues] = useState();
+  const [loadingButton, setLoadingButton] = useState(false);
   const [redirectionPopupOpen, setRedirectionPopupOpen] = useState(false);
+  const [validationModalOpen, setValidationModalOpen] = useState(false);
   const [invoicesModalOpen, setInvoicesModalOpen] = useState(false);
+  const [preselectedFile, setPreselectedFile] = useState();
 
   const weekly = mission?.brief?.missionContext?.weeklyRythm || matching?.missionContext?.weeklyRythm;
   const durationNb = mission?.brief?.missionContext?.duration?.nb || matching?.missionContext?.duration?.nb;
   const durationUnit = mission?.brief?.missionContext?.duration?.unit || matching?.missionContext?.duration?.unit;
   const startDate = mission?.brief?.missionContext?.startDate || matching?.missionContext?.startDate;
+  const sortedInvoices = mission?.invoices?.filter(x => x.status === WAITING_FOR_PAYMENT).sort((a, b) => new Date(Math.round(new Date(a.paymentDate).getTime())) - new Date(Math.round(new Date(b.paymentDate).getTime())));
+  const sortedCRA = mission?.invoices?.filter(x => x.status === WAITING_FOR_VALIDATION).sort((a, b) => new Date(Math.round(new Date(a.startDate).getTime())) - new Date(Math.round(new Date(b.startDate).getTime())));
 
-  const { quotes, quotesLoading, companiesData, companiesLoading, companiesDataFetched, updateMissionLoading, updateMissionSent } = useSelector(state => ({
+  const { quotes, quotesLoading, companiesData, companiesLoading, companiesDataFetched, updateMissionLoading, updateMissionSent, companyId } = useSelector(state => ({
+    companyId: state.getIn(['app', 'userDynamo', 'companyId']),
     quotes: state.getIn(['dashboard', 'quotes']),
     quotesLoading: state.getIn(['dashboard', 'quotesLoading']),
     companiesData: state.getIn(['dashboard', 'companiesData']),
@@ -101,7 +110,6 @@ export const Mission = ({ mission, matching, today, ...props }) => {
     }
   }
 
-  const [matchingValues, setMatchingValues] = useState();
   useEffect(() => {
     const getBriefStatus = (briefStatus) => {
       switch (briefStatus) {
@@ -126,7 +134,7 @@ export const Mission = ({ mission, matching, today, ...props }) => {
             avatar: '?',
             title: `Découvrir les profils`,
             subtext: `Nous vous proposons ${quotes?.length ?? 0} top freelance!`,
-            buttonText: 'Sélectionner profil'
+            buttonText: 'Valider et découvrir les profils'
           };
         case WAITING_FOR_SIGNATURE:
           return {
@@ -134,7 +142,6 @@ export const Mission = ({ mission, matching, today, ...props }) => {
             buttonText: 'Valider devis',
             avatar: quotes?.brief.serviceProviderProfile.linkedinAvatar,
             title: `${quotes?.brief.serviceProviderProfile.firstName} ${quotes?.brief.serviceProviderProfile.lastName} `,
-            subtext: quotes?.brief.serviceProviderProfile.profile.text
           };
         default:
           break;
@@ -144,7 +151,6 @@ export const Mission = ({ mission, matching, today, ...props }) => {
     setMatchingValues(result);
   }, [matching, startDate, quotes]);
 
-  const [missionStatus, setMissionStatus] = useState();
   useEffect(() => {
     const getMissionStatus = (missionInvoiceStatus, mission) => {
 
@@ -157,14 +163,13 @@ export const Mission = ({ mission, matching, today, ...props }) => {
 
         return {
           status: `Démarre dans ${days} jour${days > 2 ? 's' : ''} `,
-          color: 'primary'
         }
       }
 
       if (mission?.invoices?.find(x => x.status === WAITING_FOR_VALIDATION && (!x.attachment || getPath(x.attachment, "attachment").length === 0))) {
         return {
-          status: 'Valider CRA',
-          buttonText: 'CRA à valider'
+          status: 'Facture en attente de validation',
+          buttonText: "Contrôler le compte rendu d'activité"
         }
       }
 
@@ -204,8 +209,7 @@ export const Mission = ({ mission, matching, today, ...props }) => {
         } else {
           if (mission?.status === FINISHED) {
             return {
-              status: 'Travail terminé',
-              color: 'blue'
+              status: 'Travail terminé'
             }
           } else {
             return {
@@ -219,15 +223,20 @@ export const Mission = ({ mission, matching, today, ...props }) => {
     setMissionStatus(result);
   }, [mission, today]);
 
-  const [loadingButton, setLoadingButton] = useState(false);
   const handleClick = (status) => {
     if (status === WAITING_FOR_SIGNATURE) {
       setInfosOpen(true)
-    } else if (status?.invoices?.find(x => x.status === WAITING_FOR_PAYMENT) || status?.invoices?.find(x => x.status === WAITING_FOR_VALIDATION))
-      setInvoicesModalOpen(true);
-    else {
-      dispatch(getCompaniesLaunched())
-      setLoadingButton(true);
+    } else {
+      if (status?.invoices?.find(x => x.status === WAITING_FOR_VALIDATION)) {
+        setValidationModalOpen(true);
+        setPreselectedFile(sortedCRA[0]);
+      } else if (status?.invoices?.find(x => x.status === WAITING_FOR_PAYMENT)) {
+        setInvoicesModalOpen(true);
+        setPreselectedFile(sortedInvoices[0]);
+      } else {
+        setLoadingButton(true);
+      }
+      dispatch(getCompaniesLaunched(companyId));
     }
   }
 
@@ -311,9 +320,10 @@ export const Mission = ({ mission, matching, today, ...props }) => {
               {open && <LeftOverlay setOpen={setOpen} matching={matching} mission={mission} />}
             </Grid>
 
-            <NavLink
+            {/* <NavLink
               to={mission ? `/mission/${mission?.externalId}` : `/brief/${matching?.externalId}`}
-              className={clsx(classes.gridCenter, missionDone ? classes.gridCenterFinished : null)}>
+              className={clsx(classes.gridCenter, missionDone ? classes.gridCenterFinished : null)}> */}
+            <Grid className={clsx(classes.gridCenter, missionDone ? classes.gridCenterFinished : null)}>
               {/* 1st column */}
               <Grid item xs={4}>
                 <Grid item className={classes.blocAvatar}>
@@ -321,7 +331,7 @@ export const Mission = ({ mission, matching, today, ...props }) => {
                 </Grid>
                 <Grid item className={classes.blocTypoDownAvatar}>
                   <Typography variant={"h4"} className={classes.typo}>{mission?.serviceProviderProfile?.firstName || matchingValues?.title} {mission?.serviceProviderProfile?.lastName}</Typography>
-                  <Typography variant={"body1"} className={classes.typo}>{mission?.brief?.profile?.text || matchingValues?.subtext}</Typography>
+                  <Typography variant={"body1"} className={classes.typo}>{mission?.brief?.profile?.text}</Typography>
                 </Grid>
               </Grid>
 
@@ -352,7 +362,8 @@ export const Mission = ({ mission, matching, today, ...props }) => {
                   </Typography>
                 </Grid>
               </Grid>
-            </NavLink>
+            </Grid>
+            {/* </NavLink> */}
             {renderMissionButton(matching?.status || mission)}
           </Grid>
           :
@@ -392,8 +403,18 @@ export const Mission = ({ mission, matching, today, ...props }) => {
         <InvoiceManagementModal
           open={invoicesModalOpen}
           handleClose={() => setInvoicesModalOpen(false)}
-          files={mission?.invoices}
+          files={sortedInvoices}
           missionId={mission?.externalId}
+          preselectedFile={preselectedFile}
+        />
+      )}
+      {validationModalOpen && (
+        <ValidationModal
+          open={validationModalOpen}
+          handleClose={() => setValidationModalOpen(false)}
+          files={sortedCRA}
+          missionId={mission?.externalId}
+          preselectedFile={preselectedFile}
         />
       )}
     </Box>

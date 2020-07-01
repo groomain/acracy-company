@@ -13,9 +13,10 @@ import { CloseIcon } from "../../../../assets/icons/CloseIcon";
 import CustomModal from '../../../Modal';
 import CircleImage from '../../../CircleImage';
 import IncidentMessageForm from './IncidentMessageForm';
-import InvoiceManagementModal from '../../../InvoiceManagementModal';
+import InvoiceManagementModal from '../../../../pages/HomePage/Modals/InvoiceManagementModal';
 
 import { sendIncidentMessageLaunched } from '../../../../pages/HomePage/reducer';
+import { WAITING_FOR_VALIDATION } from '../../constants';
 
 export const LeftOverlay = ({ matching, mission, ...props }) => {
   const { t } = useTranslation();
@@ -68,11 +69,12 @@ export const LeftOverlay = ({ matching, mission, ...props }) => {
               <DownloadIcon />
               Télécharger devis
           </a>
-            <Grid item container direction={'row'} className={classes.row}
+            {/* This popup is ready but not required at this point */}
+            {/* <Grid item container direction={'row'} className={classes.row}
               onClick={() => setFreelanceInfosOpen(true)}>
               <AdresseIcon />
               Voir coordonnées freelance
-          </Grid>
+          </Grid> */}
             {mission?.dateStart < today ? (
               <>
                 <Grid item container direction={'row'} className={classes.row}
@@ -80,7 +82,7 @@ export const LeftOverlay = ({ matching, mission, ...props }) => {
                   <IncidentIcon />
                   Déclarer un incident
               </Grid>
-                {mission?.invoices?.length > 0 && (
+                {mission?.invoices?.length > 0 && mission?.invoices?.find(x => x.status !== WAITING_FOR_VALIDATION) && (
                   <Grid item container direction={'row'} className={classes.row}
                     onClick={() => setInvoicesOpen(true)}>
                     <DownloadIcon />
@@ -142,7 +144,7 @@ export const LeftOverlay = ({ matching, mission, ...props }) => {
         <InvoiceManagementModal
           open={invoicesOpen}
           handleClose={() => setInvoicesOpen(false)}
-          files={mission?.invoices}
+          files={mission?.invoices?.filter(x => x.status !== WAITING_FOR_VALIDATION)}
         />
       )}
     </>
