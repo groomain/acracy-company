@@ -16,6 +16,7 @@ import IncidentMessageForm from './IncidentMessageForm';
 import InvoiceManagementModal from '../../../../pages/HomePage/Modals/InvoiceManagementModal';
 
 import { sendIncidentMessageLaunched } from '../../../../pages/HomePage/reducer';
+import { downloadFileLaunched } from '../../../../components/DownloadModal/reducer';
 import { WAITING_FOR_VALIDATION, FINISHED } from '../../constants';
 
 export const LeftOverlay = ({ matching, mission, ...props }) => {
@@ -48,23 +49,25 @@ export const LeftOverlay = ({ matching, mission, ...props }) => {
     dispatch(sendIncidentMessageLaunched(message));
   }
 
+  const handleDownload = (id) => {
+    dispatch(downloadFileLaunched({ attachmentId: id }));
+  };
+
   const renderMenuLinks = () => {
     const today = new Date(Date.now()).toISOString();
 
     return (
       <>
-        <a href={matching?.briefSummary}
-          rel="noopener noreferrer"
-          target='_blank'
+        <a
+          onClick={() => handleDownload(matching?.briefSummary?.externalId || mission?.brief?.briefSummary?.externalId)}
           className={classes.row}>
           <DownloadIcon />
              Télécharger brief
         </a>
         {mission && (
           <>
-            <a href={mission?.brief?.signedQuotes?.link}
-              rel="noopener noreferrer"
-              target='_blank'
+            <a
+              onClick={() => handleDownload(mission?.signedQuote?.externalId)}
               className={classes.row}>
               <DownloadIcon />
               Télécharger devis
