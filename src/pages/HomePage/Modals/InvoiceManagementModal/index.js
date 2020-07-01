@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { NavLink } from "react-router-dom";
 import { Formik } from 'formik';
@@ -6,23 +6,24 @@ import * as Yup from 'yup';
 
 import { Box, Dialog, Typography, IconButton, Grid } from '@material-ui/core/';
 import CloseIcon from '@material-ui/icons/Close';
-import styles from './styles';
-import CustomSelect from "../Inputs/CustomSelect";
-import CustomButton from "../Button";
-import CustomTextField from '../Inputs/CustomTextField';
-import CustomCheckBox from '../CheckBox';
+import styles from '../styles';
+import CustomSelect from "../../../../components/Inputs/CustomSelect";
+import CustomButton from "../../../../components/Button";
+import CustomTextField from '../../../../components/Inputs/CustomTextField';
+import CustomCheckBox from '../../../../components/CheckBox';
 
-import { updateMissionLaunched } from '../../pages/HomePage/reducer';
-import { getPath } from '../../utils/services/validationChecks';
-import { PAID, WAITING_FOR_PAYMENT, WAITING_FOR_VALIDATION } from '../Missions/constants';
+import { updateMissionLaunched } from '../../reducer';
+import { getPath } from '../../../../utils/services/validationChecks';
+import { formatDate } from '../../../../utils/services/format';
+import { PAID, WAITING_FOR_PAYMENT, WAITING_FOR_VALIDATION } from '../../../../components/Missions/constants';
 
-export const InvoiceManagementModal = ({ open, handleClose, files, missionId, ...props }) => {
+export const InvoiceManagementModal = ({ open, handleClose, files, missionId, preselectedFile, ...props }) => {
   const dispatch = useDispatch();
-  const invoicesNames = files.map(name => name.missionTitle);
+  const invoicesNames = files?.map(file => `${file.numero} du ${formatDate(file.paymentDate)}`);
   const classes = styles();
 
   const initialValues = {
-    selectedFile: '',
+    selectedFile: `${preselectedFile?.numero} du ${formatDate(preselectedFile?.paymentDate)}` ?? '',
     orderFormNumber: '',
     workDone: false
   }
@@ -71,14 +72,34 @@ export const InvoiceManagementModal = ({ open, handleClose, files, missionId, ..
 const InvoicesDownloadForm = ({ values, errors, touched, handleBlur, handleChange, handleSubmit, files, options }) => {
   const classes = styles();
 
-  const { updateMissionLoading, updateMissionSent } = useSelector(state => ({
+  const { updateMissionLoading, updateMissionSent, companiesData } = useSelector(state => ({
     updateMissionLoading: state.getIn(['dashboard', 'updateMissionLoading']),
-    updateMissionSent: state.getIn(['dashboard', 'updateMissionSent'])
+    updateMissionSent: state.getIn(['dashboard', 'updateMissionSent']),
+    companiesData: state.getIn(['dashboard', 'companiesData'])
   }));
 
   const { selectedFile, orderFormNumber, workDone } = values;
-  const invoiceFile = files.filter(x => x.missionTitle === selectedFile);
+  const invoiceFile = files?.filter(x => `${x.numero} du ${formatDate(x.paymentDate)}` === selectedFile);
   const [extractedFile] = invoiceFile;
+
+  const [disabled, setDisabled] = useState(true);
+
+  useEffect(() => {
+    if (companiesData?.administrativeProfile?.purchaseOrder || extractedFile?.latestInvoice) {
+      if (companiesData?.administrativeProfile?.purchaseOrder && !extractedFile?.latestInvoice) {
+        if (orderFormNumber.trim().length < 1) {
+          setDisabled(false)
+        }
+      } else if (!companiesData?.administrativeProfile?.purchaseOrder && extractedFile?.latestInvoice) {
+        if (!workDone) {
+          setDisabled(false);
+        }
+      }
+      setDisabled(false)
+    } else if (!companiesData?.administrativeProfile?.purchaseOrder && !extractedFile?.latestInvoice) {
+      setDisabled(false)
+    }
+  }, [companiesData, extractedFile]);
 
   const renderInvoicesContent = () => {
     if (extractedFile?.status === WAITING_FOR_PAYMENT) {
@@ -93,41 +114,6 @@ const InvoicesDownloadForm = ({ values, errors, touched, handleBlur, handleChang
           </>
         )
       }
-    } else if (extractedFile?.status === WAITING_FOR_VALIDATION) {
-      return (
-        <>
-          <Typography>{extractedFile?.comment}</Typography>
-          <Typography>{extractedFile?.workedDays} jours travaillés</Typography>
-          <Typography>{extractedFile?.startDate}</Typography>
-          <Typography>{extractedFile?.endDate}</Typography>
-          <Box my={3}>
-            <form onSubmit={handleSubmit}>
-              <CustomTextField
-                label="Numéro de Bon de Commande"
-                placeholder="Indiquez le BDC"
-                name="orderFormNumber"
-                onChange={handleChange}
-              />
-              <Grid container alignItems='center'>
-                <Typography>Mission terminée ?</Typography>
-                <CustomCheckBox
-                  name="workDone"
-                  onChange={handleChange}
-                />
-              </Grid>
-              <Grid>
-                <CustomButton title="Valider"
-                  theme={orderFormNumber.trim().length < 1 && !workDone ? 'disabledFilled' : 'filledButton'}
-                  type="submit"
-                  loading={updateMissionLoading}
-                  disabled={orderFormNumber.trim().length < 1 && !workDone}
-                />
-              </Grid>
-              <Typography>{updateMissionSent ? 'La mission a bien été mise à jour !' : null}</Typography>
-            </form>
-          </Box>
-        </>
-      )
     }
   }
 
@@ -140,14 +126,14 @@ const InvoicesDownloadForm = ({ values, errors, touched, handleBlur, handleChang
         value={selectedFile}
       />
       {renderInvoicesContent()}
-      {extractedFile?.status === PAID || extractedFile?.status === WAITING_FOR_PAYMENT ? (
+      {extractedFile?.status === PAID || (extractedFile?.status === WAITING_FOR_PAYMENT && (extractedFile?.attachment && getPath(extractedFile?.attachment, 'attachment').length === 0)) ? (
         <Grid item container directtion={"row"} alignItems='center'>
           <CustomButton
             title={"Télécharger"}
             theme={"filledButton"}
             onClick={() => window.open(extractedFile?.attachment?.link)}
           />
-          <NavLink to={"/"} className={classes.navLink}>Télécharger toutes les factures</NavLink>
+          {/* <NavLink to={"/"} className={classes.navLink}>Télécharger toutes les factures</NavLink> */}
         </Grid>
       ) : null}
     </>
