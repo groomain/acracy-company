@@ -4,7 +4,7 @@ export default makeStyles(theme => ({
   root: {
     width: '100%',
     maxWidth: 490,
-    backgroundColor: "#2b362c",
+    backgroundColor: "#353f36",
   },
   title: {
     marginLeft: 10
@@ -39,5 +39,11 @@ export default makeStyles(theme => ({
   },
   textDone: {
     color: `${theme.palette.primary.main}`
+  },
+  downloadIcon: {
+    '&:hover': {
+      border: '1px solid transparent',
+      cursor: 'pointer'
+    },
   }
 }));

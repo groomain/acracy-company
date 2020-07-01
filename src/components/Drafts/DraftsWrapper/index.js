@@ -52,7 +52,7 @@ const Drafts = ({ ...props }) => {
   };
 
   let draftsList = (
-    <DarkWrapper isBleed>
+    <DarkWrapper isBleed alignItems='center'>
       {!leadsLoading ? (
         <FirstDraft />
       ) : (

@@ -1,0 +1,159 @@
+{
+  "externalId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  "status": "IN_PROGRESS",
+  "briefId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  "brief": {
+    "profile": {
+      "code": "PR-{{$randomInt}}",
+      "text": "{{$randomJobTitle}}"
+    },
+    "deliverables": [
+      {
+        "code": "DE-{{$randomInt}}",
+        "text": "{{$randomWords}}"
+      }
+    ],
+    "missionContext": {
+      "title": "string",
+      "startDate": "2020-06-26T13:08:29.156Z",
+      "format": "WHATEVER",
+      "address": "string",
+      "weeklyRythm": 0,
+      "duration": {
+        "nb": 0,
+        "unit": "DAY"
+      },
+      "budget": {
+        "value": 0,
+        "type": "DAILY_RATE"
+      },
+      "estimatedAverageDailyRate": 0,
+      "profilNumber": 0
+    },
+    "missionDetail": {
+      "contextAndTasks": "string",
+      "detailsOfDeliverables": "string",
+      "sharedDocuments": [
+        {
+          "externalId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+          "name": "string"
+        },
+        {
+          "externalId": "{{$randomUUID}}",
+          "name": "{{$randomFileName}}"
+        },
+        {
+          "externalId": "{{$randomUUID}}",
+          "name": "{{$randomFileName}}"
+        }
+      ]
+    },
+    "missionRequirements": {
+      "expertises": [
+        {
+          "expertise": {
+            "code": "rec{{$randomInt}}",
+            "text": "{{$randomWords}}"
+          },
+          "priority": true
+        }
+      ],
+      "sensitivity": {
+        "sensitivity": {
+          "code": "string",
+          "text": "string"
+        },
+        "essential": true
+      },
+      "languages": [
+        {
+          "language": "FLUENT_ENGLISH",
+          "essential": true
+        }
+      ],
+      "seniority": "JUNIOR"
+    },
+    "customer": {
+      "name": "{{$randomCompanyName}}",
+      "logo": "string",
+      "description": "string"
+    },
+    "acracyRecommandation": "string"
+  },
+  "serviceProviderProfile": {
+    "email": "{{$randomEmail}}",
+    "firstName": "{{$randomFirstName}}",
+    "lastName": "{{$randomLastName}}",
+    "profile": {
+      "code": "PR-{{$randomInt}}",
+      "text": "{{$randomJobTitle}}"
+    },
+    "phoneNumber": {
+      "code": 33,
+      "number": "0601020304"
+    },
+    "linkedinLink": "string",
+    "linkedinAvatar": "string",
+    "portfolioLink": "string",
+    "portfolioUpload": [
+      {
+        "externalId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+        "name": "string"
+      }
+    ],
+    "seniority": "JUNIOR",
+    "languages": [
+      "FLUENT_ENGLISH"
+    ],
+    "expertises": [
+      {
+        "expertise": {
+          "code": "rec{{$randomInt}}",
+          "text": "{{$randomWords}}"
+        },
+        "priority": true
+      }
+    ],
+    "sensitivity": [
+      {
+        "sensitivity": {
+          "code": "string",
+          "text": "string"
+        },
+        "essential": true
+      }
+    ],
+    "acracyBlurb": "string"
+  },
+  "signedQuote": {
+    "externalId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+    "link": "string",
+    "name": "string"
+  },
+  "secondaryMessage": "string",
+  "dateStart": "2020-06-26T13:08:29.157Z",
+  "dateEnd": "2020-06-26T13:08:29.157Z",
+  "invoices": [
+    {
+      "externalId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      "status": "WAITING_FOR_VALIDATION",
+      "briefId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      "missionId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      "numero": "string",
+      "missionTitle": "string",
+      "companyName": "{{$randomCompanyName}}",
+      "amount": 0,
+      "sentDate": "2020-06-26",
+      "paymentDate": "2020-06-26",
+      "attachment": {
+        "externalId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+        "link": "string",
+        "name": "string"
+      },
+      "startDate": "2020-06-26T13:08:29.157Z",
+      "endDate": "2020-06-26T13:08:29.157Z",
+      "workedDays": 0,
+      "comment": "string"
+    }
+  ]
+}

@@ -26,7 +26,8 @@ const LeadCreationForm = ({ sendValues, ...props }) => {
   const { values, errors, touched, handleBlur, handleChange } = props;
   const { frequency, workspace, duration, durationType, missionTitle, budgetType, profile, profilesNumber } = values;
 
-  const [activeStep, setActiveStep] = useState(0);
+  let leadCreationStep = 0; // the dashboard page
+  const [activeStep, setActiveStep] = useState(leadCreationStep)
   const [searchedCategory, setSearchedCategory] = useState({});
   const [deliverables, setDeliverables] = useState([]);
   const [disabled, setDisabled] = useState(false); // to be used with step 2
@@ -39,9 +40,8 @@ const LeadCreationForm = ({ sendValues, ...props }) => {
     dateFromCalendar: state.getIn(['leadCreation', 'dateFromCalendar']),
     leadDraftSearchData: state.getIn(['leadCreation', 'leadDraftSearchData']),
     deliverablesArray: state.getIn(['leadCreation', 'deliverablesArray']),
-    leadCreationStep: state.getIn(['leadCreation', 'leadCreationStep'])
+    // leadCreationStep: state.getIn(['leadCreation', 'leadCreationStep'])
   }));
-
   useEffect(() => {
     if (leadDraftSearchData?.search !== null) {
       setDisableCallMeBtn(false)
@@ -53,14 +53,14 @@ const LeadCreationForm = ({ sendValues, ...props }) => {
   const getSteps = () => {
     return [t('leadCreation.synthesis'), t('leadCreation.details')];
   };
-  function getStepContent(step) {
+  const getStepContent = step => {
     switch (step) {
       case 0:
         return setLeadSynthesis();
       case 1:
         return setLeadDetails();
       default:
-        return 'Unknown step';
+        return setLeadSynthesis(); // step 0 is diplayed by default
     }
   }
   // const handleBack = () => {
@@ -452,9 +452,10 @@ const LeadCreationForm = ({ sendValues, ...props }) => {
 
   const setLeadDetails = () => {
     return (
-      <>
-        <h1>This is step 2: brief detaiiiils</h1>
-      </>
+      <Box className={classes.stepContent}>
+        <Typography variant='h2'>{t('leadCreation.profileDetails')}</Typography>
+        <Typography variant='h1'>{leadDraftSearchData?.search?.TEXT}</Typography>
+      </Box >
     )
   }
 
@@ -477,7 +478,7 @@ const LeadCreationForm = ({ sendValues, ...props }) => {
 
   return (
     <Grid item className={classes.formGridItem}>
-      <Stepper nonLinear={false} activeStep={activeStep} className={classes.stepper}>
+      <Stepper nonLinear={false} activeStep={activeStep} className={classes.stepper} connector={disabled}>
         {steps.map((label, index) => {
           return (
             <Step key={label} className={classes.step}>
