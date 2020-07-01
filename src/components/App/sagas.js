@@ -97,6 +97,7 @@ function* doSignIn(action) {
             } catch (error) {
               console.log(error);
               yield put(loginFailure(translateSignInError(error.code)));
+              yield put(openSnackBar({ message: translateSignInError(error.code), error: true }));
             }
           }
           // Create the related employee
@@ -121,6 +122,7 @@ function* doSignIn(action) {
             } catch (error) {
               console.log(error);
               yield put(loginFailure(translateSignInError(error.code)));
+              yield put(openSnackBar({ message: translateSignInError(error.code), error: true }));
             }
           }
           // Start the lead creation if the 2 previous steps are ok & search content is present
@@ -147,9 +149,11 @@ function* doSignIn(action) {
               }
             }
             yield put(loginSuccess(errorLeadMessage));
+            yield put(openSnackBar({ message: errorLeadMessage, error: false }));
             yield put(getCurrentSessionLaunched({ fromPath: from || '/home' })); // Redirection with or without lead creation error message
           } else {
             yield put(loginFailure(translateSignInError("")));
+            yield put(openSnackBar({ message: translateSignInError(""), error: true }));
           }
         }
       }
@@ -232,9 +236,11 @@ function* doResendCode(action) {
   try {
     yield Auth.resendSignUp(email);
     yield put(resendCodeSuccess(translateResendCodeSuccess()));
+    yield put(openSnackBar({ message: translateResendCodeSuccess(), error: false }));
   } catch (error) {
     console.log(error);
     yield put(resendCodeFailure(translateResendCodeError(error.code)));
+    yield put(openSnackBar({ message: translateResendCodeError(error.code), error: true }));
   }
 }
 
@@ -295,7 +301,6 @@ function* setSnackBar() {
   yield delay(200);
   yield put(clearSnackBar());
 }
-
 
 export default function* rootSaga() {
   yield all([
