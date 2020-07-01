@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { Grid } from '@material-ui/core';
+import { Box } from '@material-ui/core';
 import clsx from "clsx";
 
 import styles from './styles';
 import CustomCheckbox from '../../CheckBox';
 
-const Tag = ({ title, isPrimaryColor, isWithInput, placeholder, isWithCheckbox, tagType, ...props }) => {
+const Tag = ({ title, isPrimaryColor, isWithInput, placeholder, isWithCheckbox, tagType, checked, ...props }) => {
   const classes = styles();
 
   const [value, setValue] = useState();
@@ -41,6 +41,7 @@ const Tag = ({ title, isPrimaryColor, isWithInput, placeholder, isWithCheckbox, 
           <CustomCheckbox
             size="small"
             shape="rounded"
+            checked={checked}
             className={classes.checkbox}
           />
         </span>
@@ -49,11 +50,10 @@ const Tag = ({ title, isPrimaryColor, isWithInput, placeholder, isWithCheckbox, 
   };
 
   return (
-    <Grid container {...props}>
-      <div className={clsx(classes.tag, isPrimaryColor && classes.primaryColor, isWithInput && classes.withInput)} >
-        {content}
-      </div>
-    </Grid>
+
+    <Box m={0.5} className={clsx(classes.tag, isPrimaryColor && classes.primaryColor, isWithInput && classes.withInput)} >
+      {content}
+    </Box>
   )
 };
 

@@ -4,6 +4,12 @@ export default makeStyles(theme => ({
   root: {
     width: 705
   },
+  rootModeMission: {
+    backgroundColor: '#151d15',
+    borderRadius: 15,
+    padding: 30,
+    width: 643
+  },
   upCard: {
     height: 240
   },
@@ -15,6 +21,10 @@ export default makeStyles(theme => ({
     width: 214,
     height: 214,
     backgroundColor: theme.palette.secondary.black
+  },
+  avatarModeMission: {
+    width: 162,
+    height: 162,
   },
   authorContainer: {
     marginTop: 8,
@@ -36,6 +46,7 @@ export default makeStyles(theme => ({
     width: 121
   },
   profession: {
+    fontFamily: 'basierRegular',
     color: '#ecf805',
     marginTop: 7
   },
@@ -51,17 +62,29 @@ export default makeStyles(theme => ({
     padding: 20,
     alignItems: 'center'
   },
+  blackCardModeMission: {
+    height: 287,
+    minWidth: 337,
+  },
   name: {
+    fontFamily: "BodoniBook",
     fontSize: 68,
     lineHeight: 1
+  },
+  nameModeMission: {
+    fontSize: 34,
   },
   textContainer: {
     marginTop: 15,
     marginBottom: 15
   },
   text: {
+    fontFamily: "BodoniBook",
     fontSize: 32,
     textAlign: 'justify'
+  },
+  textModeMission: {
+    fontSize: 17,
   },
   selected: {
     color: theme.palette.primary.main
@@ -70,9 +93,24 @@ export default makeStyles(theme => ({
     width: '100%',
     marginTop: 80
   },
-  customButton: {
+  customButtonContainerModeMission: {
+    marginTop: 20
+  },
+  customButtonLeft: {
     marginRight: 'auto',
     width: 215
+  },
+  customButtonRight: {
+    marginLeft: 'auto',
+    width: 215
+  },
+  customButton: {
+    margin: 'auto',
+    width: 215
+  },
+  customButtonModeMission: {
+    marginLeft: 5,
+    width: 150
   },
   star: {
     padding: 10,
@@ -90,7 +128,22 @@ export default makeStyles(theme => ({
     width: 357,
     maxHeight: 87
   },
+  profilElementItemModeMission: {
+    width: 235,
+    maxHeight: 87
+  },
   profilElementContainer: {
-    maxHeight: 287
+    maxHeight: 287,
+  },
+  profilElementContainerModeMission: {
+    maxHeight: 287,
+    maxWidth: 235
+  },
+  firstBlock: {
+    width: "100%",
+    margin :'auto'
+  },
+  firstBlockModeMission: {
+    width: "90%",
   }
 }));

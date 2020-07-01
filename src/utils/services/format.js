@@ -30,3 +30,13 @@ export const formatLongText = text => {
   const cutout = text.slice(4, -4);
   return text.replace(cutout, '(...)');
 }
+
+/**
+ * Formats a phone prefix containing letters and digits to keep the number only
+ * @param {string} prefix - A string formatted as "Fr : +33"
+ * @returns {string} - New string containing everything after the '+' character to only send the number part
+ */
+export const getPhonePrefixCode = prefix => {
+  const regex = /^(.*?)[+]/;
+  return prefix.replace(regex, '');
+};

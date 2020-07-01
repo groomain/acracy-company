@@ -22,7 +22,9 @@ export default makeStyles(theme => ({
     marginBottom: 40
   },
   navLink: {
+    cursor: 'pointer',
     position: 'absolute',
+    textDecoration: 'underline',
     right: 0,
     fontFamily: "Basier Medium",
     color: theme.palette.secondary.main,
