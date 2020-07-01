@@ -14,6 +14,7 @@ import { formatWithLineBreak } from '../../utils/services/format';
 import { missions } from '../../mocks/missions';
 import { briefs } from '../../mocks/briefs';
 import { WAITING_FOR_SIGNATURE, FINISHED, IN_PROGRESS } from './constants';
+import { dateToTimestamp } from '../../utils/services/format';
 
 export const Missions = () => {
   const { t } = useTranslation();
@@ -21,11 +22,14 @@ export const Missions = () => {
   const sharedClasses = sharedStyles();
 
   const today = new Date(Date.now()).toISOString();
-
   // Delete when connecting to the DB
   const [briefsList, setBriefsList] = useState();
   const missionsLoading = false;
   const briefsLoading = false;
+
+  const { updateMissionSent } = useSelector(state => ({
+    updateMissionSent: state.getIn(['dashboard', 'updateMissionSent'])
+  }));
 
   // const { missionsLoading, briefsLoading, briefsData, missions } = useSelector(state => ({
   //   missions: state.getIn(['dashboard', 'missionsData']),
@@ -40,17 +44,26 @@ export const Missions = () => {
   //   dispatch(getBriefsLaunched());
   // }, [dispatch]);
 
-  const toValidateMission = missions?.filter(x => x.status === WAITING_FOR_SIGNATURE);
-  const [missionBrief] = toValidateMission;
+  // Refetch the missions after updating missions (= validate CRA)
+  useEffect(() => {
+    if (updateMissionSent) {
+      dispatch(getMissionsLaunched());
+    }
+  }, [updateMissionSent])
 
-  const missionAsMatchingProfile = {
-    externalId: missionBrief?.externalId,
-    status: missionBrief?.status,
-    brief: missionBrief?.brief
-  }
+  const toValidateMission = missions?.filter(x => x.status === WAITING_FOR_SIGNATURE);
+
+  const missionAsMatchingProfile = toValidateMission.map(x => {
+    return {
+      externalId: x?.externalId,
+      status: x?.status,
+      brief: x?.brief,
+      serviceProviderProfile: x?.serviceProviderProfile
+    }
+  })
 
   useEffect(() => {
-    setBriefsList(briefs.concat(missionAsMatchingProfile))
+    setBriefsList(toValidateMission.length > 0 && briefs.concat(missionAsMatchingProfile))
   }, [])
 
   const inProgressMissions = missions?.filter(x => (x.status === IN_PROGRESS && x.dateStart < today && x.dateEnd.length < 1) || (x.status === FINISHED && x.dateEnd?.length < 1));
@@ -70,7 +83,7 @@ export const Missions = () => {
     let missionsList = (
       <>
         {displayInProgressMissionsTitle()}
-        <DarkWrapper isBleed justify='center'>
+        <DarkWrapper isBleed justify='center' alignItems='center'>
           <Grid className={sharedClasses.disabledText}>
             {missionsLoading || briefsLoading
               ? <CustomLoader size={70} />
@@ -80,6 +93,7 @@ export const Missions = () => {
         </DarkWrapper>
       </>
     );
+
     if (inProgressMissions?.length > 0 || futureMissions?.length > 0 || finishedMissions?.length > 0 || briefsList?.length > 0) {
       missionsList = (
         <Grid item>
@@ -90,7 +104,7 @@ export const Missions = () => {
                   {t('dashboard.missions.profileMatching')}
                 </Typography>
                 {briefsList
-                  // .sort((a, b) => a.missionContext.startDate - b.missionContext.startDate)
+                  .sort((a, b) => dateToTimestamp(a.missionContext?.startDate || a?.brief?.missionContext?.startDate) - dateToTimestamp(b.missionContext?.startDate || b.brief?.missionContext?.startDate))
                   .map((matching, key) => <Mission key={key} matching={matching} today={today} />)
                 }
               </>
@@ -102,7 +116,7 @@ export const Missions = () => {
                   {t('dashboard.missions.future')}
                 </Typography>
                 {futureMissions
-                  .sort((a, b) => a.dateStart - b.dateStart)
+                  .sort((a, b) => dateToTimestamp(a.dateStart) - dateToTimestamp(b.dateStart))
                   .map((mission, key) => <Mission key={key} mission={mission} today={today} />)}
               </>
             )}
@@ -110,7 +124,7 @@ export const Missions = () => {
               <>
                 {displayInProgressMissionsTitle()}
                 {inProgressMissions
-                  .sort((a, b) => a.dateStart - b.dateStart)
+                  .sort((a, b) => dateToTimestamp(a.dateStart) - dateToTimestamp(b.dateStart))
                   .map((mission, key) => <Mission key={key} mission={mission} today={today} />)}
               </>
             )}
@@ -120,7 +134,7 @@ export const Missions = () => {
                   {t('dashboard.missions.finished')}
                 </Typography>
                 {finishedMissions
-                  .sort((a, b) => a.dateStart - b.dateStart)
+                  .sort((a, b) => dateToTimestamp(a.dateStart) - (b.dateStart))
                   .map((mission, key) => <Mission key={key} mission={mission} today={today} />)}
               </>
             )}

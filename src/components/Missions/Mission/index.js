@@ -25,7 +25,7 @@ import InvoiceManagementModal from '../../../pages/HomePage/Modals/InvoiceManage
 import ValidationModal from '../../../pages/HomePage/Modals/ValidationModal'
 import styles from './styles';
 
-import { getQuotesLaunched, getCompaniesLaunched, setComingFromDashboard } from '../../../pages/HomePage/reducer';
+import { getQuotesLaunched, getCompaniesLaunched, setComingFromDashboard, getMissionsLaunched } from '../../../pages/HomePage/reducer';
 import severinePicture from '../../../assets/pics/severine/severine-small.png';
 import { shortenLongText, addTwoWorkingDays, formatDate } from '../../../utils/services/format';
 import { getPath } from '../../../utils/services/validationChecks';
@@ -48,23 +48,6 @@ export const Mission = ({ mission, matching, today, ...props }) => {
   const dispatch = useDispatch();
   const classes = styles();
 
-  const [open, setOpen] = useState(false);
-  const [infosOpen, setInfosOpen] = useState(false);
-  const [missionStatus, setMissionStatus] = useState();
-  const [matchingValues, setMatchingValues] = useState();
-  const [loadingButton, setLoadingButton] = useState(false);
-  const [redirectionPopupOpen, setRedirectionPopupOpen] = useState(false);
-  const [validationModalOpen, setValidationModalOpen] = useState(false);
-  const [invoicesModalOpen, setInvoicesModalOpen] = useState(false);
-  const [preselectedFile, setPreselectedFile] = useState();
-
-  const weekly = mission?.brief?.missionContext?.weeklyRythm || matching?.missionContext?.weeklyRythm;
-  const durationNb = mission?.brief?.missionContext?.duration?.nb || matching?.missionContext?.duration?.nb;
-  const durationUnit = mission?.brief?.missionContext?.duration?.unit || matching?.missionContext?.duration?.unit;
-  const startDate = mission?.brief?.missionContext?.startDate || matching?.missionContext?.startDate;
-  const sortedInvoices = mission?.invoices?.filter(x => x.status === WAITING_FOR_PAYMENT).sort((a, b) => new Date(Math.round(new Date(a.paymentDate).getTime())) - new Date(Math.round(new Date(b.paymentDate).getTime())));
-  const sortedCRA = mission?.invoices?.filter(x => x.status === WAITING_FOR_VALIDATION).sort((a, b) => new Date(Math.round(new Date(a.startDate).getTime())) - new Date(Math.round(new Date(b.startDate).getTime())));
-
   const { quotes, quotesLoading, companiesData, companiesLoading, companiesDataFetched, updateMissionLoading, updateMissionSent, companyId } = useSelector(state => ({
     companyId: state.getIn(['app', 'userDynamo', 'companyId']),
     quotes: state.getIn(['dashboard', 'quotes']),
@@ -75,6 +58,29 @@ export const Mission = ({ mission, matching, today, ...props }) => {
     updateMissionLoading: state.getIn(['dashboard', 'updateMissionLoading']),
     updateMissionSent: state.getIn(['dashboard', 'updateMissionSent'])
   }));
+
+  const [open, setOpen] = useState(false);
+  const [infosOpen, setInfosOpen] = useState(false);
+  const [missionStatus, setMissionStatus] = useState();
+  const [matchingValues, setMatchingValues] = useState();
+  const [loadingButton, setLoadingButton] = useState(false);
+  const [redirectionPopupOpen, setRedirectionPopupOpen] = useState(false);
+  const [validationModalOpen, setValidationModalOpen] = useState(updateMissionSent);
+  const [invoicesModalOpen, setInvoicesModalOpen] = useState(false);
+  const [preselectedFile, setPreselectedFile] = useState();
+
+  const weekly = mission?.brief?.missionContext?.weeklyRythm || matching?.missionContext?.weeklyRythm;
+  const durationNb = mission?.brief?.missionContext?.duration?.nb || matching?.missionContext?.duration?.nb;
+  const durationUnit = mission?.brief?.missionContext?.duration?.unit || matching?.missionContext?.duration?.unit;
+  const startDate = mission?.brief?.missionContext?.startDate || matching?.missionContext?.startDate;
+  const sortedInvoices = mission?.invoices?.filter(x => x.status === WAITING_FOR_PAYMENT).sort((a, b) => new Date(Math.round(new Date(a.paymentDate).getTime())) - new Date(Math.round(new Date(b.paymentDate).getTime())));
+  const sortedCRA = mission?.invoices?.filter(x => x.status === WAITING_FOR_VALIDATION).sort((a, b) => new Date(Math.round(new Date(a.startDate).getTime())) - new Date(Math.round(new Date(b.startDate).getTime())));
+
+  useEffect(() => {
+    if (updateMissionSent) {
+      setValidationModalOpen(false);
+    }
+  }, [updateMissionSent, dispatch]);
 
   const getStatusIcon = (mission) => {
     const status = mission?.status;
@@ -125,8 +131,7 @@ export const Mission = ({ mission, matching, today, ...props }) => {
             status: 'Matching en cours',
             avatar: match,
             title: 'Matching en cours',
-            subtext: `Garanti en 48h.\n Estimé au ${addTwoWorkingDays(startDate, 2)
-              }`
+            subtext: `Garanti en 48h.\n Estimé au ${addTwoWorkingDays(startDate, 2)}`
           };
         case WAITING_FOR_CUSTOMER_SELECTION:
           return {
@@ -330,8 +335,12 @@ export const Mission = ({ mission, matching, today, ...props }) => {
                   <CircleImage theme={'avatarLarge'} src={mission?.serviceProviderProfile?.linkedinAvatar || matchingValues?.avatar} icon={matchingValues?.avatar} />
                 </Grid>
                 <Grid item className={classes.blocTypoDownAvatar}>
-                  <Typography variant={"h4"} className={classes.typo}>{mission?.serviceProviderProfile?.firstName || matchingValues?.title} {mission?.serviceProviderProfile?.lastName}</Typography>
+                  <Typography variant={"h4"} className={classes.typo}>
+                    {mission?.serviceProviderProfile?.firstName || matching?.serviceProviderProfile?.firstName || matchingValues?.title}
+                    {mission?.serviceProviderProfile?.lastName || matching?.serviceProviderProfile?.lastName}
+                  </Typography>
                   <Typography variant={"body1"} className={classes.typo}>{mission?.brief?.profile?.text}</Typography>
+                  <Typography variant={"body1"} className={classes.typo}>{matchingValues?.subtext}</Typography>
                 </Grid>
               </Grid>
 

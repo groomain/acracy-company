@@ -4,19 +4,21 @@ import { NavLink } from "react-router-dom";
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 
-import { Box, Dialog, Typography, IconButton, Grid } from '@material-ui/core/';
+import { Dialog, Typography, IconButton, Grid } from '@material-ui/core/';
 import CloseIcon from '@material-ui/icons/Close';
 import styles from '../styles';
 import CustomSelect from "../../../../components/Inputs/CustomSelect";
 import CustomButton from "../../../../components/Button";
-import CustomTextField from '../../../../components/Inputs/CustomTextField';
-import CustomCheckBox from '../../../../components/CheckBox';
 
 import { updateMissionLaunched } from '../../reducer';
+import { downloadFileLaunched } from '../../../../components/DownloadModal/reducer';
 import { getPath } from '../../../../utils/services/validationChecks';
 import { formatDate } from '../../../../utils/services/format';
-import { PAID, WAITING_FOR_PAYMENT, WAITING_FOR_VALIDATION } from '../../../../components/Missions/constants';
+import { PAID, WAITING_FOR_PAYMENT } from '../../../../components/Missions/constants';
 
+/**
+ * Duplicated from a component that used Formik, can be simplified
+ */
 export const InvoiceManagementModal = ({ open, handleClose, files, missionId, preselectedFile, ...props }) => {
   const dispatch = useDispatch();
   const invoicesNames = files?.map(file => `${file.numero} du ${formatDate(file.paymentDate)}`);
@@ -71,35 +73,11 @@ export const InvoiceManagementModal = ({ open, handleClose, files, missionId, pr
 
 const InvoicesDownloadForm = ({ values, errors, touched, handleBlur, handleChange, handleSubmit, files, options }) => {
   const classes = styles();
+  const dispatch = useDispatch();
 
-  const { updateMissionLoading, updateMissionSent, companiesData } = useSelector(state => ({
-    updateMissionLoading: state.getIn(['dashboard', 'updateMissionLoading']),
-    updateMissionSent: state.getIn(['dashboard', 'updateMissionSent']),
-    companiesData: state.getIn(['dashboard', 'companiesData'])
-  }));
-
-  const { selectedFile, orderFormNumber, workDone } = values;
+  const { selectedFile } = values;
   const invoiceFile = files?.filter(x => `${x.numero} du ${formatDate(x.paymentDate)}` === selectedFile);
   const [extractedFile] = invoiceFile;
-
-  const [disabled, setDisabled] = useState(true);
-
-  useEffect(() => {
-    if (companiesData?.administrativeProfile?.purchaseOrder || extractedFile?.latestInvoice) {
-      if (companiesData?.administrativeProfile?.purchaseOrder && !extractedFile?.latestInvoice) {
-        if (orderFormNumber.trim().length < 1) {
-          setDisabled(false)
-        }
-      } else if (!companiesData?.administrativeProfile?.purchaseOrder && extractedFile?.latestInvoice) {
-        if (!workDone) {
-          setDisabled(false);
-        }
-      }
-      setDisabled(false)
-    } else if (!companiesData?.administrativeProfile?.purchaseOrder && !extractedFile?.latestInvoice) {
-      setDisabled(false)
-    }
-  }, [companiesData, extractedFile]);
 
   const renderInvoicesContent = () => {
     if (extractedFile?.status === WAITING_FOR_PAYMENT) {
@@ -108,14 +86,19 @@ const InvoicesDownloadForm = ({ values, errors, touched, handleBlur, handleChang
       } else {
         return (
           <>
-            <Typography>{extractedFile?.paymentDate}</Typography>
-            <Typography>{extractedFile?.amount}€ TTC</Typography>
-            <Typography>{extractedFile?.numero}</Typography>
+            <Typography>Numéro : {extractedFile?.numero}</Typography>
+            <Typography>Date : {formatDate(extractedFile?.sentDate)}</Typography>
+            <Typography>Echéance : {formatDate(extractedFile?.paymentDate)}</Typography>
+            <Typography>Montant : {extractedFile?.amount}€</Typography>
           </>
         )
       }
     }
   }
+
+  const handleInvoiceDownload = (id) => {
+    dispatch(downloadFileLaunched({ attachmentId: id }));
+  };
 
   return (
     <>
@@ -131,7 +114,7 @@ const InvoicesDownloadForm = ({ values, errors, touched, handleBlur, handleChang
           <CustomButton
             title={"Télécharger"}
             theme={"filledButton"}
-            onClick={() => window.open(extractedFile?.attachment?.link)}
+            onClick={() => handleInvoiceDownload(extractedFile?.attachment?.externalId)}
           />
           {/* <NavLink to={"/"} className={classes.navLink}>Télécharger toutes les factures</NavLink> */}
         </Grid>

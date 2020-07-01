@@ -50,8 +50,8 @@ export const getPhonePrefixCode = prefix => {
  * @returns {string} - The new string, completed with '...' if it has been shortened
  */
 export const shortenLongText = (text, length) => {
-  const andSoOn = text.length >= length ? '...' : '';
-  return `${text.substring(0, length)} ${andSoOn}`;
+  const andSoOn = text?.length >= length ? '...' : '';
+  return `${text?.substring(0, length)} ${andSoOn}`;
 }
 
 /**
@@ -76,3 +76,7 @@ export const addTwoWorkingDays = (date, nbOfDaysToAdd) => {
 export const formatDate = (date) => {
   return moment(date).format("DD/MM/YYYY");
 }
+
+export const dateToTimestamp = (date) => {
+  return Math.round(new Date(date).getTime());
+};

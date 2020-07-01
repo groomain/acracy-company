@@ -162,18 +162,20 @@ function* doSendIncidenMessage(action) {
   }
 }
 
-function* doUpdateMissionLaunched(action) {
+function* doUpdateMission(action) {
   const { id, orderFormNumber, workDone } = action.payload;
 
   try {
-    const apiUrl = `/missions/${id}/actions`;
+    const apiUrl = `/invoices/${id}/actions`;
     const params = {
       headers: {
         'x-api-key': config.apiKey
       },
       body: {
-        type: workDone ?? "FINISH",
-        payload: orderFormNumber || null
+        type: 'VALID',
+        payload: {
+          purchaseOrderNumber: orderFormNumber
+        }
       }
     };
     yield API.post(config.apiGateway.NAME, apiUrl, params);
@@ -193,6 +195,6 @@ export default function* dashboardSagas() {
     takeLatest('Leads/getQuotesLaunched', doGetQuotes),
     takeLatest('Leads/getCompaniesLaunched', doGetCompanies),
     takeLatest('Leads/sendIncidentMessageLaunched', doSendIncidenMessage),
-    takeLatest('Leads/updateMissionLaunched', doUpdateMissionLaunched)
+    takeLatest('Leads/updateMissionLaunched', doUpdateMission)
   ])
 }

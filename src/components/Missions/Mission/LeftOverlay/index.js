@@ -16,7 +16,7 @@ import IncidentMessageForm from './IncidentMessageForm';
 import InvoiceManagementModal from '../../../../pages/HomePage/Modals/InvoiceManagementModal';
 
 import { sendIncidentMessageLaunched } from '../../../../pages/HomePage/reducer';
-import { WAITING_FOR_VALIDATION } from '../../constants';
+import { WAITING_FOR_VALIDATION, FINISHED } from '../../constants';
 
 export const LeftOverlay = ({ matching, mission, ...props }) => {
   const { t } = useTranslation();
@@ -69,12 +69,13 @@ export const LeftOverlay = ({ matching, mission, ...props }) => {
               <DownloadIcon />
               Télécharger devis
           </a>
-            {/* This popup is ready but not required at this point */}
-            {/* <Grid item container direction={'row'} className={classes.row}
-              onClick={() => setFreelanceInfosOpen(true)}>
-              <AdresseIcon />
+            {mission.status !== FINISHED && (
+              <Grid item container direction={'row'} className={classes.row}
+                onClick={() => setFreelanceInfosOpen(true)}>
+                <AdresseIcon />
               Voir coordonnées freelance
-          </Grid> */}
+              </Grid>
+            )}
             {mission?.dateStart < today ? (
               <>
                 <Grid item container direction={'row'} className={classes.row}

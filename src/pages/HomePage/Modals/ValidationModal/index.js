@@ -106,9 +106,12 @@ const InvoicesDownloadForm = ({ values, errors, touched, handleBlur, handleChang
         optionsValues={options}
         value={selectedFile}
       />
+
       <Typography>{extractedFile?.workedDays} jours travaillés</Typography>
       <Typography>Du {formatDate(extractedFile?.startDate)} au {formatDate(extractedFile?.endDate)}</Typography>
       {extractedFile?.comment && <Typography>"{extractedFile?.comment}"</Typography>}
+      <Typography>TJM : {extractedFile?.averageDailyRate} €</Typography>
+
       <Box my={3}>
         <form onSubmit={handleSubmit}>
           {companiesData?.administrativeProfile?.purchaseOrder && (
@@ -137,7 +140,6 @@ const InvoicesDownloadForm = ({ values, errors, touched, handleBlur, handleChang
               disabled={disabled}
             />
           </Grid>
-          <Typography>{updateMissionSent ? 'La mission a bien été mise à jour !' : null}</Typography>
         </form>
       </Box>
     </>
