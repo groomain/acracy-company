@@ -7,6 +7,7 @@ import { CustomTextField } from '../Inputs/CustomTextField';
 import CustomTextArea from '../Inputs/CustomTextArea';
 import CustomSelect from "../Inputs/CustomSelect";
 import Calendar from "../Inputs/Calendar";
+import TagsList from "../Tags/TagsList";
 import Tag from '../Tags/Tag';
 import backToTop from '../../utils/backToTop';
 import CustomModal from '../Modal';
@@ -16,6 +17,7 @@ import { setLeadDraftSearchData, setDeliverablesArray, setDailyRate, changeLeadS
 import { leadSave } from '../../pages/LeadCreationPage/index';
 import clsx from 'clsx';
 import styles from './styles';
+import CheckableTag from '../Tags/CheckableTag';
 
 
 const LeadCreationForm = ({ sendValues, ...props }) => {
@@ -36,11 +38,13 @@ const LeadCreationForm = ({ sendValues, ...props }) => {
   const [openCallMeModal, setOpenCallMeModal] = useState(false);
   const [disableCallMeBtn, setDisableCallMeBtn] = useState(true);
 
-  const { leadDraftSearchData, deliverablesArray } = useSelector(state => ({
+  const { leadDraftSearchData, deliverablesArray, expertises } = useSelector(state => ({
     dateFromCalendar: state.getIn(['leadCreation', 'dateFromCalendar']),
     leadDraftSearchData: state.getIn(['leadCreation', 'leadDraftSearchData']),
     deliverablesArray: state.getIn(['leadCreation', 'deliverablesArray']),
-    // leadCreationStep: state.getIn(['leadCreation', 'leadCreationStep'])
+    // leadCreationStep: state.getIn(['leadCreation', 'leadCreationStep']),
+    expertises: state.getIn(['leadCreation', 'expertises']),
+
   }));
   useEffect(() => {
     if (leadDraftSearchData?.search !== null) {
@@ -450,11 +454,54 @@ const LeadCreationForm = ({ sendValues, ...props }) => {
     )
   }
 
+  const expertise = [
+    { 'code': 'kjfsijg', 'text': 'Facebook' },
+    { 'code': 'kjfsijg', 'text': 'Instagram' },
+    { 'code': 'kjfsijg', 'text': 'Twitter' },
+    { 'code': 'kjfsijg', 'text': 'Snapchat' },
+    { 'code': 'kjfsijg', 'text': 'Créativité' },
+    { 'code': 'kjfsijg', 'text': 'Influence' },
+    { 'code': 'kjfsijg', 'text': 'Radarly' },
+    { 'code': 'kjfsijg', 'text': 'hootsuite' },
+    { 'code': 'kjfsijg', 'text': 'sprout' },
+    { 'code': 'kjfsijg', 'text': 'sprinklr' },
+    { 'code': 'kjfsijg', 'text': 'tweetdeck' },
+    { 'code': 'kjfsijg', 'text': 'linkedin' },
+    { 'code': 'kjfsijg', 'text': 'tik tok' },
+    { 'code': 'kjfsijg', 'text': 'snapchat' },
+    { 'code': 'kjfsijg', 'text': 'activation' },
+    { 'code': 'kjfsijg', 'text': 'brand content' },
+    { 'code': 'kjfsijg', 'text': 'présentation orale' },
+    { 'code': 'kjfsijg', 'text': 'présentation ecrite' },
+    { 'code': 'kjfsijg', 'text': 'synthesio' },
+    { 'code': 'kjfsijg', 'text': 'youtube' },
+    { 'code': 'kjfsijg', 'text': 'buffer' },
+    { 'code': 'kjfsijg', 'text': 'twitch' },
+    { 'code': '', 'text': 'autres' }
+
+  ]
+
+
   const setLeadDetails = () => {
     return (
       <Box className={classes.stepContent}>
         <Typography variant='h2'>{t('leadCreation.profileDetails')}</Typography>
         <Typography variant='h1'>{leadDraftSearchData?.search?.TEXT}</Typography>
+
+        <Grid container>
+          <Grid item xs={12} className={classes.fieldRows}>
+            <TagsList tags={expertise} panelTitle={t('leadCreation.profileExpertises')} />
+            {/* <Grid item container direction='row'>
+              {chosenExpertises?.map((deliverable, i) =>
+                <Tag title={deliverable} key={i} />
+              )}
+            </Grid> */}
+            {expertise?.map((tag, key) =>
+              <Tag key={key} title={tag.text} isPrimaryColor tagType="Prioritaire" isWithCheckbox />
+            )}
+            <TagsList tags={expertise} withCheckbox></TagsList>
+          </Grid>
+        </Grid>
       </Box >
     )
   }
