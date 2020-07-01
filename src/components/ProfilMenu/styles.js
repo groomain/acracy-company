@@ -15,9 +15,12 @@ export default makeStyles(theme => ({
         paddingLeft: 25,
         paddingRight: 25,
         fontSize: 14,
+        fontWeight: 'bold',
+        fontFamily: 'Basier Regular',
         color: '#fff',
         textDecoration: 'none',
         '&:hover': {
+            cursor: 'pointer',
             color: `${theme.palette.primary.main}`,
         }
     },
