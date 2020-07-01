@@ -62,7 +62,8 @@ const Draft = ({ draft }) => {
         if (missionContextLength !== 0) {
           return status = {
             title: GET_CALLED,
-            progress: 40
+            progress: 40,
+            status: 'lead'
           }
         } else {
           return status = {
@@ -92,7 +93,7 @@ const Draft = ({ draft }) => {
 
   const setLeadStep = () => {
     if (getStatusResult?.status === 'lead' || !draft?.missionContext.title) {
-      dispatch(setLeadCreationStep(null))
+      dispatch(setLeadCreationStep(0))
     } else {
       dispatch(setLeadCreationStep(1))
     }
