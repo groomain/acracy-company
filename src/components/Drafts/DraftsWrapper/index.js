@@ -7,7 +7,7 @@ import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 
 import { getLeadsLaunched } from '../../../pages/HomePage/reducer';
-import { leads } from '../../../mock/leads';
+// import { leads } from '../../../mock/leads';
 
 import DarkWrapper from '../../Layout/DarkWrapper/';
 import FirstDraft from '../Draft/FirstDraft';
@@ -21,17 +21,17 @@ const Drafts = ({ ...props }) => {
   const dispatch = useDispatch();
 
   // delete when connecting to the DB
-  const [leadsData] = useState(leads);
-  const leadsLoading = false;
+  // const [leadsData] = useState(leads);
+  // const leadsLoading = false;
 
-  // const { leadsData, leadsLoading } = useSelector(state => ({
-  //   leadsData: state.getIn(['dashboard', 'leadsData']),
-  //   leadsLoading: state.getIn(['dashboard', 'leadsLoading']),
-  // }));
+  const { leadsData, leadsLoading } = useSelector(state => ({
+    leadsData: state.getIn(['dashboard', 'leadsData']),
+    leadsLoading: state.getIn(['dashboard', 'leadsLoading']),
+  }));
 
-  // useEffect(() => {
-  //   dispatch(getLeadsLaunched());
-  // }, [dispatch])
+  useEffect(() => {
+    dispatch(getLeadsLaunched());
+  }, [dispatch])
 
   const responsive = {
     desktop: {

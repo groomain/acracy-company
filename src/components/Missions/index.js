@@ -11,8 +11,8 @@ import CustomLoader from '../Loader';
 import sharedStyles from "../../utils/styles";
 
 import { formatWithLineBreak } from '../../utils/services/format';
-import { missions } from '../../mock/missions';
-import { briefs } from '../../mock/briefs';
+// import { missions } from '../../mock/missions';
+// import { briefs } from '../../mock/briefs';
 import { WAITING_FOR_SIGNATURE, FINISHED, IN_PROGRESS } from './constants';
 import { dateToTimestamp } from '../../utils/services/format';
 
@@ -22,27 +22,28 @@ export const Missions = () => {
   const sharedClasses = sharedStyles();
 
   const today = new Date(Date.now()).toISOString();
-  // Delete when connecting to the DB
   const [briefsList, setBriefsList] = useState();
-  const missionsLoading = false;
-  const briefsLoading = false;
+  console.log('Missions -> briefsList', briefsList)
+  // Delete when connecting to the DB
+  // const missionsLoading = false;
+  // const briefsLoading = false;
 
   const { updateMissionSent } = useSelector(state => ({
     updateMissionSent: state.getIn(['dashboard', 'updateMissionSent'])
   }));
 
-  // const { missionsLoading, briefsLoading, briefsData, missions } = useSelector(state => ({
-  //   missions: state.getIn(['dashboard', 'missionsData']),
-  //   missionsLoading: state.getIn(['dashboard', 'missionsLoading']),
-  //   // "profile matching" section
-  //   briefsData: state.getIn(['dashboard', 'briefsData']),
-  //   briefsLoading: state.getIn(['dashboard', 'briefsLoading'])
-  // }));
+  const { missionsLoading, briefsLoading, briefsData, missions } = useSelector(state => ({
+    missions: state.getIn(['dashboard', 'missionsData']),
+    missionsLoading: state.getIn(['dashboard', 'missionsLoading']),
+    // "profile matching" section
+    briefsData: state.getIn(['dashboard', 'briefsData']),
+    briefsLoading: state.getIn(['dashboard', 'briefsLoading'])
+  }));
 
-  // useEffect(() => {
-  //   dispatch(getMissionsLaunched());
-  //   dispatch(getBriefsLaunched());
-  // }, [dispatch]);
+  useEffect(() => {
+    dispatch(getMissionsLaunched());
+    dispatch(getBriefsLaunched());
+  }, [dispatch]);
 
   // Refetch the missions after updating missions (= validate CRA)
   useEffect(() => {
@@ -53,7 +54,7 @@ export const Missions = () => {
 
   const toValidateMission = missions?.filter(x => x.status === WAITING_FOR_SIGNATURE);
 
-  const missionAsMatchingProfile = toValidateMission.map(x => {
+  const missionAsMatchingProfile = toValidateMission?.map(x => {
     return {
       externalId: x?.externalId,
       status: x?.status,
@@ -63,10 +64,10 @@ export const Missions = () => {
   })
 
   useEffect(() => {
-    setBriefsList(toValidateMission.length > 0 && briefs.concat(missionAsMatchingProfile))
+    setBriefsList(briefsData?.concat(toValidateMission?.length > 0 && missionAsMatchingProfile))
   }, [])
 
-  const inProgressMissions = missions?.filter(x => (x.status === IN_PROGRESS && x.dateStart < today && x.dateEnd.length < 1) || (x.status === FINISHED && x.dateEnd?.length < 1));
+  const inProgressMissions = missions?.filter(x => (x?.status === IN_PROGRESS && x?.dateStart < today && x?.dateEnd?.length < 1) || (x.status === FINISHED && x.dateEnd?.length < 1));
   const futureMissions = missions?.filter(x => x.status === IN_PROGRESS && x.dateStart > today);
   const finishedMissions = missions?.filter(x => x.status === FINISHED && x.dateEnd?.length > 0);
 
