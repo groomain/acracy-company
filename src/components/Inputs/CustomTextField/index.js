@@ -6,7 +6,7 @@ import styles from '../styles';
 // import eyeOpened from '../../../assets/icons/eye-opened.svg';
 // import eyeClosed from '../../../assets/icons/eye-closed.svg';
 
-export const CustomTextField = ({ label, placeholder, type, onUpdateFieldValue, error, helperText, ...props }) => {
+export const CustomTextField = ({ label, placeholder, type, onUpdateFieldValue, error, helperText, className, ...props }) => {
   const classes = styles();
 
   const handleChange = (event) => {
@@ -14,7 +14,7 @@ export const CustomTextField = ({ label, placeholder, type, onUpdateFieldValue, 
   };
 
   return (
-    <Box style={{ height: '140px' }}>
+    <Box style={{ height: '140px' }} className={className}>
       <Typography variant='h4'>{label}</Typography >
       <FilledInput
         type={type}
