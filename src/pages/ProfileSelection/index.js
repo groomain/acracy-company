@@ -211,7 +211,7 @@ const ProfileSelection = (props) => {
               })}
               <Link to="lastContainer" smooth={true}>
                 <ListItem className={classes.listItem}>
-                  <ListItemAvatar>
+                  <ListItemAvatar>vasi ergarder
                     <Avatar className={classes.borderAvatar}>
                       {elementPosition.y < margin - elementHeight ?
                         <img src={groupe52copy} alt="groupe52copy" />

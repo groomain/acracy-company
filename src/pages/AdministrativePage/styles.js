@@ -8,10 +8,13 @@ export default makeStyles(theme => ({
         backgroundColor: theme.palette.secondary.dark
     },
     card: {
-        width: '80%',
         backgroundColor: theme.palette.secondary.dark,
         borderRadius: '15px',
-        padding: 20
+        padding: 20,
+    },
+    element: {
+        width: '80%',
+        paddingTop: 100,
     },
     cardTitle: {
         padding: 20,
@@ -32,5 +35,19 @@ export default makeStyles(theme => ({
     },
     saveButton: {
         width: 191
+    },
+    select: {
+        width: '50%'
+    },
+    city: {
+        marginTop: 15,
+        marginBottom: 15,
+        width: '68%',
+        marginLeft: '4%'
+    },
+    zipCode: {
+        marginTop: 15,
+        marginBottom: 15,
+        width: '28%',
     }
 }));

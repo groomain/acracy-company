@@ -56,9 +56,6 @@ export default makeStyles(theme => ({
     marginTop: "auto",
     marginBottom: 'auto'
   },
-  logo: {
-    outlineStyle: 'none'
-  },
   navLink: {
     textTransform: 'none',
     fontSize: 14,
