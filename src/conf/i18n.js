@@ -139,7 +139,10 @@ i18n
             newBrief: 'Nouveau brief',
             firstBriefTitle: 'Créez votre premier \nbrief',
             firstBriefButton: "C'est parti !",
-            newBriefTitle: "Votre nouveau brief vous attend !"
+            newBriefTitle: "Votre nouveau brief vous attend !",
+            startBrief: "Démarrer brief",
+            finalizeBrief: "Brief à finaliser",
+            getCalled: "En attente de rappel"
           },
           signup: {
             conditions1: "J'ai lu et j'accepte les ",
@@ -240,13 +243,26 @@ i18n
             backButton: 'Retour',
             validate: 'Valider'
           },
+          dashboard: {
+            welcome: "Bonjour, ",
+            subtitle: "Merci d’avoir rejoint acracy ! Ceci est votre tableau de bord. Vous y trouverez toute l’information nécessaire pour gérer vos missions.",
+            missions: {
+              name: "Mission",
+              missionsTitle: "Mes Missions",
+              inProgress: " en cours",
+              future: " à venir",
+              finished: "Historique",
+              profileMatching: "Matching de profil",
+              noMission: "Aucune mission en cours.\n Quand vous aurez finalisé votre brief et validé un ou plusieurs profils, la mission apparaîtra ici",
+              freelanceInfosModal: 'Voir coordonnées freelance',
+              incidentModalTitle: 'Déclarer un incident'
+            }
+          },
           header: {
             login: 'Se connecter',
             signUp: "S'inscrire",
             newBrief: 'Nouveau brief',
             contactUs: 'Nous contacter',
-
-
           }
         }
       }

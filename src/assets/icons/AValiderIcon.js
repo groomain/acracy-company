@@ -4,7 +4,7 @@ import React from "react";
 export const AValiderIcon = ({ ...props }) => {
   return (
     <SvgIcon {...props} >
-      <g fill="none" fillRule="evenodd">
+      <g fill="none" fillRule="evenodd" transform="translate(10 8)">
         <g>
           <path d="M7.6 11L19 0" transform="translate(-10 -15) translate(11 15)" />
           <path stroke="#ECF805" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M0 3.667L7.6 11 11.406 7.333" transform="translate(-10 -15) translate(11 15)" />
