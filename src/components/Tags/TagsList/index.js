@@ -7,7 +7,7 @@ import CustomExpansionPanel from '../../CustomExpansionPanel';
 import CheckableTag from '../CheckableTag';
 import CustomButton from '../../Button';
 
-import { setExpansionPanelOpen, setSelectedExpertise } from '../../../pages/LeadCreationPage/reducer';
+import { setExpansionPanelOpen, setSelectedExpertise, setExpertisePriorities } from '../../../pages/LeadCreationPage/reducer';
 
 export const TagsList = ({ tags, type }) => {
   const { t } = useTranslation();
@@ -25,6 +25,7 @@ export const TagsList = ({ tags, type }) => {
       dispatch(setSelectedExpertise(selectedTags));
     }
     dispatch(setExpansionPanelOpen(false));
+    dispatch(setExpertisePriorities([]))
   };
 
   return (

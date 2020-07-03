@@ -260,7 +260,7 @@ const LeadCreationPage = () => {
               </Grid>
             </>
           ) : (
-              <Grid item direction='column' className={classes.briefTipRoot}>
+              <Grid container item direction='column' className={classes.briefTipRoot}>
                 <DarkWrapper
                   direction='column'
                   className={classes.briefTipRoot}

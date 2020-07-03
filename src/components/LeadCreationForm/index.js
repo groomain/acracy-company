@@ -12,10 +12,10 @@ import Tag from '../Tags/Tag';
 import backToTop from '../../utils/backToTop';
 import CustomModal from '../Modal';
 import EuroSymbolIcon from '@material-ui/icons/EuroSymbol';
-import { Typography, Grid, Stepper, Step, StepLabel, StepButton, Box, InputAdornment } from "@material-ui/core";
+import { Typography, Grid, Stepper, Step, StepLabel, StepButton, Box, InputAdornment, StepConnector } from "@material-ui/core";
 import {
   setLeadDraftSearchData, setDeliverablesArray, setDailyRate,
-  changeLeadStatusLaunched, getExpertisesLaunched
+  changeLeadStatusLaunched, getExpertisesLaunched, setExpertisePriorities
 } from '../../pages/LeadCreationPage/reducer';
 import { leadSave } from '../../pages/LeadCreationPage/index';
 import clsx from 'clsx';
@@ -40,7 +40,7 @@ const LeadCreationForm = ({ sendValues, ...props }) => {
   const [disableCallMeBtn, setDisableCallMeBtn] = useState(true);
 
   const { leadDraftSearchData, deliverablesArray, expertises,
-    selectedExpertiseList, expansionPanelOpen } = useSelector(state => ({
+    selectedExpertiseList, expansionPanelOpen, expertisePriorities } = useSelector(state => ({
       dateFromCalendar: state.getIn(['leadCreation', 'dateFromCalendar']),
       leadDraftSearchData: state.getIn(['leadCreation', 'leadDraftSearchData']),
       deliverablesArray: state.getIn(['leadCreation', 'deliverablesArray']),
@@ -48,6 +48,7 @@ const LeadCreationForm = ({ sendValues, ...props }) => {
       expertises: state.getIn(['leadCreation', 'expertises']),
       selectedExpertiseList: state.getIn(['leadCreation', 'selectedExpertiseList']),
       expansionPanelOpen: state.getIn(['leadCreation', 'expansionPanelOpen']),
+      expertisePriorities: state.getIn(['leadCreation', 'expertisePriorities'])
     }));
 
   useEffect(() => {
@@ -472,10 +473,10 @@ const LeadCreationForm = ({ sendValues, ...props }) => {
   }, [selectedExpertiseList]);
 
   const handlePriorityCheck = (index) => {
-    setExpertisePriorityList(expertisePriorityList?.map((item, i) => (index === i) ? { ...item, priority: !item.priority } : item))
+    const prio = expertisePriorityList?.map((item, i) => (index === i) ? { ...item, priority: !item.priority } : item);
+    setExpertisePriorityList(prio);
+    dispatch(setExpertisePriorities(prio.filter(x => x.priority).map(x => x.text)));
   }
-  const selectedPriority = expertisePriorityList?.filter(item => item.priority)
-  const prioritiesArray = selectedPriority?.map(x => x.text)
 
   const setLeadDetails = () => {
     return (
@@ -498,7 +499,7 @@ const LeadCreationForm = ({ sendValues, ...props }) => {
                   tagType="Prioritaire"
                   isWithCheckbox
                   onCheckChange={() => handlePriorityCheck(key)}
-                  checkedArray={prioritiesArray}
+                  checkedArray={expertisePriorities}
                 />
               )
               )}
@@ -528,7 +529,7 @@ const LeadCreationForm = ({ sendValues, ...props }) => {
 
   return (
     <Grid item className={classes.formGridItem}>
-      <Stepper nonLinear={false} activeStep={activeStep} className={classes.stepper} connector={disabled}>
+      <Stepper nonLinear={false} activeStep={activeStep} className={classes.stepper} connector={<StepConnector style={{ display: 'none' }} />}>
         {steps.map((label, index) => {
           return (
             <Step key={label} className={classes.step}>

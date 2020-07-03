@@ -30,7 +30,8 @@ const initialState = Immutable.Map({
   dailyRate: 0.0,
   //
   expansionPanelOpen: false,
-  selectedExpertiseList: null
+  selectedExpertiseList: null,
+  expertisePriorities: null
 });
 
 const { actions, reducer } = createSlice({
@@ -106,7 +107,9 @@ const { actions, reducer } = createSlice({
     setExpansionPanelOpen: (state, action) => state
       .set('expansionPanelOpen', action.payload),
     setSelectedExpertise: (state, action) => state
-      .set('selectedExpertiseList', action.payload)
+      .set('selectedExpertiseList', action.payload),
+    setExpertisePriorities: (state, action) => state
+      .set('expertisePriorities', action.payload)
   }
 });
 
@@ -133,6 +136,7 @@ export const {
   setDateFromCalendar,
   setExpansionPanelOpen,
   setSelectedExpertise,
+  setExpertisePriorities,
   //
   getExpertisesLaunched,
   getExpertisesSuccess,
