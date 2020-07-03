@@ -27,7 +27,6 @@ export default makeStyles(theme => ({
     textTransform: 'none',
     fontSize: 17,
     fontFamily: 'Basier Medium',
-    color: '#fff',
     letterSpacing: '-0.45px',
   },
 }));

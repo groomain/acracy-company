@@ -1,11 +1,12 @@
 import React from 'react';
 import Tab from '@material-ui/core/Tab';
-import styles from './style';
+import styles from './styles';
 import retard from '../../../assets/icons/retard2.svg';
 import chevronOk from '../../../assets/icons/small-check-copy-2.svg';
 import {Link} from "react-scroll/modules";
+import clsx from "clsx";
 
-const CustomTab = ({ label, missingInfos, to, setActive, ...props }) => {
+const CustomTab = ({ label, missingInfos, to, setActive, selected, ...props }) => {
   const classes = styles();
 
     const getIcon = (isOk) => {
@@ -20,11 +21,9 @@ const CustomTab = ({ label, missingInfos, to, setActive, ...props }) => {
       <Link to={to} smooth={true} spy={true} onSetActive={(to) => {setActive(to)}}>
       <Tab className={classes.underSecondaryTitle} variant="body2" label={label} icon={getIcon(missingInfos)}
            classes={{
-             root: classes.root,
+             root: clsx(classes.root, { [classes.selected]: selected }),
              wrapper: classes.wrapper,
-             selected: classes.selected
            }}
-           onClick={() => console.log('test')}
            {...props}
       />
       </Link>

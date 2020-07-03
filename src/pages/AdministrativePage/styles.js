@@ -5,6 +5,7 @@ export default makeStyles(theme => ({
         marginTop: 100
     },
     leftContainer: {
+        minHeight: '100vh',
         backgroundColor: theme.palette.secondary.dark
     },
     card: {
@@ -24,7 +25,7 @@ export default makeStyles(theme => ({
         marginTop: 15,
         marginBottom: 15
     },
-    switchTVA: {
+    switch: {
         marginLeft: 10,
         marginTop: 15,
         marginBottom: 25
@@ -39,15 +40,4 @@ export default makeStyles(theme => ({
     select: {
         width: '50%'
     },
-    city: {
-        marginTop: 15,
-        marginBottom: 15,
-        width: '68%',
-        marginLeft: '4%'
-    },
-    zipCode: {
-        marginTop: 15,
-        marginBottom: 15,
-        width: '28%',
-    }
 }));

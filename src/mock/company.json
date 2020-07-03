@@ -1,0 +1,40 @@
+{
+  "externalId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  "status": "WAITING_ELIGIBILITY",
+  "name": "{{$randomCompanyName}}",
+  "administrativeProfile": {
+    "legalForm": "a",
+    "socialReason": "string",
+    "siret": 0,
+    "shareCapital": 0,
+    "cityOfRcsRegistration": "string",
+    "intraCommunityVAT": true,
+    "VatNumber": 0,
+    "sameAddress": false,
+    "headOffice": {
+      "address": "string",
+      "zipCode": 0,
+      "city": "string",
+      "country": "string"
+    },
+    "legalDocuments": [
+      {
+        "externalId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+        "name": "string"
+      }
+    ],
+    "billing": {
+      "address": "string",
+      "zipCode": 0,
+      "city": "string",
+      "country": "string",
+      "firstName": "string",
+      "lastName": "string",
+      "email": "string",
+      "phoneOject": "string"
+    },
+    "purchaseOrder": true
+  },
+  "webSite": "string",
+  "description": "string"
+}

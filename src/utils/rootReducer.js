@@ -5,6 +5,7 @@ import LeadCreationReducer from '../pages/LeadCreationPage/reducer';
 import DownloadReducer from '../components/DownloadModal/reducer';
 import MissionReducer from '../pages/MissionFollowUp/reducer';
 import SelectionProfilReducer from '../pages/ProfileSelection/reducer';
+import AdministrativeReducer from '../pages/AdministrativePage/reducer';
 
 export default history => combineReducers({
   router: connectRouter(history),
@@ -12,5 +13,6 @@ export default history => combineReducers({
   Mission: MissionReducer,
   Download: DownloadReducer,
   leadCreation: LeadCreationReducer,
-  SelectionProfil: SelectionProfilReducer
+  SelectionProfil: SelectionProfilReducer,
+  Administrative: AdministrativeReducer
 });

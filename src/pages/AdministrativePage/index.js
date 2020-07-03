@@ -1,81 +1,146 @@
 import React, {useEffect} from 'react';
 import Grid from "@material-ui/core/Grid";
 import GeneralInformation from "../../components/GeneralInformation";
-import CustomTextField from "../../components/Inputs/CustomTextField";
 import styles from "./styles";
 import Typography from "@material-ui/core/Typography";
-import CustomSelect from "../../components/Inputs/CustomSelect";
-import CustomSwitch from "../../components/Switch";
-import CustomButton from "../../components/Button";
 import * as Scroll from "react-scroll/modules";
-import {Toolbar} from "@material-ui/core";
+import * as Yup from "yup";
+import {Formik} from "formik";
+import {useTranslation} from "react-i18next";
+import Form1 from "../../components/AdministrativeForms/Form1";
+import Form2 from "../../components/AdministrativeForms/Form2";
+import Form3 from "../../components/AdministrativeForms/Form3";
+import Form4 from "../../components/AdministrativeForms/Form4";
+import Form5 from "../../components/AdministrativeForms/Form5";
+import {useDispatch, useSelector} from "react-redux";
+import {getCompanyLaunched} from "./reducer";
+import CustomLoader from "../../components/Loader";
 
 export const AdministrativePage = (props) => {
+    const {t} = useTranslation();
+    const dispatch = useDispatch();
     const classes = styles();
     const Element = Scroll.Element;
     const scrollSpy = Scroll.scrollSpy;
 
     useEffect(() => {
+        dispatch(getCompanyLaunched());
         scrollSpy.update();
     }, []);
+
+    const { companyData, companyLoading } = useSelector(state => ({
+        companyData: state.getIn(['Administrative', 'companyData']),
+        companyLoading: state.getIn(['Administrative', 'companyLoading']),
+    }));
+
+    console.log('companyData', companyData);
+    console.log('companyLoading', companyLoading);
+
+    const initialValuesForm1 = {
+        legalForm: '',
+        socialReason: '',
+        siret: '',
+        shareCapital: '',
+        webSite: '',
+        cityOfRcsRegistration: '',
+        intraCommunityVAT: false,
+        VatNumber: ''
+    };
+
+    const ValidationSchemaForm1 = Yup.object().shape({
+        legalForm: Yup.string().required(),
+        socialReason: Yup.string().required(),
+        siret: Yup.string().required(),
+        shareCapital: Yup.string().required(),
+        webSite: Yup.string(),
+        cityOfRcsRegistration: Yup.string(),
+        intraCommunityVAT: Yup.bool(),
+        VatNumber: Yup.number(),
+    });
+
+    const initialValuesForm2 = {
+        address: '',
+        zipCode: '',
+        city: '',
+        country: '',
+    };
+
+    const ValidationSchemaForm2 = Yup.object().shape({
+        address: Yup.string().required(),
+        zipCode: Yup.string().required(),
+        city: Yup.string().required(),
+        country: Yup.string().required(),
+    });
+
+    const initialValuesForm3 = {
+        sameAddress: false,
+        address: '',
+        zipCode: '',
+        city: '',
+        country: '',
+    };
+
+    const ValidationSchemaForm3 = Yup.object().shape({
+        sameAddress: Yup.string(),
+        address: Yup.string().required(),
+        zipCode: Yup.string().required(),
+        city: Yup.string().required(),
+        country: Yup.string().required(),
+    });
+
+    const initialValuesForm4 = {
+        firstName: '',
+        lastName: '',
+        email: '',
+        phonePrefix: '',
+        phoneNumber: ''
+    };
+
+    const ValidationSchemaForm4 = Yup.object().shape({
+        firstName: Yup.string().required(),
+        lastName: Yup.string().required(),
+        email: Yup.string().required(),
+        phonePrefix: Yup.string().required(),
+        phoneNumber: Yup.number().required(),
+    });
+
+    const initialValuesForm5 = {
+        purchaseOrder: false,
+        chart: false,
+    };
+
+    const ValidationSchemaForm5 = Yup.object().shape({
+        purchaseOrder: Yup.bool().required(),
+        chart: Yup.bool().required(),
+    });
+
 
     return (
         <Grid item xs={12} container className={classes.container}>
             <Grid item xs={3} container justify={'center'} className={classes.leftContainer}>
                 <GeneralInformation/>
             </Grid>
-            <Grid item xs={9} container alignItems={'center'} justify={'center'} style={{marginBottom: 200}}>
+            {companyData &&
+            <Grid item xs={9} container alignItems={'center'} justify={'center'} style={{marginBottom: 500}}>
                 <Typography variant={'h1'} style={{width: '80%', marginTop: 40}}>Données de l'entreprise</Typography>
                 <Element name={2} className={classes.element}>
                     {/* FORM Informations générales */}
-                    <Grid item container direction={'column'} className={classes.card}>
-                        <Typography variant={'h2'} className={classes.cardTitle}>Informations générales</Typography>
-                        <Grid item container direction={'row'}>
-                            <Grid item container direction={'column'} style={{width: '50%', padding: 25}}>
-                                <CustomSelect className={classes.textfield} label={'Forme juridique*'}
-                                              optionsValues={['test', 'test2']} placeholder={'Forme juridique'}/>
-                                <CustomTextField className={classes.textfield} label={'SIRET*'} placeholder={'SIRET'}/>
-                                <CustomTextField className={classes.textfield} label={'Site web'}
-                                                 placeholder={'Site web'}/>
-                                <Grid item container direction={'row'} className={classes.switchTVA}>
-                                    <CustomSwitch switchSize={'small'}/>
-                                    <Typography variant={'body1'} className={classes.tva}>Je suis soumis à la TVA
-                                        intracommunautaire</Typography>
-                                </Grid>
-                                <CustomTextField className={classes.textfield} label={'Numéro de TVA'}
-                                                 placeholder={'Numéro de TVA'}/>
-                                <CustomButton title={'Sauvegarder'} theme={'filledButton'}
-                                              className={classes.saveButton}/>
-                            </Grid>
-                            <Grid item container direction={'column'} style={{width: '50%', padding: 25}}>
-                                <CustomTextField className={classes.textfield} label={'Raison sociale*'}
-                                                 placeholder={'Raison sociale'}/>
-                                <CustomTextField className={classes.textfield} label={'Capital social (€)*'}
-                                                 placeholder={'Capital social (€)'}/>
-                                <CustomTextField className={classes.textfield} label={'Ville d\'immatriculation au RCS'}
-                                                 placeholder={'Ville d\'immatriculation au RCS'}/>
-                            </Grid>
-                        </Grid>
-                    </Grid>
+                    <Formik
+                        render={props => <Form1 {...props}/>}
+                        initialValues={initialValuesForm1}
+                        validationSchema={ValidationSchemaForm1}
+                        onSubmit={(credentials) => console.log(credentials)}
+                    />
                 </Element>
 
                 {/* FORM Siège social */}
                 <Element name={3} className={classes.element}>
-                    <Grid item container direction={'column'} className={classes.card}>
-                        <Typography variant={'h2'} className={classes.cardTitle}>Siège social</Typography>
-                        <Grid item container direction={'column'} style={{width: '100%', padding: 25}}>
-                            <CustomTextField className={classes.textfield} label={'Adresse*'} placeholder={'Adresse'}/>
-
-                            <Grid item container direction={'row'}>
-                                <CustomTextField className={classes.zipCode} label={'Code postal*'}
-                                                 placeholder={'Code Postal'}/>
-                                <CustomTextField className={classes.city} label={'Ville*'} placeholder={'Ville'}/>
-                            </Grid>
-                            <CustomSelect className={classes.select} label={'Pays*'}
-                                          optionsValues={['test', 'test2']} placeholder={'Pays'}/>
-                            <CustomButton title={'Sauvegarder'} theme={'filledButton'} className={classes.saveButton}/>
-                        </Grid>
-                    </Grid>
+                    <Formik
+                        render={props => <Form2 {...props}/>}
+                        initialValues={initialValuesForm2}
+                        validationSchema={ValidationSchemaForm2}
+                        onSubmit={(credentials) => console.log(credentials)}
+                    />
                 </Element>
 
                 {/* FORM Documents légaux */}
@@ -92,73 +157,41 @@ export const AdministrativePage = (props) => {
                 {/* FORM Adresse de facturation */}
                 <Element name={6} className={classes.element}>
                     <Typography variant={'h1'} style={{marginBottom: 40}}>Facturation</Typography>
-                    <Grid item container direction={'column'} className={classes.card}>
-                        <Typography variant={'h2'} className={classes.cardTitle}>Adresse de facturation</Typography>
-                        <Grid item container direction={'column'} style={{width: '100%', padding: 25}}>
-                            <Grid item container direction={'row'} className={classes.switchTVA}>
-                                <CustomSwitch switchSize={'small'}/>
-                                <Typography variant={'body1'} >L'adresse de facturation est identique à celle du siège social</Typography>
-                            </Grid>
-                            <CustomTextField className={classes.textfield} label={'Adresse*'} placeholder={'Adresse'}/>
-
-                            <Grid item container direction={'row'}>
-                                <CustomTextField className={classes.zipCode} label={'Code postal*'}
-                                                 placeholder={'Code Postal'}/>
-                                <CustomTextField className={classes.city} label={'Ville*'} placeholder={'Ville'}/>
-                            </Grid>
-                            <CustomSelect className={classes.select} label={'Pays*'}
-                                          optionsValues={['test', 'test2']} placeholder={'Pays'}/>
-                            <CustomButton title={'Sauvegarder'} theme={'filledButton'} className={classes.saveButton}/>
-                        </Grid>
-                    </Grid>
+                    <Formik
+                        render={props => <Form3 {...props}/>}
+                        initialValues={initialValuesForm3}
+                        validationSchema={ValidationSchemaForm3}
+                        onSubmit={(credentials) => console.log(credentials)}
+                    />
                 </Element>
 
                 {/* FORM Coordonnées de la personne en charge de la facturation */}
                 <Element name={7} className={classes.element}>
-                    <Grid item container direction={'column'} className={classes.card}>
-                        <Typography variant={'h2'} className={classes.cardTitle}>Coordonnées de la personne en charge de
-                            la facturation</Typography>
-                        <Grid item container direction={'row'}>
-                            <Grid item container direction={'column'} style={{width: '50%', padding: 25}}>
-                                <CustomSelect className={classes.textfield} label={'Prénom*'}
-                                              optionsValues={['test', 'test2']} placeholder={'Prénom'}/>
-                                <CustomTextField className={classes.textfield} label={'Email*'} placeholder={'Email'}/>
-                                <CustomButton title={'Sauvegarder'} theme={'filledButton'}
-                                              className={classes.saveButton}/>
-                            </Grid>
-                            <Grid item container direction={'column'} style={{width: '50%', padding: 25}}>
-                                <CustomTextField className={classes.textfield} label={'Nom*'}
-                                                 placeholder={'Nom'}/>
-                                <Grid item container direction={'row'}>
-                                    <CustomTextField className={classes.textfield} label={'Nom*'}
-                                                     placeholder={'Nom'}/>
-                                    <CustomTextField className={classes.textfield} label={'Nom*'}
-                                                     placeholder={'Nom'}/>
-                                </Grid>
-                            </Grid>
-                        </Grid>
-                    </Grid>
+                    <Formik
+                        render={props => <Form4 {...props}/>}
+                        initialValues={initialValuesForm4}
+                        validationSchema={ValidationSchemaForm4}
+                        onSubmit={(credentials) => console.log(credentials)}
+                    />
                 </Element>
 
                 {/* FORM Documents légaux */}
                 <Element name={8} className={classes.element}>
-                    <Grid item container direction={'column'} className={classes.card}>
-                        <Typography variant={'h2'} className={classes.cardTitle}>Détails facturation</Typography>
-                        <Grid item container direction={'column'} style={{width: '100%', padding: 25}}>
-                            <CustomTextField className={classes.textfield} label={'Adresse*'} placeholder={'Adresse'}/>
-
-                            <Grid item container direction={'row'} className={classes.switchTVA}>
-                                <CustomTextField className={classes.textfield} label={'Code postal*'}
-                                                 placeholder={'Code Postal'}/>
-                                <CustomTextField className={classes.textfield} label={'Ville*'} placeholder={'Ville'}/>
-                            </Grid>
-                            <CustomSelect className={classes.textfield} label={'Adresse*'}
-                                          optionsValues={['test', 'test2']} placeholder={'Adresse'}/>
-                            <CustomButton title={'Sauvegarder'} theme={'filledButton'} className={classes.saveButton}/>
-                        </Grid>
-                    </Grid>
+                    <Formik
+                        render={props => <Form5 {...props}/>}
+                        initialValues={initialValuesForm5}
+                        validationSchema={ValidationSchemaForm5}
+                        onSubmit={(credentials) => console.log(credentials)}
+                    />
                 </Element>
             </Grid>
+            }
+            {
+                companyLoading &&
+            <Grid item xs={9} container alignItems={'center'} justify={'center'}>
+                <CustomLoader />
+            </Grid>
+            }
         </Grid>
     )
 };
