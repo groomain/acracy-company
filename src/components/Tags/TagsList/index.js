@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from "react-redux";
+import React, { useState } from 'react';
+import { useDispatch } from "react-redux";
 import { useTranslation } from 'react-i18next';
 import { Grid, Typography, Box } from '@material-ui/core/';
 
@@ -7,29 +7,24 @@ import CustomExpansionPanel from '../../CustomExpansionPanel';
 import CheckableTag from '../CheckableTag';
 import CustomButton from '../../Button';
 
-import { setExpansionPanelOpen } from '../../../pages/LeadCreationPage/reducer';
+import { setExpansionPanelOpen, setSelectedExpertise } from '../../../pages/LeadCreationPage/reducer';
 
-export const TagsList = ({ tags, onUpdateSelection }) => {
+export const TagsList = ({ tags, type }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
-  const disabled = false;  // disabled should be a prop
-  const started = true;
+  const [tagsListWithCheckedKey, setTagsListWithCheckedKey] = useState(tags.map(x => ({ ...x, checked: false })));
+  const selectedTags = tagsListWithCheckedKey?.filter(item => item.checked)
 
-  const { expansionPanelOpen } = useSelector(state => ({
-    expansionPanelOpen: state.getIn(['leadCreation', 'expansionPanelOpen']),
-  }));
-  const [open, setOpen] = React.useState(expansionPanelOpen);
+  const onCheckChange = (index) => {
+    setTagsListWithCheckedKey(tagsListWithCheckedKey.map((item, i) => (index === i) ? { ...item, checked: !item.checked } : item));
+  }
 
-  // useEffect(() => {
-  //   dispatch(setExpansionPanelOpen(expansionPanelOpen))
-  // }, [expansionPanelOpen, dispatch]);
-
-  const handleExpansion = (open) => {
-
-    console.log('handle expansion : tagslist');
-    setOpen(false)
-    dispatch(setExpansionPanelOpen(open));
+  const handleSelection = () => {
+    if (type === 'expertise') {
+      dispatch(setSelectedExpertise(selectedTags));
+    }
+    dispatch(setExpansionPanelOpen(false));
   };
 
   return (
@@ -41,17 +36,23 @@ export const TagsList = ({ tags, onUpdateSelection }) => {
       <Box my={2}>
         <CustomExpansionPanel
           isTag
-          // expand={expansionPanelOpen}
-          panelTitle={started ? t('tagsList.fieldTitleStarted') : t('tagsList.fieldTitleNewSelection')}>
+          panelTitle={selectedTags.length > 0 ? t('tagsList.fieldTitleStarted') : t('tagsList.fieldTitleNewSelection')}>
           <Grid>
             <div>
-              {tags?.map((tag, key) => <CheckableTag key={key} title={tag.text} isGrey={tag.code ? false : true} />)}
+              {tagsListWithCheckedKey?.map((tag, key) => <CheckableTag
+                key={key}
+                title={tag.text}
+                isGrey={!tag.code}
+                handleChecked={() => onCheckChange(key)}
+                checked={tag.checked}
+                disabled={selectedTags.length > 4 && selectedTags.indexOf(tag) === -1}
+              />)}
               <CustomButton
                 title={t('buttonTitles.validate')}
                 theme="asLink"
                 rippleDisabled
-                disabled={disabled}
-                handleClick={() => handleExpansion(open)}
+                disabled={selectedTags.length < 1}
+                handleClick={handleSelection}
               />
             </div>
           </Grid>

@@ -16,14 +16,17 @@ const CustomExpansionPanel = ({ children, isTag, panelTitle, ...props }) => {
     expansionPanelOpen: state.getIn(['leadCreation', 'expansionPanelOpen']),
   }));
 
-  const handleChange = expansionPanelOpen => {
-    // add a way to close the panel on a click on the panel header
-    dispatch(setExpansionPanelOpen(true))
+  const handleChange = () => {
+    dispatch(setExpansionPanelOpen(!expansionPanelOpen))
   }
 
   return (
     <div className={classes.root}>
-      <ExpansionPanel expanded={expansionPanelOpen} onChange={handleChange} TransitionProps={{ unmountOnExit: true }} className={classes.panel} {...props}>
+      <ExpansionPanel
+        expanded={expansionPanelOpen}
+        onChange={handleChange}
+        TransitionProps={{ unmountOnExit: true }}
+        className={classes.panel} {...props}>
         <ExpansionPanelSummary
           className={classes.header}
           expandIcon={
