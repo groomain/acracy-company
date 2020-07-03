@@ -69,11 +69,13 @@ i18n
           yourPassword: 'Your password',
           haveAccount: 'I don\'t have accracy entreprise account',
           tagsList: {
-            label: "Key profile expertise",
             fieldTitleStarted: "Change my selection",
             fieldTitleNewSelection: "Start my selection",
-            minMaxInfo: "5 maximum, including 3 high priority",
-            button: "Send"
+            button: "Send",
+            expertise: {
+              label: "Key profile expertise",
+              minMaxInfo: "5 maximum, including 3 high priority",
+            }
           },
           upload: {
             title: "Shared documents",
@@ -185,10 +187,16 @@ i18n
           yourPassword: 'Votre mot de passe',
           haveAccount: 'Je n\'ai pas de compte acracy entreprise',
           tagsList: {
-            label: "Expertises clés du profil",
             fieldTitleStarted: "Modifier ma sélection",
             fieldTitleNewSelection: "Démarrer ma sélection",
-            minMaxInfo: "5 maximum dont 3 prioritaires"
+            expertise: {
+              label: "Expertises clés du profil",
+              minMaxInfo: "5 maximum dont 3 prioritaires",
+            },
+            sensitivity: {
+              label: "Sensibilité clé du profil",
+              minMaxInfo: "1 maximum"
+            }
           },
           leadCreation: {
             synthesis: 'Synthèse Brief',
@@ -218,7 +226,8 @@ i18n
             discoverTips: "Découvrez nos conseils pour les briefs parfaits",
             // step 2
             profileDetails: "Détails du profil recherché",
-            profileexpertises: " Expertises clés du profil*"
+            profileexpertises: " Expertises clés du profil*",
+            profileSensitivity: 'Sensibilité clé du profil'
           },
           upload: {
             title: "Documents partagés",

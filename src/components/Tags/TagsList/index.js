@@ -7,9 +7,9 @@ import CustomExpansionPanel from '../../CustomExpansionPanel';
 import CheckableTag from '../CheckableTag';
 import CustomButton from '../../Button';
 
-import { setExpansionPanelOpen, setSelectedExpertise, setExpertisePriorities } from '../../../pages/LeadCreationPage/reducer';
+import { setExpansionPanelOpen, setSelectedExpertise, setExpertisePriorities, setSelectedSensitivity } from '../../../pages/LeadCreationPage/reducer';
 
-export const TagsList = ({ tags, type }) => {
+export const TagsList = ({ tags, type, maxSelection }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
@@ -23,43 +23,40 @@ export const TagsList = ({ tags, type }) => {
   const handleSelection = () => {
     if (type === 'expertise') {
       dispatch(setSelectedExpertise(selectedTags));
+      dispatch(setExpertisePriorities([]))
+    } else if (type === 'sensitivity') {
+      dispatch(setSelectedSensitivity(selectedTags))
     }
     dispatch(setExpansionPanelOpen(false));
-    dispatch(setExpertisePriorities([]))
   };
 
   return (
-    <>
-      <Grid container justify="space-between">
-        <Typography variant="h4">{t('tagsList.label') + '*'}</Typography>
-        <Typography variant="h2">{t('tagsList.minMaxInfo')}</Typography>
-      </Grid>
-      <Box my={2}>
-        <CustomExpansionPanel
-          isTag
-          panelTitle={selectedTags.length > 0 ? t('tagsList.fieldTitleStarted') : t('tagsList.fieldTitleNewSelection')}>
-          <Grid>
-            <div>
-              {tagsListWithCheckedKey?.map((tag, key) => <CheckableTag
-                key={key}
-                title={tag.text}
-                isGrey={!tag.code}
-                handleChecked={() => onCheckChange(key)}
-                checked={tag.checked}
-                disabled={selectedTags.length > 4 && selectedTags.indexOf(tag) === -1}
-              />)}
-              <CustomButton
-                title={t('buttonTitles.validate')}
-                theme="asLink"
-                rippleDisabled
-                disabled={selectedTags.length < 1}
-                handleClick={handleSelection}
-              />
-            </div>
-          </Grid>
-        </CustomExpansionPanel>
-      </Box>
-    </>
+    <Box my={2}>
+      <CustomExpansionPanel
+        id={type}
+        isTag
+        panelTitle={selectedTags.length > 0 ? t('tagsList.fieldTitleStarted') : t('tagsList.fieldTitleNewSelection')}>
+        <Grid>
+          <div>
+            {tagsListWithCheckedKey?.map((tag, key) => <CheckableTag
+              key={key}
+              title={tag.text}
+              isGrey={!tag.code}
+              handleChecked={() => onCheckChange(key)}
+              checked={tag.checked}
+              disabled={selectedTags.length >= maxSelection && selectedTags.indexOf(tag) === -1}
+            />)}
+            <CustomButton
+              title={t('buttonTitles.validate')}
+              theme="asLink"
+              rippleDisabled
+              disabled={selectedTags.length < 1}
+              handleClick={handleSelection}
+            />
+          </div>
+        </Grid>
+      </CustomExpansionPanel>
+    </Box>
   )
 };
 

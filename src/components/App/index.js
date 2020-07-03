@@ -36,7 +36,7 @@ function App() {
       <PublicRoute exact path="/signup" fixed component={SignUpPage} />
       <PublicRoute exact path="/confirm-signup" fixed component={ConfirmSignupPage} />
       <PublicRoute exact path="/password" fixed component={ForgotPassword} />
-      <PrivateRoute exact path="/lead" fixed component={LeadCreationPage} />
+      <PublicRoute exact path="/lead" fixed component={LeadCreationPage} />
       <PrivateRoute exact path="/brief/:id" fixed component={MissionFollowUp} />
       <PrivateRoute exact path="/mission/:id" fixed component={MissionFollowUp} />
       <PrivateRoute exact path="/firstlogin" fixed component={FirstLoginPage} />
