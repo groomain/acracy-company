@@ -28,7 +28,9 @@ const initialState = Immutable.Map({
   deliverablesArray: [],
   dateFromCalendar: null,
   dailyRate: 0.0,
-  expansionPanelOpen: false
+  //
+  expansionPanelOpen: false,
+  selectedExpertiseList: null
 });
 
 const { actions, reducer } = createSlice({
@@ -96,13 +98,15 @@ const { actions, reducer } = createSlice({
     getExpertisesSuccess: (state, action) => state
       .set('getExpertisesLoading', false)
       .set('getExpertisesErrorMessage', null)
-      .set('leadDraftData', action.payload),
+      .set('expertises', action.payload),
     getExpertisesFailure: (state, action) => state
       .set('getExpertisesLoading', false)
       .set('getExpertisesErrorMessage', action.payload),
     // expansion pannel state for lead creation step 2
     setExpansionPanelOpen: (state, action) => state
       .set('expansionPanelOpen', action.payload),
+    setSelectedExpertise: (state, action) => state
+      .set('selectedExpertiseList', action.payload)
   }
 });
 
@@ -128,6 +132,7 @@ export const {
   setDeliverablesArray,
   setDateFromCalendar,
   setExpansionPanelOpen,
+  setSelectedExpertise,
   //
   getExpertisesLaunched,
   getExpertisesSuccess,

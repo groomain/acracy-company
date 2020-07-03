@@ -13,12 +13,13 @@ import backToTop from '../../utils/backToTop';
 import CustomModal from '../Modal';
 import EuroSymbolIcon from '@material-ui/icons/EuroSymbol';
 import { Typography, Grid, Stepper, Step, StepLabel, StepButton, Box, InputAdornment } from "@material-ui/core";
-import { setLeadDraftSearchData, setDeliverablesArray, setDailyRate, changeLeadStatusLaunched } from '../../pages/LeadCreationPage/reducer';
+import {
+  setLeadDraftSearchData, setDeliverablesArray, setDailyRate,
+  changeLeadStatusLaunched, getExpertisesLaunched
+} from '../../pages/LeadCreationPage/reducer';
 import { leadSave } from '../../pages/LeadCreationPage/index';
 import clsx from 'clsx';
 import styles from './styles';
-import CheckableTag from '../Tags/CheckableTag';
-
 
 const LeadCreationForm = ({ sendValues, ...props }) => {
   const { t } = useTranslation();
@@ -28,8 +29,8 @@ const LeadCreationForm = ({ sendValues, ...props }) => {
   const { values, errors, touched, handleBlur, handleChange } = props;
   const { frequency, workspace, duration, durationType, missionTitle, budgetType, profile, profilesNumber } = values;
 
-  let leadCreationStep = 0; // the dashboard page
-  const [activeStep, setActiveStep] = useState(leadCreationStep)
+  let leadCreationStep = 1; // the dashboard page
+  const [activeStep, setActiveStep] = useState(leadCreationStep);
   const [searchedCategory, setSearchedCategory] = useState({});
   const [deliverables, setDeliverables] = useState([]);
   const [disabled, setDisabled] = useState(false); // to be used with step 2
@@ -38,14 +39,17 @@ const LeadCreationForm = ({ sendValues, ...props }) => {
   const [openCallMeModal, setOpenCallMeModal] = useState(false);
   const [disableCallMeBtn, setDisableCallMeBtn] = useState(true);
 
-  const { leadDraftSearchData, deliverablesArray, expertises } = useSelector(state => ({
-    dateFromCalendar: state.getIn(['leadCreation', 'dateFromCalendar']),
-    leadDraftSearchData: state.getIn(['leadCreation', 'leadDraftSearchData']),
-    deliverablesArray: state.getIn(['leadCreation', 'deliverablesArray']),
-    // leadCreationStep: state.getIn(['leadCreation', 'leadCreationStep']),
-    expertises: state.getIn(['leadCreation', 'expertises']),
+  const { leadDraftSearchData, deliverablesArray, expertises,
+    selectedExpertiseList, expansionPanelOpen } = useSelector(state => ({
+      dateFromCalendar: state.getIn(['leadCreation', 'dateFromCalendar']),
+      leadDraftSearchData: state.getIn(['leadCreation', 'leadDraftSearchData']),
+      deliverablesArray: state.getIn(['leadCreation', 'deliverablesArray']),
+      // leadCreationStep: state.getIn(['leadCreation', 'leadCreationStep']),
+      expertises: state.getIn(['leadCreation', 'expertises']),
+      selectedExpertiseList: state.getIn(['leadCreation', 'selectedExpertiseList']),
+      expansionPanelOpen: state.getIn(['leadCreation', 'expansionPanelOpen']),
+    }));
 
-  }));
   useEffect(() => {
     if (leadDraftSearchData?.search !== null) {
       setDisableCallMeBtn(false)
@@ -85,7 +89,6 @@ const LeadCreationForm = ({ sendValues, ...props }) => {
     leadSave(leadDraftSearchData, deliverablesArray, values, redirect)
     dispatch(changeLeadStatusLaunched('HELP_NEEDED'));
     setOpenCallMeModal(false)
-
   }
 
   useEffect(() => {
@@ -454,33 +457,25 @@ const LeadCreationForm = ({ sendValues, ...props }) => {
     )
   }
 
-  const expertise = [
-    { 'code': 'kjfsijg', 'text': 'Facebook' },
-    { 'code': 'kjfsijg', 'text': 'Instagram' },
-    { 'code': 'kjfsijg', 'text': 'Twitter' },
-    { 'code': 'kjfsijg', 'text': 'Snapchat' },
-    { 'code': 'kjfsijg', 'text': 'Créativité' },
-    { 'code': 'kjfsijg', 'text': 'Influence' },
-    { 'code': 'kjfsijg', 'text': 'Radarly' },
-    { 'code': 'kjfsijg', 'text': 'hootsuite' },
-    { 'code': 'kjfsijg', 'text': 'sprout' },
-    { 'code': 'kjfsijg', 'text': 'sprinklr' },
-    { 'code': 'kjfsijg', 'text': 'tweetdeck' },
-    { 'code': 'kjfsijg', 'text': 'linkedin' },
-    { 'code': 'kjfsijg', 'text': 'tik tok' },
-    { 'code': 'kjfsijg', 'text': 'snapchat' },
-    { 'code': 'kjfsijg', 'text': 'activation' },
-    { 'code': 'kjfsijg', 'text': 'brand content' },
-    { 'code': 'kjfsijg', 'text': 'présentation orale' },
-    { 'code': 'kjfsijg', 'text': 'présentation ecrite' },
-    { 'code': 'kjfsijg', 'text': 'synthesio' },
-    { 'code': 'kjfsijg', 'text': 'youtube' },
-    { 'code': 'kjfsijg', 'text': 'buffer' },
-    { 'code': 'kjfsijg', 'text': 'twitch' },
-    { 'code': '', 'text': 'autres' }
+  // STEP 2
 
-  ]
+  useEffect(() => {
+    if (activeStep === 1) {
+      dispatch(getExpertisesLaunched());
+    }
+  }, [dispatch, activeStep])
 
+  const [expertisePriorityList, setExpertisePriorityList] = useState()
+
+  useEffect(() => {
+    setExpertisePriorityList(selectedExpertiseList?.map(x => ({ ...x, priority: false })))
+  }, [selectedExpertiseList]);
+
+  const handlePriorityCheck = (index) => {
+    setExpertisePriorityList(expertisePriorityList?.map((item, i) => (index === i) ? { ...item, priority: !item.priority } : item))
+  }
+  const selectedPriority = expertisePriorityList?.filter(item => item.priority)
+  const prioritiesArray = selectedPriority?.map(x => x.text)
 
   const setLeadDetails = () => {
     return (
@@ -490,16 +485,24 @@ const LeadCreationForm = ({ sendValues, ...props }) => {
 
         <Grid container>
           <Grid item xs={12} className={classes.fieldRows}>
-            <TagsList tags={expertise} panelTitle={t('leadCreation.profileExpertises')} />
-            {/* <Grid item container direction='row'>
-              {chosenExpertises?.map((deliverable, i) =>
-                <Tag title={deliverable} key={i} />
+            <TagsList
+              tags={expertises}
+              panelTitle={t('leadCreation.profileExpertises')}
+              type='expertise'
+            />
+            {!expansionPanelOpen && <Grid item container direction='row'>
+              {expertisePriorityList?.map((tag, key) => (
+                <Tag key={key}
+                  title={tag.text}
+                  isPrimaryColor
+                  tagType="Prioritaire"
+                  isWithCheckbox
+                  onCheckChange={() => handlePriorityCheck(key)}
+                  checkedArray={prioritiesArray}
+                />
+              )
               )}
-            </Grid> */}
-            {expertise?.map((tag, key) =>
-              <Tag key={key} title={tag.text} isPrimaryColor tagType="Prioritaire" isWithCheckbox />
-            )}
-            <TagsList tags={expertise} withCheckbox></TagsList>
+            </Grid>}
           </Grid>
         </Grid>
       </Box >
