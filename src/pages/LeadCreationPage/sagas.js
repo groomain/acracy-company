@@ -9,8 +9,8 @@ import {
 } from "./reducer";
 
 // mocks
-import expertise from '../../mock/expertises.json';
-import sensitivities from '../../mock/sensitivities.json';
+// import expertise from '../../mock/expertises.json';
+// import sensitivities from '../../mock/sensitivities.json';
 
 function* doLeadSave(action) { // create a new lead
   // console.log('action: ', action.payload)
@@ -95,7 +95,7 @@ function* doChangeLeadStatus(action) {  // modify the status of a lead
 
 function* doGetExpertises(action) {
   // To use the mock, uncomment the line below
-  yield put(getExpertisesSuccess(expertise));
+  // yield put(getExpertisesSuccess(expertise));
   try {
     const expertises = yield API.get(config.apiGateway.NAME, encodeURI('/expertises'),
       {
@@ -106,13 +106,13 @@ function* doGetExpertises(action) {
     yield put(getExpertisesSuccess(expertises));
   } catch (error) {
     console.log(error);
-    // yield put(getExpertisesFailure());
+    yield put(getExpertisesFailure());
   }
 }
 
 function* doGetSensitivities(action) {
   // To use the mock, uncomment the line below
-  yield put(getSensitivitiesSuccess(sensitivities));
+  // yield put(getSensitivitiesSuccess(sensitivities));
   try {
     const sensitivities = yield API.get(config.apiGateway.NAME, encodeURI('/sensitivities'),
       {
@@ -123,7 +123,7 @@ function* doGetSensitivities(action) {
     yield put(getSensitivitiesSuccess(sensitivities));
   } catch (error) {
     console.log(error);
-    // yield put(getSensitivitiesFailure());
+    yield put(getSensitivitiesFailure());
   }
 }
 
