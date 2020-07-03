@@ -69,5 +69,13 @@ export default makeStyles(theme => ({
   },
   email: {
     color: theme.palette.primary.main
+  },
+  fullPage: {
+    paddingLeft: '14vw',
+    paddingRight: '14vw'
+  },
+  disabledText: {
+    textAlign: 'center',
+    opacity: '.5'
   }
 }));

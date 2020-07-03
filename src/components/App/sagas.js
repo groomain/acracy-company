@@ -34,6 +34,7 @@ import {
   translateResendCodeSuccess,
   translateResendCodeError
 } from '../../utils/cognito';
+
 import { config } from '../../conf/amplify';
 import { getPhonePrefixCode } from '../../utils/services/format';
 
@@ -96,6 +97,7 @@ function* doSignIn(action) {
             } catch (error) {
               console.log(error);
               yield put(loginFailure(translateSignInError(error.code)));
+              yield put(openSnackBar({ message: translateSignInError(error.code), error: true }));
             }
           }
           // Create the related employee
@@ -120,6 +122,7 @@ function* doSignIn(action) {
             } catch (error) {
               console.log(error);
               yield put(loginFailure(translateSignInError(error.code)));
+              yield put(openSnackBar({ message: translateSignInError(error.code), error: true }));
             }
           }
           // Start the lead creation if the 2 previous steps are ok & search content is present
@@ -146,9 +149,11 @@ function* doSignIn(action) {
               }
             }
             yield put(loginSuccess(errorLeadMessage));
+            yield put(openSnackBar({ message: errorLeadMessage, error: false }));
             yield put(getCurrentSessionLaunched({ fromPath: from || '/home' })); // Redirection with or without lead creation error message
           } else {
             yield put(loginFailure(translateSignInError("")));
+            yield put(openSnackBar({ message: translateSignInError(""), error: true }));
           }
         }
       }
@@ -167,6 +172,7 @@ function* doSignIn(action) {
     yield put(loginFailure(translateSignInError(err.code)));
     yield put(openSnackBar({ message: translateSignInError(err.code), error: true }));
   }
+  yield put(getCurrentSessionLaunched({ fromPath: from || '/home' }));
 }
 
 function* doSignOut() {
@@ -200,6 +206,7 @@ function* doSignUp(action) {
         'custom:searchCode': searchCode
       }
     });
+    // yield call(doSignIn, { payload: { email, password } });
     yield put(signupSuccess());
     yield put(push('/confirm-signup', { email: email }));
   } catch (error) {
@@ -229,9 +236,11 @@ function* doResendCode(action) {
   try {
     yield Auth.resendSignUp(email);
     yield put(resendCodeSuccess(translateResendCodeSuccess()));
+    yield put(openSnackBar({ message: translateResendCodeSuccess(), error: false }));
   } catch (error) {
     console.log(error);
     yield put(resendCodeFailure(translateResendCodeError(error.code)));
+    yield put(openSnackBar({ message: translateResendCodeError(error.code), error: true }));
   }
 }
 
@@ -293,7 +302,6 @@ function* setSnackBar() {
   yield put(clearSnackBar());
 }
 
-
 export default function* rootSaga() {
   yield all([
     takeLatest('App/getCurrentSessionLaunched', getCurrentSession),
@@ -306,6 +314,6 @@ export default function* rootSaga() {
     takeLatest('App/openSnackBar', setSnackBar),
     takeLatest('App/updateUserLaunched', doUpdateUser),
     takeLatest('App/confirmSignupLaunched', doConfirmSignUp),
-    takeLatest('App/resendCodeLaunched', doResendCode),
+    takeLatest('App/resendCodeLaunched', doResendCode)
   ]);
 }

@@ -15,12 +15,14 @@ const DraftsPagination = ({ goToSlide, carouselState }) => {
     pages.push(<Typography variant='body2' key={i} style={{ color: i === currentSlide ? 'white' : '#565e56' }}>{i + 1} .&nbsp;</Typography>);
   }
 
-  if (totalItems >= 3) {
+  if (totalItems > 3) {
     return (
       <Box className={classes.pagination}>
+        {/* // Pagination is not displayed but kept in case we need it some day */}
         <Grid
           container
           className={classes.paginationContainer}
+          style={{ display: 'none' }}
         >
           {pages}
         </Grid>

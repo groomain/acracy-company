@@ -1,4 +1,6 @@
 import React from 'react';
+import * as moment from 'moment';
+moment.locale('fr');
 
 /**
  * Formats a text in .json format and creates a new line after each \n
@@ -39,4 +41,42 @@ export const formatLongText = text => {
 export const getPhonePrefixCode = prefix => {
   const regex = /^(.*?)[+]/;
   return prefix.replace(regex, '');
+};
+
+/**
+ * Shortens a long text at the specified length, and completes the string with '...' when the text is too long
+ * @param {string} text - The text to be shortened 
+ * @param {number} length - The number of characters allowed before shortening the text
+ * @returns {string} - The new string, completed with '...' if it has been shortened
+ */
+export const shortenLongText = (text, length) => {
+  const andSoOn = text?.length >= length ? '...' : '';
+  return `${text?.substring(0, length)} ${andSoOn}`;
+}
+
+/**
+ * Takes a date, adds a specified number of days and returns the new date, weekends excluded
+ * @param {string} date - The original date, in DD/MM/YYYY format 
+ * @param {number} nbOfDaysToAdd - Number of days to be added
+ * @returns {string} - The new date with specified number of days added, excluding weekends
+ */
+export const addTwoWorkingDays = (date, nbOfDaysToAdd) => {
+  date = new Date(Math.round(new Date(date).getTime()));
+  let endDate = "", count = 0;
+  while (count < nbOfDaysToAdd) {
+    endDate = new Date(date.setDate(date.getDate() + 1));
+    if (endDate.getDay() !== 0 && endDate.getDay() !== 6) {
+      count++;
+    }
+  }
+  return moment(endDate).format('DD/MM/YYYY');
+}
+
+// Returns timestamps to specified date format
+export const formatDate = (date) => {
+  return moment(date).format("DD/MM/YYYY");
+}
+
+export const dateToTimestamp = (date) => {
+  return Math.round(new Date(date).getTime());
 };

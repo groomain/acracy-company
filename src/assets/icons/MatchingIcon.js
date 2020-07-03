@@ -4,7 +4,7 @@ import React from "react";
 export const MatchingIcon = ({ ...props }) => {
   return (
     <SvgIcon {...props} >
-      <g fill="none" fillRule="evenodd" stroke="#ECF805" strokeLinecap="round" strokeWidth="2">
+      <g fill="none" fillRule="evenodd" stroke="#ECF805" strokeLinecap="round" strokeWidth="2" transform="translate(8 5)">
         <path d="M3 6.015V10c0 3.866 3.134 7 7 7" transform="translate(1 1)" />
         <path d="M1 6L1 10 5 10" transform="translate(1 1) rotate(135 3 8)" />
         <path d="M17.015 10.992V7.008c0-3.866-3.134-7-7-7" transform="translate(1 1)" />

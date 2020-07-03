@@ -1,33 +1,102 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useSelector, useDispatch } from 'react-redux';
+import { NavLink } from 'react-router-dom';
+import * as moment from 'moment';
+
 import { CustomButton } from '../../Button';
 import { Grid, Box, Typography, IconButton } from '@material-ui/core';
 import styles from './styles';
 import DraftWrapper from './DraftWrapper';
-
 import ClearIcon from '@material-ui/icons/Clear';
-import SearchIcon from '@material-ui/icons/Search';
+import SearchIcon from '../../../assets/icons/searchIcon';
 import StartIcon from '../../../assets/icons/demarrer.svg';
 import ToValidateIcon from '../../../assets/icons/a-valider.svg';
 import WaitingForCallIcon from '../../../assets/icons/en-attente-de-rappel.svg';
 
+import { setLeadCreationStep } from '../../../pages/HomePage/reducer';
+import { shortenLongText } from '../../../utils/services/format';
+import { deleteLeadLaunched } from '../../../pages/HomePage/reducer';
+import { getPath } from '../../../utils/services/validationChecks';
+
+moment.locale('fr');
+
 const Draft = ({ draft }) => {
   const classes = styles();
   const { t } = useTranslation();
+  const dispatch = useDispatch();
 
+  const START_LEAD = t('draft.startBrief');
+  const FINALIZE_BRIEF = t('draft.finalizeBrief');
+  const GET_CALLED = t('draft.getCalled');
+
+  const { deletingLeadLoading } = useSelector(state => ({
+    deletingLeadLoading: state.getIn(['leads', 'deletingLeadLoading']),
+  }));
   const [open, setOpen] = useState(false);
+  const [getStatusResult, setGetStatusResult] = useState();
 
-  const renderIcon = () => {
-    switch (draft.status) {
-      case 'To Validate':
-        return <img src={ToValidateIcon} alt="to be validated" />
-      case 'Pending':
-        return <img src={WaitingForCallIcon} alt="pending" />
-      case 'Start':
-        return <img src={StartIcon} alt="start" />
-      default:
-        return <img src={StartIcon} alt="start" />
-    };
+  const startDate = draft?.missionContext.startDate;
+  const date = moment(startDate).format("MM.DD à hh:mm");
+
+  const missionContextLength = getPath(draft?.missionContext, 'missionContext').length;
+
+  useEffect(() => {
+    const getStatus = (draftStatus) => {
+      let status;
+      if (draftStatus === 'DRAFT') {
+        if (missionContextLength !== 0) {
+          return status = {
+            title: START_LEAD,
+            progress: 10,
+            status: 'lead'
+          }
+        }
+        else {
+          return status = {
+            title: FINALIZE_BRIEF,
+            progress: 80
+          }
+        }
+      } else if (draftStatus === 'HELP_NEEDED') {
+        if (missionContextLength !== 0) {
+          return status = {
+            title: GET_CALLED,
+            progress: 40,
+            status: 'lead'
+          }
+        } else {
+          return status = {
+            title: GET_CALLED,
+            progress: 80
+          }
+        }
+      }
+    }
+    const result = getStatus(draft?.status);
+    setGetStatusResult(result);
+  }, [FINALIZE_BRIEF, GET_CALLED, START_LEAD, draft, draft.status, missionContextLength]);
+
+  const renderIcon = (getStatusResult) => {
+    if (getStatusResult?.title === GET_CALLED) {
+      return <img src={WaitingForCallIcon} alt="pending" />
+    } else if (getStatusResult?.title === FINALIZE_BRIEF) {
+      return <img src={ToValidateIcon} alt="to be validated" />
+    } else {
+      return <img src={StartIcon} alt="start" />
+    }
+  };
+
+  const deleteLead = () => {
+    dispatch(deleteLeadLaunched(draft?.externalId))
+  };
+
+  const setLeadStep = () => {
+    if (getStatusResult?.status === 'lead' || !draft?.missionContext.title) {
+      dispatch(setLeadCreationStep(0))
+    } else {
+      dispatch(setLeadCreationStep(1))
+    }
   };
 
   return (
@@ -35,10 +104,10 @@ const Draft = ({ draft }) => {
       <Grid container justify='space-between' alignItems="center">
         <Grid item>
           <Grid container alignItems="center">
-            <Box className={classes.iconBox}>{renderIcon()}</Box>
+            <Box className={classes.iconBox}>{renderIcon(getStatusResult)}</Box>
             <Grid>
-              <Typography variant='h2' className={classes.toUppercase}>{draft.title} ({draft.progress} %)</Typography>
-              <Typography variant='body2'>Créé le : {draft.date} à {draft.time}</Typography>
+              <Typography variant='h2' className={classes.toUppercase}>{getStatusResult?.title} ({getStatusResult?.progress} %)</Typography>
+              <Typography variant='body2'>Créé le : {date}</Typography>
             </Grid>
           </Grid>
         </Grid>
@@ -48,19 +117,21 @@ const Draft = ({ draft }) => {
           </IconButton>
         </Grid>
       </Grid>
-
-      <Box className={classes.titleBox}>
-        {draft.new
-          ? <Typography variant='h3' className={classes.newDraft}>
-            {t('draft.newBriefTitle')}
+      <NavLink
+        to={`/lead?id=${draft?.externalId}`}
+        className={classes.draftLink}
+        onClick={setLeadStep}
+      >
+        <Box className={classes.titleBox}>
+          <Typography variant='h3' className={draft?.missionContext.title ? null : classes.newDraft}>
+            {draft?.missionContext.title ? shortenLongText(draft?.missionContext.title, 42) : t('draft.newBriefTitle')}
           </Typography>
-          : <Typography variant='h3'>{draft.content}</Typography>
-        }
-      </Box>
+        </Box>
+      </NavLink>
       <Grid container>
-        <SearchIcon color="secondary" size="small" />
+        <SearchIcon color='#fff' size="small" />
         <Box mx={1.5}>
-          <Typography variant='body2'>{draft.target}</Typography>
+          <Typography variant='body2'>{shortenLongText(draft?.search.text, 30)}</Typography>
         </Box>
       </Grid>
 
@@ -72,7 +143,8 @@ const Draft = ({ draft }) => {
           <Grid item>
             <CustomButton
               type="button"
-              handleClick={() => console.log("Deleted !")}
+              handleClick={deleteLead}
+              loading={deletingLeadLoading}
               title={t('draft.confirmDelete')}
               theme="filledButton"
             />
@@ -87,7 +159,7 @@ const Draft = ({ draft }) => {
           </Grid>
         </Grid>
       }
-    </DraftWrapper>
+    </DraftWrapper >
   )
 };
 
