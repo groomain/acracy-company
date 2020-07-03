@@ -18,12 +18,20 @@ const initialState = Immutable.Map({
   changeLeadStatusErrorMessage: null,
   changeResponse: null,
   //
+  getExpertisesLoading: false,
+  getExpertisesErrorMessage: null,
+  expertises: [],
+  //
   leadDraftSearchData: {
     search: null
   },
   deliverablesArray: [],
   dateFromCalendar: null,
-  dailyRate: 0.0
+  dailyRate: 0.0,
+  //
+  expansionPanelOpen: false,
+  selectedExpertiseList: null,
+  expertisePriorities: null
 });
 
 const { actions, reducer } = createSlice({
@@ -83,7 +91,25 @@ const { actions, reducer } = createSlice({
     setDateFromCalendar: (state, action) => state
       .set('dateFromCalendar', action.payload),
     setDailyRate: (state, action) => state
-      .set('dailyRate', action.payload)
+      .set('dailyRate', action.payload),
+    // get expertises
+    getExpertisesLaunched: (state, action) => state
+      .set('getExpertisesLoading', true)
+      .set('getExpertisesErrorMessage', null),
+    getExpertisesSuccess: (state, action) => state
+      .set('getExpertisesLoading', false)
+      .set('getExpertisesErrorMessage', null)
+      .set('expertises', action.payload),
+    getExpertisesFailure: (state, action) => state
+      .set('getExpertisesLoading', false)
+      .set('getExpertisesErrorMessage', action.payload),
+    // expansion pannel state for lead creation step 2
+    setExpansionPanelOpen: (state, action) => state
+      .set('expansionPanelOpen', action.payload),
+    setSelectedExpertise: (state, action) => state
+      .set('selectedExpertiseList', action.payload),
+    setExpertisePriorities: (state, action) => state
+      .set('expertisePriorities', action.payload)
   }
 });
 
@@ -108,6 +134,13 @@ export const {
   setLeadDraftSearchData,
   setDeliverablesArray,
   setDateFromCalendar,
+  setExpansionPanelOpen,
+  setSelectedExpertise,
+  setExpertisePriorities,
+  //
+  getExpertisesLaunched,
+  getExpertisesSuccess,
+  getExpertisesFailure
 
 } = actions;
 

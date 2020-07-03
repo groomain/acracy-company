@@ -1,6 +1,8 @@
 import React from 'react';
+import { useDispatch, useSelector } from "react-redux";
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import AddIcon from '@material-ui/icons/Add';
+import { setExpansionPanelOpen } from '../../pages/LeadCreationPage/reducer';
 
 import { ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails, Typography } from '@material-ui/core';
 
@@ -8,9 +10,23 @@ import styles from './styles';
 
 const CustomExpansionPanel = ({ children, isTag, panelTitle, ...props }) => {
   const classes = styles();
+  const dispatch = useDispatch();
+
+  const { expansionPanelOpen } = useSelector(state => ({
+    expansionPanelOpen: state.getIn(['leadCreation', 'expansionPanelOpen']),
+  }));
+
+  const handleChange = () => {
+    dispatch(setExpansionPanelOpen(!expansionPanelOpen))
+  }
+
   return (
     <div className={classes.root}>
-      <ExpansionPanel TransitionProps={{ unmountOnExit: true }} className={classes.panel} {...props}>
+      <ExpansionPanel
+        expanded={expansionPanelOpen}
+        onChange={handleChange}
+        TransitionProps={{ unmountOnExit: true }}
+        className={classes.panel} {...props}>
         <ExpansionPanelSummary
           className={classes.header}
           expandIcon={

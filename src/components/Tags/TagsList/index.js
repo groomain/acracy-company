@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useDispatch } from "react-redux";
 import { useTranslation } from 'react-i18next';
 import { Grid, Typography, Box } from '@material-ui/core/';
 
@@ -6,11 +7,26 @@ import CustomExpansionPanel from '../../CustomExpansionPanel';
 import CheckableTag from '../CheckableTag';
 import CustomButton from '../../Button';
 
-export const TagsList = ({ tags }) => {
-  const { t } = useTranslation();
+import { setExpansionPanelOpen, setSelectedExpertise, setExpertisePriorities } from '../../../pages/LeadCreationPage/reducer';
 
-  const disabled = false;
-  const started = true;
+export const TagsList = ({ tags, type }) => {
+  const { t } = useTranslation();
+  const dispatch = useDispatch();
+
+  const [tagsListWithCheckedKey, setTagsListWithCheckedKey] = useState(tags.map(x => ({ ...x, checked: false })));
+  const selectedTags = tagsListWithCheckedKey?.filter(item => item.checked)
+
+  const onCheckChange = (index) => {
+    setTagsListWithCheckedKey(tagsListWithCheckedKey.map((item, i) => (index === i) ? { ...item, checked: !item.checked } : item));
+  }
+
+  const handleSelection = () => {
+    if (type === 'expertise') {
+      dispatch(setSelectedExpertise(selectedTags));
+    }
+    dispatch(setExpansionPanelOpen(false));
+    dispatch(setExpertisePriorities([]))
+  };
 
   return (
     <>
@@ -19,15 +35,25 @@ export const TagsList = ({ tags }) => {
         <Typography variant="h2">{t('tagsList.minMaxInfo')}</Typography>
       </Grid>
       <Box my={2}>
-        <CustomExpansionPanel isTag panelTitle={started ? t('tagsList.fieldTitleStarted') : t('tagsList.fieldTitleNewSelection')}>
+        <CustomExpansionPanel
+          isTag
+          panelTitle={selectedTags.length > 0 ? t('tagsList.fieldTitleStarted') : t('tagsList.fieldTitleNewSelection')}>
           <Grid>
             <div>
-              {tags?.map((tag, key) => <CheckableTag key={key} title={tag.title} />)}
+              {tagsListWithCheckedKey?.map((tag, key) => <CheckableTag
+                key={key}
+                title={tag.text}
+                isGrey={!tag.code}
+                handleChecked={() => onCheckChange(key)}
+                checked={tag.checked}
+                disabled={selectedTags.length > 4 && selectedTags.indexOf(tag) === -1}
+              />)}
               <CustomButton
                 title={t('buttonTitles.validate')}
                 theme="asLink"
                 rippleDisabled
-                disabled={disabled}
+                disabled={selectedTags.length < 1}
+                handleClick={handleSelection}
               />
             </div>
           </Grid>

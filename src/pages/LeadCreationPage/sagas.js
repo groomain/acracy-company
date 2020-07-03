@@ -2,7 +2,14 @@ import { all, put, takeLatest } from 'redux-saga/effects';
 import { API } from 'aws-amplify';
 import { push } from 'connected-react-router';
 import { config } from '../../conf/amplify';
-import { leadSaveSuccess, leadSaveFailure, getLeadDraftSuccess, getLeadDraftFailure, putLeadDraftSuccess, putLeadDraftFailure, changeLeadStatusSuccess, changeLeadStatusFailure } from "./reducer";
+import {
+  leadSaveSuccess, leadSaveFailure, getLeadDraftSuccess, getLeadDraftFailure,
+  putLeadDraftSuccess, putLeadDraftFailure, changeLeadStatusSuccess, changeLeadStatusFailure, getExpertisesSuccess,
+  getExpertisesFailure
+} from "./reducer";
+
+// mocks
+// import expertise from '../../mock/expertises.json';
 
 function* doLeadSave(action) { // create a new lead
   // console.log('action: ', action.payload)
@@ -85,11 +92,29 @@ function* doChangeLeadStatus(action) {  // modify the status of a lead
   }
 }
 
+function* doGetExpertises(action) {
+  // To use the mock, uncomment the line below
+  // yield put(getExpertisesSuccess(expertise));
+  try {
+    const expertises = yield API.get(config.apiGateway.NAME, encodeURI('/expertises'),
+      {
+        headers: {
+          'x-api-key': config.apiKey
+        },
+      });
+    yield put(getExpertisesSuccess(expertises));
+  } catch (error) {
+    console.log(error);
+    yield put(getExpertisesFailure());
+  }
+}
+
 export default function* LeadCreationSaga() {
   yield all([
     takeLatest('LeadCreation/leadSaveLaunched', doLeadSave),
     takeLatest('LeadCreation/getLeadDraftLaunched', doGetLeadDraft),
     takeLatest('LeadCreation/putLeadDraftLaunched', doUpdateLeadDraft),
-    takeLatest('LeadCreation/changeLeadStatusLaunched', doChangeLeadStatus)
+    takeLatest('LeadCreation/changeLeadStatusLaunched', doChangeLeadStatus),
+    takeLatest('LeadCreation/getExpertisesLaunched', doGetExpertises)
   ]);
 }

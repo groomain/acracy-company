@@ -15,8 +15,13 @@ export default makeStyles(theme => ({
     },
     '&:active': {
       transform: 'scale(.98)'
+    },
+    '&$disabled': {
+      opacity: '.7',
+      transition: '.2s'
     }
   },
+  disabled: {},
   icon: {
     borderRadius: 50,
     backgroundColor: theme.palette.secondary.main,

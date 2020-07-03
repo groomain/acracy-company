@@ -1,6 +1,6 @@
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import icon from '../../assets/icons/checkbox-checked.svg'
-// import smallIcon from '../../assets/icons/checkbox-checked-black.svg';
+import smallIcon from '../../assets/icons/checkbox-checked-black.svg';
 
 export default makeStyles(theme => ({
   root: {
@@ -48,6 +48,18 @@ export default makeStyles(theme => ({
     }
   },
   rounded: {
-    borderRadius: 50
+    borderRadius: 50,
+    width: 28,
+    height: 28,
+    '&:before': {
+      backgroundImage:
+        `url(${smallIcon})`,
+      backgroundSize: '60%',
+      backgroundRepeat: 'no-repeat',
+      backgroundPosition: '-15% -15%'
+    },
+    'input:hover ~ &': {
+      borderColor: theme.palette.secondary.black,
+    }
   }
 }));
