@@ -3,6 +3,7 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import { createBrowserHistory } from 'history';
 import { routerMiddleware } from 'connected-react-router/immutable';
 import homeSaga from '../components/App/sagas';
+import dashboardSagas from '../pages/HomePage/sagas';
 import SelectionProfil from '../pages/ProfileSelection/sagas';
 import createRootReducer from './rootReducer';
 import missionSaga from "../pages/MissionFollowUp/sagas";
@@ -21,6 +22,7 @@ export default function configureStore() {
   );
 
   sagaMiddleware.run(homeSaga);
+  sagaMiddleware.run(dashboardSagas);
   sagaMiddleware.run(missionSaga);
   sagaMiddleware.run(downloadSaga);
   sagaMiddleware.run(leadCreationSaga);

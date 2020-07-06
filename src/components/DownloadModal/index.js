@@ -7,9 +7,9 @@ import styles from './styles';
 import CustomSelect from "../Inputs/CustomSelect";
 import Grid from "@material-ui/core/Grid";
 import CustomButton from "../Button";
-import {NavLink} from "react-router-dom";
-import {useDispatch} from "react-redux";
-import {downloadFileLaunched} from "./reducer";
+import { NavLink } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { downloadFileLaunched } from "./reducer";
 
 export const DownloadModal = ({ open, setOpen, handleClose, files, type, ...props }) => {
   const classes = styles();
@@ -24,7 +24,7 @@ export const DownloadModal = ({ open, setOpen, handleClose, files, type, ...prop
 
   const handleSetFile = (fileName) => {
     for (let i = 0; i < files.length; i++) {
-      if (files[i].name === fileName){
+      if (files[i].name === fileName) {
         setFile(files[i])
       }
     }
@@ -50,10 +50,10 @@ export const DownloadModal = ({ open, setOpen, handleClose, files, type, ...prop
           {type === "facture" && "Choisir ma facture à télécharger"}
           {type === "brief" && "Choisir mon brief à télécharger"}
         </Typography>
-        <CustomSelect label={""} optionsValues={filesName} onChange={(event) => handleSetFile(event.target.value)}/>
+        <CustomSelect label={""} optionsValues={filesName} onChange={(event) => handleSetFile(event.target.value)} />
         <Grid item container directtion={"row"}>
-          <CustomButton title={"Télécharger"} theme={"filledButton"} style={{position: "relative", bottom: 40}} handleClick={() => downloadFile({type: type, attachmentId: file.externalId})}/>
-          <Typography onClick={() => downloadFile({type: type, attachmentId: filesId})} className={classes.navLink}>
+          <CustomButton title={"Télécharger"} theme={"filledButton"} style={{ position: "relative", bottom: 40 }} handleClick={() => downloadFile({ type: type, attachmentId: file.externalId })} />
+          <Typography onClick={() => downloadFile({ type: type, attachmentId: filesId })} className={classes.navLink}>
             {type === "devis" && "Télécharger tout les devis"}
             {type === "facture" && "Télécharger toutes les factures"}
             {type === "brief" && "Télécharger tout les briefs"}

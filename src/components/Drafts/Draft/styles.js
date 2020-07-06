@@ -10,9 +10,10 @@ export default makeStyles(theme => ({
     padding: '10px 20px',
     position: 'relative',
     margin: 15,
+    alignContent: 'space-between'
   },
   titleBox: {
-    margin: '27px 50px 20px 0',
+    margin: '0 20px 0 0',
     '& h3': {
       lineHeight: 1.55
     }
@@ -38,9 +39,17 @@ export default makeStyles(theme => ({
     color: theme.palette.primary.main
   },
   toUppercase: {
-    textTransform: 'uppercase'
+    textTransform: 'uppercase',
+    fontSize: 15
   },
   firstBriefTitle: {
     lineHeight: .5
+  },
+  draftLink: {
+    textDecoration: 'none',
+    '&:hover div h3': {
+      transition: '.3s',
+      opacity: '.85'
+    }
   }
 }));

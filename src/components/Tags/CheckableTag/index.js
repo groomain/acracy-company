@@ -4,13 +4,13 @@ import { Checkbox } from '@material-ui/core';
 import clsx from "clsx";
 import styles from './styles';
 
-const CheckableTag = ({ title, isGrey, ...props }) => {
+const CheckableTag = ({ title, isGrey, handleChecked, ...props }) => {
   const classes = styles();
 
   return (
     <Checkbox
+      onChange={handleChecked}
       title={title}
-      isGrey={isGrey}
       classes={{ root: classes.root, disabled: classes.disabled }}
       disableRipple
       color="default"
