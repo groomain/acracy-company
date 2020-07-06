@@ -1,13 +1,14 @@
-import {all, put, takeLatest, delay} from 'redux-saga/effects';
+import { all, put, takeLatest, delay } from 'redux-saga/effects';
 import { API } from 'aws-amplify';
-import {getCompanySuccess, getCompanyFailure} from './reducer';
+import { getCompanySuccess, getCompanyFailure, putCompanySuccess, putCompanyFailure } from './reducer';
 import { config } from '../../conf/amplify';
-import {push} from "connected-react-router";
-import {openSnackBar} from "../../components/App/reducer";
+import { push } from "connected-react-router";
+import { openSnackBar } from "../../components/App/reducer";
 import companyMock from '../../mock/company'
 
 function* getCompany(action) {
   try {
+    let companyData = companyMock;
     // const companyData = yield API.get(config.apiGateway.NAME, `/companies/${id}`, {
     //   headers: {
     //     'x-api-key': config.apiKey
@@ -15,13 +16,30 @@ function* getCompany(action) {
     // });
 
     yield delay(3000); // for mock
-    yield put(getCompanySuccess(companyMock));
+    yield put(getCompanySuccess(companyData));
   } catch (error) {
     console.log(error);
     yield put(getCompanyFailure());
-    yield put(openSnackBar({message: "Une erreur est survenue", error: true}));
+    yield put(openSnackBar({ message: "Une erreur est survenue", error: true }));
     yield put(push('/'));
   }
+}
+
+function* updateCompany(action) {
+  try {
+    let companyData = companyMock;
+    //     const companyData = yield API.put(config.apiGateway.NAME, `/companies/${id}`, {
+    //       header: {
+    //         'x-api-key': config.apiKey
+    //       }
+    // })
+    yield put(putCompanySuccess(companyData))
+
+  } catch (error) {
+    yield put(putCompanyFailure())
+    yield put(openSnackBar({ message: "Une erreur est survenue", error: true }));
+  }
+
 }
 
 export default function* administrativeSaga() {

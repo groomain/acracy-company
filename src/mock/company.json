@@ -1,26 +1,25 @@
 {
   "externalId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
   "status": "WAITING_ELIGIBILITY",
-  "name": "{{$randomCompanyName}}",
+  "name": "LPR",
   "administrativeProfile": {
-    "legalForm": "a",
-    "socialReason": "string",
-    "siret": 0,
-    "shareCapital": 0,
-    "cityOfRcsRegistration": "string",
+    "legalForm": "huh ?",
+    "socialReason": "PME",
+    "siret": 2580032452,
+    "shareCapital": 3,
+    "cityOfRcsRegistration": "Lille",
     "intraCommunityVAT": true,
-    "VatNumber": 0,
-    "sameAddress": false,
+    "VatNumber": 3245270,
     "headOffice": {
-      "address": "string",
-      "zipCode": 0,
-      "city": "string",
-      "country": "string"
+      "address": " 33 rue kleber",
+      "zipCode": 59000,
+      "city": "LILLE",
+      "country": "FRANCE"
     },
     "legalDocuments": [
       {
         "externalId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-        "name": "string"
+        "name": "whut"
       }
     ],
     "billing": {
@@ -30,10 +29,14 @@
       "country": "string",
       "firstName": "string",
       "lastName": "string",
-      "email": "string",
-      "phoneOject": "string"
+      "email": "hello@lpr.io",
+      "phone": {
+        "number": "729403478",
+        "code": 33
+      }
     },
-    "purchaseOrder": true
+    "purchaseOrder": true,
+    "sameAddress": true
   },
   "webSite": "string",
   "description": "string"

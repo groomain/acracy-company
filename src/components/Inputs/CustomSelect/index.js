@@ -34,7 +34,7 @@ export const CustomSelect = ({ label, value, placeholder, type, error, isMulti, 
         fullWidth
         multiple={isMulti}
         context={context}
-        renderValue={isMulti && (context === 'deliverables' ? renderCounter : ((selected) => selected.join(' ')))}
+        renderValue={isMulti ? (context === 'deliverables' ? renderCounter : ((selected) => selected.join(' '))) : () => value}
         value={isMulti ? options : value}
         error={error}
         onOpen={() => setOpen(true)}
@@ -43,7 +43,7 @@ export const CustomSelect = ({ label, value, placeholder, type, error, isMulti, 
         classes={{ root: open ? `${classes.root} ${classes.open}` : classes.root }}
         disableUnderline
         IconComponent={KeyboardArrowDownRoundedIcon}
-        inputProps={{placeholder: placeholder, classes: { root: `${classes.input} ${error ? classes.error : null}`, icon: open ? `${classes.icon} ${classes.iconClosed}` : classes.icon } }}
+        inputProps={{ placeholder: placeholder, classes: { root: `${classes.input} ${error ? classes.error : null}`, icon: open ? `${classes.icon} ${classes.iconClosed}` : classes.icon } }}
         MenuProps={{
           classes: { paper: classes.dropdownStyle },
           anchorOrigin: {
