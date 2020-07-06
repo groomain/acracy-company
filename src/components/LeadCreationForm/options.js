@@ -12,6 +12,6 @@ export const seniorityValues = [
   "Middle (3 à 5 ans)",
   "Senior (5 à 7 ans)",
   "Expert (7 à 10 ans)",
-  "Guru (10 ans et plus",
+  "Guru (10 ans et plus)",
   "Peu importe"
 ]
