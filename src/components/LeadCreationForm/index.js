@@ -7,7 +7,7 @@ import { CustomTextField } from '../Inputs/CustomTextField';
 import CustomTextArea from '../Inputs/CustomTextArea';
 import CustomSelect from "../Inputs/CustomSelect";
 import Calendar from "../Inputs/Calendar";
-import TagsList from "../Tags/TagsList";
+import TagsList from '../Tags/TagsList';
 import Tag from '../Tags/Tag';
 import backToTop from '../../utils/backToTop';
 import CustomModal from '../Modal';
@@ -15,7 +15,8 @@ import EuroSymbolIcon from '@material-ui/icons/EuroSymbol';
 import { Typography, Grid, Stepper, Step, StepLabel, StepButton, Box, InputAdornment, StepConnector } from "@material-ui/core";
 import {
   setLeadDraftSearchData, setDeliverablesArray, setDailyRate,
-  changeLeadStatusLaunched, getExpertisesLaunched, setExpertisePriorities
+  changeLeadStatusLaunched, getExpertisesLaunched, setExpertisePriorities,
+  getSensitivitiesLaunched, setSensitivityPriority
 } from '../../pages/LeadCreationPage/reducer';
 import { leadSave } from '../../pages/LeadCreationPage/index';
 import clsx from 'clsx';
@@ -40,7 +41,8 @@ const LeadCreationForm = ({ sendValues, ...props }) => {
   const [disableCallMeBtn, setDisableCallMeBtn] = useState(true);
 
   const { leadDraftSearchData, deliverablesArray, expertises,
-    selectedExpertiseList, expansionPanelOpen, expertisePriorities } = useSelector(state => ({
+    selectedExpertiseList, expansionPanelOpen, expertisePriorities,
+    sensitivities, selectedSensitivity, sensitivityPriority } = useSelector(state => ({
       dateFromCalendar: state.getIn(['leadCreation', 'dateFromCalendar']),
       leadDraftSearchData: state.getIn(['leadCreation', 'leadDraftSearchData']),
       deliverablesArray: state.getIn(['leadCreation', 'deliverablesArray']),
@@ -48,7 +50,10 @@ const LeadCreationForm = ({ sendValues, ...props }) => {
       expertises: state.getIn(['leadCreation', 'expertises']),
       selectedExpertiseList: state.getIn(['leadCreation', 'selectedExpertiseList']),
       expansionPanelOpen: state.getIn(['leadCreation', 'expansionPanelOpen']),
-      expertisePriorities: state.getIn(['leadCreation', 'expertisePriorities'])
+      expertisePriorities: state.getIn(['leadCreation', 'expertisePriorities']),
+      sensitivities: state.getIn(['leadCreation', 'sensitivities']),
+      selectedSensitivity: state.getIn(['leadCreation', 'selectedSensitivity']),
+      sensitivityPriority: state.getIn(['leadCreation', 'sensitivityPriority'])
     }));
 
   useEffect(() => {
@@ -463,19 +468,28 @@ const LeadCreationForm = ({ sendValues, ...props }) => {
   useEffect(() => {
     if (activeStep === 1) {
       dispatch(getExpertisesLaunched());
+      dispatch(getSensitivitiesLaunched());
     }
   }, [dispatch, activeStep])
 
-  const [expertisePriorityList, setExpertisePriorityList] = useState()
+  const [expertisePriorityList, setExpertisePriorityList] = useState();
+  const [sensitivityPriorityList, setSensitivityPriorityList] = useState();
 
   useEffect(() => {
-    setExpertisePriorityList(selectedExpertiseList?.map(x => ({ ...x, priority: false })))
-  }, [selectedExpertiseList]);
+    setExpertisePriorityList(selectedExpertiseList?.map(x => ({ ...x, priority: false })));
+    setSensitivityPriorityList(selectedSensitivity?.map(x => ({ ...x, priority: false })));
+  }, [selectedExpertiseList, selectedSensitivity]);
 
   const handlePriorityCheck = (index) => {
     const prio = expertisePriorityList?.map((item, i) => (index === i) ? { ...item, priority: !item.priority } : item);
     setExpertisePriorityList(prio);
     dispatch(setExpertisePriorities(prio.filter(x => x.priority).map(x => x.text)));
+  }
+
+  const handleSensitivityCheck = (index) => {
+    const prio = sensitivityPriorityList?.map((item, i) => (index === i) ? { ...item, priority: !item.priority } : item);
+    setSensitivityPriorityList(prio);
+    dispatch(setSensitivityPriority(prio.filter(x => x.priority).map(x => x.text)));
   }
 
   const setLeadDetails = () => {
@@ -485,26 +499,60 @@ const LeadCreationForm = ({ sendValues, ...props }) => {
         <Typography variant='h1'>{leadDraftSearchData?.search?.TEXT}</Typography>
 
         <Grid container>
-          <Grid item xs={12} className={classes.fieldRows}>
+          {/* Expertises */}
+          {expertises && <Grid item xs={12} className={classes.fieldRows}>
+            <Grid container justify="space-between">
+              <Typography variant="h4">{t('tagsList.expertise.label') + '*'}</Typography>
+              <Typography variant="h2">{t('tagsList.expertise.minMaxInfo')}</Typography>
+            </Grid>
             <TagsList
               tags={expertises}
               panelTitle={t('leadCreation.profileExpertises')}
               type='expertise'
+              maxSelection={5}
             />
-            {!expansionPanelOpen && <Grid item container direction='row'>
-              {expertisePriorityList?.map((tag, key) => (
-                <Tag key={key}
-                  title={tag.text}
-                  isPrimaryColor
-                  tagType="Prioritaire"
-                  isWithCheckbox
-                  onCheckChange={() => handlePriorityCheck(key)}
-                  checkedArray={expertisePriorities}
+            {expansionPanelOpen !== 'expertise' &&
+              <Grid item container direction='row'>
+                {expertisePriorityList?.map((tag, key) => (
+                  <Tag key={key}
+                    title={tag.text}
+                    isPrimaryColor
+                    tagType="Prioritaire"
+                    isWithCheckbox
+                    onCheckChange={() => handlePriorityCheck(key)}
+                    checkedArray={expertisePriorities}
+                  />))}
+              </Grid>}
+          </Grid>}
+
+          {/* Sensitivities */}
+          {sensitivities &&
+            <Grid item xs={12} className={classes.fieldRows}>
+              <Box my={2.5}>
+                <Grid container justify="space-between">
+                  <Typography variant="h4">{t('tagsList.sensitivity.label')}</Typography>
+                  <Typography variant="h2">{t('tagsList.sensitivity.minMaxInfo')}</Typography>
+                </Grid>
+                <TagsList
+                  tags={sensitivities}
+                  panelTitle={t('leadCreation.profileSensitivity')}
+                  type='sensitivity'
+                  maxSelection={1}
                 />
-              )
-              )}
+                {expansionPanelOpen !== 'sensitivity' &&
+                  <Grid item container direction='row'>
+                    {sensitivityPriorityList?.map((tag, key) => (
+                      <Tag key={key}
+                        title={tag.text}
+                        isPrimaryColor
+                        tagType="Critère indispensable"
+                        isWithCheckbox
+                        onCheckChange={() => handleSensitivityCheck(key)}
+                        checkedArray={sensitivityPriority}
+                      />))}
+                  </Grid>}
+              </Box>
             </Grid>}
-          </Grid>
         </Grid>
       </Box >
     )

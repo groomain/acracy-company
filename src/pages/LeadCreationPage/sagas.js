@@ -5,11 +5,12 @@ import { config } from '../../conf/amplify';
 import {
   leadSaveSuccess, leadSaveFailure, getLeadDraftSuccess, getLeadDraftFailure,
   putLeadDraftSuccess, putLeadDraftFailure, changeLeadStatusSuccess, changeLeadStatusFailure, getExpertisesSuccess,
-  getExpertisesFailure
+  getExpertisesFailure, getSensitivitiesSuccess, getSensitivitiesFailure
 } from "./reducer";
 
 // mocks
 // import expertise from '../../mock/expertises.json';
+// import sensitivities from '../../mock/sensitivities.json';
 
 function* doLeadSave(action) { // create a new lead
   // console.log('action: ', action.payload)
@@ -109,12 +110,30 @@ function* doGetExpertises(action) {
   }
 }
 
+function* doGetSensitivities(action) {
+  // To use the mock, uncomment the line below
+  // yield put(getSensitivitiesSuccess(sensitivities));
+  try {
+    const sensitivities = yield API.get(config.apiGateway.NAME, encodeURI('/sensitivities'),
+      {
+        headers: {
+          'x-api-key': config.apiKey
+        },
+      });
+    yield put(getSensitivitiesSuccess(sensitivities));
+  } catch (error) {
+    console.log(error);
+    yield put(getSensitivitiesFailure());
+  }
+}
+
 export default function* LeadCreationSaga() {
   yield all([
     takeLatest('LeadCreation/leadSaveLaunched', doLeadSave),
     takeLatest('LeadCreation/getLeadDraftLaunched', doGetLeadDraft),
     takeLatest('LeadCreation/putLeadDraftLaunched', doUpdateLeadDraft),
     takeLatest('LeadCreation/changeLeadStatusLaunched', doChangeLeadStatus),
-    takeLatest('LeadCreation/getExpertisesLaunched', doGetExpertises)
+    takeLatest('LeadCreation/getExpertisesLaunched', doGetExpertises),
+    takeLatest('LeadCreation/getSensitivitiesLaunched', doGetSensitivities)
   ]);
 }
