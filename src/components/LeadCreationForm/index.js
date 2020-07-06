@@ -29,7 +29,7 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
   const dispatch = useDispatch();
   const classes = styles();
 
-  const { frequency, workspace, duration, durationType, missionTitle, budgetType, profile, profilesNumber, seniority } = values;
+  const { frequency, workspace, duration, durationType, missionTitle, budgetType, profile, profilesNumber, seniority, customDeliverable } = values;
 
   let leadCreationStep = 1; // the dashboard page
   const [activeStep, setActiveStep] = useState(leadCreationStep);
@@ -504,6 +504,13 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
     dispatch(setLanguagePriority(prio.filter(x => x.priority).map(x => x.text)))
   }
 
+  // Set the Deliverables details section
+  const deliverablesTags = deliverables?.map(x => ({ value: x, isCustom: false }));
+  const customDeliverableIndex = deliverables.indexOf('Ne figure pas dans la liste');
+
+  if (~customDeliverableIndex && customDeliverable) {
+    deliverablesTags[customDeliverableIndex] = { value: customDeliverable, isCustom: true }
+  }
   const setLeadDetails = () => {
     return (
       <Box className={classes.stepContent}>
@@ -596,7 +603,7 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
 
           {/* Seniority */}
           <Grid container direction='column'>
-            <Typography variant={'body1'}>{t('leadCreation.profileSeniority') + '*'}</Typography>
+            <Typography variant={'h4'}>{t('leadCreation.profileSeniority') + '*'}</Typography>
             <CustomSelect
               name="seniority"
               optionsValues={seniorityValues}
@@ -605,6 +612,16 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
               value={seniority}
               error={!!touched.seniority && !!errors.seniority}
             />
+          </Grid>
+
+          {/* Deliverables details */}
+          <Grid container direction="column">
+            <Typography variant='h1'>{t('leadCreation.deliverablesDetails')}</Typography>
+            <Box my={1}>
+              <Grid item container direction='row'>
+                {deliverablesTags?.map((x, key) => <Tag key={key} title={x.value} isGrey={x.isCustom} />)}
+              </Grid>
+            </Box>
           </Grid>
         </Grid>
       </Box >
