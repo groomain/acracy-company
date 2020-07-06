@@ -24,12 +24,11 @@ import styles from './styles';
 
 import { languages, seniorityValues } from './options';
 
-const LeadCreationForm = ({ sendValues, ...props }) => {
+const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, handleChange, ...props }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const classes = styles();
 
-  const { values, errors, touched, handleBlur, handleChange } = props;
   const { frequency, workspace, duration, durationType, missionTitle, budgetType, profile, profilesNumber, seniority } = values;
 
   let leadCreationStep = 1; // the dashboard page
@@ -597,14 +596,14 @@ const LeadCreationForm = ({ sendValues, ...props }) => {
 
           {/* Seniority */}
           <Grid container direction='column'>
-            <Typography variant={'body1'}>{t('leadCreation.profileSeniority')}</Typography>
+            <Typography variant={'body1'}>{t('leadCreation.profileSeniority') + '*'}</Typography>
             <CustomSelect
               name="seniority"
               optionsValues={seniorityValues}
               onBlur={handleBlur('phonePrefix')}
               onChange={handleChange}
               value={seniority}
-              disabledOption={seniorityValues[0]}
+              error={!!touched.seniority && !!errors.seniority}
             />
           </Grid>
         </Grid>

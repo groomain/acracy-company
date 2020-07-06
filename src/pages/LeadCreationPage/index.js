@@ -212,6 +212,7 @@ const LeadCreationPage = () => {
     budget: Yup.number().required(),
     budgetType: Yup.string().required(),
     profilesNumber: Yup.number().required(),
+    seniority: Yup.string().required()
   });
 
   return (
