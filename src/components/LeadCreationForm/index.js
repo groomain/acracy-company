@@ -22,7 +22,7 @@ import { leadSave } from '../../pages/LeadCreationPage/index';
 import clsx from 'clsx';
 import styles from './styles';
 
-import { languages } from './options';
+import { languages, seniorityValues } from './options';
 
 const LeadCreationForm = ({ sendValues, ...props }) => {
   const { t } = useTranslation();
@@ -30,7 +30,7 @@ const LeadCreationForm = ({ sendValues, ...props }) => {
   const classes = styles();
 
   const { values, errors, touched, handleBlur, handleChange } = props;
-  const { frequency, workspace, duration, durationType, missionTitle, budgetType, profile, profilesNumber } = values;
+  const { frequency, workspace, duration, durationType, missionTitle, budgetType, profile, profilesNumber, seniority } = values;
 
   let leadCreationStep = 1; // the dashboard page
   const [activeStep, setActiveStep] = useState(leadCreationStep);
@@ -594,6 +594,19 @@ const LeadCreationForm = ({ sendValues, ...props }) => {
                   </Grid>}
               </Box>
             </Grid>}
+
+          {/* Seniority */}
+          <Grid container direction='column'>
+            <Typography variant={'body1'}>{t('leadCreation.profileSeniority')}</Typography>
+            <CustomSelect
+              name="seniority"
+              optionsValues={seniorityValues}
+              onBlur={handleBlur('phonePrefix')}
+              onChange={handleChange}
+              value={seniority}
+              disabledOption={seniorityValues[0]}
+            />
+          </Grid>
         </Grid>
       </Box >
     )

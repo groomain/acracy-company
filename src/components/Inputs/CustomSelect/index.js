@@ -34,7 +34,7 @@ export const CustomSelect = ({ label, value, placeholder, type, error, isMulti, 
         fullWidth
         multiple={isMulti}
         context={context}
-        renderValue={isMulti && (context === 'deliverables' ? renderCounter : ((selected) => selected.join(' ')))}
+        renderValue={isMulti ? (context === 'deliverables' ? renderCounter : ((selected) => selected.join(' '))) : () => value}
         value={isMulti ? options : value}
         error={error}
         onOpen={() => setOpen(true)}
@@ -60,6 +60,7 @@ export const CustomSelect = ({ label, value, placeholder, type, error, isMulti, 
       >
         {!isMulti && optionsValues?.map((option) => <MenuItem key={option}
           value={option}
+          disabled={option === optionsValues[0]}
           classes={{ root: `${classes.menuItem} ${classes.menutItemWithFocus}` }}
         >
           {option}

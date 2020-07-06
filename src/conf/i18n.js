@@ -228,7 +228,8 @@ i18n
             profileDetails: "Détails du profil recherché",
             profileexpertises: "Expertises clés du profil*",
             profileSensitivity: 'Sensibilité clé du profil',
-            profileLanguages: 'Langue principale'
+            profileLanguages: 'Langue principale',
+            profileSeniority: "Séniorité souhaitée"
           },
           upload: {
             title: "Documents partagés",

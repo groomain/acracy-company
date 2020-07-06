@@ -193,6 +193,7 @@ const LeadCreationPage = () => {
     budget: leadDraftData?.missionContext?.budget?.value || '',
     budgetType: leadDraftData?.missionContext?.budget?.type || '',
     profilesNumber: leadDraftData?.profilNumber || 1,
+    seniority: "Sélectionnez le niveau d'expérience minimum"
   };
 
   // Form Validation Schema
