@@ -36,7 +36,10 @@ const initialState = Immutable.Map({
   sensitivities: [],
   sensitivitiesLoading: false,
   selectedSensitivity: null,
-  sensitivityPriority: []
+  sensitivityPriority: [],
+  //
+  selectedLanguage: null,
+  languagePriority: []
 });
 
 const { actions, reducer } = createSlice({
@@ -107,6 +110,7 @@ const { actions, reducer } = createSlice({
       .set('expertises', action.payload),
     getExpertisesFailure: (state, action) => state
       .set('getExpertisesLoading', false)
+      .set('expertises', null)
       .set('getExpertisesErrorMessage', action.payload),
     // expansion pannel state for lead creation step 2
     setExpansionPanelOpen: (state, action) => state
@@ -128,7 +132,12 @@ const { actions, reducer } = createSlice({
     setSelectedSensitivity: (state, action) => state
       .set('selectedSensitivity', action.payload),
     setSensitivityPriority: (state, action) => state
-      .set('sensitivityPriority', action.payload)
+      .set('sensitivityPriority', action.payload),
+    // Languages
+    setSelectedLanguage: (state, action) => state
+      .set('selectedLanguage', action.payload),
+    setLanguagePriority: (state, action) => state
+      .set('languagePriority', action.payload)
   }
 });
 
@@ -164,7 +173,10 @@ export const {
   getSensitivitiesSuccess,
   getSensitivitiesFailure,
   setSelectedSensitivity,
-  setSensitivityPriority
+  setSensitivityPriority,
+  //
+  setSelectedLanguage,
+  setLanguagePriority
 } = actions;
 
 export default reducer;

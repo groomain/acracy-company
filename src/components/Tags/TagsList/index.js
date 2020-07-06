@@ -7,7 +7,7 @@ import CustomExpansionPanel from '../../CustomExpansionPanel';
 import CheckableTag from '../CheckableTag';
 import CustomButton from '../../Button';
 
-import { setExpansionPanelOpen, setSelectedExpertise, setExpertisePriorities, setSelectedSensitivity } from '../../../pages/LeadCreationPage/reducer';
+import { setExpansionPanelOpen, setSelectedExpertise, setExpertisePriorities, setSelectedSensitivity, setSelectedLanguage } from '../../../pages/LeadCreationPage/reducer';
 
 export const TagsList = ({ tags, type, maxSelection }) => {
   const { t } = useTranslation();
@@ -26,6 +26,8 @@ export const TagsList = ({ tags, type, maxSelection }) => {
       dispatch(setExpertisePriorities([]))
     } else if (type === 'sensitivity') {
       dispatch(setSelectedSensitivity(selectedTags))
+    } else if (type === 'languages') {
+      dispatch(setSelectedLanguage(selectedTags))
     }
     dispatch(setExpansionPanelOpen(false));
   };
@@ -41,7 +43,7 @@ export const TagsList = ({ tags, type, maxSelection }) => {
             {tagsListWithCheckedKey?.map((tag, key) => <CheckableTag
               key={key}
               title={tag.text}
-              isGrey={!tag.code}
+              isGrey={tag.code === ''}
               handleChecked={() => onCheckChange(key)}
               checked={tag.checked}
               disabled={selectedTags.length >= maxSelection && selectedTags.indexOf(tag) === -1}

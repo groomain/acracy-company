@@ -226,8 +226,9 @@ i18n
             discoverTips: "Découvrez nos conseils pour les briefs parfaits",
             // step 2
             profileDetails: "Détails du profil recherché",
-            profileexpertises: " Expertises clés du profil*",
-            profileSensitivity: 'Sensibilité clé du profil'
+            profileexpertises: "Expertises clés du profil*",
+            profileSensitivity: 'Sensibilité clé du profil',
+            profileLanguages: 'Langue principale'
           },
           upload: {
             title: "Documents partagés",
