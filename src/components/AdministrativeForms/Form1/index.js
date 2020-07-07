@@ -24,7 +24,7 @@ export const Form1 = ({ values, errors, touched, handleBlur, handleChange, handl
     <Grid item container direction={'column'} className={classes.card}>
       <Typography variant={'h2'} className={classes.cardTitle}>Informations générales</Typography>
       <Grid item container direction={'row'}>
-        <Grid item container direction={'column'} xs={7} className={classes.columnContainer}>
+        <Grid item container direction={'column'} xs={6} className={classes.columnContainer}>
           <CustomSelect className={classes.textfield}
             label={'Forme juridique*'}
             optionsValues={['SA Société Anonyme', 'SAS Société par Actions Simplifiées', 'EURL Entreprise Unipersonnelle à Responsabilité Limitée', 'EIRL Entrepreneur Individuel à Responsabilité Limitée', 'EI Entreprise Individuelle', 'AE Auto-Entrepreneur', 'SASU Société par Actions Simplifiée Unipersonnelle', 'SAU Société Anonyme Unipersonnelle', 'GIE Groupement d’Intérêt Économique', 'SARL Société Anonyme à Responsabilité Limitée']}
@@ -78,7 +78,7 @@ export const Form1 = ({ values, errors, touched, handleBlur, handleChange, handl
             handleClick={() => handleSubmit({ legalForm, socialReason, siret, shareCapital, webSite, cityOfRcsRegistration, intraCommunityVAT, VatNumber })}
           />
         </Grid>
-        <Grid item container direction={'column'} xs={5} className={classes.columnContainer}>
+        <Grid item container direction={'column'} xs={6} className={classes.columnContainer}>
           <CustomTextField className={classes.textfield}
             label={'Raison sociale*'}
             placeholder={'Raison sociale'}

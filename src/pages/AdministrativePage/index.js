@@ -12,6 +12,7 @@ import Form2 from "../../components/AdministrativeForms/Form2";
 import Form3 from "../../components/AdministrativeForms/Form3";
 import Form4 from "../../components/AdministrativeForms/Form4";
 import Form5 from "../../components/AdministrativeForms/Form5";
+import Upload from "../../components/Inputs/Upload";
 import { useDispatch, useSelector } from "react-redux";
 import { getCompanyLaunched, putCompanyLaunched } from "./reducer";
 import CustomLoader from "../../components/Loader";
@@ -140,7 +141,7 @@ export const AdministrativePage = (props) => {
               render={props => <Form2 {...props} />}
               initialValues={initialValuesForm2}
               validationSchema={ValidationSchemaForm2}
-              onSubmit={(credentials) => console.log(credentials)}
+              onSubmit={(data) => dispatch(putCompanyLaunched(data))}
             />
           </Element>
 
@@ -149,7 +150,7 @@ export const AdministrativePage = (props) => {
             <Grid item container direction={'column'} className={classes.card}>
               <Typography variant={'h2'} className={classes.cardTitle}>Documents légaux</Typography>
               <Grid item container direction={'column'} style={{ width: '100%', padding: 25 }}>
-
+                <Upload />
               </Grid>
             </Grid>
           </Element>
@@ -162,7 +163,7 @@ export const AdministrativePage = (props) => {
               render={props => <Form3 {...props} />}
               initialValues={initialValuesForm3}
               validationSchema={ValidationSchemaForm3}
-              onSubmit={(credentials) => console.log(credentials)}
+              onSubmit={(data) => dispatch(putCompanyLaunched(data))}
             />
           </Element>
 
@@ -172,7 +173,7 @@ export const AdministrativePage = (props) => {
               render={props => <Form4 {...props} />}
               initialValues={initialValuesForm4}
               validationSchema={ValidationSchemaForm4}
-              onSubmit={(credentials) => console.log(credentials)}
+              onSubmit={(data) => dispatch(putCompanyLaunched(data))}
             />
           </Element>
 
@@ -182,7 +183,7 @@ export const AdministrativePage = (props) => {
               render={props => <Form5 {...props} />}
               initialValues={initialValuesForm5}
               validationSchema={ValidationSchemaForm5}
-              onSubmit={(credentials) => console.log(credentials)}
+              onSubmit={(data) => dispatch(putCompanyLaunched(data))}
             />
           </Element>
         </Grid>
