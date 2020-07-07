@@ -5,6 +5,7 @@ const initialState = Immutable.Map({
   leadSaveLoading: false,
   leadSaveErrorMessage: false,
   leadDraftId: null,
+  leadCreationStep: 0,
   //
   getLeadDraftLoading: false,
   getLeadDraftErrorMessage: null,
@@ -39,7 +40,11 @@ const initialState = Immutable.Map({
   sensitivityPriority: [],
   //
   selectedLanguage: null,
-  languagePriority: []
+  languagePriority: [],
+  //
+  uploadFileLoading: false,
+  leadAttachmentId: null,
+  deleteFileLoading: false,
 });
 
 const { actions, reducer } = createSlice({
@@ -54,7 +59,8 @@ const { actions, reducer } = createSlice({
     leadSaveSuccess: (state, action) => state
       .set('leadSaveLoading', false)
       .set('leadDraftId', action.payload) // leadId
-      .set('leadSaveErrorMessage', null),
+      .set('leadSaveErrorMessage', null)
+      .set('leadCreationStep', 1),
     leadSaveFailure: (state, action) => state
       .set('leadSaveLoading', false)
       .set('leadSaveErrorMessage', action.payload),
@@ -137,7 +143,23 @@ const { actions, reducer } = createSlice({
     setSelectedLanguage: (state, action) => state
       .set('selectedLanguage', action.payload),
     setLanguagePriority: (state, action) => state
-      .set('languagePriority', action.payload)
+      .set('languagePriority', action.payload),
+    // File upload
+    uploadFileLaunched: (state, action) => state
+      .set('uploadFileLoading', true),
+    uploadFileSuccess: (state, action) => state
+      .set('uploadFileLoading', false)
+      .set('leadAttachmentId', action.payload),
+    uploadFileFailure: (state, action) => state
+      .set('uploadFileLoading', false)
+      .set('leadAttachmentId', null),
+    // Delete Uploaded File
+    deleteAttachmentLaunched: (state, action) => state
+      .set('deleteFileLoading', true),
+    deleteAttachmentSuccess: (state, action) => state
+      .set('deleteFileLoading', false),
+    deleteAttachmentFailure: (state, action) => state
+      .set('deleteFileLoading', false)
   }
 });
 
@@ -176,7 +198,15 @@ export const {
   setSensitivityPriority,
   //
   setSelectedLanguage,
-  setLanguagePriority
+  setLanguagePriority,
+  //
+  uploadFileLaunched,
+  uploadFileSuccess,
+  uploadFileFailure,
+  //
+  deleteAttachmentLaunched,
+  deleteAttachmentSuccess,
+  deleteAttachmentFailure,
 } = actions;
 
 export default reducer;

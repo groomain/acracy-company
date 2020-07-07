@@ -1,17 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useDispatch, useSelector } from 'react-redux';
 
-import useFileUpload from './useFileUpload';
 import DarkWrapper from '../../Layout/DarkWrapper';
 import fileIcon from '../../../assets/icons/file-icon.svg';
 import uploadFileIcon from '../../../assets/icons/upload-file.svg';
 import { CloseIcon } from '../../../assets/icons/CloseIcon';
 import { Grid, Typography, Box, IconButton } from '@material-ui/core';
 import styles from './styles';
+import { uploadFileLaunched, deleteAttachmentLaunched } from '../../../pages/LeadCreationPage/reducer';
 
-import CustomSnackBar from '../../SnackBar';
-
-const Input = (props) => {
+const UploadInput = (props) => {
   const classes = styles();
 
   return (
@@ -29,48 +28,51 @@ const Input = (props) => {
 }
 
 export const Upload = () => {
-  const {
-    files,
-    pending,
-    next,
-    uploading,
-    uploaded,
-    status,
-    onSubmit,
-    onChange,
-  } = useFileUpload();
-
   const classes = styles();
   const { t } = useTranslation();
+  const dispatch = useDispatch();
 
-  const [open, setOpen] = useState();
-  const [uploadedFiles, setUploadedFiles] = useState();
+  const [uploadedFiles, setUploadedFiles] = useState([]);
+  const [fileSizeError, setFileSizeError] = useState(false);
 
-  useEffect(() => {
-    setUploadedFiles(files)
-  }, [files])
+  const { leadAttachmentId, leadDraftId, } = useSelector(state => ({
+    leadAttachmentId: state.getIn(['leadCreation', 'leadAttachmentId']),
+    leadDraftId: state.getIn(['leadCreation', 'leadDraftId']),
+  }));
+
+  const handleChange = (e) => {
+    const fileList = e.target.files;
+    const arrFiles = Array.from(fileList)
+
+    if (fileList.length) {
+      const files = arrFiles.map((file, index) => {
+        const src = window.URL.createObjectURL(file)
+        return { file, id: index, src, leadId: leadDraftId }
+      })
+      setUploadedFiles(files);
+      dispatch(uploadFileLaunched(files))
+    }
+
+    if (fileList[0].size > 1.5e+7) {
+      setFileSizeError(true)
+    }
+  }
 
   const handleFileDelete = () => {
     setUploadedFiles([]);
-    setOpen(false)
+    dispatch(deleteAttachmentLaunched(leadAttachmentId))
   };
-
-  useEffect(() => {
-    if (status === "UPLOAD_ERROR") {
-      setOpen(true)
-    }
-  }, [status])
 
   return (
     <>
       <Box my={3}>
-        <Typography variant="h1">{t('upload.title')}</Typography>
+        <Typography variant="h1">{t('upload.title.single')}</Typography>
       </Box>
       <Box my={2}>
         <Typography variant="body1">{t('upload.subtitle')}</Typography>
       </Box>
       <DarkWrapper justify='center' alignItems='center'>
-        <form className="form" onSubmit={onSubmit}>
+        <form className="form">
           <Grid container>
             {uploadedFiles?.map(({ file, src, id }, index) => {
               return (
@@ -87,7 +89,7 @@ export const Upload = () => {
                       </IconButton>
                     </div>
                     <Box my={1}>
-                      <Typography className={status === "UPLOAD_ERROR" ? classes.maxedFileSize : null}>{file.name}</Typography>
+                      <Typography className={fileSizeError ? classes.maxedFileSize : null}>{file.name}</Typography>
                     </Box>
                   </Grid>
                 </Box>
@@ -95,7 +97,7 @@ export const Upload = () => {
             })}
             {uploadedFiles?.length < 1 && (
               <Grid container direction="column" alignItems="center" className={classes.uploadIconWrapper}>
-                <Input onChange={onChange} />
+                <UploadInput onChange={handleChange} />
                 <Box my={1}>
                   {t('upload.addDocument')}
                 </Box>
@@ -104,9 +106,6 @@ export const Upload = () => {
           </Grid>
         </form>
       </DarkWrapper>
-      {status === "UPLOAD_ERROR" && (
-        <CustomSnackBar message={t('upload.maxFileSize')} open={open} setOpen={setOpen} error />
-      )}
       <Box my={2}>
         <Typography variant="body1" color="primary">{t('upload.confidentialityText')}</Typography>
       </Box>
