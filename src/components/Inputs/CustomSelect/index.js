@@ -4,7 +4,7 @@ import styles from '../styles';
 import KeyboardArrowDownRoundedIcon from '@material-ui/icons/KeyboardArrowDownRounded';
 import CustomCheckbox from '../../CheckBox';
 
-export const CustomSelect = ({ label, value, placeholder, type, error, isMulti, onUpdateSelection, optionsValues, handleChangeOut, context, ...props }) => {
+export const CustomSelect = ({ label, value, placeholder, type, error, isMulti, onUpdateSelection, optionsValues, handleChangeOut, context, withDisabledValue, ...props }) => {
   const classes = styles();
 
   const [open, setOpen] = useState(false);
@@ -34,7 +34,9 @@ export const CustomSelect = ({ label, value, placeholder, type, error, isMulti, 
         fullWidth
         multiple={isMulti}
         context={context}
-        renderValue={isMulti ? (context === 'deliverables' ? renderCounter : ((selected) => selected.join(' '))) : () => value}
+        renderValue={isMulti
+          ? (context === 'deliverables' ? renderCounter : ((selected) => selected.join(' ')))
+          : () => value}
         value={isMulti ? options : value}
         error={error}
         onOpen={() => setOpen(true)}
@@ -60,7 +62,7 @@ export const CustomSelect = ({ label, value, placeholder, type, error, isMulti, 
       >
         {!isMulti && optionsValues?.map((option) => <MenuItem key={option}
           value={option}
-          disabled={option === optionsValues[0]}
+          disabled={withDisabledValue && option === optionsValues[0]}
           classes={{ root: `${classes.menuItem} ${classes.menutItemWithFocus}` }}
         >
           {option}

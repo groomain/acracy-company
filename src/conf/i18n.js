@@ -233,7 +233,10 @@ i18n
             deliverablesDetails: "Détails des livrables"
           },
           upload: {
-            title: "Documents partagés",
+            title: {
+              single: "Document partagé",
+              multiple: "Documents partagés"
+            },
             subtitle: "N'hésitez pas à partager tout document utile (brief, job description, références)",
             confidentialityText: "Acracy s’engage à respecter la confidentialité des informations partagées. Tum dicere exorsus est consecutus? laudem et via procedat oratio quaerimus igitur, quid.",
             addDocument: "Ajouter un document",

@@ -32,22 +32,23 @@ const LeadCreationPage = () => {
 
   const [disableAppbarSaveBtn, setDisableAppbarSaveBtn] = useState(true);
 
-  useEffect(() => {
-    if (location.search) {
-      leadId = location.search.split('=')[1];
-      dispatch(getLeadDraftLaunched(leadId))
-    }
-  }, [dispatch, location.search]);
-
-  const { leadSaveLoading, leadDraftData, leadDraftSearchData, deliverablesArray, dateFromCalendar, dailyRate, leadCreationStep } = useSelector(state => ({
+  const { leadSaveLoading, leadDraftData, leadDraftSearchData, deliverablesArray, dateFromCalendar, dailyRate, leadCreationStep, leadDraftId } = useSelector(state => ({
     leadSaveLoading: state.getIn(['leadCreation', 'leadSaveLoading']),
     leadDraftSearchData: state.getIn(['leadCreation', 'leadDraftSearchData']),
     deliverablesArray: state.getIn(['leadCreation', 'deliverablesArray']),
     dateFromCalendar: state.getIn(['leadCreation', 'dateFromCalendar']),
     dailyRate: state.getIn(['leadCreation', 'dailyRate']),
     leadDraftData: state.getIn(['leadCreation', 'leadDraftData']),
-    leadCreationStep: state.getIn(['leadCreation', 'leadCreationStep'])
+    leadCreationStep: state.getIn(['leadCreation', 'leadCreationStep']),
+    leadDraftId: state.getIn(['leadCreation', 'leadDraftId'])
   }));
+
+  useEffect(() => {
+    if (location.search || leadDraftId) {
+      leadId = location.search.split('=')[1] || leadDraftId;
+      dispatch(getLeadDraftLaunched(leadId))
+    }
+  }, [dispatch, location.search]);
 
   useEffect(() => {
     if (leadDraftSearchData?.search !== null) {
@@ -149,7 +150,7 @@ const LeadCreationPage = () => {
       search: getSearchResult || '',
       missionContext: {
         title: values.missionTitle || '',
-        startDate: dateFromCalendar || '', // operateur ternaire pour remettre profil à 0 quand profil a été recherché
+        startDate: new Date(dateFromCalendar).toISOString() || '', // operateur ternaire pour remettre profil à 0 quand profil a été recherché
         format: values.workspace || '',
         weeklyRythm: values.frequency || '',
         duration: {
@@ -223,7 +224,7 @@ const LeadCreationPage = () => {
       className={classes.root}
     >
       <AppBar position="fixed" className={classes.appbar}>
-        <CustomSnackBar message={"Test de snackBar"} open={open} setOpen={setOpen} />
+        <CustomSnackBar />
         <Toolbar className={classes.toolbar}>
           <NavLink to={'/'} className={classes.logo}>
             <img src={acracyLogo} alt="acracyLogo" />
@@ -246,12 +247,13 @@ const LeadCreationPage = () => {
           initialValues={initialValues}
           validationSchema={ValidationSchema}
           onSubmit={leadSave}
+          enableReinitialize
           ref={ref}
         />
       </Main>
       <Sidebar>
         <Grid container style={{ position: 'sticky', top: '10rem' }}>
-          {(leadCreationStep == 1) ? (
+          {(leadCreationStep === 1) ? (
             <>
               <Grid item className={classes.briefTipRoot}>
                 <Tip title='#01' subtitle='Mieux vaut trop' description={t('leadCreation.tip1')} />

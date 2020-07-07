@@ -23,13 +23,16 @@ import clsx from 'clsx';
 import styles from './styles';
 
 import { languages, seniorityValues } from './options';
+import UploadInput from '../Inputs/Upload';
+
+import { checkLength } from '../../utils/services/validationChecks';
 
 const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, handleChange, ...props }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const classes = styles();
 
-  const { frequency, workspace, duration, durationType, missionTitle, budgetType, profile, profilesNumber, seniority, customDeliverable } = values;
+  const { frequency, workspace, duration, durationType, missionTitle, budget, budgetType, profile, profilesNumber, seniority, customDeliverable, companyAddress } = values;
 
   let leadCreationStep = 1; // the dashboard page
   const [activeStep, setActiveStep] = useState(leadCreationStep);
@@ -40,11 +43,12 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
   const [withCommission, setWithCommission] = useState();
   const [openCallMeModal, setOpenCallMeModal] = useState(false);
   const [disableCallMeBtn, setDisableCallMeBtn] = useState(true);
+  const [disableGoToFinalizationBtn, setDisableGoToFinalizationBtn] = useState(true);
 
   const { leadDraftSearchData, deliverablesArray, expertises,
     selectedExpertiseList, expansionPanelOpen, expertisePriorities,
-    sensitivities, selectedSensitivity, sensitivityPriority,
-    selectedLanguage, languagePriority } = useSelector(state => ({
+    sensitivities, selectedSensitivity, sensitivityPriority, dateFromCalendar,
+    selectedLanguage, languagePriority, leadSaveLoading, updateLeadDraftLoading } = useSelector(state => ({
       dateFromCalendar: state.getIn(['leadCreation', 'dateFromCalendar']),
       leadDraftSearchData: state.getIn(['leadCreation', 'leadDraftSearchData']),
       deliverablesArray: state.getIn(['leadCreation', 'deliverablesArray']),
@@ -57,10 +61,12 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
       selectedSensitivity: state.getIn(['leadCreation', 'selectedSensitivity']),
       sensitivityPriority: state.getIn(['leadCreation', 'sensitivityPriority']),
       selectedLanguage: state.getIn(['leadCreation', 'selectedLanguage']),
-      languagePriority: state.getIn(['leadCreation', 'languagePriority'])
+      languagePriority: state.getIn(['leadCreation', 'languagePriority']),
+      leadSaveLoading: state.getIn(['leadCreation', 'leadSaveLoading']),
+      updateLeadDraftLoading: state.getIn(['leadCreation', 'updateLeadDraftLoading']),
     }));
 
-  useEffect(() => {
+  useEffect(() => { // Disable the "need help" button
     if (leadDraftSearchData?.search !== null) {
       setDisableCallMeBtn(false)
     } else if (leadDraftSearchData?.search === null) {
@@ -278,6 +284,57 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
     }
   }
 
+  const [customChecks, setCustomChecks] = useState(false);
+
+  useEffect(() => { // Check empty fields before step 2
+    if (searchedCategory?.TYPE === "PROFILE") {
+      if (deliverables.includes("Ne figure pas dans la liste")) {
+        if (workspace === "Peu importe" || workspace === "En remote uniquement") {
+          setCustomChecks(checkLength(customDeliverable, 0))
+        } else {
+          setCustomChecks(checkLength(customDeliverable, 0) && checkLength(companyAddress, 0))
+        }
+      } else {
+        if (workspace === "Peu importe" || workspace === "En remote uniquement") {
+          setCustomChecks(true)
+        } else {
+          setCustomChecks(checkLength(companyAddress, 0))
+        }
+      }
+    } else {
+      if (workspace === "Sur place uniquement" || workspace === "En remote et sur place") {
+        setCustomChecks(checkLength(companyAddress, 0))
+      } else {
+        setCustomChecks(true)
+      }
+    }
+
+    if (
+      leadDraftSearchData?.search
+      && deliverables.length > 0
+      && customChecks
+      && checkLength(missionTitle, 0)
+      && dateFromCalendar
+      && workspace
+      && frequency
+      && checkLength(duration, 0)
+      && durationType
+      && checkLength(budget, 0)
+      && budgetType
+      && profilesNumber
+    ) {
+      setDisableGoToFinalizationBtn(false)
+    } else {
+      setDisableGoToFinalizationBtn(true)
+    }
+  }, [leadDraftSearchData, deliverables, searchedCategory, customChecks, customDeliverable, profile, missionTitle, dateFromCalendar, workspace, frequency,
+    duration, durationType, budget, budgetType, profilesNumber, companyAddress]);
+
+  const handleGoToFinalization = () => {
+    let redirect = false;
+    leadSave(leadDraftSearchData, deliverablesArray, values, redirect)
+  }
+
   const setLeadSynthesis = () => {
     return (
       <Box className={classes.stepContent}>
@@ -417,7 +474,7 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
             <Grid item>
               <CustomButton
                 type="button"
-                theme='primaryButton'
+                theme={disableCallMeBtn ? 'disabledOutlined' : 'primaryButton'}
                 disabled={disableCallMeBtn}
                 handleClick={handleCallMe}
                 title={t('leadCreation.callMe')}
@@ -427,10 +484,11 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
             <Grid item style={{ paddingLeft: '1.2rem' }}>
               <CustomButton
                 type="button"
-                theme="filledButton"
-                handleClick={handleStep(1)}
+                theme={disableGoToFinalizationBtn ? 'disabledFilled' : 'filledButton'}
+                handleClick={handleGoToFinalization}
                 title={t('leadCreation.finishBrief')}
-                disabled={disabled}
+                loading={leadSaveLoading || updateLeadDraftLoading}
+                disabled={disableGoToFinalizationBtn}
               >
               </CustomButton>
             </Grid>
@@ -611,6 +669,7 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
               onChange={handleChange}
               value={seniority}
               error={!!touched.seniority && !!errors.seniority}
+              withDisabledValue
             />
           </Grid>
 
@@ -624,6 +683,9 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
             </Box>
           </Grid>
         </Grid>
+
+        {/* Upload */}
+        <UploadInput />
       </Box >
     )
   }
