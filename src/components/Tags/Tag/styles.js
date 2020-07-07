@@ -40,5 +40,8 @@ export default makeStyles(theme => ({
   checkbox: {
     padding: 0,
     marginLeft: '1rem'
+  },
+  isGrey: {
+    background: theme.palette.secondary.light
   }
 }));
