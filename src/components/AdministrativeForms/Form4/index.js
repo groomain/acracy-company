@@ -6,6 +6,7 @@ import CustomButton from "../../Button";
 import Typography from "@material-ui/core/Typography";
 import CustomSelect from "../../Inputs/CustomSelect";
 import Grid from "@material-ui/core/Grid";
+import areaCodes from "../../../utils/areaCodes.json";
 
 export const Form4 = ({ values, errors, touched, handleBlur, handleChange, handleSubmit }) => {
   const { t } = useTranslation();
@@ -58,11 +59,7 @@ export const Form4 = ({ values, errors, touched, handleBlur, handleChange, handl
                 <Grid item xs={5}>
                   <CustomSelect
                     name='phonePrefix'
-                    optionsValues={[
-                      'Fr : +33',
-                      'Blg : +32',
-                      'It : +39'
-                    ]}
+                    optionsValues={areaCodes}
                     value={phonePrefix}
                     onBlur={handleBlur('phonePrefix')}
                     onChange={handleChange}

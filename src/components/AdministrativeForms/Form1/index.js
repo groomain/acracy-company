@@ -27,7 +27,7 @@ export const Form1 = ({ values, errors, touched, handleBlur, handleChange, handl
         <Grid item container direction={'column'} xs={7} className={classes.columnContainer}>
           <CustomSelect className={classes.textfield}
             label={'Forme juridique*'}
-            optionsValues={['SA Société Anonyme', 'SAS Société par Actions Simplifiées', 'EURL Entreprise Unipersonnelle à Responsabilité Limitée', 'EIRL Entrepreneur Individuel à Responsabilité Limitée', 'EI Entreprise Individuelle', 'AE Auto-Entrepreneur', 'SASU Société par Actions Simplifiée Unipersonnelle', 'SAU Société Anonyme Unipersonnelle', 'GIE Groupement d’Intérêt Économique']}
+            optionsValues={['SA Société Anonyme', 'SAS Société par Actions Simplifiées', 'EURL Entreprise Unipersonnelle à Responsabilité Limitée', 'EIRL Entrepreneur Individuel à Responsabilité Limitée', 'EI Entreprise Individuelle', 'AE Auto-Entrepreneur', 'SASU Société par Actions Simplifiée Unipersonnelle', 'SAU Société Anonyme Unipersonnelle', 'GIE Groupement d’Intérêt Économique', 'SARL Société Anonyme à Responsabilité Limitée']}
             placeholder={'Forme juridique'}
             name={'legalForm'}
             value={legalForm}

@@ -7,6 +7,7 @@ import Typography from "@material-ui/core/Typography";
 import CustomSelect from "../../Inputs/CustomSelect";
 import Grid from "@material-ui/core/Grid";
 import CustomSwitch from "../../Switch";
+import countries from "../../../utils/countries.json";
 
 export const Form3 = ({ values, errors, touched, handleBlur, handleChange, handleSubmit }) => {
   const { t } = useTranslation();
@@ -65,7 +66,7 @@ export const Form3 = ({ values, errors, touched, handleBlur, handleChange, handl
             </Grid>
             <CustomSelect className={classes.select}
               label={'Pays*'}
-              optionsValues={['test', 'test2']}
+              optionsValues={countries}
               placeholder={'Pays'}
               name={'country'}
               value={country}
