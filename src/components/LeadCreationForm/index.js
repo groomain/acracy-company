@@ -16,19 +16,20 @@ import { Typography, Grid, Stepper, Step, StepLabel, StepButton, Box, InputAdorn
 import {
   setLeadDraftSearchData, setDeliverablesArray, setDailyRate,
   changeLeadStatusLaunched, getExpertisesLaunched, setExpertisePriorities,
-  getSensitivitiesLaunched, setSensitivityPriority
+  getSensitivitiesLaunched, setSensitivityPriority, setLanguagePriority
 } from '../../pages/LeadCreationPage/reducer';
 import { leadSave } from '../../pages/LeadCreationPage/index';
 import clsx from 'clsx';
 import styles from './styles';
 
-const LeadCreationForm = ({ sendValues, ...props }) => {
+import { languages, seniorityValues } from './options';
+
+const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, handleChange, ...props }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const classes = styles();
 
-  const { values, errors, touched, handleBlur, handleChange } = props;
-  const { frequency, workspace, duration, durationType, missionTitle, budgetType, profile, profilesNumber } = values;
+  const { frequency, workspace, duration, durationType, missionTitle, budgetType, profile, profilesNumber, seniority } = values;
 
   let leadCreationStep = 1; // the dashboard page
   const [activeStep, setActiveStep] = useState(leadCreationStep);
@@ -42,7 +43,8 @@ const LeadCreationForm = ({ sendValues, ...props }) => {
 
   const { leadDraftSearchData, deliverablesArray, expertises,
     selectedExpertiseList, expansionPanelOpen, expertisePriorities,
-    sensitivities, selectedSensitivity, sensitivityPriority } = useSelector(state => ({
+    sensitivities, selectedSensitivity, sensitivityPriority,
+    selectedLanguage, languagePriority } = useSelector(state => ({
       dateFromCalendar: state.getIn(['leadCreation', 'dateFromCalendar']),
       leadDraftSearchData: state.getIn(['leadCreation', 'leadDraftSearchData']),
       deliverablesArray: state.getIn(['leadCreation', 'deliverablesArray']),
@@ -53,7 +55,9 @@ const LeadCreationForm = ({ sendValues, ...props }) => {
       expertisePriorities: state.getIn(['leadCreation', 'expertisePriorities']),
       sensitivities: state.getIn(['leadCreation', 'sensitivities']),
       selectedSensitivity: state.getIn(['leadCreation', 'selectedSensitivity']),
-      sensitivityPriority: state.getIn(['leadCreation', 'sensitivityPriority'])
+      sensitivityPriority: state.getIn(['leadCreation', 'sensitivityPriority']),
+      selectedLanguage: state.getIn(['leadCreation', 'selectedLanguage']),
+      languagePriority: state.getIn(['leadCreation', 'languagePriority'])
     }));
 
   useEffect(() => {
@@ -474,11 +478,13 @@ const LeadCreationForm = ({ sendValues, ...props }) => {
 
   const [expertisePriorityList, setExpertisePriorityList] = useState();
   const [sensitivityPriorityList, setSensitivityPriorityList] = useState();
+  const [languagePriorityList, setLanguagePriorityList] = useState();
 
   useEffect(() => {
     setExpertisePriorityList(selectedExpertiseList?.map(x => ({ ...x, priority: false })));
     setSensitivityPriorityList(selectedSensitivity?.map(x => ({ ...x, priority: false })));
-  }, [selectedExpertiseList, selectedSensitivity]);
+    setLanguagePriorityList(selectedLanguage?.map(x => ({ ...x, priority: false })))
+  }, [selectedExpertiseList, selectedSensitivity, selectedLanguage]);
 
   const handlePriorityCheck = (index) => {
     const prio = expertisePriorityList?.map((item, i) => (index === i) ? { ...item, priority: !item.priority } : item);
@@ -490,6 +496,12 @@ const LeadCreationForm = ({ sendValues, ...props }) => {
     const prio = sensitivityPriorityList?.map((item, i) => (index === i) ? { ...item, priority: !item.priority } : item);
     setSensitivityPriorityList(prio);
     dispatch(setSensitivityPriority(prio.filter(x => x.priority).map(x => x.text)));
+  }
+
+  const handleLanguageCheck = (index) => {
+    const prio = languagePriorityList?.map((item, i) => (index === i) ? { ...item, priority: !item.priority } : item);
+    setLanguagePriorityList(prio);
+    dispatch(setLanguagePriority(prio.filter(x => x.priority).map(x => x.text)))
   }
 
   const setLeadDetails = () => {
@@ -553,6 +565,47 @@ const LeadCreationForm = ({ sendValues, ...props }) => {
                   </Grid>}
               </Box>
             </Grid>}
+
+          {/* Languages */}
+          {languages &&
+            <Grid item xs={12} className={classes.fieldRows}>
+              <Box my={2.5}>
+                <Grid container justify="space-between">
+                  <Typography variant="h4">{t('leadCreation.profileLanguages')}</Typography>
+                </Grid>
+                <TagsList
+                  tags={languages}
+                  panelTitle={t('leadCreation.profileLanguages')}
+                  type='languages'
+                  maxSelection={1}
+                />
+                {expansionPanelOpen !== 'languages' &&
+                  <Grid item container direction='row'>
+                    {languagePriorityList?.map((tag, key) => (
+                      <Tag key={key}
+                        title={tag.text}
+                        isPrimaryColor
+                        tagType="Critère indispensable"
+                        isWithCheckbox
+                        onCheckChange={() => handleLanguageCheck(key)}
+                        checkedArray={languagePriority}
+                      />))}
+                  </Grid>}
+              </Box>
+            </Grid>}
+
+          {/* Seniority */}
+          <Grid container direction='column'>
+            <Typography variant={'body1'}>{t('leadCreation.profileSeniority') + '*'}</Typography>
+            <CustomSelect
+              name="seniority"
+              optionsValues={seniorityValues}
+              onBlur={handleBlur('phonePrefix')}
+              onChange={handleChange}
+              value={seniority}
+              error={!!touched.seniority && !!errors.seniority}
+            />
+          </Grid>
         </Grid>
       </Box >
     )
