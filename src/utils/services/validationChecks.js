@@ -4,7 +4,7 @@
  * @returns true when the given string is greater than the specified number
  */
 export const checkLength = (text, length) => {
-  if (text?.length > length) {
+  if (text?.trim().length > length) {
     return true;
   }
   return false;

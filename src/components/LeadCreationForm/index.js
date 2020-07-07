@@ -25,6 +25,8 @@ import styles from './styles';
 import { languages, seniorityValues } from './options';
 import UploadInput from '../Inputs/Upload';
 
+import { checkLength } from '../../utils/services/validationChecks';
+
 const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, handleChange, ...props }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -288,20 +290,20 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
     if (searchedCategory?.TYPE === "PROFILE") {
       if (deliverables.includes("Ne figure pas dans la liste")) {
         if (workspace === "Peu importe" || workspace === "En remote uniquement") {
-          setCustomChecks(customDeliverable.trim().length > 0)
+          setCustomChecks(checkLength(customDeliverable, 0))
         } else {
-          setCustomChecks(customDeliverable.trim().length > 0 && companyAddress.trim().length > 0)
+          setCustomChecks(checkLength(customDeliverable, 0) && checkLength(companyAddress, 0))
         }
       } else {
         if (workspace === "Peu importe" || workspace === "En remote uniquement") {
           setCustomChecks(true)
         } else {
-          setCustomChecks(companyAddress.trim().length > 0)
+          setCustomChecks(checkLength(companyAddress, 0))
         }
       }
     } else {
       if (workspace === "Sur place uniquement" || workspace === "En remote et sur place") {
-        setCustomChecks(companyAddress.trim().length > 0)
+        setCustomChecks(checkLength(companyAddress, 0))
       } else {
         setCustomChecks(true)
       }
@@ -311,13 +313,13 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
       leadDraftSearchData?.search
       && deliverables.length > 0
       && customChecks
-      && missionTitle?.trim().length > 0
+      && checkLength(missionTitle, 0)
       && dateFromCalendar
       && workspace
       && frequency
-      && duration.trim().length > 0
+      && checkLength(duration, 0)
       && durationType
-      && budget?.trim().length > 0
+      && checkLength(budget, 0)
       && budgetType
       && profilesNumber
     ) {
