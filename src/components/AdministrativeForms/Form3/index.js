@@ -12,9 +12,9 @@ import countries from "../../../utils/countries.json";
 export const Form3 = ({ values, errors, touched, handleBlur, handleChange, handleSubmit }) => {
   const { t } = useTranslation();
   const classes = styles();
-  const [switchAddress, setSwitchAddress] = useState(false);
 
   const { sameAddress, address, zipCode, city, country } = values;
+  const [switchAddress, setSwitchAddress] = useState(sameAddress === true ? true : false);
 
   return (
     <Grid item container direction={'column'} className={classes.card}>

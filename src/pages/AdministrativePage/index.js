@@ -13,7 +13,7 @@ import Form3 from "../../components/AdministrativeForms/Form3";
 import Form4 from "../../components/AdministrativeForms/Form4";
 import Form5 from "../../components/AdministrativeForms/Form5";
 import { useDispatch, useSelector } from "react-redux";
-import { getCompanyLaunched } from "./reducer";
+import { getCompanyLaunched, putCompanyLaunched } from "./reducer";
 import CustomLoader from "../../components/Loader";
 
 export const AdministrativePage = (props) => {
@@ -100,8 +100,8 @@ export const AdministrativePage = (props) => {
     firstName: Yup.string().required(),
     lastName: Yup.string().required(),
     email: Yup.string().required(),
-    phonePrefix: Yup.number().required(),
-    phoneNumber: Yup.string().required(),
+    phonePrefix: Yup.string().required(),
+    phoneNumber: Yup.number().required(),
   });
 
   const initialValuesForm5 = {
@@ -129,7 +129,8 @@ export const AdministrativePage = (props) => {
               render={props => <Form1 {...props} />}
               initialValues={initialValuesForm1}
               validationSchema={ValidationSchemaForm1}
-              onSubmit={(credentials) => console.log(credentials)}
+              enableReinitialize
+              onSubmit={(data) => dispatch(putCompanyLaunched(data))}
             />
           </Element>
 

@@ -15,7 +15,7 @@ function* getCompany(action) {
     //   }
     // });
 
-    yield delay(3000); // for mock
+    yield delay(2000); // for mock
     yield put(getCompanySuccess(companyData));
   } catch (error) {
     console.log(error);
@@ -25,13 +25,15 @@ function* getCompany(action) {
   }
 }
 
-function* updateCompany(action) {
+function* doUpdateCompany(action) {
+  console.log('action :', action);
   try {
     let companyData = companyMock;
     //     const companyData = yield API.put(config.apiGateway.NAME, `/companies/${id}`, {
     //       header: {
     //         'x-api-key': config.apiKey
-    //       }
+    //       },
+    // body: action.payload
     // })
     yield put(putCompanySuccess(companyData))
 
@@ -45,5 +47,6 @@ function* updateCompany(action) {
 export default function* administrativeSaga() {
   yield all([
     takeLatest('Administrative/getCompanyLaunched', getCompany),
+    takeLatest('Administrative/putCompanyLaunched', doUpdateCompany)
   ]);
 }
