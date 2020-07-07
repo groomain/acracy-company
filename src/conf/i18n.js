@@ -229,7 +229,8 @@ i18n
             profileexpertises: "Expertises clés du profil*",
             profileSensitivity: 'Sensibilité clé du profil',
             profileLanguages: 'Langue principale',
-            profileSeniority: "Séniorité souhaitée"
+            profileSeniority: "Séniorité souhaitée",
+            deliverablesDetails: "Détails des livrables"
           },
           upload: {
             title: "Documents partagés",
