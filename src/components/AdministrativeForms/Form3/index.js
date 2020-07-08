@@ -30,8 +30,7 @@ export const Form3 = ({ values, errors, touched, handleBlur, handleChange, handl
             onChange={handleChange}
             error={!!touched.sameAddress && !!errors.sameAddress}
           />
-          <Typography variant={'body1'}>L'adresse de facturation est identique à celle du siège
-                        social</Typography>
+          <Typography variant={'body1'}>L'adresse de facturation est identique à celle du siège social</Typography>
         </Grid>
         {!switchAddress &&
           <Grid item container direction={'column'}>

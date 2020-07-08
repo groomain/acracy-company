@@ -7,12 +7,14 @@ import * as Scroll from "react-scroll/modules";
 import * as Yup from "yup";
 import { Formik } from "formik";
 import { useTranslation } from "react-i18next";
+import { getAreaCodeFromNumber } from "../../utils/services/format";
 import Form1 from "../../components/AdministrativeForms/Form1";
 import Form2 from "../../components/AdministrativeForms/Form2";
 import Form3 from "../../components/AdministrativeForms/Form3";
 import Form4 from "../../components/AdministrativeForms/Form4";
 import Form5 from "../../components/AdministrativeForms/Form5";
 import Upload from "../../components/Inputs/Upload";
+import areaCodes from "../../utils/areaCodes.json";
 import { useDispatch, useSelector } from "react-redux";
 import { getCompanyLaunched, putCompanyLaunched } from "./reducer";
 import CustomLoader from "../../components/Loader";
@@ -45,7 +47,7 @@ export const AdministrativePage = (props) => {
     webSite: companyData?.webSite || '',
     cityOfRcsRegistration: companyData?.administrativeProfile?.cityOfRcsRegistration || '',
     intraCommunityVAT: companyData?.administrativeProfile?.intraCommunityVAT || '',
-    VatNumber: companyData?.administrativeProfile?.VatNumber || '',
+    vatNumber: companyData?.administrativeProfile?.vatNumber || '',
   };
 
   const ValidationSchemaForm1 = Yup.object().shape({
@@ -56,7 +58,7 @@ export const AdministrativePage = (props) => {
     webSite: Yup.string(),
     cityOfRcsRegistration: Yup.string(),
     intraCommunityVAT: Yup.bool(),
-    VatNumber: Yup.number(),
+    vatNumber: Yup.number(),
   });
 
   const initialValuesForm2 = {
@@ -93,7 +95,7 @@ export const AdministrativePage = (props) => {
     firstName: companyData?.administrativeProfile?.billing?.firstName || '',
     lastName: companyData?.administrativeProfile?.billing?.lastName || '',
     email: companyData?.administrativeProfile?.billing?.email || '',
-    phonePrefix: companyData?.administrativeProfile?.billing?.phone?.code || '',
+    phonePrefix: companyData?.administrativeProfile?.billing?.phone?.code ? getAreaCodeFromNumber(companyData?.administrativeProfile?.billing?.phone?.code) : '',
     phoneNumber: companyData?.administrativeProfile?.billing?.phone?.number || '',
   };
 

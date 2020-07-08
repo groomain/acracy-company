@@ -65,12 +65,12 @@ function* doGetAttachments() {
 
 function* doUploadAttachment() {
   try {
-    const attachments = yield API.post(config.apiGateway.NAME, `/attachments`, {
+    const attachment = yield API.post(config.apiGateway.NAME, `/attachments`, {
       header: {
         'x-api-key': config.apiKey
       },
     })
-    yield put(uploadAttachmentSuccess(attachments))
+    yield put(uploadAttachmentSuccess(attachment))
     yield put(openSnackBar({ message: "Votre document a bien été uploadé", error: false }));
   } catch (error) {
     yield put(uploadAttachmentFailure())
@@ -81,12 +81,12 @@ function* doUploadAttachment() {
 function* doDeleteAttachment(action) {
   const { id } = action.payload;
   try {
-    const attachments = yield API.delete(config.apiGateway.NAME, `/attachments/${id}`, {
+    const attachment = yield API.delete(config.apiGateway.NAME, `/attachments/${id}`, {
       header: {
         'x-api-key': config.apiKey
       },
     })
-    yield put(deleteAttachmentSuccess(attachments))
+    yield put(deleteAttachmentSuccess(attachment))
     // utiliser le nom du doc dans la snackbar ??
     yield put(openSnackBar({ message: "Votre document a bien été supprimé", error: false }));
   } catch (error) {

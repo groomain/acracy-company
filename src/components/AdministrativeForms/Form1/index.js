@@ -12,13 +12,13 @@ import Grid from "@material-ui/core/Grid";
 export const Form1 = ({ values, errors, touched, handleBlur, handleChange, handleSubmit }) => {
   const { t } = useTranslation();
   const classes = styles();
-  const [switchTVA, setSwitchTVA] = useState(false);
 
   const { companyData } = useSelector(state => ({
     companyData: state.getIn(['Administrative', 'companyData']),
   }));
 
-  const { legalForm, socialReason, siret, shareCapital, webSite, cityOfRcsRegistration, intraCommunityVAT, VatNumber } = values;
+  const { legalForm, socialReason, siret, shareCapital, webSite, cityOfRcsRegistration, intraCommunityVAT, vatNumber } = values;
+  const [switchTVA, setSwitchTVA] = useState(vatNumber != "" ? true : false);
 
   return (
     <Grid item container direction={'column'} className={classes.card}>
@@ -63,19 +63,21 @@ export const Form1 = ({ values, errors, touched, handleBlur, handleChange, handl
             <Typography variant={'body1'} className={classes.tva}>Je suis soumis à la TVA
                             intracommunautaire</Typography>
           </Grid>
-          <CustomTextField className={classes.textfield}
-            label={'Numéro de TVA'}
-            placeholder={'Numéro de TVA'}
-            name={'VatNumber'}
-            value={VatNumber}
-            onBlur={handleBlur}
-            onChange={handleChange}
-            error={!!touched.VatNumber && !!errors.VatNumber}
-          />
+          {switchTVA &&
+            <CustomTextField className={classes.textfield}
+              label={'Numéro de TVA'}
+              placeholder={'Numéro de TVA'}
+              name={'vatNumber'}
+              value={vatNumber}
+              onBlur={handleBlur}
+              onChange={handleChange}
+              error={!!touched.vatNumber && !!errors.vatNumber}
+            />
+          }
           <CustomButton title={'Sauvegarder'} theme={'filledButton'}
             className={classes.saveButton}
             disabled={legalForm === "" || socialReason === "" || siret === "" || shareCapital === ""}
-            handleClick={() => handleSubmit({ legalForm, socialReason, siret, shareCapital, webSite, cityOfRcsRegistration, intraCommunityVAT, VatNumber })}
+            handleClick={() => handleSubmit({ legalForm, socialReason, siret, shareCapital, webSite, cityOfRcsRegistration, intraCommunityVAT, vatNumber })}
           />
         </Grid>
         <Grid item container direction={'column'} xs={6} className={classes.columnContainer}>

@@ -18,6 +18,11 @@ const initialState = Immutable.Map({
   deleteAttachmentLoading: false,
   deleteAttachmentError: null,
   deleteResponse: null,
+  missingInfosForm1: true,
+  missingInfosForm2: true,
+  missingInfosForm3: true,
+  missingInfosForm4: true,
+  missingInfosForm5: true,
 });
 
 const { actions, reducer } = createSlice({
@@ -85,7 +90,17 @@ const { actions, reducer } = createSlice({
       .set('deleteAttachmentLoading', false)
       .set('deleteResponse', null)
       .set('deleteAttachmentError', action.payload),
-
+    // checking missing infos in 6 different forms
+    checkMissinfInfosForm1: (state, action) => state
+      .set('missingInfosForm1', action.payload),
+    checkMissinfInfosForm2: (state, action) => state
+      .set('missingInfosForm2', action.payload),
+    checkMissinfInfosForm3: (state, action) => state
+      .set('missingInfosForm3', action.payload),
+    checkMissinfInfosForm4: (state, action) => state
+      .set('missingInfosForm4', action.payload),
+    checkMissinfInfosForm5: (state, action) => state
+      .set('missingInfosForm5', action.payload),
   }
 });
 

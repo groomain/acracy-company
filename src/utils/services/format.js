@@ -1,4 +1,5 @@
 import React from 'react';
+import areaCodes from "../areaCodes.json";
 
 /**
  * Formats a text in .json format and creates a new line after each \n
@@ -40,3 +41,16 @@ export const getPhonePrefixCode = prefix => {
   const regex = /^(.*?)[+]/;
   return prefix.replace(regex, '');
 };
+
+/**
+ * Compare the number passed as an argument to the list of area codes and retrieve the corresponding area code
+ * @param {number} number - a simple number, previously extracted from the area code using getPhonePrefixCode
+ * @returns {string} - A string formatted as "Fr : +33"
+ */
+export const getAreaCodeFromNumber = (number) => {
+  for (let i = 0; i < areaCodes.length; i++) {
+    if (number == getPhonePrefixCode(areaCodes[i])) {
+      return areaCodes[i];
+    }
+  }
+}

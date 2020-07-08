@@ -9,7 +9,7 @@
     "shareCapital": 3,
     "cityOfRcsRegistration": "Lille",
     "intraCommunityVAT": true,
-    "VatNumber": 3245270,
+    "vatNumber": 3245270,
     "headOffice": {
       "address": " 33 rue kleber",
       "zipCode": 59000,
