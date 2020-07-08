@@ -32,7 +32,8 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
   const dispatch = useDispatch();
   const classes = styles();
 
-  const { frequency, workspace, duration, durationType, missionTitle, budget, budgetType, profile, profilesNumber, seniority, customDeliverable, companyAddress } = values;
+  const { frequency, workspace, duration, durationType, missionTitle, budget, budgetType, profile, profilesNumber,
+    seniority, customDeliverable, companyAddress, contextAndTasks, detailsOfDeliverables } = values;
 
   let leadCreationStep = 1; // the dashboard page
   const [activeStep, setActiveStep] = useState(leadCreationStep);
@@ -314,7 +315,6 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
       && deliverables.length > 0
       && customChecks
       && checkLength(missionTitle, 0)
-      && dateFromCalendar
       && workspace
       && frequency
       && checkLength(duration, 0)
@@ -683,6 +683,20 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
             </Box>
           </Grid>
         </Grid>
+
+        {/* missionContext detail */}
+        <Box my={2}>
+          <CustomTextArea
+            label={t('leadCreation.textarea.missionContext.label')}
+            placeholder={t('leadCreation.textarea.missionContext.placeholder')}
+            name='contextAndTasks'
+            value={contextAndTasks}
+            onBlur={handleBlur}
+            onChange={handleChange}
+            error={!!touched.contextAndTasks && !!errors.contextAndTasks}
+            size='large'
+          />
+        </Box>
 
         {/* Upload */}
         <UploadInput />
