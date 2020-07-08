@@ -19,16 +19,24 @@ import phonecall from '../../assets/icons/phone-call.svg';
 import { useTranslation } from "react-i18next";
 import styles from './styles';
 import { leadSaveLaunched, getLeadDraftLaunched, putLeadDraftLaunched } from "./reducer";
+import clsx from "clsx";
+import useScrollTrigger from "@material-ui/core/useScrollTrigger";
 
 let leadSave;
 let formData = false;
 let leadId = null;
-const LeadCreationPage = () => {
+const LeadCreationPage = (props) => {
   const classes = styles();
   const { t } = useTranslation();
   const dispatch = useDispatch();
   let location = useLocation();
   const ref = useRef();
+
+  const scroll = useScrollTrigger({
+    target: props.window ? props.window() : undefined,
+    disableHysteresis: true,
+    threshold: 0,
+  });
 
   const [disableAppbarSaveBtn, setDisableAppbarSaveBtn] = useState(true);
 
@@ -223,7 +231,7 @@ const LeadCreationPage = () => {
       justify="center"
       className={classes.root}
     >
-      <AppBar position="fixed" className={classes.appbar}>
+      <AppBar position="fixed" className={clsx(classes.appbar, {[classes.shadow] : scroll})}>
         <CustomSnackBar />
         <Toolbar className={classes.toolbar}>
           <NavLink to={'/'} className={classes.logo}>
