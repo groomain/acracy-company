@@ -19,35 +19,44 @@ import phonecall from '../../assets/icons/phone-call.svg';
 import { useTranslation } from "react-i18next";
 import styles from './styles';
 import { leadSaveLaunched, getLeadDraftLaunched, putLeadDraftLaunched } from "./reducer";
+import clsx from "clsx";
+import useScrollTrigger from "@material-ui/core/useScrollTrigger";
 
 let leadSave;
 let formData = false;
 let leadId = null;
-const LeadCreationPage = () => {
+const LeadCreationPage = (props) => {
   const classes = styles();
   const { t } = useTranslation();
   const dispatch = useDispatch();
   let location = useLocation();
   const ref = useRef();
 
+  const scroll = useScrollTrigger({
+    target: props.window ? props.window() : undefined,
+    disableHysteresis: true,
+    threshold: 0,
+  });
+
   const [disableAppbarSaveBtn, setDisableAppbarSaveBtn] = useState(true);
 
-  useEffect(() => {
-    if (location.search) {
-      leadId = location.search.split('=')[1];
-      dispatch(getLeadDraftLaunched(leadId))
-    }
-  }, [dispatch, location.search]);
-
-  const { leadSaveLoading, leadDraftData, leadDraftSearchData, deliverablesArray, dateFromCalendar, dailyRate, leadCreationStep } = useSelector(state => ({
+  const { leadSaveLoading, leadDraftData, leadDraftSearchData, deliverablesArray, dateFromCalendar, dailyRate, leadCreationStep, leadDraftId } = useSelector(state => ({
     leadSaveLoading: state.getIn(['leadCreation', 'leadSaveLoading']),
     leadDraftSearchData: state.getIn(['leadCreation', 'leadDraftSearchData']),
     deliverablesArray: state.getIn(['leadCreation', 'deliverablesArray']),
     dateFromCalendar: state.getIn(['leadCreation', 'dateFromCalendar']),
     dailyRate: state.getIn(['leadCreation', 'dailyRate']),
     leadDraftData: state.getIn(['leadCreation', 'leadDraftData']),
-    leadCreationStep: state.getIn(['leadCreation', 'leadCreationStep'])
+    leadCreationStep: state.getIn(['leadCreation', 'leadCreationStep']),
+    leadDraftId: state.getIn(['leadCreation', 'leadDraftId'])
   }));
+
+  useEffect(() => {
+    if (location.search || leadDraftId) {
+      leadId = location.search.split('=')[1] || leadDraftId;
+      dispatch(getLeadDraftLaunched(leadId))
+    }
+  }, [dispatch, location.search]);
 
   useEffect(() => {
     if (leadDraftSearchData?.search !== null) {
@@ -149,7 +158,7 @@ const LeadCreationPage = () => {
       search: getSearchResult || '',
       missionContext: {
         title: values.missionTitle || '',
-        startDate: dateFromCalendar || '', // operateur ternaire pour remettre profil à 0 quand profil a été recherché
+        startDate: new Date(dateFromCalendar).toISOString() || '', // operateur ternaire pour remettre profil à 0 quand profil a été recherché
         format: values.workspace || '',
         weeklyRythm: values.frequency || '',
         duration: {
@@ -193,7 +202,9 @@ const LeadCreationPage = () => {
     budget: leadDraftData?.missionContext?.budget?.value || '',
     budgetType: leadDraftData?.missionContext?.budget?.type || '',
     profilesNumber: leadDraftData?.profilNumber || 1,
-    seniority: "Sélectionnez le niveau d'expérience minimum"
+    seniority: "Sélectionnez le niveau d'expérience minimum",
+    contextAndTasks: leadDraftData?.missionDetail?.contextAndTasks || '',
+    detailsOfDeliverables: leadDraftData?.missionDetail?.detailsOfDeliverables || ''
   };
 
   // Form Validation Schema
@@ -212,7 +223,9 @@ const LeadCreationPage = () => {
     budget: Yup.number().required(),
     budgetType: Yup.string().required(),
     profilesNumber: Yup.number().required(),
-    seniority: Yup.string().required()
+    seniority: Yup.string().required(),
+    contextAndTasks: Yup.string().required(),
+    detailsOfDeliverables: Yup.string().required(),
   });
 
   return (
@@ -222,8 +235,8 @@ const LeadCreationPage = () => {
       justify="center"
       className={classes.root}
     >
-      <AppBar position="fixed" className={classes.appbar}>
-        <CustomSnackBar message={"Test de snackBar"} open={open} setOpen={setOpen} />
+      <AppBar position="fixed" className={clsx(classes.appbar, {[classes.shadow] : scroll})}>
+        <CustomSnackBar />
         <Toolbar className={classes.toolbar}>
           <NavLink to={'/'} className={classes.logo}>
             <img src={acracyLogo} alt="acracyLogo" />
@@ -246,12 +259,13 @@ const LeadCreationPage = () => {
           initialValues={initialValues}
           validationSchema={ValidationSchema}
           onSubmit={leadSave}
+          enableReinitialize
           ref={ref}
         />
       </Main>
       <Sidebar>
         <Grid container style={{ position: 'sticky', top: '10rem' }}>
-          {(leadCreationStep == 1) ? (
+          {(leadCreationStep === 1) ? (
             <>
               <Grid item className={classes.briefTipRoot}>
                 <Tip title='#01' subtitle='Mieux vaut trop' description={t('leadCreation.tip1')} />

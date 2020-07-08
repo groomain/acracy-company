@@ -27,8 +27,11 @@ export default makeStyles(theme => ({
     letterSpacing: '-0.45px',
   },
   appbar: {
-    backgroundColor: 'transparent',
-    boxShadow: 'none'
+    backgroundColor: '#162217',
+    boxShadow: 'none',
+  },
+  shadow: {
+    boxShadow: "0px 1px 8px black"
   },
   toolbar: {
     height: 104,
