@@ -11,7 +11,7 @@ export default {
 export const SignUp = () => (
   ProviderWrapper(
     <>
-      <CustomAppBar path="/signup"></CustomAppBar>
+      <CustomAppBar path="/createAccount"></CustomAppBar>
       <SignUpPage state="signup"
       />
     </>)

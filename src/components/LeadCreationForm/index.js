@@ -7,27 +7,36 @@ import { CustomTextField } from '../Inputs/CustomTextField';
 import CustomTextArea from '../Inputs/CustomTextArea';
 import CustomSelect from "../Inputs/CustomSelect";
 import Calendar from "../Inputs/Calendar";
+import TagsList from '../Tags/TagsList';
 import Tag from '../Tags/Tag';
 import backToTop from '../../utils/backToTop';
 import CustomModal from '../Modal';
 import EuroSymbolIcon from '@material-ui/icons/EuroSymbol';
-import { Typography, Grid, Stepper, Step, StepLabel, StepButton, Box, InputAdornment } from "@material-ui/core";
-import { setLeadDraftSearchData, setDeliverablesArray, setDailyRate, changeLeadStatusLaunched } from '../../pages/LeadCreationPage/reducer';
+import { Typography, Grid, Stepper, Step, StepLabel, StepButton, Box, InputAdornment, StepConnector } from "@material-ui/core";
+import {
+  setLeadDraftSearchData, setDeliverablesArray, setDailyRate,
+  changeLeadStatusLaunched, getExpertisesLaunched, setExpertisePriorities,
+  getSensitivitiesLaunched, setSensitivityPriority, setLanguagePriority
+} from '../../pages/LeadCreationPage/reducer';
 import { leadSave } from '../../pages/LeadCreationPage/index';
 import clsx from 'clsx';
 import styles from './styles';
 
+import { languages, seniorityValues } from './options';
+import UploadInput from '../Inputs/Upload';
 
-const LeadCreationForm = ({ sendValues, ...props }) => {
+import { checkLength } from '../../utils/services/validationChecks';
+
+const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, handleChange, ...props }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const classes = styles();
 
-  const { values, errors, touched, handleBlur, handleChange } = props;
-  const { frequency, workspace, duration, durationType, missionTitle, budgetType, profile, profilesNumber } = values;
+  const { frequency, workspace, duration, durationType, missionTitle, budget, budgetType, profile, profilesNumber,
+    seniority, customDeliverable, companyAddress, contextAndTasks, detailsOfDeliverables } = values;
 
-  let leadCreationStep = 0; // the dashboard page
-  const [activeStep, setActiveStep] = useState(leadCreationStep)
+  let leadCreationStep = 1; // the dashboard page
+  const [activeStep, setActiveStep] = useState(leadCreationStep);
   const [searchedCategory, setSearchedCategory] = useState({});
   const [deliverables, setDeliverables] = useState([]);
   const [disabled, setDisabled] = useState(false); // to be used with step 2
@@ -35,14 +44,30 @@ const LeadCreationForm = ({ sendValues, ...props }) => {
   const [withCommission, setWithCommission] = useState();
   const [openCallMeModal, setOpenCallMeModal] = useState(false);
   const [disableCallMeBtn, setDisableCallMeBtn] = useState(true);
+  const [disableGoToFinalizationBtn, setDisableGoToFinalizationBtn] = useState(true);
 
-  const { leadDraftSearchData, deliverablesArray } = useSelector(state => ({
-    dateFromCalendar: state.getIn(['leadCreation', 'dateFromCalendar']),
-    leadDraftSearchData: state.getIn(['leadCreation', 'leadDraftSearchData']),
-    deliverablesArray: state.getIn(['leadCreation', 'deliverablesArray']),
-    // leadCreationStep: state.getIn(['leadCreation', 'leadCreationStep'])
-  }));
-  useEffect(() => {
+  const { leadDraftSearchData, deliverablesArray, expertises,
+    selectedExpertiseList, expansionPanelOpen, expertisePriorities,
+    sensitivities, selectedSensitivity, sensitivityPriority, dateFromCalendar,
+    selectedLanguage, languagePriority, leadSaveLoading, updateLeadDraftLoading } = useSelector(state => ({
+      dateFromCalendar: state.getIn(['leadCreation', 'dateFromCalendar']),
+      leadDraftSearchData: state.getIn(['leadCreation', 'leadDraftSearchData']),
+      deliverablesArray: state.getIn(['leadCreation', 'deliverablesArray']),
+      // leadCreationStep: state.getIn(['leadCreation', 'leadCreationStep']),
+      expertises: state.getIn(['leadCreation', 'expertises']),
+      selectedExpertiseList: state.getIn(['leadCreation', 'selectedExpertiseList']),
+      expansionPanelOpen: state.getIn(['leadCreation', 'expansionPanelOpen']),
+      expertisePriorities: state.getIn(['leadCreation', 'expertisePriorities']),
+      sensitivities: state.getIn(['leadCreation', 'sensitivities']),
+      selectedSensitivity: state.getIn(['leadCreation', 'selectedSensitivity']),
+      sensitivityPriority: state.getIn(['leadCreation', 'sensitivityPriority']),
+      selectedLanguage: state.getIn(['leadCreation', 'selectedLanguage']),
+      languagePriority: state.getIn(['leadCreation', 'languagePriority']),
+      leadSaveLoading: state.getIn(['leadCreation', 'leadSaveLoading']),
+      updateLeadDraftLoading: state.getIn(['leadCreation', 'updateLeadDraftLoading']),
+    }));
+
+  useEffect(() => { // Disable the "need help" button
     if (leadDraftSearchData?.search !== null) {
       setDisableCallMeBtn(false)
     } else if (leadDraftSearchData?.search === null) {
@@ -81,7 +106,6 @@ const LeadCreationForm = ({ sendValues, ...props }) => {
     leadSave(leadDraftSearchData, deliverablesArray, values, redirect)
     dispatch(changeLeadStatusLaunched('HELP_NEEDED'));
     setOpenCallMeModal(false)
-
   }
 
   useEffect(() => {
@@ -261,6 +285,56 @@ const LeadCreationForm = ({ sendValues, ...props }) => {
     }
   }
 
+  const [customChecks, setCustomChecks] = useState(false);
+
+  useEffect(() => { // Check empty fields before step 2
+    if (searchedCategory?.TYPE === "PROFILE") {
+      if (deliverables.includes("Ne figure pas dans la liste")) {
+        if (workspace === "Peu importe" || workspace === "En remote uniquement") {
+          setCustomChecks(checkLength(customDeliverable, 0))
+        } else {
+          setCustomChecks(checkLength(customDeliverable, 0) && checkLength(companyAddress, 0))
+        }
+      } else {
+        if (workspace === "Peu importe" || workspace === "En remote uniquement") {
+          setCustomChecks(true)
+        } else {
+          setCustomChecks(checkLength(companyAddress, 0))
+        }
+      }
+    } else {
+      if (workspace === "Sur place uniquement" || workspace === "En remote et sur place") {
+        setCustomChecks(checkLength(companyAddress, 0))
+      } else {
+        setCustomChecks(true)
+      }
+    }
+
+    if (
+      leadDraftSearchData?.search
+      && deliverables.length > 0
+      && customChecks
+      && checkLength(missionTitle, 0)
+      && workspace
+      && frequency
+      && checkLength(duration, 0)
+      && durationType
+      && checkLength(budget, 0)
+      && budgetType
+      && profilesNumber
+    ) {
+      setDisableGoToFinalizationBtn(false)
+    } else {
+      setDisableGoToFinalizationBtn(true)
+    }
+  }, [leadDraftSearchData, deliverables, searchedCategory, customChecks, customDeliverable, profile, missionTitle, dateFromCalendar, workspace, frequency,
+    duration, durationType, budget, budgetType, profilesNumber, companyAddress]);
+
+  const handleGoToFinalization = () => {
+    let redirect = false;
+    leadSave(leadDraftSearchData, deliverablesArray, values, redirect)
+  }
+
   const setLeadSynthesis = () => {
     return (
       <Box className={classes.stepContent}>
@@ -400,7 +474,7 @@ const LeadCreationForm = ({ sendValues, ...props }) => {
             <Grid item>
               <CustomButton
                 type="button"
-                theme='primaryButton'
+                theme={disableCallMeBtn ? 'disabledOutlined' : 'primaryButton'}
                 disabled={disableCallMeBtn}
                 handleClick={handleCallMe}
                 title={t('leadCreation.callMe')}
@@ -410,10 +484,11 @@ const LeadCreationForm = ({ sendValues, ...props }) => {
             <Grid item style={{ paddingLeft: '1.2rem' }}>
               <CustomButton
                 type="button"
-                theme="filledButton"
-                handleClick={handleStep(1)}
+                theme={disableGoToFinalizationBtn ? 'disabledFilled' : 'filledButton'}
+                handleClick={handleGoToFinalization}
                 title={t('leadCreation.finishBrief')}
-                disabled={disabled}
+                loading={leadSaveLoading || updateLeadDraftLoading}
+                disabled={disableGoToFinalizationBtn}
               >
               </CustomButton>
             </Grid>
@@ -450,11 +525,195 @@ const LeadCreationForm = ({ sendValues, ...props }) => {
     )
   }
 
+  // STEP 2
+
+  useEffect(() => {
+    if (activeStep === 1) {
+      dispatch(getExpertisesLaunched());
+      dispatch(getSensitivitiesLaunched());
+    }
+  }, [dispatch, activeStep])
+
+  const [expertisePriorityList, setExpertisePriorityList] = useState();
+  const [sensitivityPriorityList, setSensitivityPriorityList] = useState();
+  const [languagePriorityList, setLanguagePriorityList] = useState();
+
+  useEffect(() => {
+    setExpertisePriorityList(selectedExpertiseList?.map(x => ({ ...x, priority: false })));
+    setSensitivityPriorityList(selectedSensitivity?.map(x => ({ ...x, priority: false })));
+    setLanguagePriorityList(selectedLanguage?.map(x => ({ ...x, priority: false })))
+  }, [selectedExpertiseList, selectedSensitivity, selectedLanguage]);
+
+  const handlePriorityCheck = (index) => {
+    const prio = expertisePriorityList?.map((item, i) => (index === i) ? { ...item, priority: !item.priority } : item);
+    setExpertisePriorityList(prio);
+    dispatch(setExpertisePriorities(prio.filter(x => x.priority).map(x => x.text)));
+  }
+
+  const handleSensitivityCheck = (index) => {
+    const prio = sensitivityPriorityList?.map((item, i) => (index === i) ? { ...item, priority: !item.priority } : item);
+    setSensitivityPriorityList(prio);
+    dispatch(setSensitivityPriority(prio.filter(x => x.priority).map(x => x.text)));
+  }
+
+  const handleLanguageCheck = (index) => {
+    const prio = languagePriorityList?.map((item, i) => (index === i) ? { ...item, priority: !item.priority } : item);
+    setLanguagePriorityList(prio);
+    dispatch(setLanguagePriority(prio.filter(x => x.priority).map(x => x.text)))
+  }
+
+  // Set the Deliverables details section
+  const deliverablesTags = deliverables?.map(x => ({ value: x, isCustom: false }));
+  const customDeliverableIndex = deliverables.indexOf('Ne figure pas dans la liste');
+
+  if (~customDeliverableIndex && customDeliverable) {
+    deliverablesTags[customDeliverableIndex] = { value: customDeliverable, isCustom: true }
+  }
   const setLeadDetails = () => {
     return (
       <Box className={classes.stepContent}>
         <Typography variant='h2'>{t('leadCreation.profileDetails')}</Typography>
         <Typography variant='h1'>{leadDraftSearchData?.search?.TEXT}</Typography>
+
+        <Grid container>
+          {/* Expertises */}
+          {expertises && <Grid item xs={12} className={classes.fieldRows}>
+            <Grid container justify="space-between">
+              <Typography variant="h4">{t('tagsList.expertise.label') + '*'}</Typography>
+              <Typography variant="h2">{t('tagsList.expertise.minMaxInfo')}</Typography>
+            </Grid>
+            <TagsList
+              tags={expertises}
+              panelTitle={t('leadCreation.profileExpertises')}
+              type='expertise'
+              maxSelection={5}
+            />
+            {expansionPanelOpen !== 'expertise' &&
+              <Grid item container direction='row'>
+                {expertisePriorityList?.map((tag, key) => (
+                  <Tag key={key}
+                    title={tag.text}
+                    isPrimaryColor
+                    tagType="Prioritaire"
+                    isWithCheckbox
+                    onCheckChange={() => handlePriorityCheck(key)}
+                    checkedArray={expertisePriorities}
+                  />))}
+              </Grid>}
+          </Grid>}
+
+          {/* Sensitivities */}
+          {sensitivities &&
+            <Grid item xs={12} className={classes.fieldRows}>
+              <Box my={2.5}>
+                <Grid container justify="space-between">
+                  <Typography variant="h4">{t('tagsList.sensitivity.label')}</Typography>
+                  <Typography variant="h2">{t('tagsList.sensitivity.minMaxInfo')}</Typography>
+                </Grid>
+                <TagsList
+                  tags={sensitivities}
+                  panelTitle={t('leadCreation.profileSensitivity')}
+                  type='sensitivity'
+                  maxSelection={1}
+                />
+                {expansionPanelOpen !== 'sensitivity' &&
+                  <Grid item container direction='row'>
+                    {sensitivityPriorityList?.map((tag, key) => (
+                      <Tag key={key}
+                        title={tag.text}
+                        isPrimaryColor
+                        tagType="Critère indispensable"
+                        isWithCheckbox
+                        onCheckChange={() => handleSensitivityCheck(key)}
+                        checkedArray={sensitivityPriority}
+                      />))}
+                  </Grid>}
+              </Box>
+            </Grid>}
+
+          {/* Languages */}
+          {languages &&
+            <Grid item xs={12} className={classes.fieldRows}>
+              <Box my={2.5}>
+                <Grid container justify="space-between">
+                  <Typography variant="h4">{t('leadCreation.profileLanguages')}</Typography>
+                </Grid>
+                <TagsList
+                  tags={languages}
+                  panelTitle={t('leadCreation.profileLanguages')}
+                  type='languages'
+                  maxSelection={1}
+                />
+                {expansionPanelOpen !== 'languages' &&
+                  <Grid item container direction='row'>
+                    {languagePriorityList?.map((tag, key) => (
+                      <Tag key={key}
+                        title={tag.text}
+                        isPrimaryColor
+                        tagType="Critère indispensable"
+                        isWithCheckbox
+                        onCheckChange={() => handleLanguageCheck(key)}
+                        checkedArray={languagePriority}
+                      />))}
+                  </Grid>}
+              </Box>
+            </Grid>}
+
+          {/* Seniority */}
+          <Grid container direction='column'>
+            <Typography variant={'h4'}>{t('leadCreation.profileSeniority') + '*'}</Typography>
+            <CustomSelect
+              name="seniority"
+              optionsValues={seniorityValues}
+              onBlur={handleBlur('phonePrefix')}
+              onChange={handleChange}
+              value={seniority}
+              error={!!touched.seniority && !!errors.seniority}
+              withDisabledValue
+            />
+          </Grid>
+
+          {/* Deliverables tags list*/}
+          <Grid container direction="column">
+            <Typography variant='h1'>{t('leadCreation.deliverablesDetails')}</Typography>
+            <Box my={1}>
+              <Grid item container direction='row'>
+                {deliverablesTags?.map((x, key) => <Tag key={key} title={x.value} isGrey={x.isCustom} />)}
+              </Grid>
+            </Box>
+          </Grid>
+        </Grid>
+
+        {/* missionContext detail */}
+        <Box my={6}>
+          <CustomTextArea
+            label={t('leadCreation.textarea.missionContext.label')}
+            placeholder={t('leadCreation.textarea.missionContext.placeholder')}
+            name='contextAndTasks'
+            value={contextAndTasks}
+            onBlur={handleBlur}
+            onChange={handleChange}
+            error={!!touched.contextAndTasks && !!errors.contextAndTasks}
+            size='large'
+          />
+        </Box>
+
+        {/* deliverables detail */}
+        <Box my={6}>
+          <CustomTextArea
+            label={t('leadCreation.textarea.deliverablesDetails.label')}
+            placeholder={t('leadCreation.textarea.deliverablesDetails.placeholder')}
+            name='detailsOfDeliverables'
+            value={detailsOfDeliverables}
+            onBlur={handleBlur}
+            onChange={handleChange}
+            error={!!touched.detailsOfDeliverables && !!errors.detailsOfDeliverables}
+            size='large'
+          />
+        </Box>
+
+        {/* Upload */}
+        <UploadInput />
       </Box >
     )
   }
@@ -478,7 +737,7 @@ const LeadCreationForm = ({ sendValues, ...props }) => {
 
   return (
     <Grid item className={classes.formGridItem}>
-      <Stepper nonLinear={false} activeStep={activeStep} className={classes.stepper} connector={disabled}>
+      <Stepper nonLinear={false} activeStep={activeStep} className={classes.stepper} connector={<StepConnector style={{ display: 'none' }} />}>
         {steps.map((label, index) => {
           return (
             <Step key={label} className={classes.step}>

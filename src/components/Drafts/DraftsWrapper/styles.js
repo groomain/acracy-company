@@ -6,9 +6,10 @@ export default makeStyles(theme => ({
     minHeight: 230,
     borderRadius: 15,
     padding: '15px',
-    margin: '1rem 0',
     alignItems: 'center',
-    position: 'relative'
+    position: 'relative',
+    transform: 'translate(-2rem) !important',
+    width: 'calc(100% + 4rem)'
   },
   noDrafts: {
     color: theme.palette.secondary.medium,

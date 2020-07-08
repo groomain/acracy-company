@@ -44,6 +44,7 @@ const reactSelectStyles = {
     ...base,
     borderRadius: 15,
     height: '100%',
+    minWidth: 400,
     display: 'flex',
     alignItems: 'center',
     cursor: 'text',
@@ -91,6 +92,8 @@ const reactSelectStyles = {
     return {
       ...styles,
       borderRadius: 15,
+      width: '200%',
+      minWidth: 400,
       overflowStyle: 'none', // IE scrollbar
       scrollbarWidth: 'none', // Firefox scrollbar
       scrollbarColor: 'transparent transparent', // Firefox scrollbar

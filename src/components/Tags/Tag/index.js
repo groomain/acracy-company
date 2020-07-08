@@ -5,7 +5,7 @@ import clsx from "clsx";
 import styles from './styles';
 import CustomCheckbox from '../../CheckBox';
 
-const Tag = ({ title, isPrimaryColor, isWithInput, placeholder, isWithCheckbox, tagType, checked, ...props }) => {
+const Tag = ({ title, isPrimaryColor, isWithInput, placeholder, isWithCheckbox, tagType, onCheckChange, checkedArray, isGrey, ...props }) => {
   const classes = styles();
 
   const [value, setValue] = useState();
@@ -32,6 +32,8 @@ const Tag = ({ title, isPrimaryColor, isWithInput, placeholder, isWithCheckbox, 
     );
   };
 
+  const disabled = checkedArray?.length > 2 && checkedArray?.indexOf(title) === -1
+
   if (isWithCheckbox) {
     content = (
       <div className={classes.checkboxTagContainer}>
@@ -39,10 +41,11 @@ const Tag = ({ title, isPrimaryColor, isWithInput, placeholder, isWithCheckbox, 
         <span className={clsx(classes.tag, classes.checkboxTagContent)}>
           {tagType}
           <CustomCheckbox
-            size="small"
             shape="rounded"
-            checked={checked}
+            onChange={onCheckChange}
             className={classes.checkbox}
+            disabled={disabled}
+            checked={checkedArray?.indexOf(title) === undefined ? null : checkedArray?.indexOf(title) !== -1}
           />
         </span>
       </div>
@@ -50,8 +53,7 @@ const Tag = ({ title, isPrimaryColor, isWithInput, placeholder, isWithCheckbox, 
   };
 
   return (
-
-    <Box m={0.5} className={clsx(classes.tag, isPrimaryColor && classes.primaryColor, isWithInput && classes.withInput)} >
+    <Box m={0.5} className={clsx(classes.tag, isPrimaryColor && classes.primaryColor, isWithInput && classes.withInput, isGrey ? classes.isGrey : null)} >
       {content}
     </Box>
   )

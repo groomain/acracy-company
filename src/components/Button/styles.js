@@ -4,6 +4,7 @@ export default makeStyles(theme => ({
   button: {
     height: 56,
     minWidth: 165,
+    padding: '0 1rem',
     textTransform: 'none',
     fontSize: 14,
     fontWeight: 500,

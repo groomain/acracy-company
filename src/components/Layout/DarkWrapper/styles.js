@@ -8,5 +8,9 @@ export default makeStyles(theme => ({
     padding: '15px',
     margin: '1rem 0',
     position: 'relative'
+  },
+  bleed: {
+    transform: 'translate(-2rem) !important',
+    width: 'calc(100% + 4rem)'
   }
 }));

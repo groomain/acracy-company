@@ -29,7 +29,8 @@ export const AdministrativePage = (props) => {
   const { companyData, companyLoading, companyId } = useSelector(state => ({
     companyData: state.getIn(['Administrative', 'companyData']),
     companyLoading: state.getIn(['Administrative', 'companyLoading']),
-    companyId: state.getIn(['app', 'userDynamo', 'companyId'])
+    // companyId: state.getIn(['app', 'userDynamo', 'companyId'])
+    companyId: 827                                              ///// mock ID for offline use
   }));
 
   useEffect(() => {
