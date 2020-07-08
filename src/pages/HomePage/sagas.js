@@ -27,8 +27,7 @@ function* doGetLeads(action) {
     const params = {
       headers: {
         'x-api-key': config.apiKey
-      },
-      body: {}
+      }
     };
 
     const leads = yield API.get(config.apiGateway.NAME, apiURL, params);
@@ -69,8 +68,7 @@ function* doGetMissions(action) {
     const params = {
       headers: {
         'x-api-key': config.apiKey
-      },
-      body: {}
+      }
     };
 
     const missions = yield API.get(config.apiGateway.NAME, apiURL, params);
@@ -88,8 +86,7 @@ function* doGetBriefs(action) {
     const params = {
       headers: {
         'x-api-key': config.apiKey
-      },
-      body: {}
+      }
     };
 
     const briefs = yield API.get(config.apiGateway.NAME, apiURL, params);
@@ -108,8 +105,7 @@ function* doGetQuotes(action) {
     const params = {
       headers: {
         'x-api-key': config.apiKey
-      },
-      body: {}
+      }
     };
 
     const quotes = yield API.get(config.apiGateway.NAME, apiURL, params);
@@ -128,8 +124,7 @@ function* doGetCompanies(action) {
     const params = {
       headers: {
         'x-api-key': config.apiKey
-      },
-      body: {}
+      }
     };
 
     const companies = yield API.get(config.apiGateway.NAME, apiURL, params);
