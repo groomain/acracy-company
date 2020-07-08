@@ -42,7 +42,7 @@ function App() {
             <PrivateRoute exact path="/lead/:id" fixed component={LeadCreationPage}/>
             <PrivateRoute exact path="/brief/:id" fixed component={MissionFollowUp}/>
             <PrivateRoute exact path="/mission/:id" fixed component={MissionFollowUp}/>
-            <PrivateRoute exact path="/firstlogin" fixed component={FirstLoginPage}/>
+            <PrivateRoute exact path="/firstLogin" fixed component={FirstLoginPage}/>
             <PrivateRoute exact path="/home" fixed component={HomePage}/>
             <PrivateRoute exact path="/myProfile" fixed component={MyAccount}/>
             <PrivateRoute exact path="/reveal/:id" fixed component={ProfileSelection}/>
