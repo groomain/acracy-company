@@ -1,10 +1,11 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Grid, Box, Typography } from '@material-ui/core';
+import { Link as RouterLink } from 'react-router-dom';
 
+import { Grid, Box, Typography } from '@material-ui/core';
 import DraftWrapper from './DraftWrapper';
 import Button from '../../Button';
-import { formatWithLineBreak } from '../../../utils/format';
+import { formatWithLineBreak } from '../../../utils/services/format';
 import styles from './styles';
 
 const FirstDraft = () => {
@@ -22,7 +23,7 @@ const FirstDraft = () => {
           {formatWithLineBreak(t('draft.firstBriefTitle'))}
         </Typography>
         <Box>
-          <Button title={t('draft.firstBriefButton')} theme='filledButton' />
+          <Button title={t('draft.firstBriefButton')} theme='filledButton' component={RouterLink} to="/lead" />
         </Box>
       </Grid>
     </DraftWrapper>

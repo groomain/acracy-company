@@ -87,9 +87,8 @@ export default makeStyles(theme => ({
     },
   },
   selected: {
-    background: `${theme.palette.primary.main} !important`,
     '& div span': {
-      color: `${fade(theme.palette.secondary.black, 0.9)}`,
+      color: `white`,
     }
   }
 }));

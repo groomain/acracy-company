@@ -1,5 +1,5 @@
 import { makeStyles } from '@material-ui/core/styles';
-import {bodoniBook} from "../../utils/configureMaterialTheme";
+// import {bodoniBook} from "../../utils/configureMaterialTheme";
 
 export const styles = makeStyles(theme => ({
   container: {
@@ -133,7 +133,7 @@ export const styles = makeStyles(theme => ({
     marginTop: 20,
     marginBottom: 20
   },
-  typo:{
+  typo: {
     padding: 3,
     width: '100%',
     textAlign: 'left'

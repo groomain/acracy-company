@@ -1,12 +1,11 @@
 import makeStyles from '@material-ui/core/styles/makeStyles';
-import {basierRegular} from "../../utils/configureMaterialTheme";
+import { basierRegular } from "../../../utils/configureMaterialTheme";
 
 export default makeStyles(theme => ({
   container: {
     height: 323,
     maxHeight: 323,
-    maxWidth: 1195,
-    minWidth: 1195,
+    width: '100%',
     flexGrow: 1,
     backgroundColor: "#283028",
     borderRadius: 15,
@@ -18,10 +17,10 @@ export default makeStyles(theme => ({
     maxHeight: 323,
   },
   gridCenter: {
+    display: 'flex',
+    textDecoration: 'none',
     paddingLeft: '2%',
-    paddingRight: '2%',
     width: '62%',
-    backgroundColor: "#283028"
   },
   gridCenterFinished: {
     backgroundColor: "#151d15"
@@ -32,7 +31,6 @@ export default makeStyles(theme => ({
   gridRight: {
     borderRadius: '0 15px 15px 0',
     width: '10%',
-    backgroundColor: `${theme.palette.primary.main}`,
     '&:hover': {
       cursor: 'pointer',
     },
@@ -42,6 +40,9 @@ export default makeStyles(theme => ({
     '&:hover': {
       cursor: 'initial'
     },
+  },
+  primary: {
+    backgroundColor: `${theme.palette.primary.main}`,
   },
   rightRed: {
     backgroundColor: "#ff565c",
@@ -56,11 +57,11 @@ export default makeStyles(theme => ({
   },
   blocAvatar: {
     marginTop: '20%',
-    marginBottom: '2%',
+    marginBottom: '4%',
     width: '100%',
   },
-  typo:{
-    padding: 3,
+  typo: {
+    padding: 5,
     width: '100%',
     textAlign: 'left'
   },
@@ -78,14 +79,12 @@ export default makeStyles(theme => ({
   },
   icon: {
     width: 40,
-    position: 'relative',
-    top: 11
   },
-  statusTitle: {
+  statusTitleBase: {
+    textTransform: 'uppercase',
     fontSize: 14,
     fontFamily: basierRegular,
-    color: '#ecf805',
-    paddingTop: 7
+    color: '#ecf805'
   },
   statusTitleRed: {
     color: '#ff565c',
@@ -93,18 +92,20 @@ export default makeStyles(theme => ({
   buttonIcon: {
     width: 25,
     height: 25,
-    marginTop: 6
+    position: 'absolute',
+    top: 10,
+    right: 10,
+    '&:hover span svg g g': {
+      fill: theme.palette.primary.main
+    }
   },
   statusContainer: {
-    height: '12%',
-    padding: 5,
-    paddingLeft: 15
+    height: '20%',
+    padding: '15px 5px 0',
+    position: 'relative',
   },
   titleContainer: {
-    height: '47%',
-    paddingTop: '8%',
-    paddingLeft: 30,
-    paddingRight: 38
+    padding: '15px 30px'
   },
   title: {
     fontSize: 22,
@@ -115,15 +116,13 @@ export default makeStyles(theme => ({
     paddingLeft: 30,
     paddingRight: 38
   },
-  menuIcon: {
-    position: 'absolute',
-    top: 6,
-    left: 10
-  },
   outsideContainer: {
     marginTop: 8
   },
   outsideTypo: {
     marginLeft: 10
+  },
+  finishedMission: {
+    color: theme.palette.secondary.main
   }
 }));

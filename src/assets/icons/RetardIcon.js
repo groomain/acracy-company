@@ -4,7 +4,7 @@ import React from "react";
 export const RetardIcon = (props) => {
   return (
     <SvgIcon {...props} >
-      <path fill="none" fillRule="evenodd" stroke="#FF565C" strokeLinejoin="round" strokeWidth="2" d="M20 13L26 25 14 25z" transform="translate(-13 -12)" />
+      <path fill="none" fillRule="evenodd" stroke="#FF565C" strokeLinejoin="round" strokeWidth="2" d="M20 13L26 25 14 25z" transform="translate(0 -5)" />
     </SvgIcon>
   );
 };

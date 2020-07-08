@@ -1,16 +1,46 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from "react-redux";
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import AddIcon from '@material-ui/icons/Add';
+import { setExpansionPanelOpen } from '../../pages/LeadCreationPage/reducer';
 
 import { ExpansionPanel, ExpansionPanelSummary, ExpansionPanelDetails, Typography } from '@material-ui/core';
 
 import styles from './styles';
 
-const CustomExpansionPanel = ({ children, isTag, panelTitle, ...props }) => {
+const CustomExpansionPanel = ({ children, isTag, panelTitle, id, ...props }) => {
   const classes = styles();
+  const dispatch = useDispatch();
+
+  const { expansionPanelOpen } = useSelector(state => ({
+    expansionPanelOpen: state.getIn(['leadCreation', 'expansionPanelOpen']),
+  }));
+
+  // Handle panels expansion individually
+  const [open, setOpen] = useState();
+
+  useEffect(() => {
+    if (!expansionPanelOpen) {
+      setOpen(false)
+    }
+  }, [expansionPanelOpen]);
+
+  const handleChange = (id) => (expanded) => {
+    if (open === id) {
+      setOpen(false)
+    } else {
+      setOpen(expanded ? id : open)
+      dispatch(setExpansionPanelOpen(expanded ? id : false));
+    }
+  }
+
   return (
     <div className={classes.root}>
-      <ExpansionPanel TransitionProps={{ unmountOnExit: true }} className={classes.panel} {...props}>
+      <ExpansionPanel
+        expanded={open ? true : false}
+        onChange={handleChange(id)}
+        TransitionProps={{ unmountOnExit: true }}
+        className={classes.panel} {...props}>
         <ExpansionPanelSummary
           className={classes.header}
           expandIcon={

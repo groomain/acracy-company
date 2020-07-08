@@ -1,6 +1,6 @@
 import React from 'react';
 import ProviderWrapper from '../../utils/Provider';
-import Mission from "../../components/Mission";
+import Mission from "../../components/Missions/Mission";
 import ProfilMenu from "../../components/ProfilMenu";
 
 export default {
@@ -15,6 +15,6 @@ export default {
 
 export const withdefault = () => (
   ProviderWrapper(
-      <ProfilMenu/>
+    <ProfilMenu />
   )
 );

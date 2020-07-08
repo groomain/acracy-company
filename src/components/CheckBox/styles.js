@@ -38,7 +38,7 @@ export default makeStyles(theme => ({
     height: 28,
     '&:before': {
       backgroundImage:
-        `url(${smallIcon})`,
+        `url(${icon})`,
       backgroundSize: '60%',
       backgroundRepeat: 'no-repeat',
       backgroundPosition: '-15% -15%'
@@ -48,6 +48,18 @@ export default makeStyles(theme => ({
     }
   },
   rounded: {
-    borderRadius: 50
+    borderRadius: 50,
+    width: 28,
+    height: 28,
+    '&:before': {
+      backgroundImage:
+        `url(${smallIcon})`,
+      backgroundSize: '60%',
+      backgroundRepeat: 'no-repeat',
+      backgroundPosition: '-15% -15%'
+    },
+    'input:hover ~ &': {
+      borderColor: theme.palette.secondary.black,
+    }
   }
 }));

@@ -1,15 +1,16 @@
-import React, { useEffect } from 'react';
+import React  from 'react';
 import { useTranslation } from "react-i18next";
 import { useLocation, withRouter } from "react-router";
 import clsx from "clsx";
 import { Link as RouterLink } from 'react-router-dom';
-
-import { AppBar, Toolbar, Typography } from '@material-ui/core';
+import { AppBar, Toolbar } from '@material-ui/core';
 import styles from "./styles";
 import CustomButton from "../Button";
 import CustomNavLink from "../CustomNavLink";
 import CustomSnackBar from "../SnackBar";
 import ProfilMenu from "../ProfilMenu";
+import acracyLogo from "../../assets/icons/logo-acracy.svg";
+import { NavLink } from "react-router-dom";
 
 export const CustomAppBar = (props) => {
   let location = useLocation();
@@ -21,31 +22,31 @@ export const CustomAppBar = (props) => {
       case '/login':
         return (
           <div className={clsx(classes.div, classes.login)}>
-            <CustomButton theme={"filledButton"} title={t('signUp')} component={RouterLink} to="/createAccount" />
-            <CustomButton title={t('contactUs')} />
+            <CustomButton theme={"filledButton"} title={t('header.signUp')} component={RouterLink} to="/signup" />
+            <CustomButton title={t('header.contactUs')} />
           </div>
         );
       case '/createAccount':
       case '/confirmAccount':
         return (
           <div className={clsx(classes.div, classes.signup)}>
-            <CustomNavLink to={'/login'} text={t('login')} theme="navLink" />
-            <CustomButton title={t('contactUs')} />
+            <CustomNavLink to={'/login'} text={t('header.login')} theme="navLink" />
+            <CustomButton title={t('header.contactUs')} />
           </div>
         );
       case '/home':
         return (
           <div className={clsx(classes.div, classes.home)}>
-            <CustomButton theme={"filledButton"} title={"Nouveau brief"} />
+              <CustomButton theme={"filledButton"} title={t('header.newBrief')} component={RouterLink} to="/newbrief"  />
             <ProfilMenu />
           </div>
         );
       case '/forgotPassword':
         return (
           <div className={clsx(classes.div, classes.password)}>
-            <CustomNavLink to={'/login'} text={t('login')} theme="navLink" />
-            <CustomButton theme={"filledButton"} title={t('signUp')} component={RouterLink} to="/createAccount" />
-            <CustomButton title={t('contactUs')} />
+            <CustomNavLink to={'/login'} text={t('header.login')} theme="navLink" />
+            <CustomButton theme={"filledButton"} title={<NavLink className={classes.navLink} to={'/signup'}>{t('header.signUp')}</NavLink>}/>
+            <CustomButton title={t('header.contactUs')} component={RouterLink} to="/contact" />
           </div>
         );
       default:
@@ -61,9 +62,9 @@ export const CustomAppBar = (props) => {
     <AppBar position="fixed" className={classes.appbar}>
       {renderSnackbar()}
       <Toolbar className={classes.toolbar}>
-        <Typography className={classes.title} variant="h1" noWrap>
-          acracy
-            </Typography>
+        <NavLink to={'/'} className={classes.logo}>
+            <img src={acracyLogo} alt="acracyLogo" />
+        </NavLink>
         <div className={classes.grow} />
         {renderButtons()}
       </Toolbar>

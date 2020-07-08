@@ -13,12 +13,6 @@ export default makeStyles(theme => ({
   grow: {
     flexGrow: 1,
   },
-  title: {
-    display: 'none',
-    [theme.breakpoints.up('sm')]: {
-      display: 'block',
-    },
-  },
   div: {
     display: 'flex',
     flexDirection: 'row',
@@ -37,7 +31,7 @@ export default makeStyles(theme => ({
     width: 270,
   },
   password: {
-    width: 480,
+    width: 525,
   },
   root: {
     top: 0,
@@ -55,8 +49,27 @@ export default makeStyles(theme => ({
     margin: 'auto',
     color: "black"
   },
+  logo: {
+    outlineStyle: 'none'
+  },
   iconButton: {
     marginTop: "auto",
     marginBottom: 'auto'
+  },
+  logo: {
+    outlineStyle: 'none'
+  },
+  navLink: {
+    textTransform: 'none',
+    fontSize: 14,
+    fontWeight: 500,
+    color: theme.palette.secondary.black,
+    paddingLeft: 25,
+    paddingRight: 25,
+    textDecoration: 'none',
+  },
+  newbrief: {
+    position: 'absolute',
+    left: '35%'
   }
 }));
