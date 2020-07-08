@@ -33,8 +33,8 @@ export const CustomAppBar = (props) => {
             <CustomButton title={t('header.contactUs')} />
           </div>
         );
-      case '/signup':
-      case '/confirm-signup':
+      case '/createAccount':
+      case '/confirmAccount':
         return (
           <div className={clsx(classes.div, classes.signup)}>
             <CustomNavLink to={'/login'} text={t('header.login')} theme="navLink" />
@@ -48,7 +48,7 @@ export const CustomAppBar = (props) => {
             <ProfilMenu />
           </div>
         );
-      case '/password':
+      case '/forgotPassword':
         return (
           <div className={clsx(classes.div, classes.password)}>
             <CustomNavLink to={'/login'} text={t('header.login')} theme="navLink" />
