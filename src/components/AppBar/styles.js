@@ -2,8 +2,11 @@ import makeStyles from '@material-ui/core/styles/makeStyles';
 
 export default makeStyles(theme => ({
   appbar: {
-    backgroundColor: 'transparent',
-    boxShadow: 'none'
+    backgroundColor: '#162217',
+    boxShadow: 'none',
+  },
+  shadow: {
+    boxShadow: "0px 1px 8px black"
   },
   toolbar: {
     height: 104,
@@ -55,9 +58,6 @@ export default makeStyles(theme => ({
   iconButton: {
     marginTop: "auto",
     marginBottom: 'auto'
-  },
-  logo: {
-    outlineStyle: 'none'
   },
   navLink: {
     textTransform: 'none',

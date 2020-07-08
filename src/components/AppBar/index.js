@@ -11,13 +11,20 @@ import CustomSnackBar from "../SnackBar";
 import ProfilMenu from "../ProfilMenu";
 import acracyLogo from "../../assets/icons/logo-acracy.svg";
 import { NavLink } from "react-router-dom";
+import useScrollTrigger from "@material-ui/core/useScrollTrigger";
 
 export const CustomAppBar = (props) => {
   let location = useLocation();
   const { t } = useTranslation();
   const classes = styles();
 
-  const renderButtons = () => {
+    const scroll = useScrollTrigger({
+        target: props.window ? props.window() : undefined,
+        disableHysteresis: true,
+        threshold: 0,
+    });
+
+    const renderButtons = () => {
     switch (props.path || location.pathname) {
       case '/login':
         return (
@@ -59,7 +66,7 @@ export const CustomAppBar = (props) => {
   );
 
   return (
-    <AppBar position="fixed" className={classes.appbar}>
+    <AppBar position="fixed" className={clsx(classes.appbar, {[classes.shadow] : scroll})}>
       {renderSnackbar()}
       <Toolbar className={classes.toolbar}>
         <NavLink to={'/'} className={classes.logo}>
