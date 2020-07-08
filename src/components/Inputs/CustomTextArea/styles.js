@@ -4,15 +4,14 @@ import { fade } from "@material-ui/core";
 export default makeStyles(theme => ({
   root: {
     borderRadius: 15,
-    minWidth: 350,
-    margin: '.8rem auto',
+    margin: '1rem auto',
     backgroundColor: `${fade(theme.palette.secondary.inputFadeFilter, 0.1)}`,
     color: theme.palette.secondary.main,
     fontWeight: 500,
     fontSize: 17,
     lineHeight: '34px',
     alignItems: 'flex-start',
-    padding: 0
+    padding: 0,
   },
   label: {
     fontSize: 17,
@@ -37,7 +36,4 @@ export default makeStyles(theme => ({
   error: {
     borderColor: theme.palette.primary.danger
   },
-  inputLength: {
-    color: theme.palette.secondary.medium
-  }
 }));

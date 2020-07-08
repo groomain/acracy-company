@@ -23,15 +23,14 @@ export const CustomTextArea = ({ label, placeholder, error, helperText, maxLengt
     <Box>
       <Typography variant='h4' className={classes.label}>{label}</Typography>
       <FilledInput
-        classes={{ root: `${classes.root}`, input: clsx(classes.input, classes[size], error ? classes.error : null) }} label={label}
+        classes={{ root: `${classes.root}`, input: clsx(classes.input, classes[size], error ? classes.error : null) }}
+        label={label}
         placeholder={placeholder}
         disableUnderline
-        rowsMin={4}
         fullWidth
         multiline
         value={valueOut || ''}
         onChange={handleChangeOut ? (event) => handleChangeOut(event.target.value) : handleChange('value')}
-        error={error}
         inputProps={{ maxLength: maxLength }}
         {...props}
       />

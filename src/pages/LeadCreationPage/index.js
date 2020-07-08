@@ -196,7 +196,7 @@ const LeadCreationPage = () => {
     profilesNumber: leadDraftData?.profilNumber || 1,
     seniority: "Sélectionnez le niveau d'expérience minimum",
     contextAndTasks: leadDraftData?.missionDetail?.contextAndTasks || '',
-    detailsOfDeliverables: leadDraftData?.missionDetail?.detailsOfDeliverables
+    detailsOfDeliverables: leadDraftData?.missionDetail?.detailsOfDeliverables || ''
   };
 
   // Form Validation Schema
