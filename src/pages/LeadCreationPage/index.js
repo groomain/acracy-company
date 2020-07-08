@@ -194,7 +194,9 @@ const LeadCreationPage = () => {
     budget: leadDraftData?.missionContext?.budget?.value || '',
     budgetType: leadDraftData?.missionContext?.budget?.type || '',
     profilesNumber: leadDraftData?.profilNumber || 1,
-    seniority: "Sélectionnez le niveau d'expérience minimum"
+    seniority: "Sélectionnez le niveau d'expérience minimum",
+    contextAndTasks: leadDraftData?.missionDetail?.contextAndTasks || '',
+    detailsOfDeliverables: leadDraftData?.missionDetail?.detailsOfDeliverables
   };
 
   // Form Validation Schema
@@ -213,7 +215,9 @@ const LeadCreationPage = () => {
     budget: Yup.number().required(),
     budgetType: Yup.string().required(),
     profilesNumber: Yup.number().required(),
-    seniority: Yup.string().required()
+    seniority: Yup.string().required(),
+    contextAndTasks: Yup.string().required(),
+    detailsOfDeliverables: Yup.string().required(),
   });
 
   return (

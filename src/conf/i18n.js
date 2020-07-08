@@ -230,7 +230,17 @@ i18n
             profileSensitivity: 'Sensibilité clé du profil',
             profileLanguages: 'Langue principale',
             profileSeniority: "Séniorité souhaitée",
-            deliverablesDetails: "Détails des livrables"
+            deliverablesDetails: "Détails des livrables",
+            textarea: {
+              missionContext: {
+                label: "Contexte de la mission et tâches à réaliser*",
+                placeholder: "Ex: \"Dans le cadre du lancement de notre nouvelle boisson \"Energy 3000\", nous cherchons un stratège Social Media pour définir un plan d'activation Instagram à destination des 18-25 ans.\""
+              },
+              deliverablesDetails: {
+                label: "Détail des livrables*",
+                placeholder: "C’est le moment de nous en dire le plus possible sur ce qui fait partie des livrables et quelles sont vos attentes exactes. Dites-nous-en le plus possible. \nEx: \“Wireframes: 10 écrans (mobile et desktop) ; Format Sketch ; Possibilité de consulter sur Invision…\”"
+              }
+            }
           },
           upload: {
             title: {
