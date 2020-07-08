@@ -1,4 +1,5 @@
 import React from 'react';
+import areaCodes from "../areaCodes.json";
 import * as moment from 'moment';
 moment.locale('fr');
 
@@ -42,6 +43,19 @@ export const getPhonePrefixCode = prefix => {
   const regex = /^(.*?)[+]/;
   return prefix.replace(regex, '');
 };
+
+/**
+ * Compares the number passed as an argument to the list of area codes and retrieve the corresponding area code
+ * @param {number} number - a simple number, previously extracted from the area code using getPhonePrefixCode
+ * @returns {string} - A string formatted as "Fr : +33"
+ */
+export const getAreaCodeFromNumber = (number) => {
+  for (let i = 0; i < areaCodes.length; i++) {
+    if (number == getPhonePrefixCode(areaCodes[i])) {
+      return areaCodes[i];
+    }
+  }
+}
 
 /**
  * Shortens a long text at the specified length, and completes the string with '...' when the text is too long
