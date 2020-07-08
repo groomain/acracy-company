@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useSelector } from "react-redux";
+import React, { useState, useEffect } from 'react';
+import { useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
 import styles from "../styles";
 import CustomTextField from "../../Inputs/CustomTextField";
@@ -8,17 +8,21 @@ import Typography from "@material-ui/core/Typography";
 import CustomSwitch from "../../Switch";
 import CustomSelect from "../../Inputs/CustomSelect";
 import Grid from "@material-ui/core/Grid";
+import { checkMissingInfosForm1 } from '../../../pages/AdministrativePage/reducer';
 
 export const Form1 = ({ values, errors, touched, handleBlur, handleChange, handleSubmit }) => {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
   const classes = styles();
-
-  const { companyData } = useSelector(state => ({
-    companyData: state.getIn(['Administrative', 'companyData']),
-  }));
 
   const { legalForm, socialReason, siret, shareCapital, webSite, cityOfRcsRegistration, intraCommunityVAT, vatNumber } = values;
   const [switchTVA, setSwitchTVA] = useState(vatNumber != "" ? true : false);
+
+  useEffect(() => {
+    if (legalForm.trim() != "" && socialReason.trim() != "" && siret > 0 && shareCapital > 0) {
+      dispatch(checkMissingInfosForm1(true))
+    }
+  }, [legalForm, socialReason, siret, shareCapital]);
 
   return (
     <Grid item container direction={'column'} className={classes.card}>

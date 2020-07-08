@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
 import styles from "../styles";
 import CustomTextField from "../../Inputs/CustomTextField";
@@ -8,13 +9,21 @@ import CustomSelect from "../../Inputs/CustomSelect";
 import Grid from "@material-ui/core/Grid";
 import CustomSwitch from "../../Switch";
 import countries from "../../../utils/countries.json";
+import { checkMissingInfosForm3 } from '../../../pages/AdministrativePage/reducer';
 
 export const Form3 = ({ values, errors, touched, handleBlur, handleChange, handleSubmit }) => {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
   const classes = styles();
 
   const { sameAddress, address, zipCode, city, country } = values;
   const [switchAddress, setSwitchAddress] = useState(sameAddress === true ? true : false);
+
+  useEffect(() => {
+    if (address.trim() != "" && zipCode != "" && city.trim() != "" && country.trim() != "") {
+      dispatch(checkMissingInfosForm3(true))
+    }
+  }, [address, zipCode, city, country]);
 
   return (
     <Grid item container direction={'column'} className={classes.card}>

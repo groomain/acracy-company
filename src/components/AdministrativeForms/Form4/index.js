@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
 import styles from "../styles";
 import CustomTextField from "../../Inputs/CustomTextField";
@@ -7,12 +8,20 @@ import Typography from "@material-ui/core/Typography";
 import CustomSelect from "../../Inputs/CustomSelect";
 import Grid from "@material-ui/core/Grid";
 import areaCodes from "../../../utils/areaCodes.json";
+import { checkMissingInfosForm4 } from '../../../pages/AdministrativePage/reducer';
 
 export const Form4 = ({ values, errors, touched, handleBlur, handleChange, handleSubmit }) => {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
   const classes = styles();
 
   const { firstName, lastName, email, phonePrefix, phoneNumber } = values;
+
+  useEffect(() => {
+    if (lastName.trim() != "" && email != "" && phonePrefix.trim() != "" && phoneNumber > 0) {
+      dispatch(checkMissingInfosForm4(true))
+    }
+  }, [lastName, email, phonePrefix, phoneNumber]);
 
   return (
     <Grid item container direction={'column'} className={classes.card}>
