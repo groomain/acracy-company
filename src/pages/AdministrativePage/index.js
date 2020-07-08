@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import Grid from "@material-ui/core/Grid";
 import GeneralInformation from "../../components/GeneralInformation";
+import CustomAppbar from '../../components/AppBar'
 import styles from "./styles";
 import Typography from "@material-ui/core/Typography";
 import * as Scroll from "react-scroll/modules";
@@ -14,7 +15,6 @@ import Form3 from "../../components/AdministrativeForms/Form3";
 import Form4 from "../../components/AdministrativeForms/Form4";
 import Form5 from "../../components/AdministrativeForms/Form5";
 import Upload from "../../components/Inputs/Upload";
-import areaCodes from "../../utils/areaCodes.json";
 import { useDispatch, useSelector } from "react-redux";
 import { getCompanyLaunched, putCompanyLaunched } from "./reducer";
 import CustomLoader from "../../components/Loader";
@@ -26,18 +26,19 @@ export const AdministrativePage = (props) => {
   const Element = Scroll.Element;
   const scrollSpy = Scroll.scrollSpy;
 
+  const { companyData, companyLoading, companyId } = useSelector(state => ({
+    companyData: state.getIn(['Administrative', 'companyData']),
+    companyLoading: state.getIn(['Administrative', 'companyLoading']),
+    companyId: state.getIn(['app', 'userDynamo', 'companyId'])
+  }));
+
   useEffect(() => {
-    dispatch(getCompanyLaunched());
+    dispatch(getCompanyLaunched(companyId));
     scrollSpy.update();
   }, []);
 
-  const { companyData, companyLoading } = useSelector(state => ({
-    companyData: state.getIn(['Administrative', 'companyData']),
-    companyLoading: state.getIn(['Administrative', 'companyLoading']),
-  }));
-
-  console.log('companyData', companyData);
-  console.log('companyLoading', companyLoading);
+  // console.log('companyData', companyData);
+  // console.log('companyLoading', companyLoading);
 
   const initialValuesForm1 = {
     legalForm: companyData?.administrativeProfile?.legalForm || '',
@@ -117,38 +118,42 @@ export const AdministrativePage = (props) => {
     chart: Yup.bool().required(),
   });
 
+  const handleSubmit = (payload) => {
+    dispatch(putCompanyLaunched({ ...payload, companyId }))
+  }
 
   return (
     <Grid item xs={12} container className={classes.container}>
+      <CustomAppbar path='/home' />
       <Grid item xs={3} container justify={'center'} className={classes.leftContainer}>
         <GeneralInformation />
       </Grid>
       {companyData &&
         <Grid item xs={9} container alignItems={'center'} justify={'center'} style={{ marginBottom: 500 }}>
           <Typography variant={'h1'} style={{ width: '80%', marginTop: 40 }}>Données de l'entreprise</Typography>
-          <Element name={2} className={classes.element}>
+          <Element name={'2'} className={classes.element}>
             {/* FORM Informations générales */}
             <Formik
               render={props => <Form1 {...props} />}
               initialValues={initialValuesForm1}
               validationSchema={ValidationSchemaForm1}
               enableReinitialize
-              onSubmit={(data) => dispatch(putCompanyLaunched(data))}
+              onSubmit={handleSubmit}
             />
           </Element>
 
           {/* FORM Siège social */}
-          <Element name={3} className={classes.element}>
+          <Element name={'3'} className={classes.element}>
             <Formik
               render={props => <Form2 {...props} />}
               initialValues={initialValuesForm2}
               validationSchema={ValidationSchemaForm2}
-              onSubmit={(data) => dispatch(putCompanyLaunched(data))}
+              onSubmit={handleSubmit}
             />
           </Element>
 
           {/* FORM Documents légaux */}
-          <Element name={4} className={classes.element}>
+          <Element name={'4'} className={classes.element}>
             <Grid item container direction={'column'} className={classes.card}>
               <Typography variant={'h2'} className={classes.cardTitle}>Documents légaux</Typography>
               <Grid item container direction={'column'} style={{ width: '100%', padding: 25 }}>
@@ -159,33 +164,33 @@ export const AdministrativePage = (props) => {
 
 
           {/* FORM Adresse de facturation */}
-          <Element name={6} className={classes.element}>
+          <Element name={'6'} className={classes.element}>
             <Typography variant={'h1'} style={{ marginBottom: 40 }}>Facturation</Typography>
             <Formik
               render={props => <Form3 {...props} />}
               initialValues={initialValuesForm3}
               validationSchema={ValidationSchemaForm3}
-              onSubmit={(data) => dispatch(putCompanyLaunched(data))}
+              onSubmit={handleSubmit}
             />
           </Element>
 
           {/* FORM Coordonnées de la personne en charge de la facturation */}
-          <Element name={7} className={classes.element}>
+          <Element name={'7'} className={classes.element}>
             <Formik
               render={props => <Form4 {...props} />}
               initialValues={initialValuesForm4}
               validationSchema={ValidationSchemaForm4}
-              onSubmit={(data) => dispatch(putCompanyLaunched(data))}
+              onSubmit={handleSubmit}
             />
           </Element>
 
           {/* FORM Documents légaux */}
-          <Element name={8} className={classes.element}>
+          <Element name={'8'} className={classes.element}>
             <Formik
               render={props => <Form5 {...props} />}
               initialValues={initialValuesForm5}
               validationSchema={ValidationSchemaForm5}
-              onSubmit={(data) => dispatch(putCompanyLaunched(data))}
+              onSubmit={handleSubmit}
             />
           </Element>
         </Grid>

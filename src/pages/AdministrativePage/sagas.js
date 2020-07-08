@@ -10,16 +10,16 @@ import { openSnackBar } from "../../components/App/reducer";
 import companyMock from '../../mock/company'
 
 function* getCompany(action) {
-  // TODO récupérer l'id de l'entreprise
+  const { companyId } = action.payload;
   try {
     let companyData = companyMock;
-    // const companyData = yield API.get(config.apiGateway.NAME, `/companies/${id}`, {
+    // const companyData = yield API.get(config.apiGateway.NAME, `/companies/${companyId}`, {
     //   headers: {
     //     'x-api-key': config.apiKey
     //   }
     // });
 
-    yield delay(2000); // for mock
+    yield delay(1000); // for mock
     yield put(getCompanySuccess(companyData));
   } catch (error) {
     console.log(error);
@@ -30,15 +30,16 @@ function* getCompany(action) {
 }
 
 function* doUpdateCompany(action) {
-  console.log('action :', action.payload);
   try {
+    const { companyId, ...rest } = action.payload;
     let companyData = companyMock;
-    //     const companyData = yield API.put(config.apiGateway.NAME, `/companies/${id}`, {
-    //       header: {
-    //         'x-api-key': config.apiKey
-    //       },
-    // body: action.payload
+    // const companyData = yield API.put(config.apiGateway.NAME, `/companies/${companyId}`, {
+    //   header: {
+    //     'x-api-key': config.apiKey
+    //   },
+    //   body: rest
     // })
+
     yield put(putCompanySuccess(companyData))
     yield put(openSnackBar({ message: "Vos données ont bien été enregistrées", error: false }));
   } catch (error) {
