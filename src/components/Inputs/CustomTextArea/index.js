@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import clsx from 'clsx';
 
 import { Grid, Typography, FilledInput, InputLabel, Box } from '@material-ui/core';
 import styles from './styles';
 
-export const CustomTextArea = ({ label, placeholder, error, helperText, maxLength, valueOut, handleChangeOut, ...props }) => {
+export const CustomTextArea = ({ label, placeholder, error, helperText, maxLength, valueOut, handleChangeOut, size, ...props }) => {
   const classes = styles();
   const { t } = useTranslation();
 
@@ -22,16 +23,14 @@ export const CustomTextArea = ({ label, placeholder, error, helperText, maxLengt
     <Box>
       <InputLabel className={classes.label}>{label}</InputLabel>
       <FilledInput
-        classes={{ root: `${classes.root} ${error ? classes.error : null}`, input: classes.input }}
+        classes={{ root: `${classes.root}`, input: clsx(classes.input, classes[size], error ? classes.error : null) }}
         label={label}
         placeholder={placeholder}
         disableUnderline
-        rowsMin={4}
         fullWidth
         multiline
         value={valueOut || ''}
         onChange={handleChangeOut ? (event) => handleChangeOut(event.target.value) : handleChange('value')}
-        error={error}
         inputProps={{ maxLength: maxLength }}
         {...props}
       />
