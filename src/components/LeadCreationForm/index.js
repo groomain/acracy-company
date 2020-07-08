@@ -673,7 +673,7 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
             />
           </Grid>
 
-          {/* Deliverables details */}
+          {/* Deliverables tags list*/}
           <Grid container direction="column">
             <Typography variant='h1'>{t('leadCreation.deliverablesDetails')}</Typography>
             <Box my={1}>
@@ -685,7 +685,7 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
         </Grid>
 
         {/* missionContext detail */}
-        <Box my={2}>
+        <Box my={6}>
           <CustomTextArea
             label={t('leadCreation.textarea.missionContext.label')}
             placeholder={t('leadCreation.textarea.missionContext.placeholder')}
@@ -694,6 +694,20 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
             onBlur={handleBlur}
             onChange={handleChange}
             error={!!touched.contextAndTasks && !!errors.contextAndTasks}
+            size='large'
+          />
+        </Box>
+
+        {/* deliverables detail */}
+        <Box my={6}>
+          <CustomTextArea
+            label={t('leadCreation.textarea.deliverablesDetails.label')}
+            placeholder={t('leadCreation.textarea.deliverablesDetails.placeholder')}
+            name='detailsOfDeliverables'
+            value={detailsOfDeliverables}
+            onBlur={handleBlur}
+            onChange={handleChange}
+            error={!!touched.detailsOfDeliverables && !!errors.detailsOfDeliverables}
             size='large'
           />
         </Box>

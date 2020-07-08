@@ -21,7 +21,7 @@ export const CustomTextArea = ({ label, placeholder, error, helperText, maxLengt
 
   return (
     <Box>
-      <InputLabel className={classes.label}>{label}</InputLabel>
+      <Typography variant='h4' className={classes.label}>{label}</Typography>
       <FilledInput
         classes={{ root: `${classes.root}`, input: clsx(classes.input, classes[size], error ? classes.error : null) }}
         label={label}

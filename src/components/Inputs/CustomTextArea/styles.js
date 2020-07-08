@@ -31,7 +31,7 @@ export default makeStyles(theme => ({
     }
   },
   large: {
-    minHeight: 210
+    minHeight: 240
   },
   error: {
     borderColor: theme.palette.primary.danger
