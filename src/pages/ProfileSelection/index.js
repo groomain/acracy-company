@@ -94,14 +94,6 @@ const ProfileSelection = (props) => {
     handleNoProfileModaleOpen()
   };
 
-  const contactAcracy = (message, interview) => {
-    dispatch(contactAcracyLaunched({ message: message, interview: interview }));
-    handleContactOpen()
-  };
-
-  const handleContactOpen = () => {
-    setContactModaleOpen(!contactOpen);
-  };
 
   const handleInterviewOpen = () => {
     setInterviewOpen(!interviewOpen);
