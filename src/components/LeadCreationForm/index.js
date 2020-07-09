@@ -31,6 +31,7 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const classes = styles();
+  const [uploadName, setUploadName] = useState(null);
 
   const { frequency, workspace, duration, durationType, missionTitle, budget, budgetType, profile, profilesNumber,
     seniority, customDeliverable, companyAddress, contextAndTasks, detailsOfDeliverables } = values;
@@ -713,7 +714,7 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
         </Box>
 
         {/* Upload */}
-        <UploadInput />
+        <UploadInput setName={setUploadName} type={'MISSION_SHARED_DOCUMENT'} />
       </Box >
     )
   }

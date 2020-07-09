@@ -90,7 +90,7 @@ export const Form3 = ({ values, errors, touched, handleBlur, handleChange, handl
         }
         <CustomButton title={'Sauvegarder'} theme={'filledButton'} className={classes.saveButton}
           disabled={(address === "" || zipCode === "" || city === "" || country === "") && switchAddress === false}
-          handleClick={() => switchAddress ? handleSubmit({ sameAddress: true }) : handleSubmit({ address, zipCode, city, country })}
+          handleClick={() => switchAddress ? handleSubmit({ sameAddress: true }) : handleSubmit({ sameAddress: false, address, zipCode, city, country })}
         />
       </Grid>
     </Grid>

@@ -29,6 +29,7 @@ export const AdministrativePage = (props) => {
   const classes = styles();
   const Element = Scroll.Element;
   const scrollSpy = Scroll.scrollSpy;
+  const [uploadName, setUploadName] = useState(null);
 
   const { companyData, companyLoading, companyId, adminSnackBarOpen, adminSnackBarMessage } = useSelector(state => ({
     companyData: state.getIn(['Administrative', 'companyData']),
@@ -169,7 +170,7 @@ export const AdministrativePage = (props) => {
             <Grid item container direction={'column'} className={classes.card}>
               <Typography variant={'h2'} className={classes.cardTitle}>Documents légaux</Typography>
               <Grid item container direction={'column'} style={{ width: '100%', padding: 25 }}>
-                <Upload />
+                <Upload setName={setUploadName} type={'COMPANY_LEGAL_DOCUMENT'} />
               </Grid>
             </Grid>
           </Element>
@@ -182,7 +183,7 @@ export const AdministrativePage = (props) => {
               render={props => <Form3 {...props} />}
               initialValues={initialValuesForm3}
               validationSchema={ValidationSchemaForm3}
-              onSubmit={handleSubmit}
+              onSubmit={(credentials) => console.log(credentials)}
             />
           </Element>
 
@@ -192,7 +193,7 @@ export const AdministrativePage = (props) => {
               render={props => <Form4 {...props} />}
               initialValues={initialValuesForm4}
               validationSchema={ValidationSchemaForm4}
-              onSubmit={handleSubmit}
+              onSubmit={(credentials) => console.log(credentials)}
             />
           </Element>
 
@@ -214,13 +215,6 @@ export const AdministrativePage = (props) => {
           <CustomLoader />
         </Grid>
       }
-      {/*<Snackbar*/}
-          {/*color={"primary"}*/}
-          {/*anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}*/}
-          {/*open={adminSnackBarOpen}*/}
-          {/*message={adminSnackBarMessage}*/}
-          {/*key={"bottomcenter"}*/}
-      {/*/>      */}
       <Snackbar
           anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
           open={adminSnackBarOpen}

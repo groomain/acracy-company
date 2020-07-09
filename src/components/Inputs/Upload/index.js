@@ -27,7 +27,7 @@ const UploadInput = (props) => {
   )
 }
 
-export const Upload = () => {
+export const Upload = (props) => {
   const classes = styles();
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -50,7 +50,8 @@ export const Upload = () => {
         return { file, id: index, src, leadId: leadDraftId }
       })
       setUploadedFiles(files);
-      dispatch(uploadFileLaunched(files))
+        props.setName(files[0].file.name);
+        dispatch(uploadFileLaunched({files: files, type: props.type}))
     }
 
     if (fileList[0].size > 1.5e+7) {
@@ -97,7 +98,7 @@ export const Upload = () => {
             })}
             {uploadedFiles?.length < 1 && (
               <Grid container direction="column" alignItems="center" className={classes.uploadIconWrapper}>
-                <UploadInput onChange={handleChange} />
+                <UploadInput onChange={(e) => handleChange(e)} />
                 <Box my={1}>
                   {t('upload.addDocument')}
                 </Box>
