@@ -12,17 +12,17 @@ import { openSnackBar } from "../../components/App/reducer";
 
 // mocks
 // import expertise from '../../mock/expertises.json';
-// import sensitivities from '../../mock/sensitivities.json';
+// import sensitivity from '../../mock/sensitivities.json';
 
 function* doLeadSave(action) { // create a new lead
   // console.log('action: ', action.payload)
-  const { form, redirect } = action.payload;
+  const { lead, redirect } = action.payload;
   try {
     const leadId = yield API.post(config.apiGateway.NAME, '/leads', {
       headers: {
         'x-api-key': config.apiKey
       },
-      body: form
+      body: lead
     });
 
     yield put(leadSaveSuccess(leadId));
@@ -77,10 +77,9 @@ function* doUpdateLeadDraft(action) { // update an existing lead
 }
 
 function* doChangeLeadStatus(action) {  // modify the status of a lead
-  // console.log('action: ', action.payload)
-  const { id, status } = action.payload;
+  const { leadId, status } = action.payload;
   try {
-    const update = yield API.post(config.apiGateway.NAME, encodeURI(`/leads/${id}/actions/`),
+    const update = yield API.post(config.apiGateway.NAME, encodeURI(`/leads/${leadId}/actions/`),
       {
         headers: {
           'x-api-key': config.apiKey
@@ -96,8 +95,6 @@ function* doChangeLeadStatus(action) {  // modify the status of a lead
 }
 
 function* doGetExpertises(action) {
-  // To use the mock, uncomment the line below
-  // yield put(getExpertisesSuccess(expertise));
   try {
     const expertises = yield API.get(config.apiGateway.NAME, encodeURI('/expertises'),
       {
@@ -106,6 +103,8 @@ function* doGetExpertises(action) {
         },
       });
     yield put(getExpertisesSuccess(expertises));
+    // To use the mock, switch with the line below
+    // yield put(getExpertisesSuccess(expertise));
   } catch (error) {
     console.log(error);
     yield put(getExpertisesFailure());
@@ -113,8 +112,6 @@ function* doGetExpertises(action) {
 }
 
 function* doGetSensitivities(action) {
-  // To use the mock, uncomment the line below
-  // yield put(getSensitivitiesSuccess(sensitivities));
   try {
     const sensitivities = yield API.get(config.apiGateway.NAME, encodeURI('/sensitivities'),
       {
@@ -123,6 +120,8 @@ function* doGetSensitivities(action) {
         },
       });
     yield put(getSensitivitiesSuccess(sensitivities));
+    // To use the mock, switch with the line below
+    // yield put(getSensitivitiesSuccess(sensitivity));
   } catch (error) {
     console.log(error);
     yield put(getSensitivitiesFailure());

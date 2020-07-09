@@ -69,7 +69,7 @@ const LoginForm = (props) => {
           error={!!touched.password && !!errors.password}
           helperText={touched.password && errors.password ? t(errors.password) : ''}
         />
-        <NavLink to={'/password'} className={classes.navLink}>{t('forgotPassword.forgotPasswordButton')}</NavLink>
+        <NavLink to={'/forgotPassword'} className={classes.navLink}>{t('forgotPassword.forgotPasswordButton')}</NavLink>
         <Grid container direction={'row'} justify={'flex-end'}>
           <CustomButton
             type="submit"

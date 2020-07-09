@@ -36,7 +36,7 @@ export const CustomTextArea = ({ label, placeholder, error, helperText, maxLengt
       />
       {maxLength && (
         <Grid container justify='flex-end'>
-          <Typography variant='body2' className={classes.inputLength}>{valueOut ? valueOut.length : currentInputLength.length} / {maxLength} {t('characters')}</Typography>
+          <Typography variant='body2' className={classes.inputLength}>{valueOut ? valueOut.length ?? 0 : currentInputLength.length ?? 0} / {maxLength} {t('characters')}</Typography>
         </Grid >
       )}
     </Box >
