@@ -31,11 +31,6 @@ const LeadCreationPage = (props) => {
   let location = useLocation();
   const ref = useRef();
 
-
-  const leadCreationStep = 1;
-
-
-
   const scroll = useScrollTrigger({
     target: props.window ? props.window() : undefined,
     disableHysteresis: true,
@@ -45,15 +40,14 @@ const LeadCreationPage = (props) => {
   const [disableAppbarSaveBtn, setDisableAppbarSaveBtn] = useState(true);
   const [activeStep, setActiveStep] = useState();
   const { leadSaveLoading, leadDraftData, leadDraftSearchData, deliverablesArray, dateFromCalendar, dailyRate,
-    // leadCreationStep,
-    leadDraftId, selectedExpertiseList, expertisePriorities } = useSelector(state => ({
+    leadCreationStep, leadDraftId, selectedExpertiseList, expertisePriorities } = useSelector(state => ({
       leadSaveLoading: state.getIn(['leadCreation', 'leadSaveLoading']),
       leadDraftSearchData: state.getIn(['leadCreation', 'leadDraftSearchData']),
       deliverablesArray: state.getIn(['leadCreation', 'deliverablesArray']),
       dateFromCalendar: state.getIn(['leadCreation', 'dateFromCalendar']),
       dailyRate: state.getIn(['leadCreation', 'dailyRate']),
       leadDraftData: state.getIn(['leadCreation', 'leadDraftData']),
-      // leadCreationStep: state.getIn(['leadCreation', 'leadCreationStep']),
+      leadCreationStep: state.getIn(['leadCreation', 'leadCreationStep']),
       leadDraftId: state.getIn(['leadCreation', 'leadDraftId']),
       selectedExpertiseList: state.getIn(['leadCreation', 'selectedExpertiseList']),
       expertisePriorities: state.getIn(['leadCreation', 'expertisePriorities'])
