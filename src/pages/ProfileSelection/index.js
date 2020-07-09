@@ -33,14 +33,18 @@ import CloseIcon from '@material-ui/icons/Close';
 import IconButton from "@material-ui/core/IconButton";
 
 const ProfileSelection = (props) => {
+  const quoteId = props?.match?.params;
+
+  console.log(quoteId);
+
   const classes = styles();
   const dispatch = useDispatch();
-  const { briefData, quotesData, validateCodeError, validateLoading, companyId, checkedProfilesStore, contactLoading } = useSelector(state => ({
+  const { briefData, quotesData, validateCodeError, validateLoading, userDynamo, checkedProfilesStore, contactLoading } = useSelector(state => ({
     briefData: state.getIn(['SelectionProfil', 'briefData']),
     quotesData: state.getIn(['SelectionProfil', 'quotesData']),
     validateCodeError: state.getIn(['SelectionProfil', 'validateCodeError']),
     validateLoading: state.getIn(['SelectionProfil', 'validateLoading']),
-    companyId: state.getIn(['app', 'companyId']),
+    userDynamo: state.getIn(['app', 'userDynamo']),
     checkedProfilesStore: state.getIn(['SelectionProfil', 'checkedProfilesStore']),
     contactLoading: state.getIn(['SelectionProfil', 'contactLoading'])
   }));
@@ -82,11 +86,11 @@ const ProfileSelection = (props) => {
     for (let i = 0; i < checkedProfiles.length; i++) {
       validateProfiles.push(quotesData[checkedProfiles[i]])
     }
-    dispatch(validateProfilesLaunched({ type: 'ACCEPTE_QUOTES', listId: validateProfiles }));
+    dispatch(validateProfilesLaunched({ type: 'ACCEPTE_QUOTES', listId: validateProfiles, quoteId: quoteId }));
   };
 
   const refuseAllProfiles = () => {
-    dispatch(validateProfilesLaunched({ type: 'REFUSE_ALL_QUOTES', text: noProfilMotif, reason: noProfilSelect }));
+    dispatch(validateProfilesLaunched({ type: 'REFUSE_ALL_QUOTES', text: noProfilMotif, reason: noProfilSelect, quoteId: quoteId }));
     handleNoProfileModaleOpen()
   };
 
@@ -149,7 +153,7 @@ const ProfileSelection = (props) => {
   );
 
   useEffect(() => {
-    dispatch(getBriefLaunched())
+    dispatch(getBriefLaunched({companyId: userDynamo.companyId, briefId: quoteId}))
   }, [dispatch]);
 
   const heightProfilesContainer = quotesData && elementHeight / quotesData.length;

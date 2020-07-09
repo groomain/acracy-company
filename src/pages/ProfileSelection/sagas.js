@@ -5,43 +5,37 @@ import {
   validateProfilesSuccess, validateProfilesFailure, contactAcracySuccess, contactAcracyFailure
 } from './reducer';
 import {config} from "../../conf/amplify";
-import quotesMock from '../../mock/quotes'
-import briefMock from '../../mock/brief'
 import {openSnackBar} from "../../components/App/reducer";
 
 function* getBrief(action) {
   try {
-    // const {companyId,
-    //   // briefId,
-    //   // quotesData
-    // } = action.payload;
+    const {companyId, briefId} = action.payload;
 
     // CHECK COMPANY INFORMATIONS
-    // const company = yield API.get(config.apiGateway.NAME, `/company/${companyId}`, {
-    //   headers: {
-    //     'x-api-key': config.apiKey
-    //   }
-    // });
-    // if (!company.siret || !company.socialReason || !company.legalForm || !company.shareCapital) {
-    //   yield put(getBriefFailure({message: "MissingInfos", code: 409}));
-    // }
-    let briefId = 'get_IN_PROGRESS';
+    const company = yield API.get(config.apiGateway.NAME, `/company/${companyId}`, {
+      headers: {
+        'x-api-key': config.apiKey
+      }
+    });
+    if (!company.siret || !company.socialReason || !company.legalForm || !company.shareCapital) {
+      yield put(getBriefFailure({message: "MissingInfos", code: 409}));
+    }
 
     // GET BRIEF INFORMATIONS
-    // const briefData = yield API.get(config.apiGateway.NAME, `/briefs/${briefId}`, {
-    //   headers: {
-    //     'x-api-key': config.apiKey
-    //   }
-    // });
+    const briefData = yield API.get(config.apiGateway.NAME, `/briefs/${briefId}`, {
+      headers: {
+        'x-api-key': config.apiKey
+      }
+    });
 
     // GET QUOTES DATA
-    // const quotesData = yield API.get(config.apiGateway.NAME, `/quotes?briefId=${briefId}`, {
-    //   headers: {
-    //     'x-api-key': config.apiKey
-    //   }
-    // });
+    const quotesData = yield API.get(config.apiGateway.NAME, `/quotes?briefId=${briefId}`, {
+      headers: {
+        'x-api-key': config.apiKey
+      }
+    });
 
-    yield put(getBriefSuccess({briefData: briefMock, quotesData: quotesMock}));
+    yield put(getBriefSuccess({briefData: briefData, quotesData: quotesData}));
   } catch (err) {
     yield put(getBriefFailure(err));
     yield put(openSnackBar({message: "Une erreur est survenue", error: true}));
@@ -50,7 +44,7 @@ function* getBrief(action) {
 
 function* validateProfiles(action) {
   try {
-    const {type, listId, text, reason} = action.payload;
+    const {type, listId, text, reason, quoteId} = action.payload;
     const body = {};
     if (type === 'ACCEPTE_QUOTES') {
       body.type = type;
@@ -60,9 +54,7 @@ function* validateProfiles(action) {
       body.text = text;
       body.reason = reason;
     }
-    console.log("BODY", body);
-    let id = 'get_IN_PROGRESS';
-    const validateProfiles = yield API.post(config.apiGateway.NAME, `/quotes`, {
+    const validateProfiles = yield API.post(config.apiGateway.NAME, `/quotes/${quoteId}/actions`, {
       headers: {
         'x-api-key': config.apiKey
       },
