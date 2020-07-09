@@ -24,13 +24,17 @@ import useScrollTrigger from "@material-ui/core/useScrollTrigger";
 
 let leadSave;
 let formData = false;
-let leadId = null;
 const LeadCreationPage = (props) => {
   const classes = styles();
   const { t } = useTranslation();
   const dispatch = useDispatch();
   let location = useLocation();
   const ref = useRef();
+
+
+  const leadCreationStep = 1;
+
+
 
   const scroll = useScrollTrigger({
     target: props.window ? props.window() : undefined,
@@ -39,21 +43,31 @@ const LeadCreationPage = (props) => {
   });
 
   const [disableAppbarSaveBtn, setDisableAppbarSaveBtn] = useState(true);
+  const [activeStep, setActiveStep] = useState();
+  const { leadSaveLoading, leadDraftData, leadDraftSearchData, deliverablesArray, dateFromCalendar, dailyRate,
+    // leadCreationStep,
+    leadDraftId, selectedExpertiseList, expertisePriorities } = useSelector(state => ({
+      leadSaveLoading: state.getIn(['leadCreation', 'leadSaveLoading']),
+      leadDraftSearchData: state.getIn(['leadCreation', 'leadDraftSearchData']),
+      deliverablesArray: state.getIn(['leadCreation', 'deliverablesArray']),
+      dateFromCalendar: state.getIn(['leadCreation', 'dateFromCalendar']),
+      dailyRate: state.getIn(['leadCreation', 'dailyRate']),
+      leadDraftData: state.getIn(['leadCreation', 'leadDraftData']),
+      // leadCreationStep: state.getIn(['leadCreation', 'leadCreationStep']),
+      leadDraftId: state.getIn(['leadCreation', 'leadDraftId']),
+      selectedExpertiseList: state.getIn(['leadCreation', 'selectedExpertiseList']),
+      expertisePriorities: state.getIn(['leadCreation', 'expertisePriorities'])
+    }));
 
-  const { leadSaveLoading, leadDraftData, leadDraftSearchData, deliverablesArray, dateFromCalendar, dailyRate, leadCreationStep, leadDraftId } = useSelector(state => ({
-    leadSaveLoading: state.getIn(['leadCreation', 'leadSaveLoading']),
-    leadDraftSearchData: state.getIn(['leadCreation', 'leadDraftSearchData']),
-    deliverablesArray: state.getIn(['leadCreation', 'deliverablesArray']),
-    dateFromCalendar: state.getIn(['leadCreation', 'dateFromCalendar']),
-    dailyRate: state.getIn(['leadCreation', 'dailyRate']),
-    leadDraftData: state.getIn(['leadCreation', 'leadDraftData']),
-    leadCreationStep: state.getIn(['leadCreation', 'leadCreationStep']),
-    leadDraftId: state.getIn(['leadCreation', 'leadDraftId'])
-  }));
+  const [leadId, setLeadId] = useState();
+
+  useEffect(() => {
+    setActiveStep(leadCreationStep)
+  }, [leadCreationStep])
 
   useEffect(() => {
     if (location.search || leadDraftId) {
-      leadId = location.search.split('=')[1] || leadDraftId;
+      setLeadId(location.search.split('=')[1] || leadDraftId);
       dispatch(getLeadDraftLaunched(leadId))
     }
   }, [dispatch, location.search]);
@@ -154,38 +168,94 @@ const LeadCreationPage = (props) => {
       getSearchResult = setSearchResultType(search);
     }
 
-    let leadDraft = {
+    const minDate = new Date().setDate(new Date().getDate() + 30);
+
+    const formatType = (val) => {
+      switch (val) {
+        case 'Peu importe':
+          return 'WHATEVER'
+        case 'En remote uniquement':
+          return 'REMOTE_ONLY'
+        case 'Sur place uniquement':
+          return 'INPLACE_ONLY'
+        case 'En remote et sur place':
+          return 'BOTH'
+        default:
+      }
+    }
+
+    const formatDurationType = (val) => {
+      switch (val) {
+        case 'Jours':
+          return 'DAY'
+        case 'Semaines':
+          return 'WEEK'
+        case 'Mois':
+          return 'MONTH'
+        default:
+      }
+    }
+
+    let leadDraft, lead;
+
+    leadDraft = {
       search: getSearchResult || '',
+      desireds: getDesireds || '',
       missionContext: {
-        title: values.missionTitle || '',
-        startDate: new Date(dateFromCalendar).toISOString() || '', // operateur ternaire pour remettre profil à 0 quand profil a été recherché
-        format: values.workspace || '',
-        weeklyRythm: values.frequency || '',
+        title: values?.missionTitle || '',
+        startDate: dateFromCalendar ? new Date(dateFromCalendar).toISOString() : new Date(minDate).toISOString(), // operateur ternaire pour remettre profil à 0 quand profil a été recherché
+        format: formatType(values?.workspace) || '',
+        weeklyRythm: values.frequency ? +values?.frequency?.match(/\d+/)[0] : '',
         duration: {
-          nb: values.duration || '',
-          type: values.durationType || '',
+          nb: +values?.duration || '',
+          unit: formatDurationType(values?.durationType) || '',
         },
         budget: {
-          value: values.budget || '',
-          type: values.budgetType || ''
+          value: +values?.budget || '',
+          type: values?.budgetType === 'Jours' ? 'DAILY_RATE' : 'TOTAL' || ''
         },
         estimatedAverageDailyRate: dailyRate,
-        profilNumber: values.profilesNumber || '',
-        adress: values.companyAddress || '',
-        desireds: getDesireds || '',
+        profilNumber: values?.profilesNumber || '',
+        address: values?.companyAddress || '',
       },
     };
-    console.log('leadDraft :', redirect, leadDraft);
-    if (leadId) {
-      dispatch(putLeadDraftLaunched(leadDraft, redirect))
+
+    // const sentExpertiseList = selectedExpertiseList?.forEach(obj => delete obj.checked)
+    // console.log('leadSave -> sentExpertiseList', sentExpertiseList)
+
+    if (activeStep === 0) {
+      lead = leadDraft;
     } else {
-      dispatch(leadSaveLaunched(leadDraft, redirect));
+      lead = {
+        ...leadDraft,
+        missionDetail: {
+          contextAndTasks: values?.contextAndTasks ?? '',
+          detailsOfDeliverables: values?.detailsOfDeliverables ?? '',
+          sharedDocuments: [
+            {
+              name: ""
+            }
+          ]
+        },
+        missionRequirements: {
+          expertises: {
+            expertise: selectedExpertiseList,
+          },
+          sensitivity: "",
+          languages: "",
+          seniority: ""
+        }
+      }
+    }
+    console.log('lead :', lead, 'redirect :', redirect);
+    if (leadId) {
+      dispatch(putLeadDraftLaunched({ lead, redirect }))
+    } else {
+      dispatch(leadSaveLaunched({ lead, redirect }));
     }
   };
-  const [open, setOpen] = React.useState(false);
 
   const isItADeliverable = (leadDraftData?.search?.type === "DELIVERABLE") ? leadDraftData?.search : leadDraftData?.desireds;
-
 
   const initialValues = {
     deliverable: isItADeliverable || '',
@@ -235,7 +305,7 @@ const LeadCreationPage = (props) => {
       justify="center"
       className={classes.root}
     >
-      <AppBar position="fixed" className={clsx(classes.appbar, {[classes.shadow] : scroll})}>
+      <AppBar position="fixed" className={clsx(classes.appbar, { [classes.shadow]: scroll })}>
         <CustomSnackBar />
         <Toolbar className={classes.toolbar}>
           <NavLink to={'/'} className={classes.logo}>
@@ -255,7 +325,7 @@ const LeadCreationPage = (props) => {
       </AppBar>
       <Main>
         <Formik
-          render={props => <LeadCreationForm {...props} />}
+          render={props => <LeadCreationForm leadId={leadId} {...props} />}
           initialValues={initialValues}
           validationSchema={ValidationSchema}
           onSubmit={leadSave}
