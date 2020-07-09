@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, {useEffect, useState} from 'react';
 import Grid from "@material-ui/core/Grid";
 import GeneralInformation from "../../components/GeneralInformation";
 import CustomAppbar from '../../components/AppBar'
@@ -16,8 +16,12 @@ import Form4 from "../../components/AdministrativeForms/Form4";
 import Form5 from "../../components/AdministrativeForms/Form5";
 import Upload from "../../components/Inputs/Upload";
 import { useDispatch, useSelector } from "react-redux";
-import { getCompanyLaunched, putCompanyLaunched } from "./reducer";
+import {closeAdminSnackBar, getCompanyLaunched, openAdminSnackBar, putCompanyLaunched} from "./reducer";
 import CustomLoader from "../../components/Loader";
+import smallCheck from "../../assets/icons/small-check.svg";
+import Snackbar from "@material-ui/core/Snackbar";
+import CloseIcon from '@material-ui/icons/Close';
+import IconButton from "@material-ui/core/IconButton";
 
 export const AdministrativePage = (props) => {
   const { t } = useTranslation();
@@ -26,11 +30,13 @@ export const AdministrativePage = (props) => {
   const Element = Scroll.Element;
   const scrollSpy = Scroll.scrollSpy;
 
-  const { companyData, companyLoading, companyId } = useSelector(state => ({
+  const { companyData, companyLoading, companyId, adminSnackBarOpen, adminSnackBarMessage } = useSelector(state => ({
     companyData: state.getIn(['Administrative', 'companyData']),
     companyLoading: state.getIn(['Administrative', 'companyLoading']),
     // companyId: state.getIn(['app', 'userDynamo', 'companyId'])
-    companyId: 827                                              ///// mock ID for offline use
+    companyId: 827,                                              ///// mock ID for offline use
+    adminSnackBarOpen: state.getIn(['Administrative', 'adminSnackBarOpen']),
+    adminSnackBarMessage: state.getIn(['Administrative', 'adminSnackBarMessage']),
   }));
 
   useEffect(() => {
@@ -40,6 +46,11 @@ export const AdministrativePage = (props) => {
 
   // console.log('companyData', companyData);
   // console.log('companyLoading', companyLoading);
+
+
+  const closeSnackBar = () => {
+    dispatch(closeAdminSnackBar());
+  };
 
   const initialValuesForm1 = {
     legalForm: companyData?.administrativeProfile?.legalForm || '',
@@ -191,7 +202,8 @@ export const AdministrativePage = (props) => {
               render={props => <Form5 {...props} />}
               initialValues={initialValuesForm5}
               validationSchema={ValidationSchemaForm5}
-              onSubmit={handleSubmit}
+              // onSubmit={handleSubmit}
+              onSubmit={(credentials) => console.log(credentials)}
             />
           </Element>
         </Grid>
@@ -202,6 +214,27 @@ export const AdministrativePage = (props) => {
           <CustomLoader />
         </Grid>
       }
+      {/*<Snackbar*/}
+          {/*color={"primary"}*/}
+          {/*anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}*/}
+          {/*open={adminSnackBarOpen}*/}
+          {/*message={adminSnackBarMessage}*/}
+          {/*key={"bottomcenter"}*/}
+      {/*/>      */}
+      <Snackbar
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+          open={adminSnackBarOpen}
+          onClose={() => closeSnackBar()}
+          children={
+            <Grid container alignItems={'center'} justify={'space-between'} className={classes.snackBar}>
+              <img alt={'smallCheck'} src={smallCheck} />
+            <Typography className={classes.typoSnackBar}>TEST</Typography>
+              <IconButton size="small" aria-label="close" color="inherit" onClick={() => closeSnackBar()}>
+                <CloseIcon fontSize="small" />
+              </IconButton>
+            </Grid>
+          }
+      />
     </Grid>
   )
 };

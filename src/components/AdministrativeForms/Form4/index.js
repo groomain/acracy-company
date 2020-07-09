@@ -9,6 +9,7 @@ import CustomSelect from "../../Inputs/CustomSelect";
 import Grid from "@material-ui/core/Grid";
 import areaCodes from "../../../utils/areaCodes.json";
 import { checkMissingInfosForm4 } from '../../../pages/AdministrativePage/reducer';
+import { getPhonePrefixCode } from "../../../utils/services/format.js";
 
 export const Form4 = ({ values, errors, touched, handleBlur, handleChange, handleSubmit }) => {
   const { t } = useTranslation();
@@ -49,7 +50,7 @@ export const Form4 = ({ values, errors, touched, handleBlur, handleChange, handl
           />
           <CustomButton title={'Sauvegarder'} theme={'filledButton'} className={classes.saveButton}
             disabled={firstName === "" || lastName === "" || email === "" || phonePrefix === "" || phoneNumber === ""}
-            handleClick={() => handleSubmit({ firstName, lastName, email, phonePrefix, phoneNumber })} />
+            handleClick={() => handleSubmit({ firstName, lastName, email, phonePrefix: getPhonePrefixCode(phonePrefix), phoneNumber })} />
         </Grid>
         <Grid item container direction={'column'} className={classes.columnContainer}>
           <CustomTextField className={classes.textfield}

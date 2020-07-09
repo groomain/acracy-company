@@ -1,12 +1,23 @@
 import { all, put, takeLatest, delay } from 'redux-saga/effects';
 import { API } from 'aws-amplify';
 import {
-  getCompanySuccess, getCompanyFailure, putCompanySuccess, putCompanyFailure,
-  getAttachmentsSuccess, getAttachmentsFailure, uploadAttachmentSuccess, uploadAttachmentFailure, deleteAttachmentSuccess, deleteAttachmentFailure
+  getCompanySuccess,
+  getCompanyFailure,
+  putCompanySuccess,
+  putCompanyFailure,
+  getAttachmentsSuccess,
+  getAttachmentsFailure,
+  uploadAttachmentSuccess,
+  uploadAttachmentFailure,
+  deleteAttachmentSuccess,
+  deleteAttachmentFailure,
+  closeAdminSnackBar,
+  clearAdminSnackBar,
+  openAdminSnackBar
 } from './reducer';
 import { config } from '../../conf/amplify';
 import { push } from "connected-react-router";
-import { openSnackBar } from "../../components/App/reducer";
+import {clearSnackBar, closeSnackBar, openSnackBar} from "../../components/App/reducer";
 import companyMock from '../../mock/company'
 
 function* getCompany(action) {
@@ -24,7 +35,7 @@ function* getCompany(action) {
   } catch (error) {
     console.log(error);
     yield put(getCompanyFailure());
-    yield put(openSnackBar({ message: "Une erreur est survenue", error: true }));
+    yield put(openAdminSnackBar({ message: "Une erreur est survenue", error: true }));
     yield put(push('/'));
   }
 }
@@ -41,10 +52,10 @@ function* doUpdateCompany(action) {
     // })
 
     yield put(putCompanySuccess(companyData))
-    yield put(openSnackBar({ message: "Vos données ont bien été enregistrées", error: false }));
+    yield put(openAdminSnackBar({ message: "Vos données ont bien été enregistrées", error: false }));
   } catch (error) {
     yield put(putCompanyFailure())
-    yield put(openSnackBar({ message: "Une erreur est survenue", error: true }));
+    yield put(openAdminSnackBar({ message: "Une erreur est survenue", error: true }));
   }
 }
 
@@ -60,7 +71,7 @@ function* doGetAttachments() {
     yield put(getAttachmentsSuccess(attachments))
   } catch (error) {
     yield put(getAttachmentsFailure())
-    yield put(openSnackBar({ message: "Une erreur est survenue", error: true }));
+    yield put(openAdminSnackBar({ message: "Une erreur est survenue", error: true }));
   }
 }
 
@@ -72,10 +83,10 @@ function* doUploadAttachment() {
       },
     })
     yield put(uploadAttachmentSuccess(attachment))
-    yield put(openSnackBar({ message: "Votre document a bien été uploadé", error: false }));
+    yield put(openAdminSnackBar({ message: "Votre document a bien été uploadé", error: false }));
   } catch (error) {
     yield put(uploadAttachmentFailure())
-    yield put(openSnackBar({ message: "Une erreur est survenue", error: true }));
+    yield put(openAdminSnackBar({ message: "Une erreur est survenue", error: true }));
   }
 }
 
@@ -89,11 +100,18 @@ function* doDeleteAttachment(action) {
     })
     yield put(deleteAttachmentSuccess(attachment))
     // utiliser le nom du doc dans la snackbar ??
-    yield put(openSnackBar({ message: "Votre document a bien été supprimé", error: false }));
+    yield put(openAdminSnackBar({ message: "Votre document a bien été supprimé", error: false }));
   } catch (error) {
     yield put(deleteAttachmentFailure())
-    yield put(openSnackBar({ message: "Une erreur est survenue", error: true }));
+    yield put(openAdminSnackBar({ message: "Une erreur est survenue", error: true }));
   }
+}
+
+function* setAdminSnackBar() {
+  yield delay(5000);
+  yield put(closeAdminSnackBar());
+  yield delay(200);
+  yield put(clearAdminSnackBar());
 }
 
 export default function* administrativeSaga() {
@@ -102,6 +120,7 @@ export default function* administrativeSaga() {
     takeLatest('Administrative/putCompanyLaunched', doUpdateCompany),
     takeLatest('Administrative/getAttachmentsLaunched', doGetAttachments),
     takeLatest('Administrative/uploadAttachmentLaunched', doUploadAttachment),
-    takeLatest('Administrative/deleteAttachmentLaunched', doDeleteAttachment)
+    takeLatest('Administrative/deleteAttachmentLaunched', doDeleteAttachment),
+    takeLatest('Administrative/openAdminSnackBar', setAdminSnackBar)
   ]);
 }

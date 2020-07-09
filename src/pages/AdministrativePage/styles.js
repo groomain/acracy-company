@@ -40,4 +40,18 @@ export default makeStyles(theme => ({
     select: {
         width: '50%'
     },
+    snackBar: {
+        width: 250,
+        backgroundColor: '#ecf805',
+        color: 'black',
+        borderRadius: '28px',
+        height: 46,
+        paddingLeft: 15,
+        paddingRight: 15
+    },
+    typoSnackBar: {
+        fontSize: 17,
+        fontFamily: 'Basier Regular',
+        color: theme.palette.secondary.black,
+    }
 }));

@@ -20,10 +20,14 @@ export const Form3 = ({ values, errors, touched, handleBlur, handleChange, handl
   const [switchAddress, setSwitchAddress] = useState(sameAddress === true ? true : false);
 
   useEffect(() => {
-    if (address.trim() != "" && zipCode != "" && city.trim() != "" && country.trim() != "") {
+    if (sameAddress === true ) {
       dispatch(checkMissingInfosForm3(true))
+    } else {
+      if (address.trim() != "" && zipCode != "" && city.trim() != "" && country.trim() != "") {
+        dispatch(checkMissingInfosForm3(true))
+      }
     }
-  }, [address, zipCode, city, country]);
+  }, [address, zipCode, city, country, sameAddress]);
 
   return (
     <Grid item container direction={'column'} className={classes.card}>

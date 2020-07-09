@@ -19,6 +19,7 @@ export default makeStyles(theme => ({
     marginBottom: 5
   },
   textfield: {
+    maxWidth: '100%',
     marginTop: 15,
     marginBottom: 15
   },
