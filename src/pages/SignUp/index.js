@@ -62,20 +62,22 @@ const SignUpPage = () => {
       justify="center"
       className={classes.connectionDiv}
     >
-      <Main>
-        <Formik
-          render={props => <SignUpForm {...props} />}
-          initialValues={initialValues}
-          validationSchema={ValidationSchema}
-          onSubmit={signup}
-        />
-      </Main>
-      <Sidebar>
-        <Grid className={classes.pannel}>
-          <SearchResultPannel searchValue={initialValues.searchValue} />
-          <PartnersList />
-        </Grid>
-      </Sidebar>
+      <Grid container className={classes.container}>
+        <Main>
+          <Formik
+            render={props => <SignUpForm {...props} />}
+            initialValues={initialValues}
+            validationSchema={ValidationSchema}
+            onSubmit={signup}
+          />
+        </Main>
+        <Sidebar>
+          <Grid className={classes.pannel}>
+            <SearchResultPannel searchValue={initialValues.searchValue} />
+            <PartnersList />
+          </Grid>
+        </Sidebar>
+      </Grid>
     </Grid>
   );
 };

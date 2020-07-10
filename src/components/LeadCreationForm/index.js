@@ -25,7 +25,7 @@ import clsx from 'clsx';
 import styles from './styles';
 
 import { languages, seniorityValues } from './options';
-import UploadInput from '../Inputs/Upload';
+import UploadInput from '../Inputs/LeadUpload';
 
 import { checkLength } from '../../utils/services/validationChecks';
 

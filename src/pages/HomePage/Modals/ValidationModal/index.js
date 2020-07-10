@@ -68,9 +68,8 @@ export const ValidationModal = ({ open, handleClose, files, missionId, preselect
 
 const InvoicesDownloadForm = ({ values, errors, touched, handleBlur, handleChange, handleSubmit, files, options }) => {
 
-  const { updateMissionLoading, updateMissionSent, companiesData } = useSelector(state => ({
+  const { updateMissionLoading, companiesData } = useSelector(state => ({
     updateMissionLoading: state.getIn(['dashboard', 'updateMissionLoading']),
-    updateMissionSent: state.getIn(['dashboard', 'updateMissionSent']),
     companiesData: state.getIn(['dashboard', 'companiesData'])
   }));
 

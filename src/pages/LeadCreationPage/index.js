@@ -62,18 +62,28 @@ const LeadCreationPage = (props) => {
       uploadedFileName: state.getIn(['leadCreation', 'uploadedFileName']),
     }));
 
-  const [leadId, setLeadId] = useState();
-
   useEffect(() => {
     setActiveStep(leadCreationStep)
-  }, [leadCreationStep])
+  }, [leadCreationStep]);
+
+  const [leadId, setLeadId] = useState();
+  const [splittedUrl, setSplittedUrl] = useState();
 
   useEffect(() => {
-    if (location.search || leadDraftId) {
-      setLeadId(location.search.split('=')[1] || leadDraftId);
-      dispatch(getLeadDraftLaunched(leadId))
+    if (location.search) {
+      setSplittedUrl(location.search.split('&'));
+    } else if (location.pathname) {
+      setSplittedUrl(location.pathname.split("/"));
+      setLeadId(location.pathname.split("/")[2] || leadDraftId);
     }
-  }, [dispatch, location.search, leadDraftId, leadId]);
+  }, [dispatch, location.search, location.pathname, leadDraftId, leadId]);
+
+  useEffect(() => {
+    if (leadId) {
+      dispatch(getLeadDraftLaunched(leadId));
+    }
+  }, [dispatch, leadId])
+
 
   useEffect(() => {
     if (activeStep === 0 && !leadDraftSearchData?.search) {

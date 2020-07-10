@@ -10,8 +10,7 @@ export default makeStyles(theme => ({
   },
   connectionDiv: {
     backgroundColor: `${theme.palette.secondary.black}`,
-    height: '100vh',
-    minHeight: 800
+    minHeight: '100vh',
   },
   Connection: {
     borderRadius: 5,

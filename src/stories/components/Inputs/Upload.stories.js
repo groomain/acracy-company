@@ -1,6 +1,6 @@
 import React from 'react';
 import ProviderWrapper from '../../../utils/Provider';
-import Upload from '../../../components/Inputs/Upload';
+import UploadInput from '../../../components/Inputs/LeadUpload';
 
 export default {
   title: 'Components|Inputs'
@@ -13,7 +13,7 @@ const styles = {
 export const upload = () => (
   ProviderWrapper(
     <div style={styles}>
-      <Upload />
+      <UploadInput />
     </div>
   )
 );

@@ -14,6 +14,8 @@ import ProfilMenu from "../../components/ProfilMenu";
 import styles from "../../components/AppBar/styles";
 import acracyLogo from "../../assets/icons/logo-acracy.svg";
 
+import useScrollTrigger from "@material-ui/core/useScrollTrigger";
+
 export const HomePage = (props) => {
   const classes = styles();
   const { t } = useTranslation();
@@ -26,10 +28,16 @@ export const HomePage = (props) => {
   //   dispatch(logoutLaunched());
   // };
 
+  const scroll = useScrollTrigger({
+    target: props.window ? props.window() : undefined,
+    disableHysteresis: true,
+    threshold: 0,
+  });
+
   return (
     <>
       {/* Navigation is reapplied here since the global one doesn't work */}
-      <AppBar position="fixed" className={classes.appbar}>
+      <AppBar position="fixed" className={clsx(classes.appbar, { [classes.shadow]: scroll })}>
         <CustomSnackBar />
         <Toolbar className={classes.toolbar}>
           <NavLink to={'/'} className={classes.logo}>
