@@ -57,7 +57,7 @@ function* doChangePassword(action) {
     yield Auth.changePassword(currentUser, oldPassword, newPassword);
     yield put(changePasswordSuccess());
   } catch (error) {
-    console.log('ChangePasswordScreen/saga', error);
+    console.log(error);
     yield put(changePasswordFailure());
   }
 }
