@@ -1,10 +1,10 @@
-import { all, put, takeLatest, delay } from 'redux-saga/effects';
+import { all, put, takeLatest } from 'redux-saga/effects';
 import { API } from 'aws-amplify';
 import { push } from 'connected-react-router';
 import { config } from '../../conf/amplify';
 import {
   leadSaveSuccess, leadSaveFailure, getLeadDraftSuccess, getLeadDraftFailure,
-  putLeadDraftSuccess, putLeadDraftFailure, changeLeadStatusSuccess, changeLeadStatusFailure, getExpertisesSuccess,
+  putLeadDraftSuccess, putLeadDraftFailure, changeLeadStatusLaunched, changeLeadStatusSuccess, changeLeadStatusFailure, getExpertisesSuccess,
   getExpertisesFailure, getSensitivitiesSuccess, getSensitivitiesFailure, uploadFileSuccess, uploadFileFailure, deleteAttachmentSuccess, deleteAttachmentFailure
 } from "./reducer";
 
@@ -16,7 +16,7 @@ import { openSnackBar } from "../../components/App/reducer";
 
 function* doLeadSave(action) { // create a new lead
   // console.log('action: ', action.payload)
-  const { lead, redirect } = action.payload;
+  const { lead, redirect, redirectToMission } = action.payload;
   try {
     const leadId = yield API.post(config.apiGateway.NAME, '/leads', {
       headers: {
@@ -29,9 +29,15 @@ function* doLeadSave(action) { // create a new lead
     if (redirect) {
       yield put(push('/home'));
     }
+    if (redirectToMission) {
+      yield put(changeLeadStatusLaunched({ leadId, status: 'FINALIZE' }))
+      yield put(push('/home')); // Will be changed to /brief/:id
+      yield put(openSnackBar({ message: "👏 Brief déposé ! Retrouvez ici l’état d’avancement de votre mission.", error: false }));
+    }
   } catch (error) {
     console.log(error);
     yield put(leadSaveFailure());
+    yield put(openSnackBar({ message: "Oups, une erreur est survenue, merci de réessayer plus tard", error: true }));
   }
 }
 
@@ -55,7 +61,7 @@ function* doGetLeadDraft(action) { // get a lead's data
 
 function* doUpdateLeadDraft(action) { // update an existing lead
   // console.log('action: ', action.payload)
-  const { id, form, redirect } = action.payload;
+  const { id, form, redirect, redirectToMission } = action.payload;
   try {
     const draft = yield API.put(config.apiGateway.NAME, encodeURI(`/leads/${id}`),
       {
@@ -70,13 +76,20 @@ function* doUpdateLeadDraft(action) { // update an existing lead
     if (redirect) {
       yield put(push('/home'));
     }
+    if (redirectToMission) {
+      yield put(changeLeadStatusLaunched({ leadId: id, status: 'FINALIZE' }))
+      yield put(push('/home')); // Will be changed to /brief/:id
+      yield put(openSnackBar({ message: "👏 Brief déposé ! Retrouvez ici l’état d’avancement de votre mission.", error: false }));
+    }
   } catch (error) {
     console.log(error);
     yield put(putLeadDraftFailure());
+    yield put(openSnackBar({ message: "Oups, une erreur est survenue, merci de réessayer plus tard", error: true }));
   }
 }
 
 function* doChangeLeadStatus(action) {  // modify the status of a lead
+  // console.log('function*doChangeLeadStatus -> action', action)
   const { leadId, status } = action.payload;
   try {
     const update = yield API.post(config.apiGateway.NAME, encodeURI(`/leads/${leadId}/actions/`),
@@ -161,7 +174,7 @@ function* doDeleteAttachment(action) {
   const attachmentId = action.payload;
 
   try {
-    yield API.delete(config.apiGateway.NAME, encodeURI(`/attachments/${attachmentId}`),
+    yield API.del(config.apiGateway.NAME, encodeURI(`/attachments/${attachmentId}`),
       {
         headers: {
           'x-api-key': config.apiKey
