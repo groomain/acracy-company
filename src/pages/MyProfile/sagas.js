@@ -51,16 +51,13 @@ function* doPutMyProfile(action) {
 }
 
 function* doChangePassword(action) {
-  const { user, oldPassword, newPassword } = action.payload;
+  const { oldPassword, newPassword } = action.payload;
   try {
-    yield Auth.changePassword({
-      user: user,
-      oldPassword: oldPassword,
-      newPassword: newPassword
-    });
+    const currentUser = yield Auth.currentAuthenticatedUser();
+    yield Auth.changePassword(currentUser, oldPassword, newPassword);
     yield put(changePasswordSuccess());
   } catch (error) {
-    console.log(error);
+    console.log('ChangePasswordScreen/saga', error);
     yield put(changePasswordFailure());
   }
 }

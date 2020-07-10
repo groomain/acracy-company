@@ -26,7 +26,7 @@ export const MyProfilePage = (props) => {
 
   useEffect(() => {
     scrollSpy.update();
-  });
+  }, []);
 
   const { myProfileData, employeeId, user } = useSelector(state => ({
     myProfileData: state.getIn(['MyProfile', 'myProfileData']),
@@ -53,8 +53,8 @@ export const MyProfilePage = (props) => {
   });
 
   useEffect(() => {
-    dispatch(getMyProfilePersonalInformationsLaunched());
-  });
+    dispatch(getMyProfilePersonalInformationsLaunched(employeeId));
+  }, []);
 
   // Form data
   const personalInformationsInitialValues = {
