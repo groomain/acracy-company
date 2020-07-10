@@ -19,7 +19,15 @@
     "legalDocuments": [
       {
         "externalId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-        "name": "whut"
+        "name": "kbis"
+      },
+      {
+        "externalId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+        "name": "cin1"
+      },
+      {
+        "externalId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+        "name": "status"
       }
     ],
     "billing": {

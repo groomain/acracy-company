@@ -5,6 +5,9 @@ const initialState = Immutable.Map({
   uploadFileLoading: false,
   leadAttachmentId: null,
   deleteFileLoading: false,
+  getAttachmentsLoading: false,
+  attachments: null,
+  getAttachmentsError: null
 });
 
 const { actions, reducer } = createSlice({
@@ -27,7 +30,19 @@ const { actions, reducer } = createSlice({
     deleteAttachmentSuccess: (state, action) => state
       .set('deleteFileLoading', false),
     deleteAttachmentFailure: (state, action) => state
-      .set('deleteFileLoading', false)
+      .set('deleteFileLoading', false),
+    // GET attachments
+    getAttachmentsLaunched: (state, action) => state
+        .set('getAttachmentsLoading', true)
+        .set('getAttachmentsError', null)
+        .set('attachments', null),
+    getAttachmentsSuccess: (state, action) => state
+        .set('getAttachmentsLoading', false)
+        .set('attachments', action.payload),
+    getAttachmentsFailure: (state, action) => state
+        .set('getAttachmentsLoading', false)
+        .set('attachments', null)
+        .set('getAttachmentsError', action.payload),
   }
 });
 
@@ -39,6 +54,9 @@ export const {
   deleteAttachmentLaunched,
   deleteAttachmentSuccess,
   deleteAttachmentFailure,
+  getAttachmentsLaunched,
+  getAttachmentsSuccess,
+  getAttachmentsFailure,
 } = actions;
 
 export default reducer;

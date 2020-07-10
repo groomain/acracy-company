@@ -8,7 +8,8 @@ import uploadFileIcon from '../../../assets/icons/upload-file.svg';
 import { CloseIcon } from '../../../assets/icons/CloseIcon';
 import { Grid, Typography, Box, IconButton } from '@material-ui/core';
 import styles from './styles';
-import { uploadFileLaunched, deleteAttachmentLaunched } from '../../../pages/LeadCreationPage/reducer';
+import {uploadFileLaunched, deleteAttachmentLaunched, getAttachmentsLaunched} from "./reducer";
+import {checkMissingFilesForm, changeAttachmentFromData} from "../../../pages/AdministrativePage/reducer";
 
 const UploadInput = (props) => {
   const classes = styles();
@@ -32,15 +33,19 @@ export const Upload = (props) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
-  const [uploadedFiles, setUploadedFiles] = useState([]);
-  const [fileSizeError, setFileSizeError] = useState(false);
+    const { leadAttachmentId, leadDraftId, companyData} = useSelector(state => ({
+        leadAttachmentId: state.getIn(['leadCreation', 'leadAttachmentId']),
+        leadDraftId: state.getIn(['leadCreation', 'leadDraftId']),
+        companyData: state.getIn(['Administrative', 'companyData']),
+    }));
 
-  const { leadAttachmentId, leadDraftId, } = useSelector(state => ({
-    leadAttachmentId: state.getIn(['leadCreation', 'leadAttachmentId']),
-    leadDraftId: state.getIn(['leadCreation', 'leadDraftId']),
-  }));
+    const [uploadedFiles, setUploadedFiles] = useState(props.name && companyData?.administrativeProfile?.legalDocuments?.filter((file) => file.name === props.name).length !== 0
+        ? [{file: companyData?.administrativeProfile?.legalDocuments?.filter((file) => file.name === props.name)[0]}] : []);
+    const [fileSizeError, setFileSizeError] = useState(false);
+    const [hovered, setOvered] = React.useState(false);
 
-  const handleChange = (e) => {
+
+    const handleChange = (e) => {
     const fileList = e.target.files;
     const arrFiles = Array.from(fileList)
 
@@ -48,24 +53,94 @@ export const Upload = (props) => {
       const files = arrFiles.map((file, index) => {
         const src = window.URL.createObjectURL(file)
         return { file, id: index, src, leadId: leadDraftId }
-      })
+      });
       setUploadedFiles(files);
-        props.setName(files[0].file.name);
-        dispatch(uploadFileLaunched({files: files, type: props.type}))
+        if (props.name){
+            props.setName(props.name);
+            dispatch(uploadFileLaunched({files: files, type: props.type, name: props.name, companyData: companyData}))
+        } else {
+            props.setName(files[0].file.name);
+            dispatch(uploadFileLaunched({files: files, type: props.type}))
+        }
     }
 
     if (fileList[0].size > 1.5e+7) {
       setFileSizeError(true)
     }
-  }
+  };
+
+  useEffect(() => {
+    console.log("NUMBER", companyData?.administrativeProfile?.legalDocuments?.filter((file) => file.name === 'kbis' || file.name === 'cin1' || file.name === 'status').length);
+    if (companyData?.administrativeProfile?.legalDocuments?.filter((file) => file.name === 'kbis' || file.name === 'cin1' || file.name === 'status').length < 3) {
+      console.log("TOTO");
+      dispatch(checkMissingFilesForm(false))
+    } else {
+      console.log("TATA");
+      dispatch(checkMissingFilesForm(true))
+
+    }
+  }, [companyData.administrativeProfile.legalDocuments]);
 
   const handleFileDelete = () => {
     setUploadedFiles([]);
     dispatch(deleteAttachmentLaunched(leadAttachmentId))
   };
 
+    const handleFileDeleteFromData = () => {
+    setUploadedFiles([]);
+    dispatch(deleteAttachmentLaunched(leadAttachmentId))
+    const newLegalDocuments = companyData?.administrativeProfile?.legalDocuments?.filter((file) => file.name !== props.name);
+    const newCompanyData = companyData;
+    newCompanyData.administrativeProfile.legalDocuments = newLegalDocuments;
+    dispatch(changeAttachmentFromData(newCompanyData))
+    };
+
   return (
     <>
+        {
+            props.withOutText ?
+        <form className="form">
+            <Grid container>
+                {uploadedFiles?.map(({ file, src, id }, index) => {
+                    return (
+                        <Box mx={2} key={`file-row${index}`}>
+                            <Grid container direction="column" alignItems="center">
+                                <div style={{ position: 'relative' }}>
+                                    <img src={fileIcon} alt="uploaded file" onClick={() => dispatch(getAttachmentsLaunched(file.externalId))}/>
+                                        <CloseIcon
+                                            hovered={hovered}
+                                            onMouseEnter={() => setOvered(true)}
+                                            onMouseLeave={() => setOvered(false)}
+                                            className={classes.closeButton}
+                                            onClick={handleFileDeleteFromData}
+                                        />
+                                </div>
+                                <Box my={1}>
+                                    <Typography className={fileSizeError ? classes.maxedFileSize : null}>{file.name}</Typography>
+                                </Box>
+                            </Grid>
+                        </Box>
+                    )
+                })}
+                {uploadedFiles?.length < 1 && (
+                    <Grid container direction="column" alignItems="center" className={classes.uploadIconWrapper}>
+                        <UploadInput onChange={(e) => handleChange(e)} />
+                        {props.placeHolder ?
+                            <Box my={1}>
+                                Ajouter un(e) {props.placeHolder}
+                            </Box>
+                            :
+                            <Box my={1}>
+                                {t('upload.addDocument')}
+                            </Box>
+                        }
+
+                    </Grid>
+                )}
+            </Grid>
+        </form>
+        :
+            <>
       <Box my={3}>
         <Typography variant="h1">{t('upload.title.single')}</Typography>
       </Box>
@@ -110,6 +185,8 @@ export const Upload = (props) => {
       <Box my={2}>
         <Typography variant="body1" color="primary">{t('upload.confidentialityText')}</Typography>
       </Box>
+            </>
+        }
     </>
   )
 };

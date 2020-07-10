@@ -67,7 +67,7 @@ function* doGetAttachments() {
       header: {
         'x-api-key': config.apiKey
       },
-    })
+    });
     yield put(getAttachmentsSuccess(attachments))
   } catch (error) {
     yield put(getAttachmentsFailure())
@@ -81,11 +81,11 @@ function* doUploadAttachment() {
       header: {
         'x-api-key': config.apiKey
       },
-    })
-    yield put(uploadAttachmentSuccess(attachment))
+    });
+    yield put(uploadAttachmentSuccess(attachment));
     yield put(openAdminSnackBar({ message: "Votre document a bien été uploadé", error: false }));
   } catch (error) {
-    yield put(uploadAttachmentFailure())
+    yield put(uploadAttachmentFailure());
     yield put(openAdminSnackBar({ message: "Une erreur est survenue", error: true }));
   }
 }
@@ -93,7 +93,7 @@ function* doUploadAttachment() {
 function* doDeleteAttachment(action) {
   const { id } = action.payload;
   try {
-    const attachment = yield API.delete(config.apiGateway.NAME, `/attachments/${id}`, {
+    const attachment = yield API.del(config.apiGateway.NAME, `/attachments/${id}`, {
       header: {
         'x-api-key': config.apiKey
       },

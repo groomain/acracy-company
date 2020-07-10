@@ -16,12 +16,20 @@ import Form4 from "../../components/AdministrativeForms/Form4";
 import Form5 from "../../components/AdministrativeForms/Form5";
 import Upload from "../../components/Inputs/Upload";
 import { useDispatch, useSelector } from "react-redux";
-import {closeAdminSnackBar, getCompanyLaunched, openAdminSnackBar, putCompanyLaunched} from "./reducer";
+import {
+  checkMissingFilesForm,
+  closeAdminSnackBar,
+  getCompanyLaunched,
+  openAdminSnackBar,
+  putCompanyLaunched
+} from "./reducer";
 import CustomLoader from "../../components/Loader";
 import smallCheck from "../../assets/icons/small-check.svg";
 import Snackbar from "@material-ui/core/Snackbar";
 import CloseIcon from '@material-ui/icons/Close';
 import IconButton from "@material-ui/core/IconButton";
+import {Box} from "@material-ui/core";
+import DarkWrapper from "../../components/Layout/DarkWrapper";
 
 export const AdministrativePage = (props) => {
   const { t } = useTranslation();
@@ -29,25 +37,33 @@ export const AdministrativePage = (props) => {
   const classes = styles();
   const Element = Scroll.Element;
   const scrollSpy = Scroll.scrollSpy;
-  const [uploadName, setUploadName] = useState(null);
+  const [kbis, setKbis] = useState(null);
+  const [status, setStatus] = useState(null);
+  const [cin1, setCin1] = useState(null);
+  const [cin2, setCin2] = useState(null);
+  const [cin3, setCin3] = useState(null);
+  const [cin4, setCin4] = useState(null);
 
-  const { companyData, companyLoading, companyId, adminSnackBarOpen, adminSnackBarMessage } = useSelector(state => ({
+  const { companyData, companyLoading, companyId, adminSnackBarOpen, adminSnackBarMessage, adminSnackBarError } = useSelector(state => ({
     companyData: state.getIn(['Administrative', 'companyData']),
     companyLoading: state.getIn(['Administrative', 'companyLoading']),
     // companyId: state.getIn(['app', 'userDynamo', 'companyId'])
     companyId: 827,                                              ///// mock ID for offline use
     adminSnackBarOpen: state.getIn(['Administrative', 'adminSnackBarOpen']),
     adminSnackBarMessage: state.getIn(['Administrative', 'adminSnackBarMessage']),
+    adminSnackBarError: state.getIn(['Administrative', 'adminSnackBarError']),
   }));
 
   useEffect(() => {
     dispatch(getCompanyLaunched(companyId));
     scrollSpy.update();
-  }, []);
+  }, [dispatch]);
 
-  // console.log('companyData', companyData);
-  // console.log('companyLoading', companyLoading);
-
+  useEffect(() => {
+    if (companyData?.administrativeProfile?.legalDocuments?.filter((file) => file.name === 'kbis' || file.name === 'cin1' || file.name === 'status').length === 3) {
+      dispatch(checkMissingFilesForm(true))
+    }
+  }, [companyData]);
 
   const closeSnackBar = () => {
     dispatch(closeAdminSnackBar());
@@ -170,7 +186,23 @@ export const AdministrativePage = (props) => {
             <Grid item container direction={'column'} className={classes.card}>
               <Typography variant={'h2'} className={classes.cardTitle}>Documents légaux</Typography>
               <Grid item container direction={'column'} style={{ width: '100%', padding: 25 }}>
-                <Upload setName={setUploadName} type={'COMPANY_LEGAL_DOCUMENT'} />
+                <Box my={3}>
+                  <Typography variant="h1">{t('upload.title.single')}</Typography>
+                </Box>
+                <Box my={2}>
+                  <Typography variant="body1">{t('upload.subtitle')}</Typography>
+                </Box>
+                <DarkWrapper justify='space-between' alignItems='start'>
+                <Upload name={'kbis'} placeHolder={'Kbis*'} setName={setKbis} type={'COMPANY_LEGAL_DOCUMENT'} withOutText={true} />
+                <Upload name={'status'} placeHolder={'Status*'} setName={setStatus} type={'COMPANY_LEGAL_DOCUMENT'} withOutText={true} />
+                <Upload name={'cin1'} placeHolder={'Carte d\'identité 1*'} setName={setCin1} type={'COMPANY_LEGAL_DOCUMENT'} withOutText={true} />
+                <Upload name={'cin2'} placeHolder={'Carte d\'identité 2'} setName={setCin2} type={'COMPANY_LEGAL_DOCUMENT'} withOutText={true} />
+                <Upload name={'cin3'} placeHolder={'Carte d\'identité 3'} setName={setCin3} type={'COMPANY_LEGAL_DOCUMENT'} withOutText={true} />
+                <Upload name={'cin4'} placeHolder={'Carte d\'identité 4'} setName={setCin4} type={'COMPANY_LEGAL_DOCUMENT'} withOutText={true} />
+                </DarkWrapper>
+                <Box my={2}>
+                  <Typography variant="body1" color="primary">{t('upload.confidentialityText')}</Typography>
+                </Box>
               </Grid>
             </Grid>
           </Element>
@@ -221,8 +253,12 @@ export const AdministrativePage = (props) => {
           onClose={() => closeSnackBar()}
           children={
             <Grid container alignItems={'center'} justify={'space-between'} className={classes.snackBar}>
-              <img alt={'smallCheck'} src={smallCheck} />
-            <Typography className={classes.typoSnackBar}>TEST</Typography>
+              {adminSnackBarError ?
+                  <CloseIcon fontSize="small" />
+                  :
+                  <img alt={'smallCheck'} src={smallCheck}/>
+              }
+            <Typography className={classes.typoSnackBar}>{adminSnackBarMessage}</Typography>
               <IconButton size="small" aria-label="close" color="inherit" onClick={() => closeSnackBar()}>
                 <CloseIcon fontSize="small" />
               </IconButton>

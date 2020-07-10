@@ -41,7 +41,7 @@ export default makeStyles(theme => ({
         width: '50%'
     },
     snackBar: {
-        width: 250,
+        width: 'auto',
         backgroundColor: '#ecf805',
         color: 'black',
         borderRadius: '28px',
@@ -53,5 +53,7 @@ export default makeStyles(theme => ({
         fontSize: 17,
         fontFamily: 'Basier Regular',
         color: theme.palette.secondary.black,
+        marginRight: 10,
+        marginLeft: 10
     }
 }));

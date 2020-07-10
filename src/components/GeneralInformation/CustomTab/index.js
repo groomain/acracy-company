@@ -17,7 +17,7 @@ const CustomTab = ({ label, missingInfos, to, setActive, selected, ...props }) =
     }
   };
 
-  return (
+    return (
       <Link to={to} smooth={true} spy={true} onSetActive={(to) => {setActive(to)}}>
       <Tab className={classes.underSecondaryTitle} variant="body2" label={label} icon={getIcon(missingInfos)}
            classes={{

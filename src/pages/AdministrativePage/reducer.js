@@ -23,6 +23,7 @@ const initialState = Immutable.Map({
   missingInfosForm3: false,
   missingInfosForm4: false,
   missingInfosForm5: false,
+  missingFilesForm: false,
   adminSnackBarOpen: false,
   adminSnackBarMessage: null,
   adminSnackBarError: null
@@ -104,6 +105,8 @@ const { actions, reducer } = createSlice({
       .set('missingInfosForm4', action.payload),
     checkMissingInfosForm5: (state, action) => state
       .set('missingInfosForm5', action.payload),
+    checkMissingFilesForm: (state, action) => state
+      .set('missingFilesForm', action.payload),
     // SnackBar
     openAdminSnackBar: (state, action) => state
       .set('adminSnackBarOpen', true)
@@ -114,6 +117,8 @@ const { actions, reducer } = createSlice({
     clearAdminSnackBar: (state, action) => state
       .set('adminSnackBarMessage', null)
       .set('adminSnackBarError', null),
+    changeAttachmentFromData: (state, action) => state
+        .set('companyData', action.payload)
   }
 });
 
@@ -139,9 +144,11 @@ export const {
   checkMissingInfosForm3,
   checkMissingInfosForm4,
   checkMissingInfosForm5,
+  checkMissingFilesForm,
   openAdminSnackBar,
   closeAdminSnackBar,
-  clearAdminSnackBar
+  clearAdminSnackBar,
+  changeAttachmentFromData
 } = actions;
 
 export default reducer;
