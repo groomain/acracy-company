@@ -19,7 +19,7 @@ export const PersonalInformationsForm = ({ values, errors, touched, handleBlur, 
   const scrollSpy = Scroll.scrollSpy;
   useEffect(() => {
     scrollSpy.update();
-  });
+  }, []);
 
   const { putMyProfileLoading, putMyProfileErrorMessage } = useSelector(state => ({
     putMyProfileLoading: state.getIn(['MyProfile', 'putMyProfileLoading']),

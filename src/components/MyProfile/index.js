@@ -7,7 +7,7 @@ import CustomTab from "./CustomTab";
 
 const MyProfileInformation = ({ ...props }) => {
   const classes = styles();
-  const [value, setValue] = React.useState(2);
+  const [value, setValue] = React.useState(1);
 
   return (
     <Grid container className={classes.container} justify={'center'} {...props}>

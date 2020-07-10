@@ -16,7 +16,7 @@ const PasswordForm = ({ values, errors, touched, handleBlur, handleChange, handl
   const scrollSpy = Scroll.scrollSpy;
   useEffect(() => {
     scrollSpy.update();
-  });
+  }, []);
 
   const { changePasswordErrorMessage, changePasswordLoading } = useSelector(state => ({
     changePasswordErrorMessage: state.getIn(['MyProfile', 'changePasswordErrorMessage']),
