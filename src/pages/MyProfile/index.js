@@ -6,7 +6,7 @@ import * as Scroll from "react-scroll/modules";
 
 import { Formik } from 'formik';
 import PersonalInformationsForm from '../../components/Forms/MyProfileForm/PersonalInformationsForm';
-import PasswordForm from '../../components/Forms/MyProfileForm/PasSwordForm';
+import PasswordForm from '../../components/Forms/MyProfileForm/PasswordForm';
 import * as Yup from 'yup';
 import { useTranslation } from 'react-i18next';
 import { useSelector, useDispatch } from 'react-redux';
@@ -33,8 +33,6 @@ export const MyProfilePage = (props) => {
     employeeId: state.getIn(['app', 'userDynamo', 'employeeId']),
     user: state.getIn(['app', 'userInfo', 'attributes', 'sub'])
   }));
-  console.log("MyProfilePage -> myProfileData", myProfileData)
-  console.log("MyProfilePage -> user", user)
 
   // Form Validation Schema
   const personalInformationsValidationSchema = Yup.object().shape({
@@ -68,7 +66,6 @@ export const MyProfilePage = (props) => {
     phoneNumber: myProfileData?.phone?.number,
     role: myProfileData?.role
   };
-  console.log("personalInformationsInitialValues", personalInformationsInitialValues)
 
   const passwordInitialValues = {
     user: user,
@@ -79,12 +76,10 @@ export const MyProfilePage = (props) => {
 
   // Form Submitting Function
   const personalInformationsSubmit = (credentials) => {
-    console.log("personalInformationsSubmit -> credentials", credentials)
     dispatch(putMyProfilePersonalInformationsLaunched(credentials));
   };
 
   const passwordSubmit = (credentials) => {
-    console.log("passwordSubmit -> credentials", credentials)
     dispatch(changePasswordLaunched(credentials));
   };
 

@@ -11,7 +11,6 @@ import {
 } from "./reducer";
 
 function* doGetMyProfile(action) {
-  console.log("function*doGetMyProfile -> action", action)
   const employeeId = action.payload;
   try {
     const myProfile = yield API.get(config.apiGateway.NAME, `/employees/${employeeId}`, {
@@ -27,9 +26,7 @@ function* doGetMyProfile(action) {
 }
 
 function* doPutMyProfile(action) {
-  console.log("function*doPutMyProfile -> action", action)
   const { employeeId, firstName, lastName, email, phoneCode, phoneNumber, role } = action.payload;
-  console.log(phoneCode.substring(phoneCode.indexOf('+'), phoneCode.length))
   try {
     const myProfile = yield API.put(config.apiGateway.NAME, `/employees/${employeeId}`, {
       headers: {
@@ -54,7 +51,6 @@ function* doPutMyProfile(action) {
 }
 
 function* doChangePassword(action) {
-  console.log("function*doChangePassword -> action", action)
   const { user, oldPassword, newPassword } = action.payload;
   try {
     yield Auth.changePassword({
