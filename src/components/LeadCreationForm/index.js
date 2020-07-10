@@ -27,7 +27,7 @@ import UploadInput from '../Inputs/Upload';
 
 import { checkLength } from '../../utils/services/validationChecks';
 
-const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, handleChange, ...props }) => {
+const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, handleChange, leadId, ...props }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const classes = styles();
@@ -35,25 +35,14 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
   const { frequency, workspace, duration, durationType, missionTitle, budget, budgetType, profile, profilesNumber,
     seniority, customDeliverable, companyAddress, contextAndTasks, detailsOfDeliverables } = values;
 
-  let leadCreationStep = 1; // the dashboard page
-  const [activeStep, setActiveStep] = useState(leadCreationStep);
-  const [searchedCategory, setSearchedCategory] = useState({});
-  const [deliverables, setDeliverables] = useState([]);
-  const [disabled, setDisabled] = useState(false); // to be used with step 2
-  const [dailyCost, setDailyCost] = useState();
-  const [withCommission, setWithCommission] = useState();
-  const [openCallMeModal, setOpenCallMeModal] = useState(false);
-  const [disableCallMeBtn, setDisableCallMeBtn] = useState(true);
-  const [disableGoToFinalizationBtn, setDisableGoToFinalizationBtn] = useState(true);
-
   const { leadDraftSearchData, deliverablesArray, expertises,
-    selectedExpertiseList, expansionPanelOpen, expertisePriorities,
+    selectedExpertiseList, expansionPanelOpen, expertisePriorities, leadCreationStep,
     sensitivities, selectedSensitivity, sensitivityPriority, dateFromCalendar,
     selectedLanguage, languagePriority, leadSaveLoading, updateLeadDraftLoading } = useSelector(state => ({
       dateFromCalendar: state.getIn(['leadCreation', 'dateFromCalendar']),
       leadDraftSearchData: state.getIn(['leadCreation', 'leadDraftSearchData']),
       deliverablesArray: state.getIn(['leadCreation', 'deliverablesArray']),
-      // leadCreationStep: state.getIn(['leadCreation', 'leadCreationStep']),
+      leadCreationStep: state.getIn(['leadCreation', 'leadCreationStep']),
       expertises: state.getIn(['leadCreation', 'expertises']),
       selectedExpertiseList: state.getIn(['leadCreation', 'selectedExpertiseList']),
       expansionPanelOpen: state.getIn(['leadCreation', 'expansionPanelOpen']),
@@ -66,6 +55,16 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
       leadSaveLoading: state.getIn(['leadCreation', 'leadSaveLoading']),
       updateLeadDraftLoading: state.getIn(['leadCreation', 'updateLeadDraftLoading']),
     }));
+
+  const [activeStep, setActiveStep] = useState(leadCreationStep);
+  const [searchedCategory, setSearchedCategory] = useState({});
+  const [deliverables, setDeliverables] = useState([]);
+  const [disabled, setDisabled] = useState(false); // to be used with step 2
+  const [dailyCost, setDailyCost] = useState();
+  const [withCommission, setWithCommission] = useState();
+  const [openCallMeModal, setOpenCallMeModal] = useState(false);
+  const [disableCallMeBtn, setDisableCallMeBtn] = useState(true);
+  const [disableGoToFinalizationBtn, setDisableGoToFinalizationBtn] = useState(true);
 
   useEffect(() => { // Disable the "need help" button
     if (leadDraftSearchData?.search !== null) {
@@ -104,7 +103,7 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
   const handleDispatchHelp = () => {
     let redirect = false;
     leadSave(leadDraftSearchData, deliverablesArray, values, redirect)
-    dispatch(changeLeadStatusLaunched('HELP_NEEDED'));
+    dispatch(changeLeadStatusLaunched({ leadId, status: 'NEED_HELP' }));
     setOpenCallMeModal(false)
   }
 
@@ -335,6 +334,8 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
     leadSave(leadDraftSearchData, deliverablesArray, values, redirect)
   }
 
+  const minDate = new Date().setDate(new Date().getDate() + 30);
+
   const setLeadSynthesis = () => {
     return (
       <Box className={classes.stepContent}>
@@ -358,7 +359,7 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
               label={t('leadCreation.missionLabel')}
               placeholder={t('leadCreation.missionPlaceholder')}
               name='missionTitle'
-              maxLength={200}
+              maxLength={140}
               valueOut={missionTitle}
               onChange={handleChange}
             ></CustomTextArea>
@@ -369,6 +370,7 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
               label={t('leadCreation.calendarLabel')}
               name='missionStartDate'
               onChange={handleChange}
+              minDate={minDate}
             />
           </Grid>
 
@@ -493,26 +495,7 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
               </CustomButton>
             </Grid>
           </Grid>
-
         </Grid>
-        {<CustomModal
-          title="Au clic sur “Confirmer”, le remplissage de brief se mettra en pause, et vous serez rappelé par l’un des account managers d’acracy qui le finalisera au téléphone avec vous"
-          open={openCallMeModal}
-          handleClose={() => setOpenCallMeModal(false)}
-        >
-          <Grid container className={classes.marginTop}>
-            <Grid item>
-              <CustomButton
-                type="button"
-                theme='primaryButton'
-                handleClick={handleDispatchHelp}
-                title={'Confirmer'}
-              >
-              </CustomButton>
-            </Grid>
-          </Grid>
-        </CustomModal>
-        }
         <br />
         <br />
         <br />
@@ -534,9 +517,9 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
     }
   }, [dispatch, activeStep])
 
-  const [expertisePriorityList, setExpertisePriorityList] = useState();
-  const [sensitivityPriorityList, setSensitivityPriorityList] = useState();
-  const [languagePriorityList, setLanguagePriorityList] = useState();
+  const [expertisePriorityList, setExpertisePriorityList] = useState([]);
+  const [sensitivityPriorityList, setSensitivityPriorityList] = useState([]);
+  const [languagePriorityList, setLanguagePriorityList] = useState([]);
 
   useEffect(() => {
     setExpertisePriorityList(selectedExpertiseList?.map(x => ({ ...x, priority: false })));
@@ -577,7 +560,7 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
 
         <Grid container>
           {/* Expertises */}
-          {expertises && <Grid item xs={12} className={classes.fieldRows}>
+          {expertises?.length > 0 && <Grid item xs={12} className={classes.fieldRows}>
             <Grid container justify="space-between">
               <Typography variant="h4">{t('tagsList.expertise.label') + '*'}</Typography>
               <Typography variant="h2">{t('tagsList.expertise.minMaxInfo')}</Typography>
@@ -590,7 +573,7 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
             />
             {expansionPanelOpen !== 'expertise' &&
               <Grid item container direction='row'>
-                {expertisePriorityList?.map((tag, key) => (
+                {expertisePriorityList?.length > 0 && expertisePriorityList?.map((tag, key) => (
                   <Tag key={key}
                     title={tag.text}
                     isPrimaryColor
@@ -603,7 +586,7 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
           </Grid>}
 
           {/* Sensitivities */}
-          {sensitivities &&
+          {sensitivities?.length > 0 &&
             <Grid item xs={12} className={classes.fieldRows}>
               <Box my={2.5}>
                 <Grid container justify="space-between">
@@ -618,7 +601,7 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
                 />
                 {expansionPanelOpen !== 'sensitivity' &&
                   <Grid item container direction='row'>
-                    {sensitivityPriorityList?.map((tag, key) => (
+                    {sensitivityPriorityList?.length > 0 && sensitivityPriorityList?.map((tag, key) => (
                       <Tag key={key}
                         title={tag.text}
                         isPrimaryColor
@@ -646,7 +629,7 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
                 />
                 {expansionPanelOpen !== 'languages' &&
                   <Grid item container direction='row'>
-                    {languagePriorityList?.map((tag, key) => (
+                    {languagePriorityList?.length > 0 && languagePriorityList?.map((tag, key) => (
                       <Tag key={key}
                         title={tag.text}
                         isPrimaryColor
@@ -714,6 +697,19 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
 
         {/* Upload */}
         <UploadInput />
+
+        {/* Buttons */}
+        <Grid container justify='flex-end' className={classes.marginTop}>
+          <Grid item>
+            <CustomButton
+              type="button"
+              theme={'primaryButton'}
+              handleClick={handleCallMe}
+              title={t('leadCreation.callMe')}
+            >
+            </CustomButton>
+          </Grid>
+        </Grid>
       </Box >
     )
   }
@@ -759,6 +755,23 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
         })}
       </Stepper>
       {getStepContent(activeStep)}
+      {openCallMeModal && <CustomModal
+        title="Au clic sur “Confirmer”, le remplissage de brief se mettra en pause, et vous serez rappelé par l’un des account managers d’acracy qui le finalisera au téléphone avec vous"
+        open={openCallMeModal}
+        handleClose={() => setOpenCallMeModal(false)}
+      >
+        <Grid container className={classes.marginTop}>
+          <Grid item>
+            <CustomButton
+              type="button"
+              theme='primaryButton'
+              handleClick={handleDispatchHelp}
+              title={'Confirmer'}
+            >
+            </CustomButton>
+          </Grid>
+        </Grid>
+      </CustomModal>}
     </Grid >
   )
 };

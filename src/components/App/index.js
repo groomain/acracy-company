@@ -32,19 +32,23 @@ function App() {
 
   const appSwitch = (
     <Switch>
+      {/* PUBLIC ROUTE */}
       <Route exact path="/" render={() => <Redirect to="/home" />} />
       <PublicRoute exact path="/login" fixed component={SignInPage} />
-      <PublicRoute exact path="/signup" fixed component={SignUpPage} />
-      <PublicRoute exact path="/confirm-signup" fixed component={ConfirmSignupPage} />
-      <PublicRoute exact path="/password" fixed component={ForgotPassword} />
+      <PublicRoute exact path="/createAccount" fixed component={SignUpPage} />
+      <PublicRoute exact path="/confirmAccount" fixed component={ConfirmSignupPage} />
+      <PublicRoute exact path="/forgotPassword" fixed component={ForgotPassword} />
+      {/* PRIVATE ROUTE */}
       <PrivateRoute exact path="/lead" fixed component={LeadCreationPage} />
+      <PrivateRoute exact path="/lead/:id" fixed component={LeadCreationPage} />
       <PrivateRoute exact path="/brief/:id" fixed component={MissionFollowUp} />
       <PrivateRoute exact path="/mission/:id" fixed component={MissionFollowUp} />
-      <PrivateRoute exact path="/firstlogin" fixed component={FirstLoginPage} />
+      <PrivateRoute exact path="/firstLogin" fixed component={FirstLoginPage} />
       <PrivateRoute exact path="/home" fixed component={HomePage} />
-      <PrivateRoute exact path="/account" fixed component={MyAccount} />
-      <PrivateRoute exact path="/selection" fixed component={ProfileSelection} />
-      <PrivateRoute exact path="/myProfile" fixed component={MyProfilePage} />
+      <PrivateRoute exact path="/myProfile" fixed component={MyAccount} />
+      <PrivateRoute exact path="/reveal/:id" fixed component={ProfileSelection} />
+      {/* REDIRECT WRONG PATH */}
+      <Route render={() => <Redirect to="/home" />} />
     </Switch>
   );
 
