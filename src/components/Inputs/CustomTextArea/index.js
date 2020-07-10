@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import clsx from 'clsx';
 
-import { Grid, Typography, FilledInput, InputLabel, Box } from '@material-ui/core';
+import { Grid, Typography, FilledInput, Box } from '@material-ui/core';
 import styles from './styles';
 
 export const CustomTextArea = ({ label, placeholder, error, helperText, maxLength, valueOut, handleChangeOut, size, ...props }) => {

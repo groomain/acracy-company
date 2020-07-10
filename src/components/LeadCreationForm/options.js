@@ -1,9 +1,9 @@
 export const languages = [
-  { text: 'Anglais courant' }, { text: 'Anglais natif' },
-  { text: 'Français courant' }, { text: 'Français natif' },
-  { text: 'Allemand courant' }, { text: 'Allemand natif' },
-  { text: 'Espagnol courant' }, { text: 'Espagnol natif' },
-  { text: 'Italien courant' }, { text: 'Italien natif' }
+  { text: 'Anglais courant', type: 'FLUENT_ENGLISH' }, { text: 'Anglais natif', type: 'NATIVE_ENGLISH' },
+  { text: 'Français courant', type: 'FLUENT_FRENCH' }, { text: 'Français natif', type: 'NATIVE_FRENCH' },
+  { text: 'Allemand courant', type: 'FLUENT_GERMAN' }, { text: 'Allemand natif', type: 'NATIVE_GERMAN' },
+  { text: 'Espagnol courant', type: 'FLUENT_SPANISH' }, { text: 'Espagnol natif', type: 'NATIVE_SPANISH' },
+  { text: 'Italien courant', type: 'FLUENT_ITALIAN' }, { text: 'Italien natif', type: 'NATIVE_ITALIAN' }
 ]
 
 export const seniorityValues = [

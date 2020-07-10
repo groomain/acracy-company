@@ -24,8 +24,8 @@ import CustomButton from '../../Button';
 import InvoiceManagementModal from '../../../pages/HomePage/Modals/InvoiceManagementModal';
 import ValidationModal from '../../../pages/HomePage/Modals/ValidationModal'
 import styles from './styles';
-
-import { getQuotesLaunched, getCompaniesLaunched, setComingFromDashboard, getMissionsLaunched } from '../../../pages/HomePage/reducer';
+// import { openSnackBar } from '../../App/reducer';
+import { getQuotesLaunched, getCompaniesLaunched, setComingFromDashboard } from '../../../pages/HomePage/reducer';
 import severinePicture from '../../../assets/pics/severine/severine-small.png';
 import { shortenLongText, addTwoWorkingDays, formatDate } from '../../../utils/services/format';
 import { getPath } from '../../../utils/services/validationChecks';
@@ -48,14 +48,13 @@ export const Mission = ({ mission, matching, today, ...props }) => {
   const dispatch = useDispatch();
   const classes = styles();
 
-  const { quotes, quotesLoading, companiesData, companiesLoading, companiesDataFetched, updateMissionLoading, updateMissionSent, companyId } = useSelector(state => ({
+  const { quotes, quotesLoading, companiesData, companiesLoading, companiesDataFetched, updateMissionSent, companyId } = useSelector(state => ({
     companyId: state.getIn(['app', 'userDynamo', 'companyId']),
     quotes: state.getIn(['dashboard', 'quotes']),
     quotesLoading: state.getIn(['dashboard', 'quotesLoading']),
     companiesData: state.getIn(['dashboard', 'companiesData']),
     companiesLoading: state.getIn(['dashboard', 'companiesLoading']),
     companiesDataFetched: state.getIn(['dashboard', 'companiesDataFetched']),
-    updateMissionLoading: state.getIn(['dashboard', 'updateMissionLoading']),
     updateMissionSent: state.getIn(['dashboard', 'updateMissionSent'])
   }));
 
@@ -248,11 +247,14 @@ export const Mission = ({ mission, matching, today, ...props }) => {
   // 
   useEffect(() => {
     if (companiesDataFetched && loadingButton) {
-      if (getPath(companiesData, 'companiesData').length !== 0) {
+      if (!companiesData || getPath(companiesData, 'companiesData').length !== 0) {
         setRedirectionPopupOpen(true);
         dispatch(setComingFromDashboard(true)); // Initialize the redirection from the administrative page -> true ? push('/reveal')
+        // dispatch(openSnackBar({ message: "Pour accéder à la sélection, il suffit de remplir vos informations administratives", error: false })) //////////////
       } else {
-        dispatch(push(`/reveal/${mission?.externalId || matching?.externalId}`));
+        if (mission?.externalId || matching?.externalId) {
+          dispatch(push(`/reveal/${mission?.externalId || matching?.externalId}`));
+        }
       }
     }
   }, [companiesDataFetched, companiesData, dispatch, loadingButton, mission, matching])

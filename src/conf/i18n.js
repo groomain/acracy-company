@@ -245,7 +245,8 @@ i18n
             calendarLabel: 'Date de démarrage*',
             reseachLabel: 'Précisez votre recherche',
             finishBrief: 'Finaliser le brief',
-            tip1: "Donnez le plus d\'informations possible sur la mission et vos attentes, mais aussi sur le contexte du projet (équipe, objectifs, format du travail, deadlines).",
+            sendBriefButton: 'Déposer mon brief',
+            tip1: "Donnez le plus d'informations possible sur la mission et vos attentes, mais aussi sur le contexte du projet (équipe, objectifs, format du travail, deadlines).",
             tip2: "Nos freelances sont très demandés, et souvent très occupés. N'hésitez pas à mentionner les avantages de travailler sur votre projet pour les aider à se décider.",
             discoverTips: "Découvrez nos conseils pour les briefs parfaits",
             // step 2
@@ -262,7 +263,7 @@ i18n
               },
               deliverablesDetails: {
                 label: "Détail des livrables*",
-                placeholder: "C’est le moment de nous en dire le plus possible sur ce qui fait partie des livrables et quelles sont vos attentes exactes. Dites-nous-en le plus possible. \nEx: \“Wireframes: 10 écrans (mobile et desktop) ; Format Sketch ; Possibilité de consulter sur Invision…\”"
+                placeholder: "C’est le moment de nous en dire le plus possible sur ce qui fait partie des livrables et quelles sont vos attentes exactes. Dites-nous-en le plus possible. \nEx: “Wireframes: 10 écrans (mobile et desktop) ; Format Sketch ; Possibilité de consulter sur Invision…”"
               }
             }
           },

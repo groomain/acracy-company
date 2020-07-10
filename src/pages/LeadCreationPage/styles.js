@@ -3,7 +3,8 @@ import makeStyles from '@material-ui/core/styles/makeStyles';
 export default makeStyles(theme => ({
   root: {
     height: '100vh',
-    minHeight: 800
+    minHeight: 800,
+    paddingTop: 30
   },
   briefTipRoot: {
     minHeight: 5,
