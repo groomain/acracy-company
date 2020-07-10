@@ -31,7 +31,6 @@ import Dialog from '@material-ui/core/Dialog';
 import Popover from "@material-ui/core/Popover";
 import CloseIcon from '@material-ui/icons/Close';
 import IconButton from "@material-ui/core/IconButton";
-import ContactModale from "../../components/ContactModale";
 
 const ProfileSelection = (props) => {
   const quoteId = props?.match?.params;
@@ -75,6 +74,7 @@ const ProfileSelection = (props) => {
   // Modale - Contacter Acracy
   const [contactOpen, setContactModaleOpen] = useState(false);
   const [contactMessage, setContactMessage] = useState('');
+  const [contactSelect, setContactSelect] = useState('');
 
   // Modale - Entretien
   const [interviewOpen, setInterviewOpen] = useState(false);
@@ -95,8 +95,13 @@ const ProfileSelection = (props) => {
     handleNoProfileModaleOpen()
   };
 
+  const contactAcracy = (message, reason, interview, setOpen) => {
+    dispatch(contactAcracyLaunched({ message: message, reason: reason, interview: interview }));
+    setOpen()
+  };
+
   const handleContactOpen = () => {
-    setContactModaleOpen(!contactOpen);
+    setContactModaleOpen(!open);
   };
 
   const handleInterviewOpen = () => {
@@ -542,8 +547,27 @@ const ProfileSelection = (props) => {
           </Grid>
         </Grid>
       </Dialog>
-      <ContactModale open={contactOpen} setOpen={setContactModaleOpen} interview={false} title={'Faire une demande à acracy'} placeHolder={'Dites nous comment on peut vous aider'}/>
-      <ContactModale open={interviewOpen} setOpen={setInterviewOpen} interview={true} title={'Confirmation d\'entretien'} placeHolder={'Donnez nous plus de détails sur ces entretiens'}/>
+      <Dialog open={contactOpen} onClose={handleContactOpen} classes={{ paper: classes.modale }}>
+        <Grid item container direction={'column'} justify={'center'} className={classes.modaleContainer}>
+          <IconButton aria-label="close" className={classes.iconButton} onClick={handleContactOpen}>
+            <CloseIcon />
+          </IconButton>
+          <Typography variant={"h1"}>Faire une demande à acracy</Typography>
+          <CustomSelect placeholder={"Sélectionner raison"} label={"Raison"} optionsValues={['Contacter Acracy']} value={contactSelect} handleChangeOut={setContactSelect} />
+          <CustomTextArea style={{ height: 328 }} placeholder={"Dites nous comment on peut vous aider"} valueOut={contactMessage} handleChangeOut={setContactMessage} />
+          <CustomButton theme={"filledButton"} style={{ width: 254 }} title={"Envoyé"} handleClick={() => contactAcracy(contactMessage, contactSelect, false, handleContactOpen)} loading={contactLoading} />
+        </Grid>
+      </Dialog>
+      <Dialog open={interviewOpen} onClose={handleInterviewOpen} classes={{ paper: classes.modale }}>
+        <Grid item container direction={'column'} justify={'center'} className={classes.modaleContainer}>
+          <IconButton aria-label="close" className={classes.iconButton} onClick={handleInterviewOpen}>
+            <CloseIcon />
+          </IconButton>
+          <Typography variant={"h1"}>Confirmation d'entretien</Typography>
+          <CustomTextArea style={{ height: 328 }} placeholder={"Donnez nous plus de détails sur ces entretiens"} valueOut={interviewMessage} handleChangeOut={setInterviewMessage} />
+          <CustomButton theme={"filledButton"} style={{ width: 254 }} title={"Envoyé"} handleClick={() => contactAcracy(interviewMessage, 'Interview', true, handleInterviewOpen)} loading={contactLoading} />
+        </Grid>
+      </Dialog>
     </Grid>
 
   );

@@ -9,6 +9,7 @@ import CustomButton from "../Button";
 import CloseIcon from '@material-ui/icons/Close';
 import {contactAcracyLaunched} from "../../components/ContactModale/reducer";
 import Grid from "@material-ui/core/Grid";
+import CustomSelect from "../Inputs/CustomSelect";
 
 const ContactModale = ({open, setOpen, interview, title, placeHolder, ...props }) => {
   const classes = styles();
@@ -20,9 +21,10 @@ const ContactModale = ({open, setOpen, interview, title, placeHolder, ...props }
 
   // Handle panels expansion individually
   const [contactMessage, setContactMessage] = useState('');
+  const [contactSelect, setContactSelect] = useState('');
 
-  const contactAcracy = (message, interview) => {
-    dispatch(contactAcracyLaunched({ message: message, interview: interview }));
+  const contactAcracy = (message, reason,  interview) => {
+    dispatch(contactAcracyLaunched({ message: message, reason: reason, interview: interview }));
     handleContactOpen()
   };
 
@@ -37,8 +39,9 @@ const ContactModale = ({open, setOpen, interview, title, placeHolder, ...props }
             <CloseIcon />
           </IconButton>
           <Typography variant={"h1"}>{title}</Typography>
+          <CustomSelect placeholder={"Sélectionner raison"} label={"Raison"} optionsValues={['Contacter Acracy']} value={contactSelect} handleChangeOut={setContactSelect} />
           <CustomTextArea placeholder={placeHolder} valueOut={contactMessage} handleChangeOut={setContactMessage} />
-          <CustomButton theme={"filledButton"} style={{ width: 254 }} title={"Envoyé"} handleClick={() => contactAcracy(contactMessage, interview)} loading={contactLoading} />
+          <CustomButton theme={"filledButton"} style={{ width: 254 }} title={"Envoyé"} handleClick={() => contactAcracy(contactMessage, contactSelect, interview)} loading={contactLoading} />
         </Grid>
       </Dialog>
   );
