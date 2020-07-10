@@ -15,7 +15,6 @@ import {
   putMyProfilePersonalInformationsLaunched,
   changePasswordLaunched
 } from './reducer';
-import areaCodes from "../../utils/areaCodes";
 import { getAreaCodeFromNumber } from '../../utils/services/format';
 
 export const MyProfilePage = (props) => {
@@ -27,7 +26,7 @@ export const MyProfilePage = (props) => {
 
   useEffect(() => {
     scrollSpy.update();
-  }, []);
+  });
 
   const { myProfileData, employeeId, user } = useSelector(state => ({
     myProfileData: state.getIn(['MyProfile', 'myProfileData']),
@@ -56,8 +55,8 @@ export const MyProfilePage = (props) => {
   });
 
   useEffect(() => {
-    dispatch(getMyProfilePersonalInformationsLaunched(employeeId));
-  }, [dispatch]);
+    dispatch(getMyProfilePersonalInformationsLaunched());
+  });
 
   // Form data
   const personalInformationsInitialValues = {
