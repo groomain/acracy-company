@@ -11,7 +11,6 @@ import SignUpPage from '../../pages/SignUp';
 import ConfirmSignupPage from '../../pages/ConfirmSignUp';
 import ForgotPassword from '../../pages/ForgotPassword';
 import FirstLoginPage from '../../pages/FirstLogin';
-import MyAccount from "../../pages/MyAccount";
 import LeadCreationPage from "../../pages/LeadCreationPage";
 import MyProfilePage from "../../pages/MyProfile";
 import CustomAppBar from "../AppBar";
@@ -45,7 +44,7 @@ function App() {
       <PrivateRoute exact path="/mission/:id" fixed component={MissionFollowUp} />
       <PrivateRoute exact path="/firstLogin" fixed component={FirstLoginPage} />
       <PrivateRoute exact path="/home" fixed component={HomePage} />
-      <PrivateRoute exact path="/myProfile" fixed component={MyAccount} />
+      <PrivateRoute exact path="/myProfile" fixed component={MyProfilePage} />
       <PrivateRoute exact path="/reveal/:id" fixed component={ProfileSelection} />
       {/* REDIRECT WRONG PATH */}
       <Route render={() => <Redirect to="/home" />} />

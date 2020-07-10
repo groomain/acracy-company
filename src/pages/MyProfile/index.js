@@ -1,108 +1,121 @@
-import React, { useState, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
-import { useDispatch } from 'react-redux';
+import React, { useEffect } from 'react';
+import { Grid } from "@material-ui/core";
+import MyProfileMenu from "../../components/MyProfile";
+import styles from "./styles";
+import * as Scroll from "react-scroll/modules";
+
 import { Formik } from 'formik';
+import PersonalInformationsForm from '../../components/Forms/MyProfileForm/PersonalInformationsForm';
+import PasswordForm from '../../components/Forms/MyProfileForm/PaswordForm';
 import * as Yup from 'yup';
-import { myprofileLaunched } from '../../components/App/reducer';
-import Grid from '@material-ui/core/Grid';
-import Sidebar from '../../components/Layout/Sidebar';
-import Main from '../../components/Layout/Main';
-import MyProfileForm from '../../components/Forms/MyProfileForm';
-import styles from '../../utils/styles';
-import Typography from '@material-ui/core/Typography';
-import { CustomButton } from '../../components/Button';
-import { CustomTextField, CustomPasswordField } from "../../components/Inputs/CustomTextField";
-import CustomSelect from "../../components/Inputs/CustomSelect";
-import Link from '@material-ui/core/Link';
+import { useTranslation } from 'react-i18next';
+import { useSelector, useDispatch } from 'react-redux';
+import {
+  getMyProfilePersonalInformationsLaunched,
+  putMyProfilePersonalInformationsLaunched,
+  changePasswordLaunched
+} from './reducer';
+import areaCodes from "../../utils/areaCodes";
+import { getAreaCodeFromNumber } from '../../utils/services/format';
 
-const MyProfilePage = () => {
-  //   const dispatch = useDispatch();
-  //   const { t } = useTranslation();
+export const MyProfilePage = (props) => {
   const classes = styles();
+  const Element = Scroll.Element;
+  const scrollSpy = Scroll.scrollSpy;
+  const { t } = useTranslation();
+  const dispatch = useDispatch();
 
-  // Form data
-  // const initialValues = {
-  //   firstName: '',
-  //   lastName: '',
-  //   role: '',
-  //   phoneNumber: '',
-  //   email: '',
-  //   password: '',
-  //   confirmPassword: '',
-  //   phonePrefix: 'Fr : +33'
-  // };
+  useEffect(() => {
+    scrollSpy.update();
+  }, []);
 
-  // Form Submitting Function
-  // const myprofile = (credentials) => {
-  //   dispatch(myprofileLaunched(credentials));
-  // };
+  const { myProfileData, employeeId, user } = useSelector(state => ({
+    myProfileData: state.getIn(['MyProfile', 'myProfileData']),
+    employeeId: state.getIn(['app', 'userDynamo', 'employeeId']),
+    user: state.getIn(['app', 'userInfo', 'attributes', 'sub'])
+  }));
+  console.log("MyProfilePage -> myProfileData", myProfileData)
+  console.log("MyProfilePage -> user", user)
 
   // Form Validation Schema
-  // const ValidationSchema = Yup.object().shape({
-  //   email: Yup.string().required(),
-  //   companyName: Yup.string().required(),
-  //   firstName: Yup.string().required(),
-  //   lastName: Yup.string().required(),
-  //   role: Yup.string().required(),
-  //   phoneNumber: Yup.number().required(),
-  //   phonePrefix: Yup.string().required(),
-  //   password: Yup.string().required(),
-  //   confirmPassword: Yup.string().test('password-match', t('passwordMismatch'), function (confPass) {
-  //     return confPass === this.parent.password;
-  //   }).required(),
-  //   conditions: Yup.bool().required(),
-  // });
+  const personalInformationsValidationSchema = Yup.object().shape({
+    firstName: Yup.string().required(),
+    lastName: Yup.string().required(),
+    email: Yup.string().email().required(),
+    phoneCode: Yup.string().required(),
+    phoneNumber: Yup.string().required(),
+    role: Yup.string().required()
+  });
 
-  // const [optionsValues] = useState([
-  //   'Fr : +33',
-  //   'Blg : +32',
-  //   'It : +39'
-  // ]);
+  const passwordValidationSchema = Yup.object().shape({
+    oldPassword: Yup.string().required(),
+    newPassword: Yup.string().required(),
+    confirmNewPassword: Yup.string().test('newPassword-match', t('newPasswordMismatch'), function (confNewPass) {
+      return confNewPass === this.parent.newPassword;
+    }).required()
+  });
+
+  useEffect(() => {
+    dispatch(getMyProfilePersonalInformationsLaunched(employeeId));
+  }, [dispatch]);
+
+  // Form data
+  const personalInformationsInitialValues = {
+    employeeId: employeeId,
+    firstName: myProfileData?.firstName,
+    lastName: myProfileData?.lastName,
+    email: myProfileData?.email,
+    phoneCode: myProfileData?.phone?.code ? getAreaCodeFromNumber(myProfileData?.phone?.code) : null,
+    phoneNumber: myProfileData?.phone?.number,
+    role: myProfileData?.role
+  };
+  console.log("personalInformationsInitialValues", personalInformationsInitialValues)
+
+  const passwordInitialValues = {
+    user: user,
+    oldPassword: '',
+    newPassword: '',
+    confirmNewPassword: ''
+  };
+
+  // Form Submitting Function
+  const personalInformationsSubmit = (credentials) => {
+    console.log("personalInformationsSubmit -> credentials", credentials)
+    dispatch(putMyProfilePersonalInformationsLaunched(credentials));
+  };
+
+  const passwordSubmit = (credentials) => {
+    console.log("passwordSubmit -> credentials", credentials)
+    dispatch(changePasswordLaunched(credentials));
+  };
 
   return (
-    <Grid
-      container
-      direction="row"
-      justify="center"
-      className={classes.connectionDiv}
-    >
-      <Sidebar>
-        <div className={classes.pannel}>
-          <Grid item>
-            <Typography variant={"h1"}>
-              Mon profil
-          </Typography>
-          </Grid>
-          <Grid item>
-            <Grid item>
-              <Link href="#personalInfos">
-                <Typography variant={"subtitle1"}>
-                  | Informations personnelles
-                </Typography>
-              </Link>
-            </Grid>
-            <Grid item>
-              <Link href="#password">
-                <Typography variant={"subtitle2"}>
-                  | Mot de passe
-                </Typography>
-              </Link>
-            </Grid>
-          </Grid>
-        </div>
-      </Sidebar>
-      <Main>
-        <Grid item>
-          <Typography variant={"h1"} id="personalInfos">
-            Informations personnelles
-          </Typography>
-          <Typography variant={"h1"} id="password">
-            Mot de passe
-          </Typography>
-        </Grid>
-      </Main>
-    </Grid >
-  );
+    <Grid item xs={12} container className={classes.container}>
+      <Grid item xs={3} container justify={'center'} className={classes.leftContainer}>
+        <MyProfileMenu />
+      </Grid>
+      <Grid item xs={9} container alignItems={'center'} justify={'center'} style={{ marginBottom: 500 }}>
+        <Element name={'1'} className={classes.element}>
+          <Formik
+            render={props => <PersonalInformationsForm {...props} />}
+            initialValues={personalInformationsInitialValues}
+            validationSchema={personalInformationsValidationSchema}
+            enableReinitialize
+            onSubmit={personalInformationsSubmit}
+          />
+        </Element>
+        <Element name={'2'} className={classes.element}>
+          <Formik
+            render={props => <PasswordForm {...props} />}
+            initialValues={passwordInitialValues}
+            validationSchema={passwordValidationSchema}
+            enableReinitialize
+            onSubmit={passwordSubmit}
+          />
+        </Element>
+      </Grid>
+    </Grid>
+  )
 };
 
 export default MyProfilePage;

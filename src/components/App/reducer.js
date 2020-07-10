@@ -97,29 +97,6 @@ const { actions, reducer } = createSlice({
       .set('confirmSignupLoading', false)
       .set('confirmSignupErrorMessage', action.payload)
       .set('confirmSignupSuccessMessage', null),
-    // MYPROFILE
-    myprofileLaunched: (state, action) => state
-      .set('myprofileLoading', true)
-      .set('myprofileErrorMessage', null),
-    myprofileSuccess: (state, action) => state
-      .set('myprofileLoading', false)
-      .set('myprofileErrorMessage', null),
-    myprofileFailure: (state, action) => state
-      .set('myprofileLoading', false)
-      .set('myprofileErrorMessage', action.payload),
-    // CONFIRM MYPROFILE
-    confirmMyprofileLaunched: (state, action) => state
-      .set('confirmMyprofileLoading', true)
-      .set('confirmMyprofileErrorMessage', null)
-      .set('confirmMyprofileSuccessMessage', null),
-    confirmMyprofileSuccess: (state, action) => state
-      .set('confirmMyprofileLoading', false)
-      .set('confirmMyprofileErrorMessage', null)
-      .set('confirmMyprofileSuccessMessage', action.payload),
-    confirmMyprofileFailure: (state, action) => state
-      .set('confirmMyprofileLoading', false)
-      .set('confirmMyprofileErrorMessage', action.payload)
-      .set('confirmMyprofileSuccessMessage', null),
     // RESEND VERIFICATION CODE
     resendCodeLaunched: (state, action) => state
       .set('resendCodeLoading', true),
@@ -192,12 +169,6 @@ export const {
   confirmSignupLaunched,
   confirmSignupSuccess,
   confirmSignupFailure,
-  myprofileLaunched,
-  myprofileSuccess,
-  myprofileFailure,
-  confirmMyprofileLaunched,
-  confirmMyprofileSuccess,
-  confirmMyprofileFailure,
   requestPasswordCodeLaunched,
   requestPasswordCodeSuccess,
   requestPasswordCodeFailure,
