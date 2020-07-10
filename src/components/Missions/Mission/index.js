@@ -25,7 +25,7 @@ import InvoiceManagementModal from '../../../pages/HomePage/Modals/InvoiceManage
 import ValidationModal from '../../../pages/HomePage/Modals/ValidationModal'
 import styles from './styles';
 
-import { getQuotesLaunched, getCompaniesLaunched, setComingFromDashboard, getMissionsLaunched } from '../../../pages/HomePage/reducer';
+import { getQuotesLaunched, getCompaniesLaunched, setComingFromDashboard } from '../../../pages/HomePage/reducer';
 import severinePicture from '../../../assets/pics/severine/severine-small.png';
 import { shortenLongText, addTwoWorkingDays, formatDate } from '../../../utils/services/format';
 import { getPath } from '../../../utils/services/validationChecks';

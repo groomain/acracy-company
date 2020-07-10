@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch } from "react-redux";
 import { useTranslation } from 'react-i18next';
-import { Grid, Typography, Box } from '@material-ui/core/';
+import { Grid, Box } from '@material-ui/core/';
 
 import CustomExpansionPanel from '../../CustomExpansionPanel';
 import CheckableTag from '../CheckableTag';

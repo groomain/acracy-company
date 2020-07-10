@@ -58,20 +58,20 @@ export const LeftOverlay = ({ matching, mission, ...props }) => {
 
     return (
       <>
-        <a
+        <span
           onClick={() => handleDownload(matching?.briefSummary?.externalId || mission?.brief?.briefSummary?.externalId)}
           className={classes.row}>
           <DownloadIcon />
              Télécharger brief
-        </a>
+        </span>
         {mission && (
           <>
-            <a
+            <span
               onClick={() => handleDownload(mission?.signedQuote?.externalId)}
               className={classes.row}>
               <DownloadIcon />
               Télécharger devis
-          </a>
+          </span>
             {mission.status !== FINISHED && (
               <Grid item container direction={'row'} className={classes.row}
                 onClick={() => setFreelanceInfosOpen(true)}>

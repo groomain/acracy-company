@@ -51,7 +51,7 @@ export const getPhonePrefixCode = prefix => {
  */
 export const getAreaCodeFromNumber = (number) => {
   for (let i = 0; i < areaCodes.length; i++) {
-    if (number == getPhonePrefixCode(areaCodes[i])) {
+    if (number === getPhonePrefixCode(areaCodes[i])) {
       return areaCodes[i];
     }
   }
