@@ -72,7 +72,7 @@ function* validateProfiles(action) {
 function* contactAcracy(action) {
   try {
     const {message, reason, interview} = action.payload;
-    const validateProfiles = yield API.post(config.apiGateway.NAME, `/message`, {
+    const validateProfiles = yield API.post(config.apiGateway.NAME, `/messages`, {
       headers: {
         'x-api-key': config.apiKey
       },
