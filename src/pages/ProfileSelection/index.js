@@ -31,6 +31,7 @@ import Dialog from '@material-ui/core/Dialog';
 import Popover from "@material-ui/core/Popover";
 import CloseIcon from '@material-ui/icons/Close';
 import IconButton from "@material-ui/core/IconButton";
+import ContactModale from "../../components/ContactModale";
 
 const ProfileSelection = (props) => {
   const quoteId = props?.match?.params;
@@ -94,6 +95,9 @@ const ProfileSelection = (props) => {
     handleNoProfileModaleOpen()
   };
 
+  const handleContactOpen = () => {
+    setContactModaleOpen(!contactOpen);
+  };
 
   const handleInterviewOpen = () => {
     setInterviewOpen(!interviewOpen);
@@ -538,26 +542,8 @@ const ProfileSelection = (props) => {
           </Grid>
         </Grid>
       </Dialog>
-      <Dialog open={contactOpen} onClose={handleContactOpen} classes={{ paper: classes.modale }}>
-        <Grid item container direction={'column'} justify={'center'} className={classes.modaleContainer}>
-          <IconButton aria-label="close" className={classes.iconButton} onClick={handleContactOpen}>
-            <CloseIcon />
-          </IconButton>
-          <Typography variant={"h1"}>Faire une demande à acracy</Typography>
-          <CustomTextArea style={{ height: 328 }} placeholder={"Dites nous comment on peut vous aider"} valueOut={contactMessage} handleChangeOut={setContactMessage} />
-          <CustomButton theme={"filledButton"} style={{ width: 254 }} title={"Envoyé"} handleClick={() => contactAcracy(contactMessage, false)} loading={contactLoading} />
-        </Grid>
-      </Dialog>
-      <Dialog open={interviewOpen} onClose={handleInterviewOpen} classes={{ paper: classes.modale }}>
-        <Grid item container direction={'column'} justify={'center'} className={classes.modaleContainer}>
-          <IconButton aria-label="close" className={classes.iconButton} onClick={handleInterviewOpen}>
-            <CloseIcon />
-          </IconButton>
-          <Typography variant={"h1"}>Confirmation d'entretien</Typography>
-          <CustomTextArea style={{ height: 328 }} placeholder={"Donnez nous plus de détails sur ces entretiens"} valueOut={interviewMessage} handleChangeOut={setInterviewMessage} />
-          <CustomButton theme={"filledButton"} style={{ width: 254 }} title={"Envoyé"} handleClick={() => contactAcracy(interviewMessage, true)} loading={contactLoading} />
-        </Grid>
-      </Dialog>
+      <ContactModale open={contactOpen} setOpen={setContactModaleOpen} interview={false} title={'Faire une demande à acracy'} placeHolder={'Dites nous comment on peut vous aider'}/>
+      <ContactModale open={interviewOpen} setOpen={setInterviewOpen} interview={true} title={'Confirmation d\'entretien'} placeHolder={'Donnez nous plus de détails sur ces entretiens'}/>
     </Grid>
 
   );
