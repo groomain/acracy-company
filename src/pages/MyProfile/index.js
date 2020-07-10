@@ -6,7 +6,7 @@ import * as Scroll from "react-scroll/modules";
 
 import { Formik } from 'formik';
 import PersonalInformationsForm from '../../components/Forms/MyProfileForm/PersonalInformationsForm';
-import PasswordForm from '../../components/Forms/MyProfileForm/PaswordForm';
+import PasswordForm from '../../components/Forms/MyProfileForm/PasSwordForm';
 import * as Yup from 'yup';
 import { useTranslation } from 'react-i18next';
 import { useSelector, useDispatch } from 'react-redux';
