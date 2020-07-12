@@ -19,7 +19,7 @@ export const Form4 = ({ values, errors, touched, handleBlur, handleChange, handl
   const { firstName, lastName, email, phonePrefix, phoneNumber } = values;
 
   useEffect(() => {
-    if (lastName.trim() != "" && email != "" && phonePrefix.trim() != "" && phoneNumber > 0) {
+    if (lastName.trim() != "" && email != "" && phonePrefix != "" && phoneNumber > 0) {
       dispatch(checkMissingInfosForm4(true))
     }
   }, [lastName, email, phonePrefix, phoneNumber]);

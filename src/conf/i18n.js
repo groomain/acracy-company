@@ -83,6 +83,30 @@ i18n
             confidentialityText: "We respect your privacy",
             addDocument: "Add document",
             maxFileSize: "Max file size : 5Mb"
+          },
+          myProfile: {
+            myProfilePageTitle: "My profile",
+            personalInformations: "Personal informations",
+            password: "Password",
+            firstName: "First name",
+            firstNamePlaceholder: "First name",
+            lastName: "Last name",
+            lastNamePlaceholder: "Last name",
+            professionalEmail: "Professional email",
+            professionalEmailPlaceholder: "address@email.com",
+            phoneCode: "Phone prefix",
+            phoneNumber: "Phone number",
+            phoneNumberPlaceholder: "0611045327",
+            role: "Your role",
+            rolePlaceholder: "Position",
+            save: "Save",
+            oldPassword: "Old password",
+            oldPasswordPlaceholder: "Enter old password",
+            newPassword: "New password",
+            newPasswordPlaceholder: "Enter new password",
+            confirmNewPassword: "Confirmation of new password",
+            confirmNewPasswordPlaceholder: "Confirm new password",
+            modifyPassword: "Modify my password"
           }
         }
       },
@@ -221,7 +245,8 @@ i18n
             calendarLabel: 'Date de démarrage*',
             reseachLabel: 'Précisez votre recherche',
             finishBrief: 'Finaliser le brief',
-            tip1: "Donnez le plus d\'informations possible sur la mission et vos attentes, mais aussi sur le contexte du projet (équipe, objectifs, format du travail, deadlines).",
+            sendBriefButton: 'Déposer mon brief',
+            tip1: "Donnez le plus d'informations possible sur la mission et vos attentes, mais aussi sur le contexte du projet (équipe, objectifs, format du travail, deadlines).",
             tip2: "Nos freelances sont très demandés, et souvent très occupés. N'hésitez pas à mentionner les avantages de travailler sur votre projet pour les aider à se décider.",
             discoverTips: "Découvrez nos conseils pour les briefs parfaits",
             // step 2
@@ -238,7 +263,7 @@ i18n
               },
               deliverablesDetails: {
                 label: "Détail des livrables*",
-                placeholder: "C’est le moment de nous en dire le plus possible sur ce qui fait partie des livrables et quelles sont vos attentes exactes. Dites-nous-en le plus possible. \nEx: \“Wireframes: 10 écrans (mobile et desktop) ; Format Sketch ; Possibilité de consulter sur Invision…\”"
+                placeholder: "C’est le moment de nous en dire le plus possible sur ce qui fait partie des livrables et quelles sont vos attentes exactes. Dites-nous-en le plus possible. \nEx: “Wireframes: 10 écrans (mobile et desktop) ; Format Sketch ; Possibilité de consulter sur Invision…”"
               }
             }
           },
@@ -288,7 +313,31 @@ i18n
             login: 'Se connecter',
             signUp: "S'inscrire",
             newBrief: 'Nouveau brief',
-            contactUs: 'Nous contacter',
+            contactUs: 'Nous contacter'
+          },
+          myProfile: {
+            myProfilePageTitle: "Mon profil",
+            personalInformations: "Informations personnelles",
+            password: "Mot de passe",
+            firstName: "Prénom",
+            firstNamePlaceholder: "Prénom",
+            lastName: "Nom",
+            lastNamePlaceholder: "Nom",
+            professionalEmail: "Email professionnel",
+            professionalEmailPlaceholder: "adresse@email.com",
+            phoneCode: "Préfixe",
+            phoneNumber: "Numéro de téléphone",
+            phoneNumberPlaceholder: "0611045327",
+            role: "Votre rôle",
+            rolePlaceholder: "Poste",
+            save: "Sauvegarder",
+            oldPassword: "Ancien mot de passe",
+            oldPasswordPlaceholder: "Entrez ancien mot de passe",
+            newPassword: "Nouveau mot de passe",
+            newPasswordPlaceholder: "Entrez nouveau mot de passe",
+            confirmNewPassword: "Confirmation du nouveau mot de passe",
+            confirmNewPasswordPlaceholder: "Confirmez nouveau mot de passe",
+            modifyPassword: "Modifier mon mot de passe"
           }
         }
       }
@@ -297,6 +346,5 @@ i18n
       escapeValue: false, // not needed for react as it escapes by default
     }
   });
-
 
 export default i18n;

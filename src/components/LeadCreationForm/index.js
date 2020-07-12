@@ -18,43 +18,33 @@ import {
   changeLeadStatusLaunched, getExpertisesLaunched, setExpertisePriorities,
   getSensitivitiesLaunched, setSensitivityPriority, setLanguagePriority
 } from '../../pages/LeadCreationPage/reducer';
+import { setLeadCreationStep } from '../../pages/HomePage/reducer';
+
 import { leadSave } from '../../pages/LeadCreationPage/index';
 import clsx from 'clsx';
 import styles from './styles';
 
 import { languages, seniorityValues } from './options';
-import UploadInput from '../Inputs/Upload';
+import UploadInput from '../Inputs/LeadUpload';
 
 import { checkLength } from '../../utils/services/validationChecks';
 
-const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, handleChange, ...props }) => {
+const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, handleChange, leadId, ...props }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const classes = styles();
-  const [uploadName, setUploadName] = useState(null);
 
   const { frequency, workspace, duration, durationType, missionTitle, budget, budgetType, profile, profilesNumber,
     seniority, customDeliverable, companyAddress, contextAndTasks, detailsOfDeliverables } = values;
 
-  let leadCreationStep = 1; // the dashboard page
-  const [activeStep, setActiveStep] = useState(leadCreationStep);
-  const [searchedCategory, setSearchedCategory] = useState({});
-  const [deliverables, setDeliverables] = useState([]);
-  const [disabled, setDisabled] = useState(false); // to be used with step 2
-  const [dailyCost, setDailyCost] = useState();
-  const [withCommission, setWithCommission] = useState();
-  const [openCallMeModal, setOpenCallMeModal] = useState(false);
-  const [disableCallMeBtn, setDisableCallMeBtn] = useState(true);
-  const [disableGoToFinalizationBtn, setDisableGoToFinalizationBtn] = useState(true);
-
   const { leadDraftSearchData, deliverablesArray, expertises,
-    selectedExpertiseList, expansionPanelOpen, expertisePriorities,
+    selectedExpertiseList, expansionPanelOpen, expertisePriorities, leadCreationStep,
     sensitivities, selectedSensitivity, sensitivityPriority, dateFromCalendar,
     selectedLanguage, languagePriority, leadSaveLoading, updateLeadDraftLoading } = useSelector(state => ({
       dateFromCalendar: state.getIn(['leadCreation', 'dateFromCalendar']),
       leadDraftSearchData: state.getIn(['leadCreation', 'leadDraftSearchData']),
       deliverablesArray: state.getIn(['leadCreation', 'deliverablesArray']),
-      // leadCreationStep: state.getIn(['leadCreation', 'leadCreationStep']),
+      leadCreationStep: state.getIn(['leadCreation', 'leadCreationStep']),
       expertises: state.getIn(['leadCreation', 'expertises']),
       selectedExpertiseList: state.getIn(['leadCreation', 'selectedExpertiseList']),
       expansionPanelOpen: state.getIn(['leadCreation', 'expansionPanelOpen']),
@@ -67,6 +57,15 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
       leadSaveLoading: state.getIn(['leadCreation', 'leadSaveLoading']),
       updateLeadDraftLoading: state.getIn(['leadCreation', 'updateLeadDraftLoading']),
     }));
+
+  const [activeStep, setActiveStep] = useState(leadCreationStep);
+  const [searchedCategory, setSearchedCategory] = useState({});
+  const [deliverables, setDeliverables] = useState([]);
+  const [dailyCost, setDailyCost] = useState();
+  const [withCommission, setWithCommission] = useState();
+  const [openCallMeModal, setOpenCallMeModal] = useState(false);
+  const [disableCallMeBtn, setDisableCallMeBtn] = useState(true);
+  const [disableGoToFinalizationBtn, setDisableGoToFinalizationBtn] = useState(true);
 
   useEffect(() => { // Disable the "need help" button
     if (leadDraftSearchData?.search !== null) {
@@ -95,6 +94,7 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
   // };
   const handleStep = (step) => () => {
     setActiveStep(step);
+    dispatch(setLeadCreationStep(0))
     backToTop();
   };
 
@@ -105,7 +105,7 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
   const handleDispatchHelp = () => {
     let redirect = false;
     leadSave(leadDraftSearchData, deliverablesArray, values, redirect)
-    dispatch(changeLeadStatusLaunched('HELP_NEEDED'));
+    dispatch(changeLeadStatusLaunched({ leadId, status: 'NEED_HELP' }));
     setOpenCallMeModal(false)
   }
 
@@ -292,9 +292,9 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
     if (searchedCategory?.TYPE === "PROFILE") {
       if (deliverables.includes("Ne figure pas dans la liste")) {
         if (workspace === "Peu importe" || workspace === "En remote uniquement") {
-          setCustomChecks(checkLength(customDeliverable, 0))
+          setCustomChecks(checkLength(customDeliverable, 0) && deliverables.length > 0)
         } else {
-          setCustomChecks(checkLength(customDeliverable, 0) && checkLength(companyAddress, 0))
+          setCustomChecks(checkLength(customDeliverable, 0) && checkLength(companyAddress, 0) && deliverables.length > 0)
         }
       } else {
         if (workspace === "Peu importe" || workspace === "En remote uniquement") {
@@ -313,7 +313,6 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
 
     if (
       leadDraftSearchData?.search
-      && deliverables.length > 0
       && customChecks
       && checkLength(missionTitle, 0)
       && workspace
@@ -331,10 +330,17 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
   }, [leadDraftSearchData, deliverables, searchedCategory, customChecks, customDeliverable, profile, missionTitle, dateFromCalendar, workspace, frequency,
     duration, durationType, budget, budgetType, profilesNumber, companyAddress]);
 
-  const handleGoToFinalization = () => {
-    let redirect = false;
-    leadSave(leadDraftSearchData, deliverablesArray, values, redirect)
+  const handleSendData = () => {
+    let redirect = false, redirectToMission = false;
+    if (activeStep === 0) {
+      leadSave(leadDraftSearchData, deliverablesArray, values, redirect, redirectToMission)
+    } else {
+      let redirectToMission = true;
+      leadSave(leadDraftSearchData, deliverablesArray, values, redirect, redirectToMission)
+    }
   }
+
+  const minDate = new Date().setDate(new Date().getDate() + 30);
 
   const setLeadSynthesis = () => {
     return (
@@ -359,7 +365,7 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
               label={t('leadCreation.missionLabel')}
               placeholder={t('leadCreation.missionPlaceholder')}
               name='missionTitle'
-              maxLength={200}
+              maxLength={140}
               valueOut={missionTitle}
               onChange={handleChange}
             ></CustomTextArea>
@@ -370,6 +376,7 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
               label={t('leadCreation.calendarLabel')}
               name='missionStartDate'
               onChange={handleChange}
+              minDate={minDate}
             />
           </Grid>
 
@@ -486,7 +493,7 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
               <CustomButton
                 type="button"
                 theme={disableGoToFinalizationBtn ? 'disabledFilled' : 'filledButton'}
-                handleClick={handleGoToFinalization}
+                handleClick={handleSendData}
                 title={t('leadCreation.finishBrief')}
                 loading={leadSaveLoading || updateLeadDraftLoading}
                 disabled={disableGoToFinalizationBtn}
@@ -494,26 +501,7 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
               </CustomButton>
             </Grid>
           </Grid>
-
         </Grid>
-        {<CustomModal
-          title="Au clic sur “Confirmer”, le remplissage de brief se mettra en pause, et vous serez rappelé par l’un des account managers d’acracy qui le finalisera au téléphone avec vous"
-          open={openCallMeModal}
-          handleClose={() => setOpenCallMeModal(false)}
-        >
-          <Grid container className={classes.marginTop}>
-            <Grid item>
-              <CustomButton
-                type="button"
-                theme='primaryButton'
-                handleClick={handleDispatchHelp}
-                title={'Confirmer'}
-              >
-              </CustomButton>
-            </Grid>
-          </Grid>
-        </CustomModal>
-        }
         <br />
         <br />
         <br />
@@ -535,9 +523,10 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
     }
   }, [dispatch, activeStep])
 
-  const [expertisePriorityList, setExpertisePriorityList] = useState();
-  const [sensitivityPriorityList, setSensitivityPriorityList] = useState();
-  const [languagePriorityList, setLanguagePriorityList] = useState();
+  const [expertisePriorityList, setExpertisePriorityList] = useState([]);
+  const [sensitivityPriorityList, setSensitivityPriorityList] = useState([]);
+  const [languagePriorityList, setLanguagePriorityList] = useState([]);
+  const [disableSendBrief, setDisableSendBrief] = useState(true);
 
   useEffect(() => {
     setExpertisePriorityList(selectedExpertiseList?.map(x => ({ ...x, priority: false })));
@@ -570,6 +559,20 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
   if (~customDeliverableIndex && customDeliverable) {
     deliverablesTags[customDeliverableIndex] = { value: customDeliverable, isCustom: true }
   }
+
+  useEffect(() => {
+    if (
+      selectedExpertiseList?.length > 0
+      && seniority !== "Sélectionnez le niveau d'epérience minimum"
+      && checkLength(contextAndTasks, 0)
+      && checkLength(detailsOfDeliverables, 0)
+    ) {
+      setDisableSendBrief(false);
+    } else {
+      setDisableSendBrief(true);
+    }
+  }, [selectedExpertiseList, seniority, contextAndTasks, detailsOfDeliverables]);
+
   const setLeadDetails = () => {
     return (
       <Box className={classes.stepContent}>
@@ -578,7 +581,7 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
 
         <Grid container>
           {/* Expertises */}
-          {expertises && <Grid item xs={12} className={classes.fieldRows}>
+          {expertises?.length > 0 && <Grid item xs={12} className={classes.fieldRows}>
             <Grid container justify="space-between">
               <Typography variant="h4">{t('tagsList.expertise.label') + '*'}</Typography>
               <Typography variant="h2">{t('tagsList.expertise.minMaxInfo')}</Typography>
@@ -591,7 +594,7 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
             />
             {expansionPanelOpen !== 'expertise' &&
               <Grid item container direction='row'>
-                {expertisePriorityList?.map((tag, key) => (
+                {expertisePriorityList?.length > 0 && expertisePriorityList?.map((tag, key) => (
                   <Tag key={key}
                     title={tag.text}
                     isPrimaryColor
@@ -604,7 +607,7 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
           </Grid>}
 
           {/* Sensitivities */}
-          {sensitivities &&
+          {sensitivities?.length > 0 &&
             <Grid item xs={12} className={classes.fieldRows}>
               <Box my={2.5}>
                 <Grid container justify="space-between">
@@ -619,7 +622,7 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
                 />
                 {expansionPanelOpen !== 'sensitivity' &&
                   <Grid item container direction='row'>
-                    {sensitivityPriorityList?.map((tag, key) => (
+                    {sensitivityPriorityList?.length > 0 && sensitivityPriorityList?.map((tag, key) => (
                       <Tag key={key}
                         title={tag.text}
                         isPrimaryColor
@@ -647,7 +650,7 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
                 />
                 {expansionPanelOpen !== 'languages' &&
                   <Grid item container direction='row'>
-                    {languagePriorityList?.map((tag, key) => (
+                    {languagePriorityList?.length > 0 && languagePriorityList?.map((tag, key) => (
                       <Tag key={key}
                         title={tag.text}
                         isPrimaryColor
@@ -714,7 +717,31 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
         </Box>
 
         {/* Upload */}
-        <UploadInput setName={setUploadName} type={'MISSION_SHARED_DOCUMENT'} />
+        <UploadInput />
+
+        {/* Buttons */}
+        <Grid container justify='flex-end' className={classes.marginTop}>
+          <Grid item>
+            <CustomButton
+              type="button"
+              theme={'primaryButton'}
+              handleClick={handleCallMe}
+              title={t('leadCreation.callMe')}
+            >
+            </CustomButton>
+          </Grid>
+          <Grid item style={{ paddingLeft: '1.2rem' }}>
+            <CustomButton
+              type="button"
+              theme={disableSendBrief ? 'disabledFilled' : 'filledButton'}
+              handleClick={handleSendData}
+              title={t('leadCreation.sendBriefButton')}
+              loading={leadSaveLoading || updateLeadDraftLoading}
+              disabled={disableSendBrief}
+            >
+            </CustomButton>
+          </Grid>
+        </Grid>
       </Box >
     )
   }
@@ -760,6 +787,23 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
         })}
       </Stepper>
       {getStepContent(activeStep)}
+      {openCallMeModal && <CustomModal
+        title="Au clic sur “Confirmer”, le remplissage de brief se mettra en pause, et vous serez rappelé par l’un des account managers d’acracy qui le finalisera au téléphone avec vous"
+        open={openCallMeModal}
+        handleClose={() => setOpenCallMeModal(false)}
+      >
+        <Grid container className={classes.marginTop}>
+          <Grid item>
+            <CustomButton
+              type="button"
+              theme='primaryButton'
+              handleClick={handleDispatchHelp}
+              title={'Confirmer'}
+            >
+            </CustomButton>
+          </Grid>
+        </Grid>
+      </CustomModal>}
     </Grid >
   )
 };

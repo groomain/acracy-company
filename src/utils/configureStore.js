@@ -11,6 +11,7 @@ import downloadSaga from "../components/DownloadModal/sagas";
 import leadCreationSaga from "../pages/LeadCreationPage/sagas";
 import administrativeSaga from "../pages/AdministrativePage/sagas";
 import UploadSaga from "../components/Inputs/Upload/sagas";
+import MyProfileSaga from "../pages/MyProfile/sagas";
 
 const sagaMiddleware = createSagaMiddleware();
 export const history = createBrowserHistory();
@@ -31,6 +32,7 @@ export default function configureStore() {
   sagaMiddleware.run(SelectionProfil);
   sagaMiddleware.run(administrativeSaga);
   sagaMiddleware.run(UploadSaga);
+  sagaMiddleware.run(MyProfileSaga);
 
   return store;
 }

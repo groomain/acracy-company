@@ -128,6 +128,8 @@ export const AdministrativePage = (props) => {
     phonePrefix: companyData?.administrativeProfile?.billing?.phone?.code ? getAreaCodeFromNumber(companyData?.administrativeProfile?.billing?.phone?.code) : '',
     phoneNumber: companyData?.administrativeProfile?.billing?.phone?.number || '',
   };
+  console.log("companyData?.administrativeProfile?.billing?.phone?.code", companyData?.administrativeProfile?.billing?.phone?.code);
+  console.log("initialValuesForm4", initialValuesForm4);
 
   const ValidationSchemaForm4 = Yup.object().shape({
     firstName: Yup.string().required(),
@@ -215,7 +217,7 @@ export const AdministrativePage = (props) => {
               render={props => <Form3 {...props} />}
               initialValues={initialValuesForm3}
               validationSchema={ValidationSchemaForm3}
-              onSubmit={(credentials) => console.log(credentials)}
+              onSubmit={handleSubmit}
             />
           </Element>
 
@@ -225,7 +227,7 @@ export const AdministrativePage = (props) => {
               render={props => <Form4 {...props} />}
               initialValues={initialValuesForm4}
               validationSchema={ValidationSchemaForm4}
-              onSubmit={(credentials) => console.log(credentials)}
+              onSubmit={handleSubmit}
             />
           </Element>
 
@@ -236,7 +238,7 @@ export const AdministrativePage = (props) => {
               initialValues={initialValuesForm5}
               validationSchema={ValidationSchemaForm5}
               // onSubmit={handleSubmit}
-              onSubmit={(credentials) => console.log(credentials)}
+              onSubmit={handleSubmit}
             />
           </Element>
         </Grid>

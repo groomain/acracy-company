@@ -23,18 +23,15 @@ export const Missions = () => {
 
   const today = new Date(Date.now()).toISOString();
   const [briefsList, setBriefsList] = useState();
-  console.log('Missions -> briefsList', briefsList)
+
   // Delete when connecting to the DB
   // const missionsLoading = false;
   // const briefsLoading = false;
 
-  const { updateMissionSent } = useSelector(state => ({
-    updateMissionSent: state.getIn(['dashboard', 'updateMissionSent'])
-  }));
-
-  const { missionsLoading, briefsLoading, briefsData, missions } = useSelector(state => ({
+  const { missionsLoading, briefsLoading, briefsData, missions, updateMissionSent } = useSelector(state => ({
     missions: state.getIn(['dashboard', 'missionsData']),
     missionsLoading: state.getIn(['dashboard', 'missionsLoading']),
+    updateMissionSent: state.getIn(['dashboard', 'updateMissionSent']),
     // "profile matching" section
     briefsData: state.getIn(['dashboard', 'briefsData']),
     briefsLoading: state.getIn(['dashboard', 'briefsLoading'])
@@ -50,7 +47,7 @@ export const Missions = () => {
     if (updateMissionSent) {
       dispatch(getMissionsLaunched());
     }
-  }, [updateMissionSent])
+  }, [dispatch, updateMissionSent])
 
   const toValidateMission = missions?.filter(x => x.status === WAITING_FOR_SIGNATURE);
 
@@ -65,7 +62,7 @@ export const Missions = () => {
 
   useEffect(() => {
     setBriefsList(briefsData?.concat(toValidateMission?.length > 0 && missionAsMatchingProfile))
-  }, [])
+  }, []) // Might need "briefsData, missionAsMatchingProfile, toValidateMission", but check infinite loop
 
   const inProgressMissions = missions?.filter(x => (x?.status === IN_PROGRESS && x?.dateStart < today && x?.dateEnd?.length < 1) || (x.status === FINISHED && x.dateEnd?.length < 1));
   const futureMissions = missions?.filter(x => x.status === IN_PROGRESS && x.dateStart > today);

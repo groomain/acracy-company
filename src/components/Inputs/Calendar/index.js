@@ -21,16 +21,16 @@ class LocalizedUtils extends MomentUtils {
   }
 }
 
-export const Calendar = ({ error, label }) => {
+export const Calendar = ({ error, label, minDate }) => {
   const classes = styles();
   const dispatch = useDispatch();
 
-  const [selectedDate, setSelectedDate] = useState();
+  const [selectedDate, setSelectedDate] = useState(minDate);
 
   const setDate = (e) => {
     setSelectedDate(e);
-    const timestamp = Date.parse(e._d);
-    dispatch(setDateFromCalendar(timestamp))
+    const timestamp = e._d.getTime() + 86400000; // Add 1 day to send the right date
+    dispatch(setDateFromCalendar(timestamp));
   }
 
   return (
@@ -52,7 +52,7 @@ export const Calendar = ({ error, label }) => {
           }}
           PopoverProps={{ PaperProps: { classes: { root: classes.paper } } }}
           keyboardIcon={<Agenda />}
-          minDate={new Date()}
+          minDate={minDate}
           style={{ width: '100%' }}
           invalidDateMessage=""
         />

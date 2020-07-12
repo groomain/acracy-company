@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import clsx from 'clsx';
 
-import { Grid, Typography, FilledInput, InputLabel, Box } from '@material-ui/core';
+import { Grid, Typography, FilledInput, Box } from '@material-ui/core';
 import styles from './styles';
 
 export const CustomTextArea = ({ label, placeholder, error, helperText, maxLength, valueOut, handleChangeOut, size, ...props }) => {
@@ -36,7 +36,7 @@ export const CustomTextArea = ({ label, placeholder, error, helperText, maxLengt
       />
       {maxLength && (
         <Grid container justify='flex-end'>
-          <Typography variant='body2' className={classes.inputLength}>{valueOut ? valueOut.length : currentInputLength.length} / {maxLength} {t('characters')}</Typography>
+          <Typography variant='body2' className={classes.inputLength}>{valueOut ? valueOut.length ?? 0 : currentInputLength.length ?? 0} / {maxLength} {t('characters')}</Typography>
         </Grid >
       )}
     </Box >

@@ -45,6 +45,7 @@ const initialState = Immutable.Map({
   uploadFileLoading: false,
   leadAttachmentId: null,
   deleteFileLoading: false,
+  uploadedFileName: null
 });
 
 const { actions, reducer } = createSlice({
@@ -153,6 +154,8 @@ const { actions, reducer } = createSlice({
     uploadFileFailure: (state, action) => state
       .set('uploadFileLoading', false)
       .set('leadAttachmentId', null),
+    uploadedFileName: (state, action) => state
+      .set('uploadedFileName', action.payload),
     // Delete Uploaded File
     deleteAttachmentLaunched: (state, action) => state
       .set('deleteFileLoading', true),
@@ -203,6 +206,7 @@ export const {
   uploadFileLaunched,
   uploadFileSuccess,
   uploadFileFailure,
+  uploadedFileName,
   //
   deleteAttachmentLaunched,
   deleteAttachmentSuccess,
