@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { NavLink } from "react-router-dom";
+import React from 'react';
+import { useDispatch } from 'react-redux';
+// import { NavLink } from "react-router-dom";
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 
@@ -72,7 +72,6 @@ export const InvoiceManagementModal = ({ open, handleClose, files, missionId, pr
 };
 
 const InvoicesDownloadForm = ({ values, errors, touched, handleBlur, handleChange, handleSubmit, files, options }) => {
-  const classes = styles();
   const dispatch = useDispatch();
 
   const { selectedFile } = values;

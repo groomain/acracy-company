@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -8,7 +8,7 @@ import uploadFileIcon from '../../../assets/icons/upload-file.svg';
 import { CloseIcon } from '../../../assets/icons/CloseIcon';
 import { Grid, Typography, Box, IconButton } from '@material-ui/core';
 import styles from './styles';
-import { uploadFileLaunched, deleteAttachmentLaunched } from '../../../pages/LeadCreationPage/reducer';
+import { uploadFileLaunched, deleteAttachmentLaunched, uploadedFileName } from '../../../pages/LeadCreationPage/reducer';
 
 const UploadInput = (props) => {
   const classes = styles();
@@ -27,7 +27,7 @@ const UploadInput = (props) => {
   )
 }
 
-export const Upload = () => {
+export const LeadUpload = () => {
   const classes = styles();
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -51,6 +51,7 @@ export const Upload = () => {
       })
       setUploadedFiles(files);
       dispatch(uploadFileLaunched(files))
+      dispatch(uploadedFileName(files[0].file.name))
     }
 
     if (fileList[0].size > 1.5e+7) {
@@ -113,4 +114,4 @@ export const Upload = () => {
   )
 };
 
-export default Upload;
+export default LeadUpload;

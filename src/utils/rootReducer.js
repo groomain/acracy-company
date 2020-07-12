@@ -6,6 +6,7 @@ import LeadCreationReducer from '../pages/LeadCreationPage/reducer';
 import DownloadReducer from '../components/DownloadModal/reducer';
 import MissionReducer from '../pages/MissionFollowUp/reducer';
 import SelectionProfilReducer from '../pages/ProfileSelection/reducer';
+import MyProfileReducer from '../pages/MyProfile/reducer';
 import ContactReducer from '../components/ContactModale/reducer';
 
 export default history => combineReducers({
@@ -16,5 +17,6 @@ export default history => combineReducers({
   Download: DownloadReducer,
   leadCreation: LeadCreationReducer,
   SelectionProfil: SelectionProfilReducer,
-  Contact: ContactReducer
+  Contact: ContactReducer,
+  MyProfile: MyProfileReducer
 });

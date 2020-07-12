@@ -21,6 +21,7 @@ import styles from './styles';
 import { leadSaveLaunched, getLeadDraftLaunched, putLeadDraftLaunched } from "./reducer";
 import clsx from "clsx";
 import useScrollTrigger from "@material-ui/core/useScrollTrigger";
+import CustomLoader from '../../components/Loader';
 
 let leadSave;
 let formData = false;
@@ -39,8 +40,11 @@ const LeadCreationPage = (props) => {
 
   const [disableAppbarSaveBtn, setDisableAppbarSaveBtn] = useState(true);
   const [activeStep, setActiveStep] = useState();
+  const [saveBtnClicked, setSaveBtnClicked] = useState(false);
+
   const { leadSaveLoading, leadDraftData, leadDraftSearchData, deliverablesArray, dateFromCalendar, dailyRate,
-    leadCreationStep, leadDraftId, selectedExpertiseList, expertisePriorities } = useSelector(state => ({
+    leadCreationStep, leadDraftId, selectedExpertiseList, expertisePriorities, selectedSensitivity,
+    sensitivityPriority, selectedLanguage, languagePriority, uploadedFileName } = useSelector(state => ({
       leadSaveLoading: state.getIn(['leadCreation', 'leadSaveLoading']),
       leadDraftSearchData: state.getIn(['leadCreation', 'leadDraftSearchData']),
       deliverablesArray: state.getIn(['leadCreation', 'deliverablesArray']),
@@ -50,29 +54,44 @@ const LeadCreationPage = (props) => {
       leadCreationStep: state.getIn(['leadCreation', 'leadCreationStep']),
       leadDraftId: state.getIn(['leadCreation', 'leadDraftId']),
       selectedExpertiseList: state.getIn(['leadCreation', 'selectedExpertiseList']),
-      expertisePriorities: state.getIn(['leadCreation', 'expertisePriorities'])
+      expertisePriorities: state.getIn(['leadCreation', 'expertisePriorities']),
+      selectedSensitivity: state.getIn(['leadCreation', 'selectedSensitivity']),
+      sensitivityPriority: state.getIn(['leadCreation', 'sensitivityPriority']),
+      selectedLanguage: state.getIn(['leadCreation', 'selectedLanguage']),
+      languagePriority: state.getIn(['leadCreation', 'languagePriority']),
+      uploadedFileName: state.getIn(['leadCreation', 'uploadedFileName']),
     }));
-
-  const [leadId, setLeadId] = useState();
 
   useEffect(() => {
     setActiveStep(leadCreationStep)
-  }, [leadCreationStep])
+  }, [leadCreationStep]);
+
+  const [leadId, setLeadId] = useState();
+  const [splittedUrl, setSplittedUrl] = useState();
 
   useEffect(() => {
-    if (location.search || leadDraftId) {
-      setLeadId(location.search.split('=')[1] || leadDraftId);
-      dispatch(getLeadDraftLaunched(leadId))
+    if (location.search) {
+      setSplittedUrl(location.search.split('&'));
+    } else if (location.pathname) {
+      setSplittedUrl(location.pathname.split("/"));
+      setLeadId(location.pathname.split("/")[2] || leadDraftId);
     }
-  }, [dispatch, location.search]);
+  }, [dispatch, location.search, location.pathname, leadDraftId, leadId]);
 
   useEffect(() => {
-    if (leadDraftSearchData?.search !== null) {
-      setDisableAppbarSaveBtn(false)
-    } else if (leadDraftSearchData?.search === null) {
+    if (leadId) {
+      dispatch(getLeadDraftLaunched(leadId));
+    }
+  }, [dispatch, leadId])
+
+
+  useEffect(() => {
+    if (activeStep === 0 && !leadDraftSearchData?.search) {
       setDisableAppbarSaveBtn(true)
+    } else {
+      setDisableAppbarSaveBtn(false)
     }
-  }, [leadDraftSearchData]);
+  }, [leadDraftSearchData, activeStep]);
 
   const setDesireds = (leads, values, deliverables) => {
     let leadType = leads.search?.TYPE;
@@ -137,7 +156,7 @@ const LeadCreationPage = (props) => {
   }
 
   let redirect = true;
-  leadSave = (leads, deliverables, formData, redirect) => {
+  leadSave = (leads, deliverables, formData, redirect, redirectToMission) => {
     // console.log("leads (algolia): ", leads);              // resultat algolia
     // console.log(" ref formik", ref.current.state.values);  // data formulaire
     // console.log('deliverables from redux:', deliverables);
@@ -214,8 +233,35 @@ const LeadCreationPage = (props) => {
       },
     };
 
-    // const sentExpertiseList = selectedExpertiseList?.forEach(obj => delete obj.checked)
-    // console.log('leadSave -> sentExpertiseList', sentExpertiseList)
+    const formattedExpertiseList = selectedExpertiseList => {
+      return selectedExpertiseList?.map(x => ({ expertise: { code: x.code, text: x.text }, priority: expertisePriorities.includes(x.text) }));
+    }
+
+    const formattedSensitivity = selectedSensitivity => {
+      return selectedSensitivity?.map(x => ({ sensitivity: { code: x.code, text: x.text }, essential: selectedSensitivity[0].text === sensitivityPriority[0] }));
+    }
+
+    const formattedLanguage = selectedLanguage => {
+      return selectedLanguage?.map(x => ({ language: x.type, essential: x.text === languagePriority[0] }))
+    }
+
+    const formatSeniorityType = seniority => {
+      switch (seniority) {
+        case 'Junior (1 à 3 ans)':
+          return 'JUNIOR'
+        case 'Middle (3 à 5 ans)':
+          return 'MIDDLE'
+        case 'Senior (5 à 7 ans)':
+          return 'SENIOR'
+        case 'Expert (7 à 10 ans)':
+          return 'EXPERT'
+        case 'Guru (10 ans et plus)':
+          return 'GURU'
+        case 'Peu importe':
+          return 'WHATEVER'
+        default:
+      }
+    }
 
     if (activeStep === 0) {
       lead = leadDraft;
@@ -227,25 +273,25 @@ const LeadCreationPage = (props) => {
           detailsOfDeliverables: values?.detailsOfDeliverables ?? '',
           sharedDocuments: [
             {
-              name: ""
+              name: uploadedFileName ?? ''
             }
           ]
         },
         missionRequirements: {
-          expertises: {
-            expertise: selectedExpertiseList,
-          },
-          sensitivity: "",
-          languages: "",
-          seniority: ""
+          expertises: formattedExpertiseList(selectedExpertiseList) ?? '',
+          sensitivity: formattedSensitivity(selectedSensitivity) ?? '',
+          languages: formattedLanguage(selectedLanguage) ?? '',
+          seniority: formatSeniorityType(values?.seniority) ?? ''
         }
       }
     }
-    console.log('lead :', lead, 'redirect :', redirect);
+
+    // console.log('lead :', lead, 'redirect :', redirect);
+
     if (leadId) {
-      dispatch(putLeadDraftLaunched({ lead, redirect }))
+      dispatch(putLeadDraftLaunched({ lead, redirect, redirectToMission }))
     } else {
-      dispatch(leadSaveLaunched({ lead, redirect }));
+      dispatch(leadSaveLaunched({ lead, redirect, redirectToMission }));
     }
   };
 
@@ -266,9 +312,9 @@ const LeadCreationPage = (props) => {
     budget: leadDraftData?.missionContext?.budget?.value || '',
     budgetType: leadDraftData?.missionContext?.budget?.type || '',
     profilesNumber: leadDraftData?.profilNumber || 1,
-    seniority: "Sélectionnez le niveau d'expérience minimum",
+    seniority: leadDraftData?.missionRequirements?.seniority || "Sélectionnez le niveau d'expérience minimum",
     contextAndTasks: leadDraftData?.missionDetail?.contextAndTasks || '',
-    detailsOfDeliverables: leadDraftData?.missionDetail?.detailsOfDeliverables || ''
+    detailsOfDeliverables: leadDraftData?.missionDetail?.detailsOfDeliverables || '',
   };
 
   // Form Validation Schema
@@ -311,53 +357,62 @@ const LeadCreationPage = (props) => {
               theme={disableAppbarSaveBtn ? 'disabledOutlined' : 'secondaryButton'}
               className={classes.buttonSave}
               disabled={disableAppbarSaveBtn}
-              handleClick={() => leadSave(leadDraftSearchData, deliverablesArray, formData, redirect)}
-              loading={leadSaveLoading} />
+              handleClick={() => {
+                setSaveBtnClicked(true);
+                leadSave(leadDraftSearchData, deliverablesArray, formData, redirect)
+              }}
+              loading={saveBtnClicked && leadSaveLoading} />
           </div>
           <div className={classes.grow} />
         </Toolbar>
       </AppBar>
-      <Main>
-        <Formik
-          render={props => <LeadCreationForm leadId={leadId} {...props} />}
-          initialValues={initialValues}
-          validationSchema={ValidationSchema}
-          onSubmit={leadSave}
-          enableReinitialize
-          ref={ref}
-        />
-      </Main>
-      <Sidebar>
-        <Grid container style={{ position: 'sticky', top: '10rem' }}>
-          {(leadCreationStep === 1) ? (
-            <>
-              <Grid item className={classes.briefTipRoot}>
-                <Tip title='#01' subtitle='Mieux vaut trop' description={t('leadCreation.tip1')} />
-              </Grid>
-              <Grid item className={classes.briefTipRoot} style={{ marginTop: '2rem' }}>
-                <Tip title='#02' subtitle='Donnez envie' description={t('leadCreation.tip2')} Url='/dunno' linkTitle={t('leadCreation.discoverTips')} />
-                {/* TODO change URL */}
-              </Grid>
-            </>
-          ) : (
-              <Grid container item direction='column' className={classes.briefTipRoot}>
-                <DarkWrapper
-                  direction='column'
-                  className={classes.briefTipRoot}
-                >
-                  <Grid item className={classes.icon}>
-                    <img src={phonecall} alt="Appel téléphonique" />
+      {activeStep === 1 && leadSaveLoading
+        ? <Grid container alignItems='center' justify='center' style={{ height: '100vh' }}>
+          <CustomLoader size={70} />
+        </Grid>
+        : <>
+          <Main>
+            <Formik
+              render={props => <LeadCreationForm leadId={leadId} {...props} />}
+              initialValues={initialValues}
+              validationSchema={ValidationSchema}
+              onSubmit={leadSave}
+              enableReinitialize
+              ref={ref}
+            />
+          </Main>
+          <Sidebar>
+            <Grid container style={{ position: 'sticky', top: '10rem' }}>
+              {(leadCreationStep === 1) ? (
+                <>
+                  <Grid item className={classes.briefTipRoot}>
+                    <Tip title='#01' subtitle='Mieux vaut trop' description={t('leadCreation.tip1')} />
                   </Grid>
-                  <Typography variant='body1' className={classes.description}>Cliquez sur Cliquez sur «
+                  <Grid item className={classes.briefTipRoot} style={{ marginTop: '2rem' }}>
+                    <Tip title='#02' subtitle='Donnez envie' description={t('leadCreation.tip2')} Url='/dunno' linkTitle={t('leadCreation.discoverTips')} />
+                    {/* TODO change URL */}
+                  </Grid>
+                </>
+              ) : (
+                  <Grid container item direction='column' className={classes.briefTipRoot}>
+                    <DarkWrapper
+                      direction='column'
+                      className={classes.briefTipRoot}
+                    >
+                      <Grid item className={classes.icon}>
+                        <img src={phonecall} alt="Appel téléphonique" />
+                      </Grid>
+                      <Typography variant='body1' className={classes.description}>Cliquez sur Cliquez sur «
                 <span className={classes.yellowText}> être rappelé.e. </span>»
                 en bas de page et nous finaliserons le brief ensemble.
               </Typography>
-                </DarkWrapper>
-              </Grid>
-            )}
-        </Grid>
-      </Sidebar>
-    </Grid >
+                    </DarkWrapper>
+                  </Grid>
+                )}
+            </Grid>
+          </Sidebar>
+        </>}
+    </Grid>
   )
 }
 

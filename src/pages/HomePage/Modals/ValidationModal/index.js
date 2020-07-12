@@ -67,11 +67,9 @@ export const ValidationModal = ({ open, handleClose, files, missionId, preselect
 };
 
 const InvoicesDownloadForm = ({ values, errors, touched, handleBlur, handleChange, handleSubmit, files, options }) => {
-  const classes = styles();
 
-  const { updateMissionLoading, updateMissionSent, companiesData } = useSelector(state => ({
+  const { updateMissionLoading, companiesData } = useSelector(state => ({
     updateMissionLoading: state.getIn(['dashboard', 'updateMissionLoading']),
-    updateMissionSent: state.getIn(['dashboard', 'updateMissionSent']),
     companiesData: state.getIn(['dashboard', 'companiesData'])
   }));
 
@@ -96,7 +94,7 @@ const InvoicesDownloadForm = ({ values, errors, touched, handleBlur, handleChang
     } else if (!companiesData?.administrativeProfile?.purchaseOrder && !extractedFile?.latestInvoice) {
       setDisabled(false)
     }
-  }, [companiesData, extractedFile]);
+  }, [companiesData, extractedFile, orderFormNumber, workDone]);
 
   return (
     <>

@@ -18,12 +18,14 @@ import {
   changeLeadStatusLaunched, getExpertisesLaunched, setExpertisePriorities,
   getSensitivitiesLaunched, setSensitivityPriority, setLanguagePriority
 } from '../../pages/LeadCreationPage/reducer';
+import { setLeadCreationStep } from '../../pages/HomePage/reducer';
+
 import { leadSave } from '../../pages/LeadCreationPage/index';
 import clsx from 'clsx';
 import styles from './styles';
 
 import { languages, seniorityValues } from './options';
-import UploadInput from '../Inputs/Upload';
+import UploadInput from '../Inputs/LeadUpload';
 
 import { checkLength } from '../../utils/services/validationChecks';
 
@@ -59,7 +61,6 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
   const [activeStep, setActiveStep] = useState(leadCreationStep);
   const [searchedCategory, setSearchedCategory] = useState({});
   const [deliverables, setDeliverables] = useState([]);
-  const [disabled, setDisabled] = useState(false); // to be used with step 2
   const [dailyCost, setDailyCost] = useState();
   const [withCommission, setWithCommission] = useState();
   const [openCallMeModal, setOpenCallMeModal] = useState(false);
@@ -93,6 +94,7 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
   // };
   const handleStep = (step) => () => {
     setActiveStep(step);
+    dispatch(setLeadCreationStep(0))
     backToTop();
   };
 
@@ -290,9 +292,9 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
     if (searchedCategory?.TYPE === "PROFILE") {
       if (deliverables.includes("Ne figure pas dans la liste")) {
         if (workspace === "Peu importe" || workspace === "En remote uniquement") {
-          setCustomChecks(checkLength(customDeliverable, 0))
+          setCustomChecks(checkLength(customDeliverable, 0) && deliverables.length > 0)
         } else {
-          setCustomChecks(checkLength(customDeliverable, 0) && checkLength(companyAddress, 0))
+          setCustomChecks(checkLength(customDeliverable, 0) && checkLength(companyAddress, 0) && deliverables.length > 0)
         }
       } else {
         if (workspace === "Peu importe" || workspace === "En remote uniquement") {
@@ -311,7 +313,6 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
 
     if (
       leadDraftSearchData?.search
-      && deliverables.length > 0
       && customChecks
       && checkLength(missionTitle, 0)
       && workspace
@@ -329,9 +330,14 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
   }, [leadDraftSearchData, deliverables, searchedCategory, customChecks, customDeliverable, profile, missionTitle, dateFromCalendar, workspace, frequency,
     duration, durationType, budget, budgetType, profilesNumber, companyAddress]);
 
-  const handleGoToFinalization = () => {
-    let redirect = false;
-    leadSave(leadDraftSearchData, deliverablesArray, values, redirect)
+  const handleSendData = () => {
+    let redirect = false, redirectToMission = false;
+    if (activeStep === 0) {
+      leadSave(leadDraftSearchData, deliverablesArray, values, redirect, redirectToMission)
+    } else {
+      let redirectToMission = true;
+      leadSave(leadDraftSearchData, deliverablesArray, values, redirect, redirectToMission)
+    }
   }
 
   const minDate = new Date().setDate(new Date().getDate() + 30);
@@ -487,7 +493,7 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
               <CustomButton
                 type="button"
                 theme={disableGoToFinalizationBtn ? 'disabledFilled' : 'filledButton'}
-                handleClick={handleGoToFinalization}
+                handleClick={handleSendData}
                 title={t('leadCreation.finishBrief')}
                 loading={leadSaveLoading || updateLeadDraftLoading}
                 disabled={disableGoToFinalizationBtn}
@@ -520,6 +526,7 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
   const [expertisePriorityList, setExpertisePriorityList] = useState([]);
   const [sensitivityPriorityList, setSensitivityPriorityList] = useState([]);
   const [languagePriorityList, setLanguagePriorityList] = useState([]);
+  const [disableSendBrief, setDisableSendBrief] = useState(true);
 
   useEffect(() => {
     setExpertisePriorityList(selectedExpertiseList?.map(x => ({ ...x, priority: false })));
@@ -552,6 +559,20 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
   if (~customDeliverableIndex && customDeliverable) {
     deliverablesTags[customDeliverableIndex] = { value: customDeliverable, isCustom: true }
   }
+
+  useEffect(() => {
+    if (
+      selectedExpertiseList?.length > 0
+      && seniority !== "Sélectionnez le niveau d'epérience minimum"
+      && checkLength(contextAndTasks, 0)
+      && checkLength(detailsOfDeliverables, 0)
+    ) {
+      setDisableSendBrief(false);
+    } else {
+      setDisableSendBrief(true);
+    }
+  }, [selectedExpertiseList, seniority, contextAndTasks, detailsOfDeliverables]);
+
   const setLeadDetails = () => {
     return (
       <Box className={classes.stepContent}>
@@ -706,6 +727,17 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
               theme={'primaryButton'}
               handleClick={handleCallMe}
               title={t('leadCreation.callMe')}
+            >
+            </CustomButton>
+          </Grid>
+          <Grid item style={{ paddingLeft: '1.2rem' }}>
+            <CustomButton
+              type="button"
+              theme={disableSendBrief ? 'disabledFilled' : 'filledButton'}
+              handleClick={handleSendData}
+              title={t('leadCreation.sendBriefButton')}
+              loading={leadSaveLoading || updateLeadDraftLoading}
+              disabled={disableSendBrief}
             >
             </CustomButton>
           </Grid>

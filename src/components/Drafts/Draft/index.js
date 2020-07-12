@@ -118,7 +118,7 @@ const Draft = ({ draft }) => {
         </Grid>
       </Grid>
       <NavLink
-        to={`/lead?id=${draft?.externalId}`}
+        to={`/lead/${draft?.externalId}`}
         className={classes.draftLink}
         onClick={setLeadStep}
       >
