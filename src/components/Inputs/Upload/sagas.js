@@ -69,7 +69,7 @@ function* doDeleteAttachment(action) {
 
 function* doGetAttachments(action) {
   try {
-    const attachments = yield API.get(config.apiGateway.NAME, `/attachments/${action.payload.id}`, {
+    const attachments = yield API.get(config.apiGateway.NAME, `/attachments/${action.payload}`, {
       header: {
         'x-api-key': config.apiKey
       },

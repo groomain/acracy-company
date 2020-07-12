@@ -28,6 +28,23 @@ const UploadInput = (props) => {
   )
 }
 
+const getName = (name) => {
+  switch (name) {
+    case 'kbis':
+      return 'Kbis';
+    case 'status':
+      return 'Status';
+    case 'cin1':
+      return 'Carte d\'identité 1';
+    case 'cin2':
+      return 'Carte d\'identité 2';
+    case 'cin3':
+      return 'Carte d\'identité 3';
+    case 'cin4':
+      return 'Carte d\'identité 4';
+  }
+};
+
 export const Upload = (props) => {
   const classes = styles();
   const { t } = useTranslation();
@@ -70,12 +87,9 @@ export const Upload = (props) => {
   };
 
   useEffect(() => {
-    console.log("NUMBER", companyData?.administrativeProfile?.legalDocuments?.filter((file) => file.name === 'kbis' || file.name === 'cin1' || file.name === 'status').length);
     if (companyData?.administrativeProfile?.legalDocuments?.filter((file) => file.name === 'kbis' || file.name === 'cin1' || file.name === 'status').length < 3) {
-      console.log("TOTO");
       dispatch(checkMissingFilesForm(false))
     } else {
-      console.log("TATA");
       dispatch(checkMissingFilesForm(true))
 
     }
@@ -116,7 +130,7 @@ export const Upload = (props) => {
                                         />
                                 </div>
                                 <Box my={1}>
-                                    <Typography className={fileSizeError ? classes.maxedFileSize : null}>{file.name}</Typography>
+                                    <Typography className={fileSizeError ? classes.maxedFileSize : null}>{getName(file.name)}</Typography>
                                 </Box>
                             </Grid>
                         </Box>
