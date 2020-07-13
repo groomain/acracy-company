@@ -18,7 +18,7 @@ import ProfileSelection from "../../pages/ProfileSelection";
 import CustomLoader from '../Loader';
 import MissionFollowUp from "../../pages/MissionFollowUp";
 import AdministrativePage from "../../pages/AdministrativePage";
-import MyAccount from "../../pages/MyAccount";
+import MyProfilePage from "../../pages/MyProfile";
 
 function App() {
   let location = useLocation();
@@ -46,7 +46,7 @@ function App() {
       <PrivateRoute exact path="/mission/:id" fixed component={MissionFollowUp} />
       <PrivateRoute exact path="/firstLogin" fixed component={FirstLoginPage} />
       <PrivateRoute exact path="/home" fixed component={HomePage} />
-      <PrivateRoute exact path="/myProfile" fixed component={MyAccount} />
+      <PrivateRoute exact path="/myProfile" fixed component={MyProfilePage} />
       <PrivateRoute exact path="/reveal/:id" fixed component={ProfileSelection} />
       {/* REDIRECT WRONG PATH */}
       <Route render={() => <Redirect to="/home" />} />
