@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -32,17 +32,24 @@ export const LeadUpload = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
+  const { leadAttachmentId, leadDraftId, leadDraftData } = useSelector(state => ({
+    leadAttachmentId: state.getIn(['leadCreation', 'leadAttachmentId']),
+    leadDraftId: state.getIn(['leadCreation', 'leadDraftId']),
+    leadDraftData: state.getIn(['leadCreation', 'leadDraftData']),
+  }));
+
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [fileSizeError, setFileSizeError] = useState(false);
 
-  const { leadAttachmentId, leadDraftId, } = useSelector(state => ({
-    leadAttachmentId: state.getIn(['leadCreation', 'leadAttachmentId']),
-    leadDraftId: state.getIn(['leadCreation', 'leadDraftId']),
-  }));
+  useEffect(() => {
+    if (leadDraftData) {
+      setUploadedFiles(leadDraftData?.missionDetail?.sharedDocuments);
+    }
+  }, [leadDraftData])
 
   const handleChange = (e) => {
     const fileList = e.target.files;
-    const arrFiles = Array.from(fileList)
+    const arrFiles = Array.from(fileList);
 
     if (fileList.length) {
       const files = arrFiles.map((file, index) => {
@@ -56,6 +63,8 @@ export const LeadUpload = () => {
 
     if (fileList[0].size > 1.5e+7) {
       setFileSizeError(true)
+    } else {
+      setFileSizeError(false)
     }
   }
 
@@ -75,7 +84,7 @@ export const LeadUpload = () => {
       <DarkWrapper justify='center' alignItems='center'>
         <form className="form">
           <Grid container>
-            {uploadedFiles?.map(({ file, src, id }, index) => {
+            {uploadedFiles?.map((file, index) => {
               return (
                 <Box mx={2} key={`file-row${index}`}>
                   <Grid container direction="column" alignItems="center">
@@ -90,7 +99,7 @@ export const LeadUpload = () => {
                       </IconButton>
                     </div>
                     <Box my={1}>
-                      <Typography className={fileSizeError ? classes.maxedFileSize : null}>{file.name}</Typography>
+                      <Typography className={fileSizeError ? classes.maxedFileSize : null}>{file?.name || file?.file?.name}</Typography>
                     </Box>
                   </Grid>
                 </Box>
