@@ -44,7 +44,7 @@ const LeadCreationPage = (props) => {
 
   const { leadSaveLoading, leadDraftData, leadDraftSearchData, deliverablesArray, dateFromCalendar, dailyRate,
     leadCreationStep, leadDraftId, selectedExpertiseList, expertisePriorities, selectedSensitivity,
-    sensitivityPriority, selectedLanguage, languagePriority, uploadedFileName } = useSelector(state => ({
+    sensitivityPriority, selectedLanguage, languagePriority, uploadedFileName, leadAttachmentId } = useSelector(state => ({
       leadSaveLoading: state.getIn(['leadCreation', 'leadSaveLoading']),
       leadDraftSearchData: state.getIn(['leadCreation', 'leadDraftSearchData']),
       deliverablesArray: state.getIn(['leadCreation', 'deliverablesArray']),
@@ -60,6 +60,7 @@ const LeadCreationPage = (props) => {
       selectedLanguage: state.getIn(['leadCreation', 'selectedLanguage']),
       languagePriority: state.getIn(['leadCreation', 'languagePriority']),
       uploadedFileName: state.getIn(['leadCreation', 'uploadedFileName']),
+      leadAttachmentId: state.getIn(['leadCreation', 'leadAttachmentId'])
     }));
 
   useEffect(() => {
@@ -273,7 +274,8 @@ const LeadCreationPage = (props) => {
           detailsOfDeliverables: values?.detailsOfDeliverables ?? '',
           sharedDocuments: [
             {
-              name: uploadedFileName ?? ''
+              name: uploadedFileName ?? '',
+              externalId: leadAttachmentId ?? ''
             }
           ]
         },
