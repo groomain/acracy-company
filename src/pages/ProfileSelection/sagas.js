@@ -87,7 +87,7 @@ function* contactAcracy(action) {
 
     yield put(contactAcracySuccess(validateProfiles));
     if (interview) {
-      yield put(openSnackBar({message: "👉 N’oubliez pas de metre à jour votre sélection de profils une fois les entretiens passés"}));
+      yield put(openSnackBar({message: "👉 N’oubliez pas de mettre à jour votre sélection de profils une fois les entretiens passés"}));
     } else {
       yield put(openSnackBar({message: "Votre message a été envoyé avec succès"}));
     }
