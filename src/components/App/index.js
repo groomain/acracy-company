@@ -18,6 +18,7 @@ import ProgressBar from "../ProgressBar";
 import ProfileSelection from "../../pages/ProfileSelection";
 import CustomLoader from '../Loader';
 import MissionFollowUp from "../../pages/MissionFollowUp";
+import AdministrativePage from "../../pages/AdministrativePage";
 
 function App() {
   let location = useLocation();
@@ -38,6 +39,7 @@ function App() {
       <PublicRoute exact path="/confirmAccount" fixed component={ConfirmSignupPage} />
       <PublicRoute exact path="/forgotPassword" fixed component={ForgotPassword} />
       {/* PRIVATE ROUTE */}
+      <PublicRoute exact path="/administrative" fixed component={AdministrativePage} />
       <PrivateRoute exact path="/lead" fixed component={LeadCreationPage} />
       <PrivateRoute exact path="/lead/:id" fixed component={LeadCreationPage} />
       <PrivateRoute exact path="/brief/:id" fixed component={MissionFollowUp} />
