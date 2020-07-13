@@ -197,8 +197,9 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
   }
 
   useEffect(() => {
-    dispatch(setDeliverablesArray(deliverables))
-  }, [deliverables, dispatch]);
+    dispatch(setDeliverablesArray(deliverables));
+    dispatch(setLeadDraftSearchData({ search: leadCreationPageWithSearchResult }))
+  }, [deliverables, dispatch, leadCreationPageWithSearchResult]);
 
   const handleUpdateResearch = (e) => {
     setSearchedCategory(e);  // type, text and objectID
