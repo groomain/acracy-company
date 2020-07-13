@@ -47,8 +47,8 @@ export const AdministrativePage = (props) => {
   const { companyData, companyLoading, companyId, adminSnackBarOpen, adminSnackBarMessage, adminSnackBarError } = useSelector(state => ({
     companyData: state.getIn(['Administrative', 'companyData']),
     companyLoading: state.getIn(['Administrative', 'companyLoading']),
-    // companyId: state.getIn(['app', 'userDynamo', 'companyId'])
-    companyId: 827,                                              ///// mock ID for offline use
+    companyId: state.getIn(['app', 'userDynamo', 'companyId'])
+    // companyId: 827,                                              ///// mock ID for offline use
     adminSnackBarOpen: state.getIn(['Administrative', 'adminSnackBarOpen']),
     adminSnackBarMessage: state.getIn(['Administrative', 'adminSnackBarMessage']),
     adminSnackBarError: state.getIn(['Administrative', 'adminSnackBarError']),
