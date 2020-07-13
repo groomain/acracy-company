@@ -1,0 +1,51 @@
+{
+  "externalId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  "status": "WAITING_ELIGIBILITY",
+  "name": "LPR",
+  "administrativeProfile": {
+    "legalForm": "SARL Société Anonyme à Responsabilité Limitée",
+    "socialReason": "La Pilule Rouge",
+    "siret": 2580032452,
+    "shareCapital": 3,
+    "cityOfRcsRegistration": "Lille",
+    "intraCommunityVAT": true,
+    "vatNumber": 3245270,
+    "headOffice": {
+      "address": " 33 rue kleber",
+      "zipCode": 59000,
+      "city": "",
+      "country": "France"
+    },
+    "legalDocuments": [
+      {
+        "externalId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+        "name": "kbis"
+      },
+      {
+        "externalId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+        "name": "cin1"
+      },
+      {
+        "externalId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+        "name": "status"
+      }
+    ],
+    "billing": {
+      "address": "string",
+      "zipCode": 59000,
+      "city": "string",
+      "country": "France",
+      "firstName": "string",
+      "lastName": "string",
+      "email": "hello@lpr.io",
+      "phone": {
+        "number": "729403478",
+        "code": 33
+      }
+    },
+    "purchaseOrder": true,
+    "sameAddress": false
+  },
+  "webSite": "string",
+  "description": "string"
+}

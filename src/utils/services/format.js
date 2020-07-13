@@ -45,7 +45,7 @@ export const getPhonePrefixCode = prefix => {
 };
 
 /**
- * Compares the number passed as an argument to the list of area codes and retrieve the corresponding area code
+ * Compare the number passed as an argument to the list of area codes and retrieve the corresponding area code
  * @param {number} number - a simple number, previously extracted from the area code using getPhonePrefixCode
  * @returns {string} - A string formatted as "Fr : +33"
  */
@@ -59,7 +59,7 @@ export const getAreaCodeFromNumber = (number) => {
 
 /**
  * Shortens a long text at the specified length, and completes the string with '...' when the text is too long
- * @param {string} text - The text to be shortened 
+ * @param {string} text - The text to be shortened
  * @param {number} length - The number of characters allowed before shortening the text
  * @returns {string} - The new string, completed with '...' if it has been shortened
  */
@@ -70,7 +70,7 @@ export const shortenLongText = (text, length) => {
 
 /**
  * Takes a date, adds a specified number of days and returns the new date, weekends excluded
- * @param {string} date - The original date, in DD/MM/YYYY format 
+ * @param {string} date - The original date, in DD/MM/YYYY format
  * @param {number} nbOfDaysToAdd - Number of days to be added
  * @returns {string} - The new date with specified number of days added, excluding weekends
  */

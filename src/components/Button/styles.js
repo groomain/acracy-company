@@ -49,6 +49,13 @@ export default makeStyles(theme => ({
     color: `${theme.palette.secondary.black}`,
     '&:hover, &:active': {
       background: `${theme.palette.primary.bright}`
+    },
+    '&.Mui-disabled': {
+      backgroundColor: theme.palette.secondary.medium,
+      color: theme.palette.secondary.black,
+      textDecoration: 'none',
+      border: `1px solid transparent`
+
     }
   },
   asLink: {

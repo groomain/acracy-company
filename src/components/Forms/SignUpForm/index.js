@@ -11,6 +11,7 @@ import CustomCheckbox from '../../CheckBox';
 import backToTop from '../../../utils/backToTop';
 import { checkLength } from '../../../utils/services/validationChecks';
 import { Typography, Grid, Stepper, Step, StepLabel, StepButton, Box, StepConnector } from "@material-ui/core";
+import areaCodes from "../../../utils/areaCodes.json";
 import styles from './styles';
 
 import { handleNextStep } from '../../App/reducer';
@@ -27,11 +28,7 @@ const SignUpForm = ({ values, errors, touched, handleBlur, handleChange, handleS
 
   const { companyName, firstName, lastName, role, phoneNumber, phonePrefix, email, password, confirmPassword, conditions } = values;
 
-  const [optionsValues] = useState([
-    'Fr : +33',
-    'Blg : +32',
-    'It : +39'
-  ]);
+  const [optionsValues] = useState(areaCodes);
 
   useEffect(() => {
     dispatch(handleNextStep(0));
