@@ -128,8 +128,6 @@ export const AdministrativePage = (props) => {
     phonePrefix: companyData?.administrativeProfile?.billing?.phone?.code ? getAreaCodeFromNumber(companyData?.administrativeProfile?.billing?.phone?.code) : '',
     phoneNumber: companyData?.administrativeProfile?.billing?.phone?.number || '',
   };
-  console.log("companyData?.administrativeProfile?.billing?.phone?.code", companyData?.administrativeProfile?.billing?.phone?.code);
-  console.log("initialValuesForm4", initialValuesForm4);
 
   const ValidationSchemaForm4 = Yup.object().shape({
     firstName: Yup.string().required(),
