@@ -18,19 +18,18 @@ import {
 import { config } from '../../conf/amplify';
 import { push } from "connected-react-router";
 import {clearSnackBar, closeSnackBar, openSnackBar} from "../../components/App/reducer";
-import companyMock from '../../mock/company'
 
 function* getCompany(action) {
   const { companyId } = action.payload;
   try {
-    let companyData = companyMock;
-    // const companyData = yield API.get(config.apiGateway.NAME, `/companies/${companyId}`, {
-    //   headers: {
-    //     'x-api-key': config.apiKey
-    //   }
-    // });
+    // let companyData = companyMock;
+    const companyData = yield API.get(config.apiGateway.NAME, `/companies/${companyId}`, {
+      headers: {
+        'x-api-key': config.apiKey
+      }
+    });
 
-    yield delay(1000); // for mock
+    // yield delay(1000); // for mock
     yield put(getCompanySuccess(companyData));
   } catch (error) {
     console.log(error);
@@ -43,13 +42,13 @@ function* getCompany(action) {
 function* doUpdateCompany(action) {
   try {
     const { companyId, ...rest } = action.payload;
-    let companyData = companyMock;
-    // const companyData = yield API.put(config.apiGateway.NAME, `/companies/${companyId}`, {
-    //   header: {
-    //     'x-api-key': config.apiKey
-    //   },
-    //   body: rest
-    // })
+    // let companyData = companyMock;
+    const companyData = yield API.put(config.apiGateway.NAME, `/companies/${companyId}`, {
+      header: {
+        'x-api-key': config.apiKey
+      },
+      body: rest
+    })
 
     yield put(putCompanySuccess(companyData))
     yield put(openAdminSnackBar({ message: "Vos données ont bien été enregistrées", error: false }));
