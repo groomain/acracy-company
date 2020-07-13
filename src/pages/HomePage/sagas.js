@@ -23,7 +23,7 @@ import {
 // Infos for the "drafts" section (carousel)
 function* doGetLeads(action) {
   try {
-    const apiURL = `/leads?include-status[]=DRAFT&include-status[]=HELP_NEEDED`;
+    const apiURL = `/leads?includeStatus=DRAFT,HELP_NEEDED`;
     const params = {
       headers: {
         'x-api-key': config.apiKey
@@ -82,7 +82,7 @@ function* doGetMissions(action) {
 // Infos for the "profile matching" section
 function* doGetBriefs(action) {
   try {
-    const apiURL = `/briefs?exclude-status[]=CLOSED&exculde-status[]=ABANDONED&exclude-status[]=IN_PROGRESS`;
+    const apiURL = `/briefs?excludeStatus=CLOSED,ABANDONED,IN_PROGRESS`;
     const params = {
       headers: {
         'x-api-key': config.apiKey

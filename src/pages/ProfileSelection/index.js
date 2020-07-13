@@ -33,14 +33,18 @@ import CloseIcon from '@material-ui/icons/Close';
 import IconButton from "@material-ui/core/IconButton";
 
 const ProfileSelection = (props) => {
+  const quoteId = props?.match?.params;
+
+  console.log(quoteId);
+
   const classes = styles();
   const dispatch = useDispatch();
-  const { briefData, quotesData, validateCodeError, validateLoading, companyId, checkedProfilesStore, contactLoading } = useSelector(state => ({
+  const { briefData, quotesData, validateCodeError, validateLoading, userDynamo, checkedProfilesStore, contactLoading } = useSelector(state => ({
     briefData: state.getIn(['SelectionProfil', 'briefData']),
     quotesData: state.getIn(['SelectionProfil', 'quotesData']),
     validateCodeError: state.getIn(['SelectionProfil', 'validateCodeError']),
     validateLoading: state.getIn(['SelectionProfil', 'validateLoading']),
-    companyId: state.getIn(['app', 'companyId']),
+    userDynamo: state.getIn(['app', 'userDynamo']),
     checkedProfilesStore: state.getIn(['SelectionProfil', 'checkedProfilesStore']),
     contactLoading: state.getIn(['SelectionProfil', 'contactLoading'])
   }));
@@ -70,6 +74,7 @@ const ProfileSelection = (props) => {
   // Modale - Contacter Acracy
   const [contactOpen, setContactModaleOpen] = useState(false);
   const [contactMessage, setContactMessage] = useState('');
+  const [contactSelect, setContactSelect] = useState('');
 
   // Modale - Entretien
   const [interviewOpen, setInterviewOpen] = useState(false);
@@ -82,21 +87,21 @@ const ProfileSelection = (props) => {
     for (let i = 0; i < checkedProfiles.length; i++) {
       validateProfiles.push(quotesData[checkedProfiles[i]])
     }
-    dispatch(validateProfilesLaunched({ type: 'ACCEPTE_QUOTES', listId: validateProfiles }));
+    dispatch(validateProfilesLaunched({ type: 'ACCEPTE_QUOTES', listId: validateProfiles, quoteId: quoteId }));
   };
 
   const refuseAllProfiles = () => {
-    dispatch(validateProfilesLaunched({ type: 'REFUSE_ALL_QUOTES', text: noProfilMotif, reason: noProfilSelect }));
+    dispatch(validateProfilesLaunched({ type: 'REFUSE_ALL_QUOTES', text: noProfilMotif, reason: noProfilSelect, quoteId: quoteId }));
     handleNoProfileModaleOpen()
   };
 
-  const contactAcracy = (message, interview) => {
-    dispatch(contactAcracyLaunched({ message: message, interview: interview }));
-    handleContactOpen()
+  const contactAcracy = (message, reason, interview, setOpen) => {
+    dispatch(contactAcracyLaunched({ message: message, reason: reason, interview: interview }));
+    setOpen()
   };
 
   const handleContactOpen = () => {
-    setContactModaleOpen(!contactOpen);
+    setContactModaleOpen(!open);
   };
 
   const handleInterviewOpen = () => {
@@ -149,7 +154,7 @@ const ProfileSelection = (props) => {
   );
 
   useEffect(() => {
-    dispatch(getBriefLaunched())
+    dispatch(getBriefLaunched({companyId: userDynamo.companyId, briefId: quoteId}))
   }, [dispatch]);
 
   const heightProfilesContainer = quotesData && elementHeight / quotesData.length;
@@ -548,8 +553,9 @@ const ProfileSelection = (props) => {
             <CloseIcon />
           </IconButton>
           <Typography variant={"h1"}>Faire une demande à acracy</Typography>
+          <CustomSelect placeholder={"Sélectionner raison"} label={"Raison"} optionsValues={['Contacter Acracy']} value={contactSelect} handleChangeOut={setContactSelect} />
           <CustomTextArea style={{ height: 328 }} placeholder={"Dites nous comment on peut vous aider"} valueOut={contactMessage} handleChangeOut={setContactMessage} />
-          <CustomButton theme={"filledButton"} style={{ width: 254 }} title={"Envoyé"} handleClick={() => contactAcracy(contactMessage, false)} loading={contactLoading} />
+          <CustomButton theme={"filledButton"} style={{ width: 254 }} title={"Envoyé"} handleClick={() => contactAcracy(contactMessage, contactSelect, false, handleContactOpen)} loading={contactLoading} />
         </Grid>
       </Dialog>
       <Dialog open={interviewOpen} onClose={handleInterviewOpen} classes={{ paper: classes.modale }}>
@@ -559,7 +565,7 @@ const ProfileSelection = (props) => {
           </IconButton>
           <Typography variant={"h1"}>Confirmation d'entretien</Typography>
           <CustomTextArea style={{ height: 328 }} placeholder={"Donnez nous plus de détails sur ces entretiens"} valueOut={interviewMessage} handleChangeOut={setInterviewMessage} />
-          <CustomButton theme={"filledButton"} style={{ width: 254 }} title={"Envoyé"} handleClick={() => contactAcracy(interviewMessage, true)} loading={contactLoading} />
+          <CustomButton theme={"filledButton"} style={{ width: 254 }} title={"Envoyé"} handleClick={() => contactAcracy(interviewMessage, 'Interview', true, handleInterviewOpen)} loading={contactLoading} />
         </Grid>
       </Dialog>
     </Grid>

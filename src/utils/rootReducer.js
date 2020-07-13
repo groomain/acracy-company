@@ -7,6 +7,7 @@ import DownloadReducer from '../components/DownloadModal/reducer';
 import MissionReducer from '../pages/MissionFollowUp/reducer';
 import SelectionProfilReducer from '../pages/ProfileSelection/reducer';
 import MyProfileReducer from '../pages/MyProfile/reducer';
+import ContactReducer from '../components/ContactModale/reducer';
 import AdministrativeReducer from '../pages/AdministrativePage/reducer';
 import UploadReducer from '../components/Inputs/Upload/reducer';
 
@@ -18,6 +19,7 @@ export default history => combineReducers({
   Download: DownloadReducer,
   leadCreation: LeadCreationReducer,
   SelectionProfil: SelectionProfilReducer,
+  Contact: ContactReducer,
   Administrative: AdministrativeReducer,
   Upload: UploadReducer,
   MyProfile: MyProfileReducer
