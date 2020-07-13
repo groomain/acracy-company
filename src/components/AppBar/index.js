@@ -1,4 +1,4 @@
-import React  from 'react';
+import React, {useState} from 'react';
 import { useTranslation } from "react-i18next";
 import { useLocation, withRouter } from "react-router";
 import clsx from "clsx";
@@ -12,11 +12,14 @@ import ProfilMenu from "../ProfilMenu";
 import acracyLogo from "../../assets/icons/logo-acracy.svg";
 import { NavLink } from "react-router-dom";
 import useScrollTrigger from "@material-ui/core/useScrollTrigger";
+import ContactModale from "../ContactModale";
+import Grid from "../../pages/ProfileSelection";
 
 export const CustomAppBar = (props) => {
   let location = useLocation();
   const { t } = useTranslation();
   const classes = styles();
+    const [contactOpen, setContactModaleOpen] = useState(false);
 
     const scroll = useScrollTrigger({
         target: props.window ? props.window() : undefined,
@@ -30,7 +33,7 @@ export const CustomAppBar = (props) => {
         return (
           <div className={clsx(classes.div, classes.login)}>
             <CustomButton theme={"filledButton"} title={t('header.signUp')} component={RouterLink} to="/signup" />
-            <CustomButton title={t('header.contactUs')} />
+            <CustomButton title={t('header.contactUs')} onClick={() => setContactModaleOpen(!contactOpen)}/>
           </div>
         );
       case '/createAccount':
@@ -38,7 +41,7 @@ export const CustomAppBar = (props) => {
         return (
           <div className={clsx(classes.div, classes.signup)}>
             <CustomNavLink to={'/login'} text={t('header.login')} theme="navLink" />
-            <CustomButton title={t('header.contactUs')} />
+            <CustomButton title={t('header.contactUs')} onClick={() => setContactModaleOpen(!contactOpen)}/>
           </div>
         );
       case '/home':
@@ -53,7 +56,7 @@ export const CustomAppBar = (props) => {
           <div className={clsx(classes.div, classes.password)}>
             <CustomNavLink to={'/login'} text={t('header.login')} theme="navLink" />
             <CustomButton theme={"filledButton"} title={<NavLink className={classes.navLink} to={'/signup'}>{t('header.signUp')}</NavLink>}/>
-            <CustomButton title={t('header.contactUs')} component={RouterLink} to="/contact" />
+            <CustomButton title={t('header.contactUs')} onClick={() => setContactModaleOpen(!contactOpen)} />
           </div>
         );
       default:
@@ -75,6 +78,7 @@ export const CustomAppBar = (props) => {
         <div className={classes.grow} />
         {renderButtons()}
       </Toolbar>
+        <ContactModale open={contactOpen} setOpen={setContactModaleOpen} interview={false} title={'Faire une demande à acracy'} placeHolder={'Dites nous comment on peut vous aider'}/>
     </AppBar>
   );
 };

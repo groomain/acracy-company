@@ -9,6 +9,7 @@ import createRootReducer from './rootReducer';
 import missionSaga from "../pages/MissionFollowUp/sagas";
 import downloadSaga from "../components/DownloadModal/sagas";
 import leadCreationSaga from "../pages/LeadCreationPage/sagas";
+import Contact from "../components/ContactModale/sagas";
 import administrativeSaga from "../pages/AdministrativePage/sagas";
 import UploadSaga from "../components/Inputs/Upload/sagas";
 import MyProfileSaga from "../pages/MyProfile/sagas";
@@ -30,6 +31,7 @@ export default function configureStore() {
   sagaMiddleware.run(downloadSaga);
   sagaMiddleware.run(leadCreationSaga);
   sagaMiddleware.run(SelectionProfil);
+  sagaMiddleware.run(Contact);
   sagaMiddleware.run(administrativeSaga);
   sagaMiddleware.run(UploadSaga);
   sagaMiddleware.run(MyProfileSaga);
