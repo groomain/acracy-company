@@ -12,13 +12,13 @@ import ConfirmSignupPage from '../../pages/ConfirmSignUp';
 import ForgotPassword from '../../pages/ForgotPassword';
 import FirstLoginPage from '../../pages/FirstLogin';
 import LeadCreationPage from "../../pages/LeadCreationPage";
+import MyProfilePage from "../../pages/MyProfile";
 import CustomAppBar from "../AppBar";
 import ProgressBar from "../ProgressBar";
 import ProfileSelection from "../../pages/ProfileSelection";
 import CustomLoader from '../Loader';
 import MissionFollowUp from "../../pages/MissionFollowUp";
 import AdministrativePage from "../../pages/AdministrativePage";
-import MyProfilePage from "../../pages/MyProfile";
 
 function App() {
   let location = useLocation();
