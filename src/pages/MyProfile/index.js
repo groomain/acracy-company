@@ -53,8 +53,8 @@ export const MyProfilePage = (props) => {
   });
 
   useEffect(() => {
-    dispatch(getMyProfilePersonalInformationsLaunched(employeeId));
-  }, []);
+    dispatch(getMyProfilePersonalInformationsLaunched());
+  }, [dispatch]);
 
   // Form data
   const personalInformationsInitialValues = {

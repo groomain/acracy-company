@@ -91,6 +91,7 @@ const { actions, reducer } = createSlice({
       .set('companiesLoading', false),
     getCompaniesFailure: (state, action) => state
       .set('companiesData', null)
+      .set('companiesDataFetched', false)
       .set('companiesLoading', false),
     setComingFromDashboard: (state, action) => state
       .set('comingFromDashboard', action.payload),

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import clsx from 'clsx';
 
@@ -13,9 +13,13 @@ import { checkLength } from '../../../utils/services/validationChecks';
 import { Typography, Grid, Stepper, Step, StepLabel, StepButton, Box, StepConnector } from "@material-ui/core";
 import styles from './styles';
 
+import { handleNextStep } from '../../App/reducer';
+
 const SignUpForm = ({ values, errors, touched, handleBlur, handleChange, handleSubmit }) => {
   const { t } = useTranslation();
   const classes = styles();
+  const dispatch = useDispatch();
+
   const { signupErrorMessage, signupLoading } = useSelector(state => ({
     signupErrorMessage: state.getIn(['app', 'signupErrorMessage']),
     signupLoading: state.getIn(['app', 'signupLoading'])
@@ -28,6 +32,10 @@ const SignUpForm = ({ values, errors, touched, handleBlur, handleChange, handleS
     'Blg : +32',
     'It : +39'
   ]);
+
+  useEffect(() => {
+    dispatch(handleNextStep(0));
+  }, []);
 
   const [activeStep, setActiveStep] = useState(0);
 
@@ -54,6 +62,7 @@ const SignUpForm = ({ values, errors, touched, handleBlur, handleChange, handleS
   const handleStep = (step) => () => {
     setActiveStep(step);
     backToTop();
+    dispatch(handleNextStep(step));
   };
 
   const [disabledFirstStep, setDisabledFirstStep] = useState(true);
@@ -285,7 +294,10 @@ const SignUpForm = ({ values, errors, touched, handleBlur, handleChange, handleS
               <CustomButton
                 type="submit"
                 theme={disabledSecondStep ? "disabledFilled" : "filledButton"}
-                handleClick={() => handleSubmit({ email, password })}
+                handleClick={() => {
+                  handleStep(2);
+                  handleSubmit({ email, password })
+                }}
                 loading={signupLoading}
                 title={t('signup.createAccountButton')}
                 disabled={disabledSecondStep || signupLoading}
