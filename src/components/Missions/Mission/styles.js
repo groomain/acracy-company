@@ -70,11 +70,11 @@ export default makeStyles(theme => ({
     width: '100%',
   },
   blocTypoDown: {
-    marginTop: '23%',
+    // marginTop: '23%',
     width: '100%',
   },
   blocTypoDownAvatar: {
-    marginTop: '3%',
+    // marginTop: '3%',
     width: '100%',
   },
   icon: {
@@ -93,7 +93,7 @@ export default makeStyles(theme => ({
     width: 25,
     height: 25,
     position: 'absolute',
-    top: 10,
+    top: 26,
     right: 10,
     '&:hover span svg g g': {
       fill: theme.palette.primary.main
