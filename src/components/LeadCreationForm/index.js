@@ -40,7 +40,7 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
   const { leadDraftSearchData, deliverablesArray, expertises,
     selectedExpertiseList, expansionPanelOpen, expertisePriorities, leadCreationStep,
     sensitivities, selectedSensitivity, sensitivityPriority, dateFromCalendar,
-    selectedLanguage, languagePriority, leadSaveLoading, updateLeadDraftLoading } = useSelector(state => ({
+    selectedLanguage, languagePriority, leadSaveLoading, updateLeadDraftLoading, leadCreationPageWithSearchResult } = useSelector(state => ({
       dateFromCalendar: state.getIn(['leadCreation', 'dateFromCalendar']),
       leadDraftSearchData: state.getIn(['leadCreation', 'leadDraftSearchData']),
       deliverablesArray: state.getIn(['leadCreation', 'deliverablesArray']),
@@ -56,6 +56,7 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
       languagePriority: state.getIn(['leadCreation', 'languagePriority']),
       leadSaveLoading: state.getIn(['leadCreation', 'leadSaveLoading']),
       updateLeadDraftLoading: state.getIn(['leadCreation', 'updateLeadDraftLoading']),
+      leadCreationPageWithSearchResult: state.getIn(['dashboard', 'leadCreationPageWithSearchResult']),
     }));
 
   const [activeStep, setActiveStep] = useState(leadCreationStep);
@@ -205,7 +206,7 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
   }
 
   const showDeliverablesSettings = () => {
-    const selectableDeliverables = searchedCategory.DELIVERABLES;
+    const selectableDeliverables = searchedCategory.DELIVERABLES || leadCreationPageWithSearchResult.DELIVERABLES;
     let deliverablesList = [];
     deliverablesList = selectableDeliverables.map((item) => {
       return item.TEXT;
@@ -247,7 +248,7 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
   }
 
   const showProfilesSettings = () => {
-    let selectableProfiles = searchedCategory.PROFILES;
+    let selectableProfiles = searchedCategory.PROFILES || leadCreationPageWithSearchResult?.PROFILES;
     let selectableProfilesCopy = [...selectableProfiles];
     let enhancedList = selectableProfilesCopy.concat({ "TEXT": "Recevoir une recommandation acracy" })
     const profilesList = enhancedList.map((item) => {
@@ -270,19 +271,10 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
   }
 
   const renderSearchedTypeSettings = (searchedCategory) => {
-    switch (searchedCategory.TYPE) {
-      case 'PROFILE':
-        return (
-          showDeliverablesSettings()
-        )
-      case 'DELIVERABLE':
-        return (
-          showProfilesSettings()
-        )
-      default:
-        return (
-          null
-        );
+    if (searchedCategory.TYPE === 'PROFILE' || leadCreationPageWithSearchResult?.DELIVERABLES) {
+      return showDeliverablesSettings()
+    } else if (searchedCategory.TYPE === 'DELIVERABLE' || leadCreationPageWithSearchResult?.PROFILES) {
+      return showProfilesSettings()
     }
   }
 
