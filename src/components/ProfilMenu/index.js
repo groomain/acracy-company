@@ -10,6 +10,7 @@ import { ContactIcon } from "../../assets/icons/ContactIcon";
 import { AdministratifIcon } from "../../assets/icons/AdministratifIcon";
 import profilIcon from "../../assets/icons/profil-roll-out.svg";
 import CustomIconButton from "../IconButton";
+import ContactModale from "../ContactModale";
 import { logoutLaunched } from "../App/reducer";
 import { useDispatch } from 'react-redux';
 import Typography from "@material-ui/core/Typography";
@@ -23,6 +24,7 @@ export const ProfilMenu = () => {
   const [hovered3, setOvered3] = React.useState(false);
   const [hovered4, setOvered4] = React.useState(false);
   const [hovered6, setOvered6] = React.useState(false);
+  const [contactOpen, setContactModaleOpen] = React.useState(false);
   const dispatch = useDispatch();
 
   const logout = (payload) => {
@@ -72,12 +74,12 @@ export const ProfilMenu = () => {
                     </NavLink>
         </Grid>
         <Grid item container direction={'row'} className={classes.row}>
-          <NavLink className={classes.navLink} to={'/contact'}
+          <Typography className={classes.navLink} onClick={() => setContactModaleOpen(!contactOpen)}
             onMouseEnter={() => setOvered3(true)}
             onMouseLeave={() => setOvered3(false)}>
             <ContactIcon hovered={hovered3} className={classes.icon} />
-                        Contacter acracy
-                    </NavLink>
+              Contacter acracy
+          </Typography>
         </Grid>
         <Grid item container direction={'row'} className={classes.row}>
           <Typography className={classes.navLink} onClick={() => logout()}
@@ -101,6 +103,7 @@ export const ProfilMenu = () => {
         onClick={handleProfileMenuOpen}
       />
       {anchorEl && renderMenu}
+      <ContactModale open={contactOpen} setOpen={setContactModaleOpen} interview={false} title={'Faire une demande à acracy'} placeHolder={'Dites nous comment on peut vous aider'} />
     </div>
   )
 };
