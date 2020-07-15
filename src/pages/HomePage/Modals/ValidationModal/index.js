@@ -6,13 +6,13 @@ import * as Yup from 'yup';
 import { Box, Dialog, Typography, IconButton, Grid } from '@material-ui/core/';
 import CloseIcon from '@material-ui/icons/Close';
 import styles from '../styles';
-import CustomSelect from "../../../../components/Inputs/CustomSelect";
 import CustomButton from "../../../../components/Button";
 import CustomTextField from '../../../../components/Inputs/CustomTextField';
 import CustomCheckBox from '../../../../components/CheckBox';
 
 import { updateMissionLaunched } from '../../reducer';
 import { formatDate } from '../../../../utils/services/format';
+import { theme } from '../../../../utils/configureMaterialTheme';
 
 export const ValidationModal = ({ open, handleClose, files, missionId, preselectedFile, ...props }) => {
   const dispatch = useDispatch();
@@ -38,31 +38,121 @@ export const ValidationModal = ({ open, handleClose, files, missionId, preselect
     dispatch(updateMissionLaunched(allData))
   }
 
+  const invoice =
+  {
+    "externalId": "receAaY3M4RZHa8Z5",
+    "status": "WAITING_FOR_VALIDATION",
+    "briefId": "receAaY3M4RZHa8Z5",
+    "missionId": "receAaY3M4RZHa8Z5",
+    "numero": "string",
+    "missionTitle": "Apollo XI",
+    "companyName": "La pilule rouge",
+    "averageDailyRate": 50,
+    "amount": 100,
+    "sentDate": "2020-07-15",
+    "paymentDate": "2020-07-15",
+    "attachment": {
+      "externalId": "receAaY3M4RZHa8Z5",
+      "link": "string",
+      "name": "string"
+    },
+    "startDate": "2020-07-15T08:42:34.219Z",
+    "endDate": "2020-07-16T08:42:34.219Z",
+    "workedDays": 2,
+    "comment": ""
+  };
+
+  const commissionAcracy = invoice?.amount * 0.15;
+
   return (
     <Dialog
       open={open}
       onClose={handleClose}
-      classes={{ root: classes.container, paper: classes.root }}
+      classes={{ root: classes.container, paper: invoice?.comment === "" ? classes.root : classes.bigModal }}
     >
-      <Grid container direction={"column"}>
-        <Grid item container justify={'flex-end'}>
+      <Grid container>
+        <Grid item>
           <IconButton aria-label="close" className={classes.iconButton} onClick={handleClose}>
             <CloseIcon />
           </IconButton>
         </Grid>
-        <Typography variant='h1' className={classes.title}>
-          Contrôler les comptes rendus d'activité
-        </Typography>
-        <Typography>Choisir le compte rendu d'activité à valider</Typography>
-        <Formik
-          render={props => <InvoicesDownloadForm {...props} options={invoicesNames} files={files} />}
-          initialValues={initialValues}
-          validationSchema={ValidationSchema}
-          onSubmit={updateInvoice}
-        >
-        </Formik>
+        <Grid item container direction={'row'} spacing={2}>
+          <Grid item container md={invoice?.comment ? 8 : null}>
+            <Grid item className={classes.title}>
+              <Typography Typography variant={'h1'}>Contrôle du compte rendu d’activité</Typography>
+            </Grid>
+            <Grid item container>
+              <Grid item container>
+                <Box mt={2}>
+                  <Typography >Merci de bien vouloir vérifier les informations ci-dessous et valider le compte rendu d’activité.</Typography>
+                </Box>
+                <Grid item>
+                  <Box mt={2}>
+                    <Typography variant={'h4'}>{invoice?.missionTitle}</Typography>
+                  </Box>
+                </Grid>
+                <Grid item container direction={'column'}>
+                  <Box mt={2}>
+                    <Grid item>
+                      <Typography variant={'h4'}>Période de travail</Typography>
+                    </Grid>
+                    <Grid item>
+                      <Typography>{`Du ${formatDate(invoice?.startDate)} au ${formatDate(invoice?.endDate)}`}</Typography
+                      ></Grid>
+                  </Box>
+                </Grid>
+                <Grid item container>
+                  <Box mt={2}>
+                    <Grid item>
+                      <Typography variant={'h4'}>Cette facture</Typography>
+                    </Grid>
+                    <Grid item container>
+                      <Grid item md={3}>
+                        <Typography>{invoice?.amount - commissionAcracy}€</Typography>
+                      </Grid>
+                      <Grid item md={9}>
+                        <Typography>{invoice?.workedDays} jours travaillés, TJM</Typography>
+                      </Grid>
+                      <Grid item md={3}>
+                        <Typography>{commissionAcracy}€</Typography>
+                      </Grid>
+                      <Grid item md={9}>
+                        <Typography>15% de commission acracy</Typography>
+                      </Grid>
+                    </Grid>
+                  </Box>
+                </Grid>
+                <Grid item container>
+                  <Box mt={2}>
+                    <Typography variant={'h1'} style={{ color: '#ecf805' }}>{(invoice?.amount)}€ <span style={{ fontSize: '17px' }}>total HT</span></Typography>
+                  </Box>
+                </Grid>
+                <Grid item>
+                  <Box mt={2}>
+                    <Formik
+                      render={props => <InvoicesDownloadForm {...props} options={invoicesNames} files={files} />}
+                      initialValues={initialValues}
+                      validationSchema={ValidationSchema}
+                      onSubmit={updateInvoice}
+                    />
+                  </Box>
+                </Grid>
+              </Grid>
+            </Grid>
+          </Grid>
+          {invoice?.comment && (
+            <Grid item container md={4}>
+              <Box>
+                <div className={classes.validationComment}>
+                  <Typography variant={'subtitle1'} >Commentaire du freelance</Typography>
+                  <Typography>{invoice?.comment}</Typography>
+                </div>
+              </Box>
+            </Grid>
+          )}
+        </Grid>
       </Grid>
-    </Dialog>
+    </Dialog >
   );
 };
 
@@ -96,49 +186,62 @@ const InvoicesDownloadForm = ({ values, errors, touched, handleBlur, handleChang
     }
   }, [companiesData, extractedFile, orderFormNumber, workDone]);
 
+  const invoice =
+  {
+    "latestInvoice": false,
+    "purchaseOrder": true
+  };
+
   return (
     <>
-      <CustomSelect
-        name="selectedFile"
-        onChange={handleChange}
-        optionsValues={options}
-        value={selectedFile}
-      />
-
-      <Typography>{extractedFile?.workedDays} jours travaillés</Typography>
-      <Typography>Du {formatDate(extractedFile?.startDate)} au {formatDate(extractedFile?.endDate)}</Typography>
-      {extractedFile?.comment && <Typography>"{extractedFile?.comment}"</Typography>}
-      <Typography>TJM : {extractedFile?.averageDailyRate} €</Typography>
-
-      <Box my={3}>
-        <form onSubmit={handleSubmit}>
-          {companiesData?.administrativeProfile?.purchaseOrder && (
-            <CustomTextField
-              label="Numéro de Bon de Commande"
-              placeholder="Indiquez le BDC"
-              name="orderFormNumber"
-              onChange={handleChange}
-            />
-          )}
-          {extractedFile?.latestInvoice && (
-            <Grid container alignItems='center'>
-              <CustomCheckBox
-                name="workDone"
-                onChange={handleChange}
-              />
-              <Typography>Mission terminée</Typography>
+      <Box>
+        {/* <form onSubmit={handleSubmit}> */}
+        {invoice?.purchaseOrder && (
+          <CustomTextField
+            label="Veuillez indiquer ici votre numéro de bon de commande*"
+            placeholder="Numéro bon de commande"
+            name="orderFormNumber"
+            onChange={handleChange}
+          />
+        )}
+        {invoice?.latestInvoice && (
+          <Grid container alignItems={'center'}>
+            <Grid item>
+              <Typography variant={'h2'}>Cette facture clôture la mission*</Typography>
             </Grid>
-          )}
-          <Grid>
+            <Grid item container alignItems={'center'}>
+              <Grid item>
+                <CustomCheckBox
+                  name="workDone"
+                  onChange={handleChange}
+                />
+              </Grid>
+              <Grid item>
+                <Typography>Je confirme la fin de mission</Typography>
+              </Grid>
+            </Grid>
+          </Grid>
+        )}
+        <Grid container spacing={2}>
+          <Grid item>
             <CustomButton
-              title="Valider"
+              title="Refuser"
+              theme='primaryButton'
+              onClick={() => alert('Ouvre une modal Contact')}
+            />
+          </Grid>
+          <Grid item>
+            <CustomButton
+              title="Confirmer"
               theme={disabled ? 'disabledFilled' : 'filledButton'}
+              handleClick={() => handleSubmit({ orderFormNumber, workDone })}
               type="submit"
               loading={updateMissionLoading}
               disabled={disabled}
             />
           </Grid>
-        </form>
+        </Grid>
+        {/* </form> */}
       </Box>
     </>
   )
