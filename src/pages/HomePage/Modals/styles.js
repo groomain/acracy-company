@@ -39,6 +39,22 @@ export default makeStyles(theme => ({
     '&:hover': {
       color: '#e4e4e4',
     },
+  },
+  bigModal: {
+    marginTop: 30,
+    width: 519,
+    minHeight: '30vh',
+    minWidth: '40vw',
+    margin: 0,
+    padding: 30,
+    borderRadius: 15,
+    backgroundColor: `${theme.palette.secondary.modalGreen}`
+  },
+  validationComment: {
+    // height: '100%',
+    margin: '16px',
+    padding: '16px',
+    borderRadius: '15px',
+    backgroundColor: '#212a21'
   }
-
 }));
