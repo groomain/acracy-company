@@ -64,7 +64,7 @@ export const ProfilMenu = () => {
           </NavLink>
         </Grid>
         <Grid item container direction={'row'} className={classes.row}>
-          <NavLink className={classes.navLink} to={'/admin'}
+          <NavLink className={classes.navLink} to={'/administrative'}
             onMouseEnter={() => setOvered2(true)}
             onMouseLeave={() => setOvered2(false)}>
             <AdministratifIcon hovered={hovered2} className={classes.icon} />
