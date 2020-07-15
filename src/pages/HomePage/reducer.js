@@ -20,7 +20,8 @@ const initialState = Immutable.Map({
   companiesDataFetched: false,
   comingFromDashboard: false,
   updateMissionLoading: false,
-  updateMissionSent: false
+  updateMissionSent: false,
+  leadCreationPageWithSearchResult: null
 });
 
 const { actions, reducer } = createSlice({
@@ -110,7 +111,11 @@ const { actions, reducer } = createSlice({
       .set('updateMissionLoading', false)
       .set('updateMissionSent', true),
     updateMissionFailure: (state, action) => state
-      .set('updateMissionLoading', false)
+      .set('updateMissionLoading', false),
+
+    // From dashboard to lead creation with search result
+    pushToLeadCreationPageWithSearchResult: (state, action) => state
+      .set('leadCreationPageWithSearchResult', action.payload)
   }
 });
 
@@ -140,7 +145,8 @@ export const {
   sendIncidentMessageFailure,
   updateMissionLaunched,
   updateMissionSuccess,
-  updateMissionFailure
+  updateMissionFailure,
+  pushToLeadCreationPageWithSearchResult
 } = actions;
 
 export default reducer;
