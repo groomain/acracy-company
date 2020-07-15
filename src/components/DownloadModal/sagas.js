@@ -1,20 +1,20 @@
-import {all, put, takeLatest} from 'redux-saga/effects';
+import { all, put, takeLatest } from 'redux-saga/effects';
 import { API } from 'aws-amplify';
 import {
 } from './reducer';
 import { config } from '../../conf/amplify';
-import {downloadFileFailure} from "./reducer";
-import {downloadFileSuccess} from "./reducer";
+import { downloadFileFailure } from "./reducer";
+import { downloadFileSuccess } from "./reducer";
 
 function* downloadFile(action) {
   try {
-    console.log("DOWNLOADFILE SAGA");
-    const {type, attachmentId} = action.payload;
+    // console.log("DOWNLOADFILE SAGA");
+    const { type, attachmentId } = action.payload;
     let url = `/attachments`;
 
     if (Array.isArray(attachmentId)) {
       for (let i = 0; i < attachmentId.length; i++) {
-        if (i === 0){
+        if (i === 0) {
           url += `?id=${attachmentId[i]}`
         } else {
           url += `,${attachmentId[i]}`
@@ -23,7 +23,7 @@ function* downloadFile(action) {
     } else {
       url += `/${attachmentId}`
     }
-    console.log("DOWNLOADFILE", action.payload);
+    // console.log("DOWNLOADFILE", action.payload);
     const file = yield API.get(config.apiGateway.NAME, url, {
       headers: {
         'x-api-key': config.apiKey

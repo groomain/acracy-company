@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import Grid from "@material-ui/core/Grid";
 import GeneralInformation from "../../components/GeneralInformation";
 import CustomAppbar from '../../components/AppBar'
@@ -16,6 +16,7 @@ import Form4 from "../../components/AdministrativeForms/Form4";
 import Form5 from "../../components/AdministrativeForms/Form5";
 import Upload from "../../components/Inputs/Upload";
 import { useDispatch, useSelector } from "react-redux";
+import { handleCurrentStep } from '../../components/App/reducer';
 import {
   checkMissingFilesForm,
   closeAdminSnackBar,
@@ -28,7 +29,7 @@ import smallCheck from "../../assets/icons/small-check.svg";
 import Snackbar from "@material-ui/core/Snackbar";
 import CloseIcon from '@material-ui/icons/Close';
 import IconButton from "@material-ui/core/IconButton";
-import {Box} from "@material-ui/core";
+import { Box } from "@material-ui/core";
 import DarkWrapper from "../../components/Layout/DarkWrapper";
 
 export const AdministrativePage = (props) => {
@@ -55,6 +56,7 @@ export const AdministrativePage = (props) => {
   }));
 
   useEffect(() => {
+    dispatch(handleCurrentStep(0))
     dispatch(getCompanyLaunched(companyId));
     scrollSpy.update();
   }, [dispatch]);
@@ -193,12 +195,12 @@ export const AdministrativePage = (props) => {
                   <Typography variant="body1">{t('upload.subtitle')}</Typography>
                 </Box>
                 <DarkWrapper justify='space-between' alignItems='start'>
-                <Upload name={'kbis'} placeHolder={'Kbis*'} setName={setKbis} type={'COMPANY_LEGAL_DOCUMENT'} withOutText={true} />
-                <Upload name={'status'} placeHolder={'Status*'} setName={setStatus} type={'COMPANY_LEGAL_DOCUMENT'} withOutText={true} />
-                <Upload name={'cin1'} placeHolder={'Carte d\'identité 1*'} setName={setCin1} type={'COMPANY_LEGAL_DOCUMENT'} withOutText={true} />
-                <Upload name={'cin2'} placeHolder={'Carte d\'identité 2'} setName={setCin2} type={'COMPANY_LEGAL_DOCUMENT'} withOutText={true} />
-                <Upload name={'cin3'} placeHolder={'Carte d\'identité 3'} setName={setCin3} type={'COMPANY_LEGAL_DOCUMENT'} withOutText={true} />
-                <Upload name={'cin4'} placeHolder={'Carte d\'identité 4'} setName={setCin4} type={'COMPANY_LEGAL_DOCUMENT'} withOutText={true} />
+                  <Upload name={'kbis'} placeHolder={'Kbis*'} setName={setKbis} type={'COMPANY_LEGAL_DOCUMENT'} withOutText={true} />
+                  <Upload name={'status'} placeHolder={'Status*'} setName={setStatus} type={'COMPANY_LEGAL_DOCUMENT'} withOutText={true} />
+                  <Upload name={'cin1'} placeHolder={'Carte d\'identité 1*'} setName={setCin1} type={'COMPANY_LEGAL_DOCUMENT'} withOutText={true} />
+                  <Upload name={'cin2'} placeHolder={'Carte d\'identité 2'} setName={setCin2} type={'COMPANY_LEGAL_DOCUMENT'} withOutText={true} />
+                  <Upload name={'cin3'} placeHolder={'Carte d\'identité 3'} setName={setCin3} type={'COMPANY_LEGAL_DOCUMENT'} withOutText={true} />
+                  <Upload name={'cin4'} placeHolder={'Carte d\'identité 4'} setName={setCin4} type={'COMPANY_LEGAL_DOCUMENT'} withOutText={true} />
                 </DarkWrapper>
                 <Box my={2}>
                   <Typography variant="body1" color="primary">{t('upload.confidentialityText')}</Typography>
@@ -248,22 +250,22 @@ export const AdministrativePage = (props) => {
         </Grid>
       }
       <Snackbar
-          anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-          open={adminSnackBarOpen}
-          onClose={() => closeSnackBar()}
-          children={
-            <Grid container alignItems={'center'} justify={'space-between'} className={classes.snackBar}>
-              {adminSnackBarError ?
-                  <CloseIcon fontSize="small" />
-                  :
-                  <img alt={'smallCheck'} src={smallCheck}/>
-              }
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+        open={adminSnackBarOpen}
+        onClose={() => closeSnackBar()}
+        children={
+          <Grid container alignItems={'center'} justify={'space-between'} className={classes.snackBar}>
+            {adminSnackBarError ?
+              <CloseIcon fontSize="small" />
+              :
+              <img alt={'smallCheck'} src={smallCheck} />
+            }
             <Typography className={classes.typoSnackBar}>{adminSnackBarMessage}</Typography>
-              <IconButton size="small" aria-label="close" color="inherit" onClick={() => closeSnackBar()}>
-                <CloseIcon fontSize="small" />
-              </IconButton>
-            </Grid>
-          }
+            <IconButton size="small" aria-label="close" color="inherit" onClick={() => closeSnackBar()}>
+              <CloseIcon fontSize="small" />
+            </IconButton>
+          </Grid>
+        }
       />
     </Grid>
   )

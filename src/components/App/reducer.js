@@ -136,10 +136,13 @@ const { actions, reducer } = createSlice({
     updateUserSuccess: (state, action) => state
       .set('updateUserLoading', false)
       .set('updateUserErrorMessage', null),
-    handleNextStep: (state, action) => state
-      .set('activeStep', action.payload + 1),
-    handlePreviousStep: (state, action) => state
-      .set('activeStep', action.payload - 1),
+    // HANDLE STEP
+    handleCurrentStep: (state, action) => state
+      .set('activeStep', action.payload),
+    // handleNextStep: (state, action) => state
+    //   .set('activeStep', action.payload + 1),
+    // handlePreviousStep: (state, action) => state
+    //   .set('activeStep', action.payload - 1),
     // SnackBar
     openSnackBar: (state, action) => state
       .set('snackBarOpen', true)
@@ -178,8 +181,9 @@ export const {
   updateUserLaunched,
   updateUserSuccess,
   updateUserFailure,
-  handleNextStep,
-  handlePreviousStep,
+  // handleNextStep,
+  // handlePreviousStep,
+  handleCurrentStep,
   resendCodeLaunched,
   resendCodeSuccess,
   resendCodeFailure,

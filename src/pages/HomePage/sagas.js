@@ -40,7 +40,7 @@ function* doGetLeads(action) {
 
 function* doDeleteLead(action) {
   const leadId = action.payload;
-  console.log('function*doDeleteLead -> leadId', leadId)
+  // console.log('function*doDeleteLead -> leadId', leadId)
   try {
     const apiURL = `/leads/${leadId}/actions`;
     const params = {

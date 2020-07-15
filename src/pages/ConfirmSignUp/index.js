@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 
-import { confirmSignupLaunched, resendCodeLaunched } from '../../components/App/reducer';
+import { confirmSignupLaunched, resendCodeLaunched, handleCurrentStep } from '../../components/App/reducer';
 import { Grid, Typography, Box, Divider } from '@material-ui/core/';
 import Sidebar from '../../components/Layout/Sidebar';
 import Main from '../../components/Layout/Main';
@@ -30,6 +30,10 @@ const ConfirmSignUpPage = () => {
     code: '',
     username: email
   };
+
+  useEffect(() => {
+    dispatch(handleCurrentStep(0))
+  }, [dispatch])
 
   const [searchValue] = useState('Social Media Strategist');
 

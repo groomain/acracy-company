@@ -7,6 +7,7 @@ import * as Scroll from "react-scroll/modules";
 import { Formik } from 'formik';
 import PersonalInformationsForm from '../../components/Forms/MyProfileForm/PersonalInformationsForm';
 import PasswordForm from '../../components/Forms/MyProfileForm/PasswordForm';
+import { handleCurrentStep } from '../../components/App/reducer';
 import * as Yup from 'yup';
 import { useTranslation } from 'react-i18next';
 import { useSelector, useDispatch } from 'react-redux';
@@ -26,7 +27,8 @@ export const MyProfilePage = (props) => {
 
   useEffect(() => {
     scrollSpy.update();
-  }, []);
+    dispatch(handleCurrentStep(0));
+  }, [dispatch]);
 
   const { myProfileData, employeeId, user } = useSelector(state => ({
     myProfileData: state.getIn(['MyProfile', 'myProfileData']),
@@ -53,8 +55,8 @@ export const MyProfilePage = (props) => {
   });
 
   useEffect(() => {
-    dispatch(getMyProfilePersonalInformationsLaunched(employeeId));
-  }, []);
+    dispatch(getMyProfilePersonalInformationsLaunched());
+  }, [dispatch]);
 
   // Form data
   const personalInformationsInitialValues = {
