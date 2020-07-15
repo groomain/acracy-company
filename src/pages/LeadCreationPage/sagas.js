@@ -8,7 +8,7 @@ import {
   getExpertisesFailure, getSensitivitiesSuccess, getSensitivitiesFailure, uploadFileSuccess, uploadFileFailure, deleteAttachmentSuccess, deleteAttachmentFailure
 } from "./reducer";
 
-import { openSnackBar } from "../../components/App/reducer";
+import { openSnackBar, handleCurrentStep } from "../../components/App/reducer";
 
 // mocks
 // import expertise from '../../mock/expertises.json';
@@ -32,6 +32,7 @@ function* doLeadSave(action) { // create a new lead
     if (redirectToMission) {
       yield put(changeLeadStatusLaunched({ leadId, status: 'FINALIZE' }))
       yield put(push('/home')); // Will be changed to /brief/:id
+      yield put(handleCurrentStep(0));
       yield put(openSnackBar({ message: "👏 Brief déposé ! Retrouvez ici l’état d’avancement de votre mission.", error: false }));
     }
   } catch (error) {
@@ -79,6 +80,7 @@ function* doUpdateLeadDraft(action) { // update an existing lead
     if (redirectToMission) {
       yield put(changeLeadStatusLaunched({ leadId: id, status: 'FINALIZE' }))
       yield put(push('/home')); // Will be changed to /brief/:id
+      yield put(handleCurrentStep(0));
       yield put(openSnackBar({ message: "👏 Brief déposé ! Retrouvez ici l’état d’avancement de votre mission.", error: false }));
     }
   } catch (error) {
@@ -101,6 +103,7 @@ function* doChangeLeadStatus(action) {  // modify the status of a lead
       });
     yield put(changeLeadStatusSuccess(update));
     yield put(push('/home'));
+    yield put(handleCurrentStep(0));
   } catch (error) {
     console.log(error);
     yield put(changeLeadStatusFailure());

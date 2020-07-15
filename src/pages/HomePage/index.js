@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useTranslation } from "react-i18next";
 import clsx from 'clsx';
-// import { useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 // import { logoutLaunched } from '../../components/App/reducer';
+import { handleCurrentStep } from '../../components/App/reducer';
 import { Link as RouterLink, NavLink } from 'react-router-dom';
 import { AppBar, Toolbar } from '@material-ui/core/';
 
@@ -18,6 +19,7 @@ import useScrollTrigger from "@material-ui/core/useScrollTrigger";
 
 export const HomePage = (props) => {
   const classes = styles();
+  const dispatch = useDispatch();
   const { t } = useTranslation();
 
   ///////// Keep for future reference
@@ -33,6 +35,10 @@ export const HomePage = (props) => {
     disableHysteresis: true,
     threshold: 0,
   });
+
+  useEffect(() => {
+    dispatch(handleCurrentStep(0));
+  }, [dispatch]);
 
   return (
     <>

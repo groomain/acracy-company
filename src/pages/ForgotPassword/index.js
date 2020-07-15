@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { Formik } from 'formik';
@@ -6,13 +6,17 @@ import * as Yup from 'yup';
 
 import { Grid } from '@material-ui/core';
 import { RequestForm, SubmitForm } from '../../components/Forms/ForgotPasswordForm';
-import { requestPasswordCodeLaunched, submitNewPasswordLaunched } from '../../components/App/reducer';
+import { requestPasswordCodeLaunched, submitNewPasswordLaunched, handleCurrentStep } from '../../components/App/reducer';
 import sharedStyles from '../../utils/styles';
 
 const ForgotPassword = () => {
   const sharedClasses = sharedStyles();
   const { t } = useTranslation();
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(handleCurrentStep(0));
+  }, [dispatch]);
 
   const { forgotPasswordStep } = useSelector(state => ({
     forgotPasswordStep: state.getIn(['app', 'forgotPasswordStep'])
