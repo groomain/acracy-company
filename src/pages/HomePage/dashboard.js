@@ -11,6 +11,8 @@ import Drafts from '../../components/Drafts/DraftsWrapper';
 import Missions from '../../components/Missions';
 import sharedStyles from "../../utils/styles";
 
+import { pushToLeadCreationPageWithSearchResult } from './reducer';
+
 export const Dashboard = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -21,7 +23,10 @@ export const Dashboard = () => {
   }))
 
   const handleSearchResult = (e) => {
-    dispatch(push(e.TEXT ? `/lead?searchType=${e.TYPE}&searchCode=${e.objectID}&searchText=${e.TEXT}` : `/lead?searchText=${e.value}`));
+    dispatch(pushToLeadCreationPageWithSearchResult(e))
+    if (e) {
+      dispatch(push('/lead'));
+    }
   }
 
   return (
