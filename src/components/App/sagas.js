@@ -35,6 +35,7 @@ import {
   translateResendCodeError
 } from '../../utils/cognito';
 
+import { handleCurrentStep } from "../App/reducer";
 import { config } from '../../conf/amplify';
 import { getPhonePrefixCode } from '../../utils/services/format';
 
@@ -207,8 +208,10 @@ function* doSignUp(action) {
       }
     });
     // yield call(doSignIn, { payload: { email, password } });
+    yield put(handleCurrentStep(3));
     yield put(signupSuccess());
     yield put(push('/confirmAccount', { email: email }));
+    yield put(handleCurrentStep(0));
   } catch (error) {
     console.log(error);
     yield put(signupFailure(translateSignUpError(error.code)));

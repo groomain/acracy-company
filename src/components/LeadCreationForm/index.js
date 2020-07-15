@@ -19,6 +19,7 @@ import {
   getSensitivitiesLaunched, setSensitivityPriority, setLanguagePriority
 } from '../../pages/LeadCreationPage/reducer';
 import { setLeadCreationStep } from '../../pages/HomePage/reducer';
+import { handleCurrentStep } from "../App/reducer";
 
 import { leadSave } from '../../pages/LeadCreationPage/index';
 import clsx from 'clsx';
@@ -93,9 +94,11 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
   //   setActiveStep((prevActiveStep) => prevActiveStep - 1);
   //   backToTop();
   // };
+
   const handleStep = (step) => () => {
     setActiveStep(step);
-    dispatch(setLeadCreationStep(0))
+    dispatch(handleCurrentStep(1));
+    dispatch(setLeadCreationStep(0));
     backToTop();
   };
 
@@ -329,6 +332,7 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
       leadSave(leadDraftSearchData, deliverablesArray, values, redirect, redirectToMission)
     } else {
       let redirectToMission = true;
+      dispatch(handleCurrentStep(2));
       leadSave(leadDraftSearchData, deliverablesArray, values, redirect, redirectToMission)
     }
   }
@@ -511,8 +515,11 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
 
   useEffect(() => {
     if (activeStep === 1) {
+      dispatch(handleCurrentStep(2))
       dispatch(getExpertisesLaunched());
       dispatch(getSensitivitiesLaunched());
+    } else if (activeStep === 0) {
+      dispatch(handleCurrentStep(1))
     }
   }, [dispatch, activeStep])
 

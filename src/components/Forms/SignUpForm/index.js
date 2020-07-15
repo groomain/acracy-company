@@ -14,7 +14,7 @@ import { Typography, Grid, Stepper, Step, StepLabel, StepButton, Box, StepConnec
 import areaCodes from "../../../utils/areaCodes.json";
 import styles from './styles';
 
-import { handleNextStep } from '../../App/reducer';
+import { handleCurrentStep } from '../../App/reducer';
 
 const SignUpForm = ({ values, errors, touched, handleBlur, handleChange, handleSubmit }) => {
   const { t } = useTranslation();
@@ -30,11 +30,15 @@ const SignUpForm = ({ values, errors, touched, handleBlur, handleChange, handleS
 
   const [optionsValues] = useState(areaCodes);
 
-  useEffect(() => {
-    dispatch(handleNextStep(0));
-  }, []);
-
   const [activeStep, setActiveStep] = useState(0);
+
+  useEffect(() => {
+    if (activeStep === 0) {
+      dispatch(handleCurrentStep(1));
+    } else if (activeStep === 1) {
+      dispatch(handleCurrentStep(2));
+    }
+  }, [activeStep]);
 
   const getSteps = () => {
     return [t('signup.personnalInfos'), t('password')];
@@ -57,9 +61,13 @@ const SignUpForm = ({ values, errors, touched, handleBlur, handleChange, handleS
   };
 
   const handleStep = (step) => () => {
-    setActiveStep(step);
-    backToTop();
-    dispatch(handleNextStep(step));
+    if (step === 3) {
+      dispatch(handleCurrentStep(step));
+    } else if (step === 1) {
+      setActiveStep(step);
+      dispatch(handleCurrentStep(2));
+      backToTop();
+    }
   };
 
   const [disabledFirstStep, setDisabledFirstStep] = useState(true);
@@ -292,7 +300,7 @@ const SignUpForm = ({ values, errors, touched, handleBlur, handleChange, handleS
                 type="submit"
                 theme={disabledSecondStep ? "disabledFilled" : "filledButton"}
                 handleClick={() => {
-                  handleStep(2);
+                  handleStep(3);
                   handleSubmit({ email, password })
                 }}
                 loading={signupLoading}
