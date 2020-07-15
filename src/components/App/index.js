@@ -45,6 +45,7 @@ function App() {
       <PrivateRoute exact path="/brief/:id" fixed component={MissionFollowUp} />
       <PrivateRoute exact path="/mission/:id" fixed component={MissionFollowUp} />
       <PrivateRoute exact path="/firstLogin" fixed component={FirstLoginPage} />
+      <PrivateRoute exact path="/home" fixed component={HomePage} />
       <PrivateRoute exact path="/myProfile" fixed component={MyProfilePage} />
       <PrivateRoute exact path="/reveal/:id" fixed component={ProfileSelection} />
       {/* REDIRECT WRONG PATH */}
