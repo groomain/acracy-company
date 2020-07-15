@@ -248,7 +248,7 @@ function* doResendCode(action) {
 }
 
 function* doRequestPasswordCode(action) {
-  console.log(action);
+  // console.log(action);
   const { email } = action.payload;
 
   try {
@@ -262,7 +262,7 @@ function* doRequestPasswordCode(action) {
 }
 
 function* doSubmitNewPassword(action) {
-  console.log(action);
+  // console.log(action);
   const { email, code, password } = action.payload;
   try {
     yield Auth.forgotPasswordSubmit(email, code, password);
@@ -276,7 +276,7 @@ function* doSubmitNewPassword(action) {
 }
 
 function* doUpdateUser(action) {
-  console.log(action);
+  // console.log(action);
   const { firstName, lastName, userId } = action.payload;
   try {
     const apiURL = `/users/${userId}`;

@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 
 const privateRender = (Component, isAuthenticated, isAuthenticating, userDynamo, rest) => (props) => {
   const { fixed } = rest;
-  console.log(isAuthenticated);
+  // console.log(isAuthenticated);
   let result = null;
   if (isAuthenticating || isAuthenticating === undefined) {
     // DO NOTHING

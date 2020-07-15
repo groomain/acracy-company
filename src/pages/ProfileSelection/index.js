@@ -36,7 +36,7 @@ import IconButton from "@material-ui/core/IconButton";
 const ProfileSelection = (props) => {
   const quoteId = props?.match?.params;
 
-  console.log(quoteId);
+  // console.log(quoteId);
 
   const classes = styles();
   const dispatch = useDispatch();
