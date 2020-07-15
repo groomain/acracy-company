@@ -4,11 +4,11 @@ import PropTypes from 'prop-types';
 import { Grid } from '@material-ui/core/';
 import styles from './styles';
 
-const DarkWrapper = ({ children, justify, direction, alignItems, alignContent, ...props }) => {
+const DarkWrapper = ({ children, justify, direction, alignItems, alignContent, isBleed, ...props }) => {
   const classes = styles();
   return (
     <Grid container
-      className={classes.darkWrapper}
+      className={clsx(classes.darkWrapper, isBleed ? classes.bleed : null)}
       justify={justify}
       alignItems={alignItems}
       direction={direction}>
