@@ -42,6 +42,7 @@ import {
   WAITING_FOR_QUOTES,
   PAID
 } from '../constants';
+import QuoteSignatureValidationModal from "../../../pages/HomePage/Modals/QuoteSignatureValidationModal";
 moment.locale('fr');
 
 export const Mission = ({ mission, matching, today, ...props }) => {
@@ -406,13 +407,10 @@ export const Mission = ({ mission, matching, today, ...props }) => {
           </Typography>
         </Grid>
         {infosOpen &&
-          <CustomModal
+        <QuoteSignatureValidationModal
             open={infosOpen}
             handleClose={() => setInfosOpen(false)}
-            title="EN ATTENTE WORDING"
-          >
-            <Typography>Le devis vous a été envoyé par email pour signature</Typography>
-          </CustomModal>
+        />
         }
         {redirectionPopupOpen &&
           <CustomModal
