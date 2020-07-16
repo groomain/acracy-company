@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { Formik } from 'formik';
@@ -6,7 +6,7 @@ import * as Yup from 'yup';
 
 import { Grid, Typography, Divider } from '@material-ui/core';
 import LoginForm from '../../components/Forms/LoginForm';
-import { loginLaunched } from '../../components/App/reducer';
+import { loginLaunched, handleCurrentStep } from '../../components/App/reducer';
 import styles from '../../utils/styles';
 import { NavLink } from "react-router-dom";
 
@@ -14,6 +14,10 @@ const SignInPage = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const classes = styles();
+
+  useEffect(() => {
+    dispatch(handleCurrentStep(0))
+  }, [dispatch]);
 
   // Form data
   const initialValues = {

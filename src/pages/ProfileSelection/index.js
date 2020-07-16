@@ -15,6 +15,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import { useScrollPosition } from '@n8tb1t/use-scroll-position';
 import { useDispatch, useSelector } from "react-redux";
 import { contactAcracyLaunched, getBriefLaunched, setCheckedProfileStore, validateProfilesLaunched } from "./reducer";
+import { handleCurrentStep } from '../../components/App/reducer';
 import clsx from "clsx";
 import CustomExpansionPanel from "../../components/CustomExpansionPanel";
 import Tag from "../../components/Tags/Tag";
@@ -35,7 +36,7 @@ import IconButton from "@material-ui/core/IconButton";
 const ProfileSelection = (props) => {
   const quoteId = props?.match?.params;
 
-  console.log(quoteId);
+  // console.log(quoteId);
 
   const classes = styles();
   const dispatch = useDispatch();
@@ -154,7 +155,8 @@ const ProfileSelection = (props) => {
   );
 
   useEffect(() => {
-    dispatch(getBriefLaunched({companyId: userDynamo.companyId, briefId: quoteId}))
+    dispatch(getBriefLaunched({ companyId: userDynamo.companyId, briefId: quoteId }))
+    dispatch(handleCurrentStep(0));
   }, [dispatch]);
 
   const heightProfilesContainer = quotesData && elementHeight / quotesData.length;

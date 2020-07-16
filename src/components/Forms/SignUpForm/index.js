@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import clsx from 'clsx';
 
@@ -14,9 +14,13 @@ import { Typography, Grid, Stepper, Step, StepLabel, StepButton, Box, StepConnec
 import areaCodes from "../../../utils/areaCodes.json";
 import styles from './styles';
 
+import { handleCurrentStep } from '../../App/reducer';
+
 const SignUpForm = ({ values, errors, touched, handleBlur, handleChange, handleSubmit }) => {
   const { t } = useTranslation();
   const classes = styles();
+  const dispatch = useDispatch();
+
   const { signupErrorMessage, signupLoading } = useSelector(state => ({
     signupErrorMessage: state.getIn(['app', 'signupErrorMessage']),
     signupLoading: state.getIn(['app', 'signupLoading'])
@@ -27,6 +31,14 @@ const SignUpForm = ({ values, errors, touched, handleBlur, handleChange, handleS
   const [optionsValues] = useState(areaCodes);
 
   const [activeStep, setActiveStep] = useState(0);
+
+  useEffect(() => {
+    if (activeStep === 0) {
+      dispatch(handleCurrentStep(1));
+    } else if (activeStep === 1) {
+      dispatch(handleCurrentStep(2));
+    }
+  }, [activeStep]);
 
   const getSteps = () => {
     return [t('signup.personnalInfos'), t('password')];
@@ -49,8 +61,13 @@ const SignUpForm = ({ values, errors, touched, handleBlur, handleChange, handleS
   };
 
   const handleStep = (step) => () => {
-    setActiveStep(step);
-    backToTop();
+    if (step === 3) {
+      dispatch(handleCurrentStep(step));
+    } else if (step === 1) {
+      setActiveStep(step);
+      dispatch(handleCurrentStep(2));
+      backToTop();
+    }
   };
 
   const [disabledFirstStep, setDisabledFirstStep] = useState(true);
@@ -282,7 +299,10 @@ const SignUpForm = ({ values, errors, touched, handleBlur, handleChange, handleS
               <CustomButton
                 type="submit"
                 theme={disabledSecondStep ? "disabledFilled" : "filledButton"}
-                handleClick={() => handleSubmit({ email, password })}
+                handleClick={() => {
+                  handleStep(3);
+                  handleSubmit({ email, password })
+                }}
                 loading={signupLoading}
                 title={t('signup.createAccountButton')}
                 disabled={disabledSecondStep || signupLoading}

@@ -6,6 +6,7 @@ import {
 } from 'react-instantsearch-dom';
 import { useTranslation } from 'react-i18next';
 import { connectStateResults } from 'react-instantsearch-dom';
+import { useSelector, useDispatch } from 'react-redux';
 
 import { components, createFilter } from 'react-select';
 import CreatableSelect from 'react-select/creatable';
@@ -19,6 +20,8 @@ import profilIcon from '../../assets/icons/profil-roll-out-black.svg';
 import projectIcon from '../../assets/icons/livrable-black.svg';
 import profilIconYellow from '../../assets/icons/profil-roll-out-yellow.svg';
 import livrableYellow from '../../assets/icons/livrable-yellow.svg';
+
+import { pushToLeadCreationPageWithSearchResult } from '../../pages/HomePage/reducer';
 
 const Searchbar = ({ onUpdateChosenCategory }) => {
 
@@ -41,12 +44,16 @@ const Searchbar = ({ onUpdateChosenCategory }) => {
 const SearchResults = ({ searchResults, onUpdateChosenCategory, context, ...props }) => {
   const classes = styles();
   const { t } = useTranslation();
+  const dispatch = useDispatch();
+
+  const { leadCreationPageWithSearchResult } = useSelector(state => ({
+    leadCreationPageWithSearchResult: state.getIn(['dashboard', 'leadCreationPageWithSearchResult']),
+  }));
 
   const [resultsList, setResultsList] = useState([]);
   const [loading, setIsLoading] = useState(true);
-  const [searchValue, setSearchValue] = useState();
+  const [searchValue, setSearchValue] = useState(leadCreationPageWithSearchResult);
   const [newOption, setNewOption] = useState({ title: t('leadCreation.reseachLabel') });
-
 
   useEffect(() => {
     if (searchResults) {
@@ -126,6 +133,7 @@ const SearchResults = ({ searchResults, onUpdateChosenCategory, context, ...prop
   };
 
   const handleOnChange = (newValue, actionMeta) => {
+    dispatch(pushToLeadCreationPageWithSearchResult([]));
     // Store the search value if it doesn't exist
     if (actionMeta.action === "create-option") {
       setNewOption({ title: "Vous avez recherché", value: newValue.value })
@@ -167,6 +175,7 @@ const SearchResults = ({ searchResults, onUpdateChosenCategory, context, ...prop
       </Box>
       <CreatableSelect
         onChange={handleOnChange}
+        value={searchValue}
         placeholder={t('searchbar.placeholder')}
         options={resultsList}
         formatOptionLabel={formatOptionLabel}
@@ -178,7 +187,7 @@ const SearchResults = ({ searchResults, onUpdateChosenCategory, context, ...prop
         maxMenuHeight={400}
         getOptionLabel={option => option.TEXT}
         noOptionsMessage={() => loading ? t('searchbar.loading') : t('searchbar.noOptions')}
-        filterOption={createFilter({ ignoreAccents: false })} // Prevent lagging with large sets of data
+        filterOption={createFilter({ ignoreAccents: true })} // Prevent lagging with large sets of data
         components={{
           DropdownIndicator: () => null,
           IndicatorSeparator: () => null,

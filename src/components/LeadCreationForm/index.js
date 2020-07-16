@@ -19,6 +19,7 @@ import {
   getSensitivitiesLaunched, setSensitivityPriority, setLanguagePriority
 } from '../../pages/LeadCreationPage/reducer';
 import { setLeadCreationStep } from '../../pages/HomePage/reducer';
+import { handleCurrentStep } from "../App/reducer";
 
 import { leadSave } from '../../pages/LeadCreationPage/index';
 import clsx from 'clsx';
@@ -40,7 +41,7 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
   const { leadDraftSearchData, deliverablesArray, expertises,
     selectedExpertiseList, expansionPanelOpen, expertisePriorities, leadCreationStep,
     sensitivities, selectedSensitivity, sensitivityPriority, dateFromCalendar,
-    selectedLanguage, languagePriority, leadSaveLoading, updateLeadDraftLoading } = useSelector(state => ({
+    selectedLanguage, languagePriority, leadSaveLoading, updateLeadDraftLoading, leadCreationPageWithSearchResult } = useSelector(state => ({
       dateFromCalendar: state.getIn(['leadCreation', 'dateFromCalendar']),
       leadDraftSearchData: state.getIn(['leadCreation', 'leadDraftSearchData']),
       deliverablesArray: state.getIn(['leadCreation', 'deliverablesArray']),
@@ -56,6 +57,7 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
       languagePriority: state.getIn(['leadCreation', 'languagePriority']),
       leadSaveLoading: state.getIn(['leadCreation', 'leadSaveLoading']),
       updateLeadDraftLoading: state.getIn(['leadCreation', 'updateLeadDraftLoading']),
+      leadCreationPageWithSearchResult: state.getIn(['dashboard', 'leadCreationPageWithSearchResult']),
     }));
 
   const [activeStep, setActiveStep] = useState(leadCreationStep);
@@ -92,9 +94,11 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
   //   setActiveStep((prevActiveStep) => prevActiveStep - 1);
   //   backToTop();
   // };
+
   const handleStep = (step) => () => {
     setActiveStep(step);
-    dispatch(setLeadCreationStep(0))
+    dispatch(handleCurrentStep(1));
+    dispatch(setLeadCreationStep(0));
     backToTop();
   };
 
@@ -196,8 +200,9 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
   }
 
   useEffect(() => {
-    dispatch(setDeliverablesArray(deliverables))
-  }, [deliverables, dispatch]);
+    dispatch(setDeliverablesArray(deliverables));
+    dispatch(setLeadDraftSearchData({ search: leadCreationPageWithSearchResult }))
+  }, [deliverables, dispatch, leadCreationPageWithSearchResult]);
 
   const handleUpdateResearch = (e) => {
     setSearchedCategory(e);  // type, text and objectID
@@ -205,7 +210,7 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
   }
 
   const showDeliverablesSettings = () => {
-    const selectableDeliverables = searchedCategory.DELIVERABLES;
+    const selectableDeliverables = searchedCategory.DELIVERABLES || leadCreationPageWithSearchResult.DELIVERABLES;
     let deliverablesList = [];
     deliverablesList = selectableDeliverables.map((item) => {
       return item.TEXT;
@@ -247,7 +252,7 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
   }
 
   const showProfilesSettings = () => {
-    let selectableProfiles = searchedCategory.PROFILES;
+    let selectableProfiles = searchedCategory.PROFILES || leadCreationPageWithSearchResult?.PROFILES;
     let selectableProfilesCopy = [...selectableProfiles];
     let enhancedList = selectableProfilesCopy.concat({ "TEXT": "Recevoir une recommandation acracy" })
     const profilesList = enhancedList.map((item) => {
@@ -270,19 +275,10 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
   }
 
   const renderSearchedTypeSettings = (searchedCategory) => {
-    switch (searchedCategory.TYPE) {
-      case 'PROFILE':
-        return (
-          showDeliverablesSettings()
-        )
-      case 'DELIVERABLE':
-        return (
-          showProfilesSettings()
-        )
-      default:
-        return (
-          null
-        );
+    if (searchedCategory.TYPE === 'PROFILE' || leadCreationPageWithSearchResult?.DELIVERABLES) {
+      return showDeliverablesSettings()
+    } else if (searchedCategory.TYPE === 'DELIVERABLE' || leadCreationPageWithSearchResult?.PROFILES) {
+      return showProfilesSettings()
     }
   }
 
@@ -336,6 +332,7 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
       leadSave(leadDraftSearchData, deliverablesArray, values, redirect, redirectToMission)
     } else {
       let redirectToMission = true;
+      dispatch(handleCurrentStep(2));
       leadSave(leadDraftSearchData, deliverablesArray, values, redirect, redirectToMission)
     }
   }
@@ -518,8 +515,11 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
 
   useEffect(() => {
     if (activeStep === 1) {
+      dispatch(handleCurrentStep(2))
       dispatch(getExpertisesLaunched());
       dispatch(getSensitivitiesLaunched());
+    } else if (activeStep === 0) {
+      dispatch(handleCurrentStep(1))
     }
   }, [dispatch, activeStep])
 

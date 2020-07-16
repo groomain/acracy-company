@@ -35,6 +35,7 @@ import {
   translateResendCodeError
 } from '../../utils/cognito';
 
+import { handleCurrentStep } from "../App/reducer";
 import { config } from '../../conf/amplify';
 import { getPhonePrefixCode } from '../../utils/services/format';
 
@@ -207,8 +208,10 @@ function* doSignUp(action) {
       }
     });
     // yield call(doSignIn, { payload: { email, password } });
+    yield put(handleCurrentStep(3));
     yield put(signupSuccess());
-    yield put(push('/confirm-signup', { email: email }));
+    yield put(push('/confirmAccount', { email: email }));
+    yield put(handleCurrentStep(0));
   } catch (error) {
     console.log(error);
     yield put(signupFailure(translateSignUpError(error.code)));
@@ -245,7 +248,7 @@ function* doResendCode(action) {
 }
 
 function* doRequestPasswordCode(action) {
-  console.log(action);
+  // console.log(action);
   const { email } = action.payload;
 
   try {
@@ -259,7 +262,7 @@ function* doRequestPasswordCode(action) {
 }
 
 function* doSubmitNewPassword(action) {
-  console.log(action);
+  // console.log(action);
   const { email, code, password } = action.payload;
   try {
     yield Auth.forgotPasswordSubmit(email, code, password);
@@ -273,7 +276,7 @@ function* doSubmitNewPassword(action) {
 }
 
 function* doUpdateUser(action) {
-  console.log(action);
+  // console.log(action);
   const { firstName, lastName, userId } = action.payload;
   try {
     const apiURL = `/users/${userId}`;
