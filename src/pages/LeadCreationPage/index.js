@@ -229,7 +229,7 @@ const LeadCreationPage = (props) => {
           type: values?.budgetType === 'Jours' ? 'DAILY_RATE' : 'TOTAL' || ''
         },
         estimatedAverageDailyRate: dailyRate,
-        profilNumber: values?.profilesNumber || '',
+        profileNumber: values?.profilesNumber || '',
         address: values?.companyAddress || '',
       },
     };
@@ -303,7 +303,7 @@ const LeadCreationPage = (props) => {
     deliverable: isItADeliverable || '',
     researchValue: leadDraftData?.search || {},
     customDeliverable: '',
-    profile: leadDraftData?.profilNumber || 'Recevoir une recommandation acracy',
+    profile: leadDraftData?.profileNumber || 'Recevoir une recommandation acracy',
     missionTitle: leadDraftData?.missionContext?.title || '',
     missionStartDate: leadDraftData?.missionContext?.startDate || '',
     workspace: leadDraftData?.missionContext?.format || '',
@@ -313,7 +313,7 @@ const LeadCreationPage = (props) => {
     durationType: leadDraftData?.missionContext?.duration?.unit || 'Jours',
     budget: leadDraftData?.missionContext?.budget?.value || '',
     budgetType: leadDraftData?.missionContext?.budget?.type || '',
-    profilesNumber: leadDraftData?.profilNumber || 1,
+    profilesNumber: leadDraftData?.profileNumber || 1,
     seniority: leadDraftData?.missionRequirements?.seniority || "Sélectionnez le niveau d'expérience minimum",
     contextAndTasks: leadDraftData?.missionDetail?.contextAndTasks || '',
     detailsOfDeliverables: leadDraftData?.missionDetail?.detailsOfDeliverables || '',

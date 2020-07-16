@@ -29,7 +29,7 @@ export const missions = [
           "type": "DAILY_RATE"
         },
         "estimatedAverageDailyRate": 0,
-        "profilNumber": 0
+        "profileNumber": 0
       },
       "missionDetail": {
         "contextAndTasks": "string",
@@ -146,7 +146,7 @@ export const missions = [
           "type": "DAILY_RATE"
         },
         "estimatedAverageDailyRate": 0,
-        "profilNumber": 0
+        "profileNumber": 0
       },
       "missionDetail": {
         "contextAndTasks": "string",
@@ -295,7 +295,7 @@ export const missions = [
           "type": "DAILY_RATE"
         },
         "estimatedAverageDailyRate": 0,
-        "profilNumber": 0
+        "profileNumber": 0
       },
       "missionDetail": {
         "contextAndTasks": "string",
@@ -444,7 +444,7 @@ export const missions = [
           "type": "DAILY_RATE"
         },
         "estimatedAverageDailyRate": 0,
-        "profilNumber": 0
+        "profileNumber": 0
       },
       "missionDetail": {
         "contextAndTasks": "string",
@@ -562,7 +562,7 @@ export const missions = [
           "type": "DAILY_RATE"
         },
         "estimatedAverageDailyRate": 0,
-        "profilNumber": 0
+        "profileNumber": 0
       },
       "missionDetail": {
         "contextAndTasks": "string",
@@ -711,7 +711,7 @@ export const missions = [
           "type": "DAILY_RATE"
         },
         "estimatedAverageDailyRate": 0,
-        "profilNumber": 0
+        "profileNumber": 0
       },
       "missionDetail": {
         "contextAndTasks": "string",
@@ -870,7 +870,7 @@ export const missions = [
           "type": "DAILY_RATE"
         },
         "estimatedAverageDailyRate": 0,
-        "profilNumber": 0
+        "profileNumber": 0
       },
       "missionDetail": {
         "contextAndTasks": "string",
@@ -1019,7 +1019,7 @@ export const missions = [
           "type": "DAILY_RATE"
         },
         "estimatedAverageDailyRate": 0,
-        "profilNumber": 0
+        "profileNumber": 0
       },
       "missionDetail": {
         "contextAndTasks": "string",
@@ -1168,7 +1168,7 @@ export const missions = [
           "type": "DAILY_RATE"
         },
         "estimatedAverageDailyRate": 0,
-        "profilNumber": 0
+        "profileNumber": 0
       },
       "missionDetail": {
         "contextAndTasks": "string",
@@ -1311,7 +1311,7 @@ export const missions = [
           "type": "DAILY_RATE"
         },
         "estimatedAverageDailyRate": 0,
-        "profilNumber": 0
+        "profileNumber": 0
       },
       "missionDetail": {
         "contextAndTasks": "string",
@@ -1454,7 +1454,7 @@ export const missions = [
           "type": "DAILY_RATE"
         },
         "estimatedAverageDailyRate": 0,
-        "profilNumber": 0
+        "profileNumber": 0
       },
       "missionDetail": {
         "contextAndTasks": "string",
@@ -1597,7 +1597,7 @@ export const missions = [
           "type": "DAILY_RATE"
         },
         "estimatedAverageDailyRate": 0,
-        "profilNumber": 0
+        "profileNumber": 0
       },
       "missionDetail": {
         "contextAndTasks": "string",
@@ -1740,7 +1740,7 @@ export const missions = [
   //         "type": "DAILY_RATE"
   //       },
   //       "estimatedAverageDailyRate": 0,
-  //       "profilNumber": 0
+  //       "profileNumber": 0
   //     },
   //     "missionDetail": {
   //       "contextAndTasks": "string",
@@ -1889,7 +1889,7 @@ export const missions = [
   //         "type": "DAILY_RATE"
   //       },
   //       "estimatedAverageDailyRate": 0,
-  //       "profilNumber": 0
+  //       "profileNumber": 0
   //     },
   //     "missionDetail": {
   //       "contextAndTasks": "string",
