@@ -55,7 +55,7 @@ export const MyProfilePage = (props) => {
   });
 
   useEffect(() => {
-    dispatch(getMyProfilePersonalInformationsLaunched());
+    dispatch(getMyProfilePersonalInformationsLaunched(employeeId));
   }, [dispatch]);
 
   // Form data
