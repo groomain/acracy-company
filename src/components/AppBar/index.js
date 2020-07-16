@@ -55,7 +55,7 @@ export const CustomAppBar = (props) => {
         return (
           <div className={clsx(classes.div, classes.password)}>
             <CustomNavLink to={'/login'} text={t('header.login')} theme="navLink" />
-            <CustomButton theme={"filledButton"} title={<NavLink className={classes.navLink} to={'/signup'}>{t('header.signUp')}</NavLink>}/>
+            <CustomButton theme={"filledButton"} title={<NavLink className={classes.navLink} to={'/createAccount'}>{t('header.signUp')}</NavLink>}/>
             <CustomButton title={t('header.contactUs')} onClick={() => setContactModaleOpen(!contactOpen)} />
           </div>
         );
