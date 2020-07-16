@@ -11,8 +11,7 @@ import CustomTextField from '../../../../components/Inputs/CustomTextField';
 import CustomCheckBox from '../../../../components/CheckBox';
 
 import { updateMissionLaunched } from '../../reducer';
-import { formatDate } from '../../../../utils/services/format';
-import { theme } from '../../../../utils/configureMaterialTheme';
+import { formatDate } from '../../../../utils/services/format';;
 
 export const ValidationModal = ({ open, handleClose, files, missionId, preselectedFile, ...props }) => {
   const dispatch = useDispatch();
@@ -38,37 +37,13 @@ export const ValidationModal = ({ open, handleClose, files, missionId, preselect
     dispatch(updateMissionLaunched(allData))
   }
 
-  const invoice =
-  {
-    "externalId": "receAaY3M4RZHa8Z5",
-    "status": "WAITING_FOR_VALIDATION",
-    "briefId": "receAaY3M4RZHa8Z5",
-    "missionId": "receAaY3M4RZHa8Z5",
-    "numero": "string",
-    "missionTitle": "Apollo XI",
-    "companyName": "La pilule rouge",
-    "averageDailyRate": 50,
-    "amount": 100,
-    "sentDate": "2020-07-15",
-    "paymentDate": "2020-07-15",
-    "attachment": {
-      "externalId": "receAaY3M4RZHa8Z5",
-      "link": "string",
-      "name": "string"
-    },
-    "startDate": "2020-07-15T08:42:34.219Z",
-    "endDate": "2020-07-16T08:42:34.219Z",
-    "workedDays": 2,
-    "comment": ""
-  };
-
-  const commissionAcracy = invoice?.amount * 0.15;
+  const commission = preselectedFile?.amount * 0.15;
 
   return (
     <Dialog
       open={open}
       onClose={handleClose}
-      classes={{ root: classes.container, paper: invoice?.comment === "" ? classes.root : classes.bigModal }}
+      classes={{ root: classes.container, paper: preselectedFile?.comment === "" ? classes.root : classes.bigModal }}
     >
       <Grid container>
         <Grid item>
@@ -77,7 +52,7 @@ export const ValidationModal = ({ open, handleClose, files, missionId, preselect
           </IconButton>
         </Grid>
         <Grid item container direction={'row'} spacing={2}>
-          <Grid item container md={invoice?.comment ? 8 : null}>
+          <Grid item container md={preselectedFile?.comment ? 8 : null}>
             <Grid item className={classes.title}>
               <Typography Typography variant={'h1'}>Contrôle du compte rendu d’activité</Typography>
             </Grid>
@@ -88,7 +63,7 @@ export const ValidationModal = ({ open, handleClose, files, missionId, preselect
                 </Box>
                 <Grid item>
                   <Box mt={2}>
-                    <Typography variant={'h4'}>{invoice?.missionTitle}</Typography>
+                    <Typography variant={'h4'}>{preselectedFile?.missionTitle}</Typography>
                   </Box>
                 </Grid>
                 <Grid item container direction={'column'}>
@@ -97,7 +72,7 @@ export const ValidationModal = ({ open, handleClose, files, missionId, preselect
                       <Typography variant={'h4'}>Période de travail</Typography>
                     </Grid>
                     <Grid item>
-                      <Typography>{`Du ${formatDate(invoice?.startDate)} au ${formatDate(invoice?.endDate)}`}</Typography
+                      <Typography>{`Du ${formatDate(preselectedFile?.startDate)} au ${formatDate(preselectedFile?.endDate)}`}</Typography
                       ></Grid>
                   </Box>
                 </Grid>
@@ -108,13 +83,13 @@ export const ValidationModal = ({ open, handleClose, files, missionId, preselect
                     </Grid>
                     <Grid item container>
                       <Grid item md={3}>
-                        <Typography>{invoice?.amount - commissionAcracy}€</Typography>
+                        <Typography>{preselectedFile?.amount - commission}€</Typography>
                       </Grid>
                       <Grid item md={9}>
-                        <Typography>{invoice?.workedDays} jours travaillés, TJM</Typography>
+                        <Typography>{preselectedFile?.workedDays} jours travaillés, TJM</Typography>
                       </Grid>
                       <Grid item md={3}>
-                        <Typography>{commissionAcracy}€</Typography>
+                        <Typography>{commission}€</Typography>
                       </Grid>
                       <Grid item md={9}>
                         <Typography>15% de commission acracy</Typography>
@@ -124,7 +99,7 @@ export const ValidationModal = ({ open, handleClose, files, missionId, preselect
                 </Grid>
                 <Grid item container>
                   <Box mt={2}>
-                    <Typography variant={'h1'} style={{ color: '#ecf805' }}>{(invoice?.amount)}€ <span style={{ fontSize: '17px' }}>total HT</span></Typography>
+                    <Typography variant={'h1'} style={{ color: '#ecf805' }}>{(preselectedFile?.amount)}€ <span style={{ fontSize: '17px' }}>total HT</span></Typography>
                   </Box>
                 </Grid>
                 <Grid item>
@@ -140,12 +115,12 @@ export const ValidationModal = ({ open, handleClose, files, missionId, preselect
               </Grid>
             </Grid>
           </Grid>
-          {invoice?.comment && (
+          {preselectedFile?.comment && (
             <Grid item container md={4}>
               <Box>
                 <div className={classes.validationComment}>
                   <Typography variant={'subtitle1'} >Commentaire du freelance</Typography>
-                  <Typography>{invoice?.comment}</Typography>
+                  <Typography>{preselectedFile?.comment}</Typography>
                 </div>
               </Box>
             </Grid>
@@ -186,17 +161,11 @@ const InvoicesDownloadForm = ({ values, errors, touched, handleBlur, handleChang
     }
   }, [companiesData, extractedFile, orderFormNumber, workDone]);
 
-  const invoice =
-  {
-    "latestInvoice": false,
-    "purchaseOrder": true
-  };
 
   return (
     <>
       <Box>
-        {/* <form onSubmit={handleSubmit}> */}
-        {invoice?.purchaseOrder && (
+        {companiesData?.administrativeProfile?.purchaseOrder && (
           <CustomTextField
             label="Veuillez indiquer ici votre numéro de bon de commande*"
             placeholder="Numéro bon de commande"
@@ -204,7 +173,7 @@ const InvoicesDownloadForm = ({ values, errors, touched, handleBlur, handleChang
             onChange={handleChange}
           />
         )}
-        {invoice?.latestInvoice && (
+        {extractedFile?.latestInvoice && (
           <Grid container alignItems={'center'}>
             <Grid item>
               <Typography variant={'h2'}>Cette facture clôture la mission*</Typography>
@@ -241,7 +210,6 @@ const InvoicesDownloadForm = ({ values, errors, touched, handleBlur, handleChang
             />
           </Grid>
         </Grid>
-        {/* </form> */}
       </Box>
     </>
   )
