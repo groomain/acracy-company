@@ -32,7 +32,7 @@ export const CustomAppBar = (props) => {
       case '/login':
         return (
           <div className={clsx(classes.div, classes.login)}>
-            <CustomButton theme={"filledButton"} title={t('header.signUp')} component={RouterLink} to="/signup" />
+            <CustomButton theme={"filledButton"} title={t('header.signUp')} component={RouterLink} to="/createAccount" />
             <CustomButton title={t('header.contactUs')} onClick={() => setContactModaleOpen(!contactOpen)}/>
           </div>
         );
