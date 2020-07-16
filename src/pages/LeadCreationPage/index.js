@@ -219,16 +219,16 @@ const LeadCreationPage = (props) => {
         title: values?.missionTitle || '',
         startDate: dateFromCalendar ? new Date(dateFromCalendar).toISOString() : new Date(minDate).toISOString(), // operateur ternaire pour remettre profil à 0 quand profil a été recherché
         format: formatType(values?.workspace) || '',
-        weeklyRythm: values.frequency ? +values?.frequency?.match(/\d+/)[0] : '',
+        weeklyRythm: values.frequency ? +values?.frequency?.match(/\d+/)[0] : null,
         duration: {
-          nb: +values?.duration || '',
+          nb: +values?.duration || null,
           unit: formatDurationType(values?.durationType) || '',
         },
         budget: {
-          value: +values?.budget || '',
+          value: +values?.budget || null,
           type: values?.budgetType === 'Jours' ? 'DAILY_RATE' : 'TOTAL' || ''
         },
-        estimatedAverageDailyRate: dailyRate,
+        estimatedAverageDailyRate: dailyRate || null,
         profileNumber: values?.profilesNumber || '',
         address: values?.companyAddress || '',
       },
@@ -306,9 +306,9 @@ const LeadCreationPage = (props) => {
     profile: leadDraftData?.profileNumber || 'Recevoir une recommandation acracy',
     missionTitle: leadDraftData?.missionContext?.title || '',
     missionStartDate: leadDraftData?.missionContext?.startDate || '',
-    workspace: leadDraftData?.missionContext?.format || '',
+    workspace: leadDraftData?.missionContext?.format || 'Peu importe',
     companyAddress: leadDraftData?.missionContext?.adress || '',
-    frequency: leadDraftData?.missionContext?.weeklyRythm || '',
+    frequency: leadDraftData?.missionContext?.weeklyRythm || 'Plein temps (5 jours)',
     duration: leadDraftData?.missionContext?.duration?.nb || '',
     durationType: leadDraftData?.missionContext?.duration?.unit || 'Jours',
     budget: leadDraftData?.missionContext?.budget?.value || '',
