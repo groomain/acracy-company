@@ -52,7 +52,7 @@ export const ValidationModal = ({ open, handleClose, files, missionId, preselect
           </IconButton>
         </Grid>
         <Grid item container direction={'row'} spacing={2}>
-          <Grid item container md={preselectedFile?.comment ? 8 : null}>
+          <Grid item container xs={preselectedFile?.comment ? 8 : null}>
             <Grid item className={classes.title}>
               <Typography Typography variant={'h1'}>Contrôle du compte rendu d’activité</Typography>
             </Grid>
@@ -82,16 +82,16 @@ export const ValidationModal = ({ open, handleClose, files, missionId, preselect
                       <Typography variant={'h4'}>Cette facture</Typography>
                     </Grid>
                     <Grid item container>
-                      <Grid item md={3}>
+                      <Grid item xs={3}>
                         <Typography>{preselectedFile?.amount - commission}€</Typography>
                       </Grid>
-                      <Grid item md={9}>
+                      <Grid item xs={9}>
                         <Typography>{preselectedFile?.workedDays} jours travaillés, TJM</Typography>
                       </Grid>
-                      <Grid item md={3}>
+                      <Grid item xs={3}>
                         <Typography>{commission}€</Typography>
                       </Grid>
-                      <Grid item md={9}>
+                      <Grid item xs={9}>
                         <Typography>15% de commission acracy</Typography>
                       </Grid>
                     </Grid>
@@ -116,7 +116,7 @@ export const ValidationModal = ({ open, handleClose, files, missionId, preselect
             </Grid>
           </Grid>
           {preselectedFile?.comment && (
-            <Grid item container md={4}>
+            <Grid item container xs={4}>
               <Box>
                 <div className={classes.validationComment}>
                   <Typography variant={'subtitle1'} >Commentaire du freelance</Typography>
