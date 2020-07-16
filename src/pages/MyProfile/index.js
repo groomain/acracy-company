@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { Grid } from "@material-ui/core";
 import MyProfileMenu from "../../components/MyProfile";
+import CustomAppbar from '../../components/AppBar'
 import styles from "./styles";
 import * as Scroll from "react-scroll/modules";
 
@@ -87,6 +88,7 @@ export const MyProfilePage = (props) => {
 
   return (
     <Grid item xs={12} container className={classes.container}>
+      <CustomAppbar path='/home' />
       <Grid item xs={3} container justify={'center'} className={classes.leftContainer}>
         <MyProfileMenu />
       </Grid>
