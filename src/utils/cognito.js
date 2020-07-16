@@ -93,6 +93,8 @@ const translateConfirmForgotPassword = (errorCode) => {
     case 'LimitExceededException':
     case 'TooManyRequestsException':
       return 'Limite de tentatives dépassé, veuillez reessayer plus tard.';
+    case 'success':
+      return 'Le mot de passe a bien été modifié, vous pouvez vous connecter';
     default:
       return 'Erreur';
   }
