@@ -267,7 +267,7 @@ function* doSubmitNewPassword(action) {
   try {
     yield Auth.forgotPasswordSubmit(email, code, password);
     yield put(submitNewPasswordSuccess());
-    yield put(openSnackBar({ message: submitNewPasswordSuccess(), error: false }));
+    yield put(openSnackBar({ message: translateConfirmForgotPassword('success'), error: false }));
     yield put(push('/home'));
   } catch (error) {
     yield put(submitNewPasswordFaliure(translateConfirmForgotPassword(error.code)));
