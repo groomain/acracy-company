@@ -44,7 +44,7 @@ function* doLeadSave(action) { // create a new lead
 
 function* doGetLeadDraft(action) { // get a lead's data
   // console.log('action: ', action.payload)
-  const { id } = action.payload;
+  const id = action.payload;
   try {
     const draft = yield API.get(config.apiGateway.NAME, encodeURI(`/leads/${id}`),
       {

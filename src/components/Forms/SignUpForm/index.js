@@ -38,7 +38,7 @@ const SignUpForm = ({ values, errors, touched, handleBlur, handleChange, handleS
     } else if (activeStep === 1) {
       dispatch(handleCurrentStep(2));
     }
-  }, [activeStep]);
+  }, [activeStep, dispatch]);
 
   const getSteps = () => {
     return [t('signup.personnalInfos'), t('password')];

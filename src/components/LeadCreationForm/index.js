@@ -201,7 +201,9 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
 
   useEffect(() => {
     dispatch(setDeliverablesArray(deliverables));
-    dispatch(setLeadDraftSearchData({ search: leadCreationPageWithSearchResult }))
+    if (leadCreationPageWithSearchResult) {
+      dispatch(setLeadDraftSearchData({ search: leadCreationPageWithSearchResult }))
+    }
   }, [deliverables, dispatch, leadCreationPageWithSearchResult]);
 
   const handleUpdateResearch = (e) => {
@@ -352,7 +354,7 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
               name='researchValue'
               context='leadCreation'
               onUpdateChosenCategory={handleUpdateResearch}
-            ></SearchBar>
+            />
           </Grid>
 
           {searchedCategory ? renderSearchedTypeSettings(searchedCategory) : null}

@@ -27,8 +27,8 @@ function App() {
   const isAuthenticated = useSelector(state => state.getIn(['app', 'isAuthenticated']), null);
 
   useEffect(() => {
-    dispatch(getCurrentSessionLaunched({ fromPath: '/' }));
-  }, [dispatch]);
+    dispatch(getCurrentSessionLaunched({ fromPath: location.pathname }));
+  }, [dispatch]); // Don't add location.pathname to the dependency array -> breaks redirection
 
   const appSwitch = (
     <Switch>
