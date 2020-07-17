@@ -163,7 +163,7 @@ function* doSendIncidenMessage(action) {
 }
 
 function* doUpdateMission(action) {
-  const { id, orderFormNumber, workDone } = action.payload;
+  const { id, orderFormNumber } = action.payload;
 
   try {
     const apiUrl = `/invoices/${id}/actions`;
@@ -233,7 +233,7 @@ export default function* dashboardSagas() {
     takeLatest('Leads/getCompaniesLaunched', doGetCompanies),
     takeLatest('Leads/sendIncidentMessageLaunched', doSendIncidenMessage),
     takeLatest('Leads/updateMissionLaunched', doUpdateMission),
-    takeLatest('Leads/sendRefusalMessageLaunched', doSendRefusalMessage), ,
+    takeLatest('Leads/sendRefusalMessageLaunched', doSendRefusalMessage),
     takeLatest('Leads/openRefusalSnackBar', setRefusalSnackBar)
   ])
 }
