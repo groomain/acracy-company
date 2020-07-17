@@ -41,7 +41,8 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
   const { leadDraftSearchData, deliverablesArray, expertises,
     selectedExpertiseList, expansionPanelOpen, expertisePriorities, leadCreationStep,
     sensitivities, selectedSensitivity, sensitivityPriority, dateFromCalendar,
-    selectedLanguage, languagePriority, leadSaveLoading, updateLeadDraftLoading, leadCreationPageWithSearchResult } = useSelector(state => ({
+    selectedLanguage, languagePriority, leadSaveLoading, updateLeadDraftLoading, leadCreationPageWithSearchResult,
+    leadDraftData } = useSelector(state => ({
       dateFromCalendar: state.getIn(['leadCreation', 'dateFromCalendar']),
       leadDraftSearchData: state.getIn(['leadCreation', 'leadDraftSearchData']),
       deliverablesArray: state.getIn(['leadCreation', 'deliverablesArray']),
@@ -58,6 +59,7 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
       leadSaveLoading: state.getIn(['leadCreation', 'leadSaveLoading']),
       updateLeadDraftLoading: state.getIn(['leadCreation', 'updateLeadDraftLoading']),
       leadCreationPageWithSearchResult: state.getIn(['dashboard', 'leadCreationPageWithSearchResult']),
+      leadDraftData: state.getIn(['leadCreation', 'leadDraftData']),
     }));
 
   const [activeStep, setActiveStep] = useState(leadCreationStep);
@@ -78,9 +80,7 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
   }, [leadDraftSearchData]);
 
   useEffect(() => {
-    if (missionTitle) {
-      onUpdateMissionTitle(missionTitle)
-    }
+    onUpdateMissionTitle(missionTitle)
   }, [missionTitle])
 
   const getSteps = () => {
@@ -325,9 +325,9 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
       && checkLength(missionTitle, 0)
       && workspace
       && frequency
-      && checkLength(duration, 0)
+      && duration
       && durationType
-      && checkLength(budget, 0)
+      && budget
       && budgetType
       && profilesNumber
     ) {
@@ -450,6 +450,7 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
                 <CustomTextField
                   endAdornment={<InputAdornment position="end"><EuroSymbolIcon /></InputAdornment>}
                   onChange={handleChange}
+                  value={budget}
                   name='budget'
                   placeholder={t('leadCreation.budgetPlaceholder')}
                   error={!!touched.budget && !!errors.budget}
@@ -464,14 +465,13 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
                   name='budgetType'
                 ></CustomSelect>
               </Grid>
-              {(values?.budget && values?.budgetType && values?.duration && values?.durationType && values?.frequency && values?.profilesNumber) ?
-                <Typography variant='h2' style={{ marginTop: '-2rem', marginBottom: '1rem', paddingLeft: '0.45rem' }}>
-                  {(values.budgetType === 'Taux journalier' ?
-                    `Soit un montant global de ${withCommission}€, commission acracy incluse.`
-                    :
-                    `Soit un taux journalier de ${withCommission}€, une fois la commission acracy déduite.`)}
+              {(values?.budget && values?.budgetType && values?.duration && values?.durationType && values?.frequency && values?.profilesNumber) || leadDraftData?.missionContext?.estimatedAverageDailyRate
+                ? <Typography variant='h2' style={{ marginTop: '-2rem', marginBottom: '1rem', paddingLeft: '0.45rem' }}>
+                  {(values.budgetType === 'Taux journalier' || leadDraftData?.missionContext?.budget?.type === 'TOTAL'
+                    ? `Soit un montant global de ${withCommission || Math.ceil(leadDraftData?.missionContext?.estimatedAverageDailyRate)}€, commission acracy incluse.`
+                    : `Soit un taux journalier de ${withCommission || Math.ceil(leadDraftData?.missionContext?.estimatedAverageDailyRate)}€, une fois la commission acracy déduite.`)}
                 </Typography>
-                : ''}
+                : null}
             </Grid>
           </Grid>
 

@@ -88,7 +88,7 @@ const LeadCreationPage = (props) => {
 
   // Handle the 'save & close' and the 'call me' buttons' disabled state
   useEffect(() => {
-    if (activeStep === 0 && (!leadDraftSearchData?.search || missionTitle === undefined)) {
+    if (activeStep === 0 && ((!leadDraftSearchData?.search && !leadDraftData?.search) || missionTitle.trim().length < 1)) {
       setDisableAppbarSaveBtn(true)
     } else {
       setDisableAppbarSaveBtn(false)
