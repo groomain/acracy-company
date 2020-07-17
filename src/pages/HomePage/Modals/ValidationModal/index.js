@@ -243,8 +243,8 @@ export const RefusalModal = ({ refusalModalOpen, setRefusalModalOpen, ...props }
     refusalDetails: Yup.string().required()
   });
 
-  const sendRefusalMessage = (refusalReason, refusalDetails) => {
-    dispatch(sendRefusalMessageLaunched(refusalReason, refusalDetails, { setRefusalModalOpen }));
+  const sendRefusalMessage = ({ refusalReason, refusalDetails }) => {
+    dispatch(sendRefusalMessageLaunched({ refusalReason, refusalDetails, setRefusalModalOpen }));
   };
 
   return (
@@ -254,16 +254,17 @@ export const RefusalModal = ({ refusalModalOpen, setRefusalModalOpen, ...props }
       title="Refus compte rendu d’activité"
     >
       <Formik
-        render={props => <RefusalMessageForm {...props} />}
+        render={props => <RefusalMessageForm {...props} setRefusalModalOpen={setRefusalModalOpen} />}
         initialValues={initialValues}
         validationSchema={ValidationSchema}
+        setRefusalModalOpen={setRefusalModalOpen}
         onSubmit={sendRefusalMessage}
       />
     </CustomModal >
   );
 };
 
-const RefusalMessageForm = ({ values, errors, touched, handleBlur, handleChange, handleSubmit }) => {
+const RefusalMessageForm = ({ values, errors, touched, handleBlur, handleChange, handleSubmit, setRefusalModalOpen }) => {
 
   const dispatch = useDispatch();
   const classes = styles();
@@ -297,7 +298,7 @@ const RefusalMessageForm = ({ values, errors, touched, handleBlur, handleChange,
 
   const sendRefusalMessage = () => {
     setRefusalDisabled(true);
-    handleSubmit({ refusalReason, refusalDetails });
+    handleSubmit({ refusalReason, refusalDetails, setRefusalModalOpen });
   }
 
   return (
@@ -326,6 +327,7 @@ const RefusalMessageForm = ({ values, errors, touched, handleBlur, handleChange,
         disabled={refusalDisabled}
         title="Envoyer"
         loading={sendMessageLoading}
+        type='submit'
         handleClick={() => sendRefusalMessage()}
       />
       <Snackbar
