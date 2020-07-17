@@ -35,24 +35,25 @@ const Searchbar = ({ onUpdateChosenCategory }) => {
       searchClient={searchClient}
       indexName={process.env.REACT_APP_ALGOLIA_INDEX_NAME}
     >
-      <Configure hitsPerPage={12} />
+      <Configure />
       <CustomSearchbar onUpdateChosenCategory={onUpdateChosenCategory} />
     </InstantSearch>
   );
-}
+};
 
-const SearchResults = ({ searchResults, onUpdateChosenCategory, context, ...props }) => {
+const SearchResults = ({ searchResults, onUpdateChosenCategory }) => {
   const classes = styles();
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
-  const { leadCreationPageWithSearchResult } = useSelector(state => ({
+  const { leadCreationPageWithSearchResult, leadDraftData } = useSelector(state => ({
     leadCreationPageWithSearchResult: state.getIn(['dashboard', 'leadCreationPageWithSearchResult']),
+    leadDraftData: state.getIn(['leadCreation', 'leadDraftData']),
   }));
 
   const [resultsList, setResultsList] = useState([]);
   const [loading, setIsLoading] = useState(true);
-  const [searchValue, setSearchValue] = useState(leadCreationPageWithSearchResult);
+  const [searchValue, setSearchValue] = useState(leadCreationPageWithSearchResult || leadDraftData?.search);
   const [newOption, setNewOption] = useState({ title: t('leadCreation.reseachLabel') });
 
   useEffect(() => {
@@ -133,7 +134,7 @@ const SearchResults = ({ searchResults, onUpdateChosenCategory, context, ...prop
   };
 
   const handleOnChange = (newValue, actionMeta) => {
-    dispatch(pushToLeadCreationPageWithSearchResult([]));
+    // dispatch(pushToLeadCreationPageWithSearchResult([])); // Find another place to empty the search result
     // Store the search value if it doesn't exist
     if (actionMeta.action === "create-option") {
       setNewOption({ title: "Vous avez recherché", value: newValue.value })

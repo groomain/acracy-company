@@ -11,7 +11,7 @@ import Drafts from '../../components/Drafts/DraftsWrapper';
 import Missions from '../../components/Missions';
 import sharedStyles from "../../utils/styles";
 
-import { pushToLeadCreationPageWithSearchResult } from './reducer';
+import { pushToLeadCreationPageWithSearchResult, setLeadCreationStep } from './reducer';
 
 export const Dashboard = () => {
   const { t } = useTranslation();
@@ -35,6 +35,10 @@ export const Dashboard = () => {
       dispatch(pushToLeadCreationPageWithSearchResult([]));
     }
   }, [leadCreationPageWithSearchResult])
+
+  useEffect(() => {
+    dispatch(setLeadCreationStep(0))
+  }, [])
 
   return (
     <Grid className={clsx(sharedClasses.pannelLayout, sharedClasses.fullPage)}>
