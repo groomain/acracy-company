@@ -3,17 +3,24 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 
-import { Box, Dialog, Typography, IconButton, Grid } from '@material-ui/core/';
+import { Box, Dialog, Typography, IconButton, Grid, Snackbar } from '@material-ui/core/';
 import CloseIcon from '@material-ui/icons/Close';
 import styles from '../styles';
 import CustomButton from "../../../../components/Button";
 import CustomTextField from '../../../../components/Inputs/CustomTextField';
 import CustomCheckBox from '../../../../components/CheckBox';
 
-import { updateMissionLaunched } from '../../reducer';
-import { formatDate } from '../../../../utils/services/format';;
+import {
+  updateMissionLaunched,
+  sendRefusalMessageLaunched,
+  closeRefusalSnackBar
+} from '../../reducer';
+import CustomModal from '../../../../components/Modal';
+import CustomSelect from "../../../../components/Inputs/CustomSelect";
+import { formatDate } from '../../../../utils/services/format';
+import smallCheck from "../../../../assets/icons/small-check.svg";
 
-export const ValidationModal = ({ open, handleClose, files, missionId, preselectedFile, ...props }) => {
+export const ValidationModal = ({ open, handleClose, files, missionId, preselectedFile, setValidationModalOpen, setRefusalModalOpen, ...props }) => {
   const dispatch = useDispatch();
   const invoicesNames = files?.map(file => `${file.numero} du ${formatDate(file.paymentDate)}`);
   const classes = styles();
@@ -105,7 +112,7 @@ export const ValidationModal = ({ open, handleClose, files, missionId, preselect
                 <Grid item>
                   <Box mt={2}>
                     <Formik
-                      render={props => <InvoicesDownloadForm {...props} options={invoicesNames} files={files} />}
+                      render={props => <InvoicesDownloadForm {...props} options={invoicesNames} files={files} setValidationModalOpen={setValidationModalOpen} setRefusalModalOpen={setRefusalModalOpen} handleClose={handleClose} />}
                       initialValues={initialValues}
                       validationSchema={ValidationSchema}
                       onSubmit={updateInvoice}
@@ -131,7 +138,7 @@ export const ValidationModal = ({ open, handleClose, files, missionId, preselect
   );
 };
 
-const InvoicesDownloadForm = ({ values, errors, touched, handleBlur, handleChange, handleSubmit, files, options }) => {
+const InvoicesDownloadForm = ({ values, errors, touched, handleBlur, handleChange, handleSubmit, files, options, setValidationModalOpen, setRefusalModalOpen }) => {
 
   const { updateMissionLoading, companiesData } = useSelector(state => ({
     updateMissionLoading: state.getIn(['dashboard', 'updateMissionLoading']),
@@ -143,6 +150,11 @@ const InvoicesDownloadForm = ({ values, errors, touched, handleBlur, handleChang
   const [extractedFile] = invoiceFile;
 
   const [disabled, setDisabled] = useState(true);
+
+  const openRefusalModal = () => {
+    setValidationModalOpen(false);
+    setRefusalModalOpen(true);
+  };
 
   useEffect(() => {
     if (companiesData?.administrativeProfile?.purchaseOrder || extractedFile?.latestInvoice) {
@@ -158,9 +170,8 @@ const InvoicesDownloadForm = ({ values, errors, touched, handleBlur, handleChang
       setDisabled(false)
     } else if (!companiesData?.administrativeProfile?.purchaseOrder && !extractedFile?.latestInvoice) {
       setDisabled(false)
-    }
+    };
   }, [companiesData, extractedFile, orderFormNumber, workDone]);
-
 
   return (
     <>
@@ -170,7 +181,10 @@ const InvoicesDownloadForm = ({ values, errors, touched, handleBlur, handleChang
             label="Veuillez indiquer ici votre numéro de bon de commande*"
             placeholder="Numéro bon de commande"
             name="orderFormNumber"
+            value={orderFormNumber}
+            onBlur={handleBlur}
             onChange={handleChange}
+            error={!!touched.orderFormNumber && !!errors.orderFormNumber}
           />
         )}
         {extractedFile?.latestInvoice && (
@@ -196,7 +210,7 @@ const InvoicesDownloadForm = ({ values, errors, touched, handleBlur, handleChang
             <CustomButton
               title="Refuser"
               theme='primaryButton'
-              onClick={() => alert('Ouvre une modal Contact')}
+              onClick={() => openRefusalModal()}
             />
           </Grid>
           <Grid item>
@@ -211,6 +225,126 @@ const InvoicesDownloadForm = ({ values, errors, touched, handleBlur, handleChang
           </Grid>
         </Grid>
       </Box>
+    </>
+  )
+}
+
+export const RefusalModal = ({ refusalModalOpen, setRefusalModalOpen, ...props }) => {
+
+  const dispatch = useDispatch();
+
+  const initialValues = {
+    refusalReason: '',
+    refusalDetails: ''
+  };
+
+  const ValidationSchema = Yup.object().shape({
+    refusalReason: Yup.string().required(),
+    refusalDetails: Yup.string().required()
+  });
+
+  const sendRefusalMessage = (refusalReason, refusalDetails) => {
+    dispatch(sendRefusalMessageLaunched({ refusalReason, refusalDetails, setRefusalModalOpen }));
+  };
+
+  return (
+    <CustomModal
+      open={refusalModalOpen}
+      handleClose={() => setRefusalModalOpen(false)}
+      title="Refus compte rendu d’activité"
+    >
+      <Formik
+        render={props => <RefusalMessageForm {...props} />}
+        initialValues={initialValues}
+        validationSchema={ValidationSchema}
+        onSubmit={sendRefusalMessage}
+      />
+    </CustomModal >
+  );
+};
+
+const RefusalMessageForm = ({ values, errors, touched, handleBlur, handleChange, handleSubmit }) => {
+
+  const dispatch = useDispatch();
+  const classes = styles();
+
+  const { refusalReason, refusalDetails } = values;
+
+  const [refusalDisabled, setRefusalDisabled] = useState(true);
+
+  const { sendMessageSuccess, sendMessageLoading, refusalSnackBarOpen, refusalSnackBarMessage, refusalSnackBarError, dashboardValue } = useSelector(state => ({
+    sendMessageSuccess: state.getIn(['dashboard', 'sendMessageSuccess']),
+    sendMessageLoading: state.getIn(['dashboard', 'sendMessageLoading']),
+    refusalSnackBarOpen: state.getIn(['dashboard', 'refusalSnackBarOpen']),
+    refusalSnackBarMessage: state.getIn(['dashboard', 'refusalSnackBarMessage']),
+    refusalSnackBarError: state.getIn(['dashboard', 'refusalSnackBarError']),
+    dashboardValue: state.getIn(['dashboard'])
+  }));
+
+  useEffect(() => {
+    if (refusalReason !== '' && refusalDetails.trim() !== '') {
+      setRefusalDisabled(false);
+    };
+  }, [refusalReason, refusalDetails]);
+
+  const refusalOptionsValues = [
+    'Ereur de calcul',
+    'Problème avec la mission',
+    'Autre'
+  ];
+
+  const closeSnackBar = () => {
+    dispatch(closeRefusalSnackBar());
+  };
+
+  const sendRefusalMessage = () => {
+    setRefusalDisabled(true);
+    handleSubmit({ refusalReason, refusalDetails });
+  }
+
+  return (
+    <>
+      <CustomSelect className={classes.textfield}
+        label={'Liste des raisons* : '}
+        optionsValues={refusalOptionsValues}
+        placeholder={'Raison'}
+        name={'refusalReason'}
+        value={refusalReason}
+        onBlur={handleBlur}
+        onChange={handleChange}
+        error={!!touched.refusalReason && !!errors.refusalReason}
+      />
+      <CustomTextField className={classes.textfield}
+        label={'Donnez nous plus de détails*'}
+        placeholder={'Détails'}
+        name={'refusalDetails'}
+        value={refusalDetails}
+        onBlur={handleBlur}
+        onChange={handleChange}
+        error={!!touched.refusalDetails && !!errors.refusalDetails}
+      />
+      <CustomButton
+        theme={refusalDisabled ? 'disabledFilled' : 'filledButton'}
+        disabled={refusalDisabled}
+        title="Envoyer"
+        loading={sendMessageLoading}
+        handleClick={() => sendRefusalMessage()}
+      />
+      <Snackbar
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+        open={refusalSnackBarOpen}
+        onClose={() => closeSnackBar()}
+        children={
+          <Grid container alignItems={'center'} justify={'space-between'} className={classes.snackBar}>
+            {refusalSnackBarError ?
+              <CloseIcon fontSize="small" />
+              :
+              <img alt={'smallCheck'} src={smallCheck} />
+            }
+            <Typography className={classes.typoSnackBar}>{refusalSnackBarMessage}</Typography>
+          </Grid>
+        }
+      />
     </>
   )
 }
