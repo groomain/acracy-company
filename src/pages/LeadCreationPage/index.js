@@ -41,6 +41,7 @@ const LeadCreationPage = (props) => {
   const [disableAppbarSaveBtn, setDisableAppbarSaveBtn] = useState(true);
   const [activeStep, setActiveStep] = useState();
   const [saveBtnClicked, setSaveBtnClicked] = useState(false);
+  const [missionTitle, setMissionTitle] = useState();
 
   const { leadSaveLoading, leadDraftData, leadDraftSearchData, deliverablesArray, dateFromCalendar, dailyRate,
     leadCreationStep, leadDraftId, selectedExpertiseList, expertisePriorities, selectedSensitivity,
@@ -85,14 +86,14 @@ const LeadCreationPage = (props) => {
     }
   }, [dispatch, leadId])
 
-
+  // Handle the 'save & close' and the 'call me' buttons' disabled state
   useEffect(() => {
-    if (activeStep === 0 && !leadDraftSearchData?.search) {
+    if (activeStep === 0 && (!leadDraftSearchData?.search || missionTitle === undefined)) {
       setDisableAppbarSaveBtn(true)
     } else {
       setDisableAppbarSaveBtn(false)
     }
-  }, [leadDraftSearchData, activeStep]);
+  }, [leadDraftSearchData, activeStep, missionTitle]);
 
   const setDesireds = (leads, values, deliverables) => {
     let leadType = leads.search?.TYPE;
@@ -155,7 +156,6 @@ const LeadCreationPage = (props) => {
       })
     }
   }
-
   let redirect = true;
   leadSave = (leads, deliverables, formData, redirect, redirectToMission) => {
     // console.log("leads (algolia): ", leads);              // resultat algolia
@@ -375,7 +375,10 @@ const LeadCreationPage = (props) => {
         : <>
           <Main>
             <Formik
-              render={props => <LeadCreationForm leadId={leadId} {...props} />}
+              render={props => <LeadCreationForm
+                leadId={leadId}
+                onUpdateMissionTitle={e => setMissionTitle(e)}
+                {...props} />}
               initialValues={initialValues}
               validationSchema={ValidationSchema}
               onSubmit={leadSave}

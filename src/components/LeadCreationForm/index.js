@@ -30,7 +30,7 @@ import UploadInput from '../Inputs/LeadUpload';
 
 import { checkLength } from '../../utils/services/validationChecks';
 
-const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, handleChange, leadId, ...props }) => {
+const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, handleChange, leadId, onUpdateMissionTitle, ...props }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const classes = styles();
@@ -77,6 +77,12 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
     }
   }, [leadDraftSearchData]);
 
+  useEffect(() => {
+    if (missionTitle) {
+      onUpdateMissionTitle(missionTitle)
+    }
+  }, [missionTitle])
+
   const getSteps = () => {
     return [t('leadCreation.synthesis'), t('leadCreation.details')];
   };
@@ -94,6 +100,10 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
   //   setActiveStep((prevActiveStep) => prevActiveStep - 1);
   //   backToTop();
   // };
+
+  useEffect(() => {
+    setActiveStep(leadCreationStep)
+  }, [leadCreationStep]);
 
   const handleStep = (step) => () => {
     setActiveStep(step);
@@ -296,7 +306,7 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
         }
       } else {
         if (workspace === "Peu importe" || workspace === "En remote uniquement") {
-          setCustomChecks(true)
+          setCustomChecks(deliverables.length > 0)
         } else {
           setCustomChecks(checkLength(companyAddress, 0))
         }
@@ -345,8 +355,6 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
     return (
       <Box className={classes.stepContent}>
         <Typography variant={"h1"} >{t('leadCreation.synthesis')}</Typography>
-        <br />
-        <br />
         <Grid container>
 
           <Grid item xs={12} className={classes.fieldRows}>

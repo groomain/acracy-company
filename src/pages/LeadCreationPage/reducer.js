@@ -75,6 +75,7 @@ const { actions, reducer } = createSlice({
       .set('leadDraftData', action.payload),
     getLeadDraftFailure: (state, action) => state
       .set('getLeadDraftLoading', false)
+      .set('leadDraftData', null)
       .set('getLeadDraftErrorMessage', action.payload),
     // PUT Draft  /leads/{leadId}
     putLeadDraftLaunched: (state, action) => state
