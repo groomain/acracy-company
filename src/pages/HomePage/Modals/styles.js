@@ -51,10 +51,25 @@ export default makeStyles(theme => ({
     backgroundColor: `${theme.palette.secondary.modalGreen}`
   },
   validationComment: {
-    // height: '100%',
     margin: '16px',
     padding: '16px',
     borderRadius: '15px',
     backgroundColor: '#212a21'
+  },
+  snackBar: {
+    width: 'auto',
+    backgroundColor: '#ecf805',
+    color: 'black',
+    borderRadius: '28px',
+    height: 46,
+    paddingLeft: 15,
+    paddingRight: 15
+  },
+  typoSnackBar: {
+    fontSize: 17,
+    fontFamily: 'Basier Regular',
+    color: theme.palette.secondary.black,
+    marginRight: 10,
+    marginLeft: 10
   }
 }));
