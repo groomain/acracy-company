@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from "react-i18next";
 import clsx from 'clsx';
@@ -18,8 +18,9 @@ export const Dashboard = () => {
   const dispatch = useDispatch();
   const sharedClasses = sharedStyles();
 
-  const { userName } = useSelector(state => ({
-    userName: state.getIn(['app', 'userDynamo', 'employeeFirstName'])
+  const { userName, leadCreationPageWithSearchResult } = useSelector(state => ({
+    userName: state.getIn(['app', 'userDynamo', 'employeeFirstName']),
+    leadCreationPageWithSearchResult: state.getIn(['dashboard', 'leadCreationPageWithSearchResult']),
   }))
 
   const handleSearchResult = (e) => {
@@ -28,6 +29,12 @@ export const Dashboard = () => {
       dispatch(push('/lead'));
     }
   }
+
+  useEffect(() => {
+    if (leadCreationPageWithSearchResult) {
+      dispatch(pushToLeadCreationPageWithSearchResult([]));
+    }
+  }, [leadCreationPageWithSearchResult])
 
   return (
     <Grid className={clsx(sharedClasses.pannelLayout, sharedClasses.fullPage)}>
