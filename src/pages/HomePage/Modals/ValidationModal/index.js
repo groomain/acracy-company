@@ -244,7 +244,7 @@ export const RefusalModal = ({ refusalModalOpen, setRefusalModalOpen, ...props }
   });
 
   const sendRefusalMessage = (refusalReason, refusalDetails) => {
-    dispatch(sendRefusalMessageLaunched({ refusalReason, refusalDetails, setRefusalModalOpen }));
+    dispatch(sendRefusalMessageLaunched(refusalReason, refusalDetails, { setRefusalModalOpen }));
   };
 
   return (
@@ -272,13 +272,11 @@ const RefusalMessageForm = ({ values, errors, touched, handleBlur, handleChange,
 
   const [refusalDisabled, setRefusalDisabled] = useState(true);
 
-  const { sendMessageSuccess, sendMessageLoading, refusalSnackBarOpen, refusalSnackBarMessage, refusalSnackBarError, dashboardValue } = useSelector(state => ({
-    sendMessageSuccess: state.getIn(['dashboard', 'sendMessageSuccess']),
+  const { sendMessageLoading, refusalSnackBarOpen, refusalSnackBarMessage, refusalSnackBarError } = useSelector(state => ({
     sendMessageLoading: state.getIn(['dashboard', 'sendMessageLoading']),
     refusalSnackBarOpen: state.getIn(['dashboard', 'refusalSnackBarOpen']),
     refusalSnackBarMessage: state.getIn(['dashboard', 'refusalSnackBarMessage']),
-    refusalSnackBarError: state.getIn(['dashboard', 'refusalSnackBarError']),
-    dashboardValue: state.getIn(['dashboard'])
+    refusalSnackBarError: state.getIn(['dashboard', 'refusalSnackBarError'])
   }));
 
   useEffect(() => {
