@@ -115,7 +115,7 @@ const { actions, reducer } = createSlice({
     getExpertisesSuccess: (state, action) => state
       .set('getExpertisesLoading', false)
       .set('getExpertisesErrorMessage', null)
-      .set('expertises', action.payload),
+      .set('expertises', action.payload.expertises),
     getExpertisesFailure: (state, action) => state
       .set('getExpertisesLoading', false)
       .set('expertises', null)
@@ -132,7 +132,7 @@ const { actions, reducer } = createSlice({
     getSensitivitiesLaunched: (state, action) => state
       .set('sensitivitiesLoading', true),
     getSensitivitiesSuccess: (state, action) => state
-      .set('sensitivities', action.payload)
+      .set('sensitivities', action.payload.sensitivities)
       .set('sensitivitiesLoading', false),
     getSensitivitiesFailure: (state, action) => state
       .set('sensitivities', null)
