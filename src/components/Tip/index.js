@@ -1,6 +1,5 @@
 import React from 'react';
 import { Grid, Box, Typography } from '@material-ui/core';
-import CustomNavLink from '../CustomNavLink';
 import styles from './styles';
 
 const Tip = ({ title, subtitle, description, linkTitle, Url }) => {
@@ -16,11 +15,10 @@ const Tip = ({ title, subtitle, description, linkTitle, Url }) => {
       <Typography variant='subtitle2' className={classes.subtitle}>{subtitle}</Typography>
       <Typography variant='body1' className={classes.description}>{description}</Typography>
 
-      {Url ? (
-        <Box className={classes.link}>
-          <span role="img" aria-label="pointe du doigt">👉</span>&nbsp;<CustomNavLink theme="yellowLink" text={linkTitle} to={Url} />
-        </Box>
-      ) : null}
+      {Url &&
+        <Box>
+          <span role="img" aria-label="pointe du doigt">👉</span>&nbsp;<a href={Url} target="_blank" className={classes.link}>{linkTitle}</a>
+        </Box>}
     </Grid>
   );
 };

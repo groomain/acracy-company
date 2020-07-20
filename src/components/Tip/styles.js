@@ -10,6 +10,13 @@ export default makeStyles(theme => ({
   },
   description: {
     padding: '8px 0'
+  },
+  link: {
+    fontsize: 17,
+    color: theme.palette.primary.main,
+    textDecoration: 'underline',
+    '&:hover': {
+      color: theme.palette.primary.bright
+    }
   }
-
 }));
