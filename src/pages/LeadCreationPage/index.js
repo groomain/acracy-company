@@ -23,6 +23,8 @@ import clsx from "clsx";
 import useScrollTrigger from "@material-ui/core/useScrollTrigger";
 import CustomLoader from '../../components/Loader';
 
+import { formatType, formatFrequencyType, formatDurationType, formatBudgetType, formatSeniorityType } from '../../utils/services/format';
+
 let leadSave;
 let formData = false;
 const LeadCreationPage = (props) => {
@@ -66,7 +68,7 @@ const LeadCreationPage = (props) => {
 
   useEffect(() => {
     setActiveStep(leadCreationStep)
-  }, [leadCreationStep]);
+  }, []);
 
   const [leadId, setLeadId] = useState();
   const [splittedUrl, setSplittedUrl] = useState();
@@ -184,32 +186,6 @@ const LeadCreationPage = (props) => {
 
     const minDate = new Date().setDate(new Date().getDate() + 30);
 
-    const formatType = (val) => {
-      switch (val) {
-        case 'Peu importe':
-          return 'WHATEVER'
-        case 'En remote uniquement':
-          return 'REMOTE_ONLY'
-        case 'Sur place uniquement':
-          return 'INPLACE_ONLY'
-        case 'En remote et sur place':
-          return 'BOTH'
-        default:
-      }
-    }
-
-    const formatDurationType = (val) => {
-      switch (val) {
-        case 'Jours':
-          return 'DAY'
-        case 'Semaines':
-          return 'WEEK'
-        case 'Mois':
-          return 'MONTH'
-        default:
-      }
-    }
-
     let leadDraft, lead;
 
     leadDraft = {
@@ -244,24 +220,6 @@ const LeadCreationPage = (props) => {
 
     const formattedLanguage = selectedLanguage => {
       return selectedLanguage?.map(x => ({ language: x.type, essential: x.text === languagePriority[0] }))
-    }
-
-    const formatSeniorityType = seniority => {
-      switch (seniority) {
-        case 'Junior (1 à 3 ans)':
-          return 'JUNIOR'
-        case 'Middle (3 à 5 ans)':
-          return 'MIDDLE'
-        case 'Senior (5 à 7 ans)':
-          return 'SENIOR'
-        case 'Expert (7 à 10 ans)':
-          return 'EXPERT'
-        case 'Guru (10 ans et plus)':
-          return 'GURU'
-        case 'Peu importe':
-          return 'WHATEVER'
-        default:
-      }
     }
 
     if (activeStep === 0) {
@@ -306,15 +264,15 @@ const LeadCreationPage = (props) => {
     profile: leadDraftData?.profileNumber || 'Recevoir une recommandation acracy',
     missionTitle: leadDraftData?.missionContext?.title || '',
     missionStartDate: leadDraftData?.missionContext?.startDate || '',
-    workspace: leadDraftData?.missionContext?.format || 'Peu importe',
+    workspace: formatType(leadDraftData?.missionContext?.format) || 'Peu importe',
     companyAddress: leadDraftData?.missionContext?.adress || '',
-    frequency: leadDraftData?.missionContext?.weeklyRythm || 'Plein temps (5 jours)',
+    frequency: formatFrequencyType(leadDraftData?.missionContext?.weeklyRythm) || 'Plein temps (5 jours)',
     duration: leadDraftData?.missionContext?.duration?.nb || '',
-    durationType: leadDraftData?.missionContext?.duration?.unit || 'Jours',
+    durationType: formatDurationType(leadDraftData?.missionContext?.duration?.unit) || 'Jours',
     budget: leadDraftData?.missionContext?.budget?.value || '',
-    budgetType: leadDraftData?.missionContext?.budget?.type || '',
+    budgetType: formatBudgetType(leadDraftData?.missionContext?.budget?.type) || '',
     profilesNumber: leadDraftData?.profileNumber || 1,
-    seniority: leadDraftData?.missionRequirements?.seniority || "Sélectionnez le niveau d'expérience minimum",
+    seniority: formatSeniorityType(leadDraftData?.missionRequirements?.seniority) || "Sélectionnez le niveau d'expérience minimum",
     contextAndTasks: leadDraftData?.missionDetail?.contextAndTasks || '',
     detailsOfDeliverables: leadDraftData?.missionDetail?.detailsOfDeliverables || '',
   };
