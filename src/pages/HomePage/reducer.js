@@ -21,7 +21,12 @@ const initialState = Immutable.Map({
   comingFromDashboard: false,
   updateMissionLoading: false,
   updateMissionSent: false,
-  leadCreationPageWithSearchResult: null
+  leadCreationPageWithSearchResult: null,
+  sendMessageLoading: false,
+  sendMessageSuccess: '',
+  refusalSnackBarOpen: false,
+  refusalSnackBarMessage: '',
+  refusalSnackBarError: false
 });
 
 const { actions, reducer } = createSlice({
@@ -116,7 +121,27 @@ const { actions, reducer } = createSlice({
 
     // From dashboard to lead creation with search result
     pushToLeadCreationPageWithSearchResult: (state, action) => state
-      .set('leadCreationPageWithSearchResult', action.payload)
+      .set('leadCreationPageWithSearchResult', action.payload),
+
+    // Send refusal message
+    sendRefusalMessageLaunched: (state, action) => state
+      .set('sendMessageLoading', true),
+    sendRefusalMessageSuccess: (state, action) => state
+      .set('sendMessageLoading', false)
+      .set('sendMessageSuccess', action.payload),
+    sendRefusalMessageFailure: (state, action) => state
+      .set('sendMessageLoading', false),
+
+    // Refusal SnackBar
+    openRefusalSnackBar: (state, action) => state
+      .set('refusalSnackBarOpen', true)
+      .set('refusalSnackBarMessage', action.payload.message)
+      .set('refusalSnackBarError', action.payload.error),
+    closeRefusalSnackBar: (state, action) => state
+      .set('refusalSnackBarOpen', false),
+    clearRefusalSnackBar: (state, action) => state
+      .set('refusalSnackBarMessage', null)
+      .set('refusalSnackBarError', null)
   }
 });
 
@@ -147,7 +172,13 @@ export const {
   updateMissionLaunched,
   updateMissionSuccess,
   updateMissionFailure,
-  pushToLeadCreationPageWithSearchResult
+  pushToLeadCreationPageWithSearchResult,
+  sendRefusalMessageLaunched,
+  sendRefusalMessageSuccess,
+  sendRefusalMessageFailure,
+  openRefusalSnackBar,
+  closeRefusalSnackBar,
+  clearRefusalSnackBar
 } = actions;
 
 export default reducer;

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import algoliasearch from 'algoliasearch/lite';
 import {
   InstantSearch,
@@ -25,10 +25,10 @@ import { pushToLeadCreationPageWithSearchResult } from '../../pages/HomePage/red
 
 const Searchbar = ({ onUpdateChosenCategory }) => {
 
-  const searchClient = algoliasearch(
+  const searchClient = useMemo(() => algoliasearch(
     process.env.REACT_APP_ALGOLIA,
     process.env.REACT_APP_ALGOLIA_KEY
-  );
+  ), []);
 
   return (
     <InstantSearch

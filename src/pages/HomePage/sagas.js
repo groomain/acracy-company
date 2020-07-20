@@ -1,4 +1,4 @@
-import { all, put, takeLatest, call } from 'redux-saga/effects';
+import { all, put, takeLatest, call, delay } from 'redux-saga/effects';
 import { API } from 'aws-amplify';
 import { config } from "../../conf/amplify";
 import {
@@ -17,7 +17,12 @@ import {
   sendIncidentMessageSuccess,
   sendIncidentMessageFailure,
   updateMissionSuccess,
-  updateMissionFailure
+  updateMissionFailure,
+  sendRefusalMessageSuccess,
+  sendRefusalMessageFailure,
+  openRefusalSnackBar,
+  closeRefusalSnackBar,
+  clearRefusalSnackBar
 } from './reducer';
 
 // Infos for the "drafts" section (carousel)
@@ -158,7 +163,7 @@ function* doSendIncidenMessage(action) {
 }
 
 function* doUpdateMission(action) {
-  const { id, orderFormNumber, workDone } = action.payload;
+  const { id, orderFormNumber } = action.payload;
 
   try {
     const apiUrl = `/invoices/${id}/actions`;
@@ -181,6 +186,43 @@ function* doUpdateMission(action) {
   }
 }
 
+function* doSendRefusalMessage(action) {
+  const { refusalReason, refusalDetails, setRefusalModalOpen } = action.payload;
+  try {
+    const apiUrl = `/messages`;
+    const params = {
+      headers: {
+        'x-api-key': config.apiKey
+      },
+      body: {
+        type: 'COMPANY_INVOICE_PROBLEM',
+        payload: {
+          reason: refusalReason,
+          message: refusalDetails
+        }
+      }
+    };
+    yield API.post(config.apiGateway.NAME, apiUrl, params);
+    yield put(sendRefusalMessageSuccess());
+    yield put(openRefusalSnackBar({ message: "Nous reviendrons vers vous très rapidement", error: false }));
+    yield setRefusalSnackBar();
+    yield setRefusalModalOpen(false);
+  } catch (error) {
+    console.log(error);
+    yield put(openRefusalSnackBar({ message: "Une erreur est survenue", error: true }));
+    yield put(sendRefusalMessageFailure());
+    yield setRefusalSnackBar();
+    yield setRefusalModalOpen(false);
+  }
+}
+
+function* setRefusalSnackBar() {
+  yield delay(5000);
+  yield put(closeRefusalSnackBar());
+  yield delay(200);
+  yield put(clearRefusalSnackBar());
+}
+
 export default function* dashboardSagas() {
   yield all([
     takeLatest('Leads/getLeadsLaunched', doGetLeads),
@@ -190,6 +232,8 @@ export default function* dashboardSagas() {
     takeLatest('Leads/getQuotesLaunched', doGetQuotes),
     takeLatest('Leads/getCompaniesLaunched', doGetCompanies),
     takeLatest('Leads/sendIncidentMessageLaunched', doSendIncidenMessage),
-    takeLatest('Leads/updateMissionLaunched', doUpdateMission)
+    takeLatest('Leads/updateMissionLaunched', doUpdateMission),
+    takeLatest('Leads/sendRefusalMessageLaunched', doSendRefusalMessage),
+    takeLatest('Leads/openRefusalSnackBar', setRefusalSnackBar)
   ])
 }
