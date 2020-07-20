@@ -39,6 +39,37 @@ export default makeStyles(theme => ({
     '&:hover': {
       color: '#e4e4e4',
     },
+  },
+  bigModal: {
+    marginTop: 30,
+    width: 519,
+    minHeight: '30vh',
+    minWidth: '40vw',
+    margin: 0,
+    padding: 30,
+    borderRadius: 15,
+    backgroundColor: `${theme.palette.secondary.modalGreen}`
+  },
+  validationComment: {
+    margin: '16px',
+    padding: '16px',
+    borderRadius: '15px',
+    backgroundColor: '#212a21'
+  },
+  snackBar: {
+    width: 'auto',
+    backgroundColor: '#ecf805',
+    color: 'black',
+    borderRadius: '28px',
+    height: 46,
+    paddingLeft: 15,
+    paddingRight: 15
+  },
+  typoSnackBar: {
+    fontSize: 17,
+    fontFamily: 'Basier Regular',
+    color: theme.palette.secondary.black,
+    marginRight: 10,
+    marginLeft: 10
   }
-
 }));

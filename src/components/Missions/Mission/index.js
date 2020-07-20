@@ -22,7 +22,7 @@ import CustomLoader from '../../Loader';
 import CustomModal from '../../Modal';
 import CustomButton from '../../Button';
 import InvoiceManagementModal from '../../../pages/HomePage/Modals/InvoiceManagementModal';
-import ValidationModal from '../../../pages/HomePage/Modals/ValidationModal'
+import ValidationModal, { RefusalModal } from '../../../pages/HomePage/Modals/ValidationModal';
 import styles from './styles';
 // import { openSnackBar } from '../../App/reducer';
 import { getQuotesLaunched, getCompaniesLaunched, setComingFromDashboard } from '../../../pages/HomePage/reducer';
@@ -66,6 +66,7 @@ export const Mission = ({ mission, matching, today, ...props }) => {
   const [loadingButton, setLoadingButton] = useState(false);
   const [redirectionPopupOpen, setRedirectionPopupOpen] = useState(false);
   const [validationModalOpen, setValidationModalOpen] = useState(updateMissionSent);
+  const [refusalModalOpen, setRefusalModalOpen] = useState(false);
   const [invoicesModalOpen, setInvoicesModalOpen] = useState(false);
   const [preselectedFile, setPreselectedFile] = useState();
 
@@ -407,10 +408,10 @@ export const Mission = ({ mission, matching, today, ...props }) => {
           </Typography>
         </Grid>
         {infosOpen &&
-        <QuoteSignatureValidationModal
+          <QuoteSignatureValidationModal
             open={infosOpen}
             handleClose={() => setInfosOpen(false)}
-        />
+          />
         }
         {redirectionPopupOpen &&
           <CustomModal
@@ -434,15 +435,18 @@ export const Mission = ({ mission, matching, today, ...props }) => {
           preselectedFile={preselectedFile}
         />
       )}
-      {validationModalOpen && (
-        <ValidationModal
-          open={validationModalOpen}
-          handleClose={() => setValidationModalOpen(false)}
-          files={sortedCRA}
-          missionId={mission?.externalId}
-          preselectedFile={preselectedFile}
-        />
-      )}
+      <ValidationModal
+        open={validationModalOpen}
+        setValidationModalOpen={setValidationModalOpen}
+        setRefusalModalOpen={setRefusalModalOpen}
+        handleClose={() => setValidationModalOpen(false)}
+        files={sortedCRA}
+        missionId={mission?.externalId}
+        preselectedFile={preselectedFile}
+      />
+      <RefusalModal
+        refusalModalOpen={refusalModalOpen}
+        setRefusalModalOpen={setRefusalModalOpen} />
     </Box>
   )
 };
