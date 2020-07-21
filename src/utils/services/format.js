@@ -94,3 +94,98 @@ export const formatDate = (date) => {
 export const dateToTimestamp = (date) => {
   return Math.round(new Date(date).getTime());
 };
+
+
+export const formatType = (val) => {
+  switch (val) {
+    case 'Peu importe':
+      return 'WHATEVER'
+    case 'En remote uniquement':
+      return 'REMOTE_ONLY'
+    case 'Sur place uniquement':
+      return 'INPLACE_ONLY'
+    case 'En remote et sur place':
+      return 'BOTH'
+    case 'WHATEVER':
+      return 'Peu importe'
+    case 'REMOTE_ONLY':
+      return 'en remote uniquement'
+    case 'INPLACE_ONLY':
+      return 'Sur place uniquement'
+    case 'BOTH':
+      return 'En remote et sur place'
+    default:
+  }
+}
+
+export const formatFrequencyType = (val) => {
+  switch (val) {
+    case 1:
+      return 'Temps partiel (1 jour)'
+    case 2:
+      return 'Temps partiel (2 jours)'
+    case 3:
+      return 'Temps partiel (3 jours)'
+    case 4:
+      return 'Temps partiel (4 jours)'
+    case 5:
+      return 'Plein temps (5 jours)'
+    default:
+  }
+}
+
+export const formatDurationType = val => {
+  switch (val) {
+    case 'Jours':
+      return 'DAY'
+    case 'Semaines':
+      return 'WEEK'
+    case 'Mois':
+      return 'MONTH'
+    case 'DAY':
+      return 'Jours'
+    case 'WEEK':
+      return 'Semaines'
+    case 'MONTH':
+      return 'Mois'
+    default:
+  }
+}
+
+export const formatBudgetType = val => {
+  switch (val) {
+    case 'TOTAL':
+      return 'Budget Total'
+    case 'DAILY_RATE':
+      return 'Taux Journalier'
+    default:
+  }
+}
+
+export const formatSeniorityType = seniority => {
+  switch (seniority) {
+    case 'Junior (1 à 3 ans)':
+      return 'JUNIOR'
+    case 'Middle (3 à 5 ans)':
+      return 'MIDDLE'
+    case 'Senior (5 à 7 ans)':
+      return 'SENIOR'
+    case 'Expert (7 à 10 ans)':
+      return 'EXPERT'
+    case 'Guru (10 ans et plus)':
+      return 'GURU'
+    case 'Peu importe':
+      return 'WHATEVER'
+    case 'JUNIOR':
+      return 'Junior (1 à 3 ans)'
+    case 'MIDDLE':
+      return 'Middle (3 à 5 ans)'
+    case 'SENIOR':
+      return 'Senior (5 à 7 ans)'
+    case 'EXPERT':
+      return 'Expert (7 à 10 ans)'
+    case 'GURU':
+      return 'Guru (10 ans et plus)'
+    default:
+  }
+}
