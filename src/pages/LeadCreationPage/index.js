@@ -78,7 +78,9 @@ const LeadCreationPage = (props) => {
       setSplittedUrl(location.search.split('&'));
     } else if (location.pathname) {
       setSplittedUrl(location.pathname.split("/"));
-      setLeadId(location.pathname.split("/")[2] || leadDraftId);
+      setLeadId(location.pathname.split("/")[2]);
+    } else if (leadDraftId) {
+      setLeadId(leadDraftId)
     }
   }, [dispatch, location.search, location.pathname, leadDraftId, leadId]);
 
@@ -204,7 +206,7 @@ const LeadCreationPage = (props) => {
           value: +values?.budget || null,
           type: values?.budgetType === 'Jours' ? 'DAILY_RATE' : 'TOTAL' || ''
         },
-        estimatedAverageDailyRate: dailyRate || null,
+        estimatedAverageDailyRate: dailyRate || leadDraftData?.missionContext?.estimatedAverageDailyRate || null,
         profileNumber: values?.profilesNumber || '',
         address: values?.companyAddress || '',
       },
@@ -249,7 +251,7 @@ const LeadCreationPage = (props) => {
     // console.log('lead :', lead, 'redirect :', redirect);
 
     if (leadId) {
-      dispatch(putLeadDraftLaunched({ lead, redirect, redirectToMission }))
+      dispatch(putLeadDraftLaunched({ leadId, lead, redirect, redirectToMission }))
     } else {
       dispatch(leadSaveLaunched({ lead, redirect, redirectToMission }));
     }
@@ -265,7 +267,7 @@ const LeadCreationPage = (props) => {
     missionTitle: leadDraftData?.missionContext?.title || '',
     missionStartDate: leadDraftData?.missionContext?.startDate || '',
     workspace: formatType(leadDraftData?.missionContext?.format) || 'Peu importe',
-    companyAddress: leadDraftData?.missionContext?.adress || '',
+    companyAddress: leadDraftData?.missionContext?.address || '',
     frequency: formatFrequencyType(leadDraftData?.missionContext?.weeklyRythm) || 'Plein temps (5 jours)',
     duration: leadDraftData?.missionContext?.duration?.nb || '',
     durationType: formatDurationType(leadDraftData?.missionContext?.duration?.unit) || 'Jours',

@@ -43,7 +43,7 @@ function* doLeadSave(action) { // create a new lead
 }
 
 function* doGetLeadDraft(action) { // get a lead's data
-  // console.log('action: ', action.payload)
+  // console.log('function*doGetLeadDraft -> action', action)
   const id = action.payload;
   try {
     const draft = yield API.get(config.apiGateway.NAME, encodeURI(`/leads/${id}`),
@@ -61,15 +61,15 @@ function* doGetLeadDraft(action) { // get a lead's data
 }
 
 function* doUpdateLeadDraft(action) { // update an existing lead
-  // console.log('action: ', action.payload)
-  const { id, form, redirect, redirectToMission } = action.payload;
+  // console.log('function*doUpdateLeadDraft -> action', action)
+  const { leadId, lead, redirect, redirectToMission } = action.payload;
   try {
-    const draft = yield API.put(config.apiGateway.NAME, encodeURI(`/leads/${id}`),
+    const draft = yield API.put(config.apiGateway.NAME, encodeURI(`/leads/${leadId}`),
       {
         headers: {
           'x-api-key': config.apiKey
         },
-        body: form
+        body: lead
 
       });
 
@@ -78,7 +78,7 @@ function* doUpdateLeadDraft(action) { // update an existing lead
       yield put(push('/home'));
     }
     if (redirectToMission) {
-      yield put(changeLeadStatusLaunched({ leadId: id, status: 'FINALIZE' }))
+      yield put(changeLeadStatusLaunched({ leadId, status: 'FINALIZE' }))
       yield put(push('/home')); // Will be changed to /brief/:id
       yield put(handleCurrentStep(0));
       yield put(openSnackBar({ message: "👏 Brief déposé ! Retrouvez ici l’état d’avancement de votre mission.", error: false }));
