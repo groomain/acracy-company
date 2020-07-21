@@ -88,7 +88,7 @@ const LeadCreationPage = (props) => {
 
   // Handle the 'save & close' and the 'call me' buttons' disabled state
   useEffect(() => {
-    if (activeStep === 0 && (!leadDraftSearchData?.search || missionTitle === undefined)) {
+    if (activeStep === 0 && ((!leadDraftSearchData?.search && !leadDraftData?.search) || missionTitle.trim().length < 1)) {
       setDisableAppbarSaveBtn(true)
     } else {
       setDisableAppbarSaveBtn(false)
@@ -394,8 +394,7 @@ const LeadCreationPage = (props) => {
                     <Tip title='#01' subtitle='Mieux vaut trop' description={t('leadCreation.tip1')} />
                   </Grid>
                   <Grid item className={classes.briefTipRoot} style={{ marginTop: '2rem' }}>
-                    <Tip title='#02' subtitle='Donnez envie' description={t('leadCreation.tip2')} Url='/dunno' linkTitle={t('leadCreation.discoverTips')} />
-                    {/* TODO change URL */}
+                    <Tip title='#02' subtitle='Donnez envie' description={t('leadCreation.tip2')} Url="https://medium.com/@weareacracy/travailler-avec-des-talents-cr%C3%A9atifs-en-direct-mode-demploi-2-3-c7c379fac8b5" linkTitle={t('leadCreation.discoverTips')} />
                   </Grid>
                 </>
               ) : (

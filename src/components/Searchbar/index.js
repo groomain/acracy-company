@@ -53,8 +53,16 @@ const SearchResults = ({ searchResults, onUpdateChosenCategory }) => {
 
   const [resultsList, setResultsList] = useState([]);
   const [loading, setIsLoading] = useState(true);
-  const [searchValue, setSearchValue] = useState(leadCreationPageWithSearchResult || leadDraftData?.search);
+  const [searchValue, setSearchValue] = useState();
   const [newOption, setNewOption] = useState({ title: t('leadCreation.reseachLabel') });
+
+  useEffect(() => {
+    if (leadDraftData) {
+      setSearchValue(leadDraftData?.search)
+    } else {
+      setSearchValue(leadCreationPageWithSearchResult)
+    }
+  }, [leadDraftData]);
 
   useEffect(() => {
     if (searchResults) {
@@ -128,7 +136,7 @@ const SearchResults = ({ searchResults, onUpdateChosenCategory }) => {
   const SingleValue = props => {
     return (
       <components.SingleValue {...props} className={classes.value}>
-        {props.data.TEXT || newOption?.value}
+        {searchValue?.text || props.data.TEXT || newOption?.value}
       </components.SingleValue>
     )
   };
