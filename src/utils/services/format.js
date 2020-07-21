@@ -109,7 +109,7 @@ export const formatType = (val) => {
     case 'WHATEVER':
       return 'Peu importe'
     case 'REMOTE_ONLY':
-      return 'en remote uniquement'
+      return 'En remote uniquement'
     case 'INPLACE_ONLY':
       return 'Sur place uniquement'
     case 'BOTH':
@@ -155,9 +155,9 @@ export const formatDurationType = val => {
 export const formatBudgetType = val => {
   switch (val) {
     case 'TOTAL':
-      return 'Budget Total'
+      return 'Budget total'
     case 'DAILY_RATE':
-      return 'Taux Journalier'
+      return 'Taux journalier'
     default:
   }
 }
