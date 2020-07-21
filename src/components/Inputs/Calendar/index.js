@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch } from "react-redux";
 import moment from 'moment';
 import MomentUtils from '@date-io/moment';
@@ -21,11 +21,19 @@ class LocalizedUtils extends MomentUtils {
   }
 }
 
-export const Calendar = ({ error, label, minDate }) => {
+export const Calendar = ({ error, label, minDate, startDate }) => {
   const classes = styles();
   const dispatch = useDispatch();
 
-  const [selectedDate, setSelectedDate] = useState(minDate);
+  const [selectedDate, setSelectedDate] = useState();
+
+  useEffect(() => {
+    if (startDate) {
+      setSelectedDate(startDate)
+    } else {
+      setSelectedDate(minDate)
+    }
+  }, [startDate, minDate])
 
   const setDate = (e) => {
     setSelectedDate(e);
@@ -55,6 +63,7 @@ export const Calendar = ({ error, label, minDate }) => {
           minDate={minDate}
           style={{ width: '100%' }}
           invalidDateMessage=""
+          minDateMessage={null} // Disable the error message when startDate is inferior to minDate, but keep anterior dates disabled
         />
       </Grid>
     </MuiPickersUtilsProvider>
