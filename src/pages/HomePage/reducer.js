@@ -10,7 +10,7 @@ const initialState = Immutable.Map({
   deletingLeadLoading: false,
   missionsLoading: false,
   missionsData: null,
-  leadCreationStep: null,
+  leadCreationStep: 0,
   briefsLoading: false,
   briefsData: null,
   quotes: null,

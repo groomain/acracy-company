@@ -7,6 +7,7 @@ import {
   putLeadDraftSuccess, putLeadDraftFailure, changeLeadStatusLaunched, changeLeadStatusSuccess, changeLeadStatusFailure, getExpertisesSuccess,
   getExpertisesFailure, getSensitivitiesSuccess, getSensitivitiesFailure, uploadFileSuccess, uploadFileFailure, deleteAttachmentSuccess, deleteAttachmentFailure
 } from "./reducer";
+import { setLeadCreationStep } from '../HomePage/reducer';
 
 import { openSnackBar, handleCurrentStep } from "../../components/App/reducer";
 
@@ -74,6 +75,7 @@ function* doUpdateLeadDraft(action) { // update an existing lead
       });
 
     yield put(putLeadDraftSuccess(draft));
+    yield put(setLeadCreationStep(1));
     if (redirect) {
       yield put(push('/home'));
     }
@@ -91,7 +93,6 @@ function* doUpdateLeadDraft(action) { // update an existing lead
 }
 
 function* doChangeLeadStatus(action) {  // modify the status of a lead
-  // console.log('function*doChangeLeadStatus -> action', action)
   const { leadId, status } = action.payload;
   try {
     const update = yield API.post(config.apiGateway.NAME, encodeURI(`/leads/${leadId}/actions/`),

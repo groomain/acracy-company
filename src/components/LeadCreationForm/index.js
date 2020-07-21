@@ -46,7 +46,7 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
       dateFromCalendar: state.getIn(['leadCreation', 'dateFromCalendar']),
       leadDraftSearchData: state.getIn(['leadCreation', 'leadDraftSearchData']),
       deliverablesArray: state.getIn(['leadCreation', 'deliverablesArray']),
-      leadCreationStep: state.getIn(['leadCreation', 'leadCreationStep']),
+      leadCreationStep: state.getIn(['dashboard', 'leadCreationStep']),
       expertises: state.getIn(['leadCreation', 'expertises']),
       selectedExpertiseList: state.getIn(['leadCreation', 'selectedExpertiseList']),
       expansionPanelOpen: state.getIn(['leadCreation', 'expansionPanelOpen']),
@@ -62,7 +62,7 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
       leadDraftData: state.getIn(['leadCreation', 'leadDraftData']),
     }));
 
-  const [activeStep, setActiveStep] = useState(leadCreationStep);
+  const [activeStep, setActiveStep] = useState();
   const [searchedCategory, setSearchedCategory] = useState({});
   const [deliverables, setDeliverables] = useState([]);
   const [dailyCost, setDailyCost] = useState();
@@ -82,6 +82,10 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
   useEffect(() => {
     onUpdateMissionTitle(missionTitle)
   }, [missionTitle])
+
+  useEffect(() => {
+    setActiveStep(leadCreationStep);
+  }, [leadCreationStep]);
 
   const getSteps = () => {
     return [t('leadCreation.synthesis'), t('leadCreation.details')];

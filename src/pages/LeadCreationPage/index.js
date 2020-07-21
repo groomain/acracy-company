@@ -54,7 +54,7 @@ const LeadCreationPage = (props) => {
       dateFromCalendar: state.getIn(['leadCreation', 'dateFromCalendar']),
       dailyRate: state.getIn(['leadCreation', 'dailyRate']),
       leadDraftData: state.getIn(['leadCreation', 'leadDraftData']),
-      leadCreationStep: state.getIn(['leadCreation', 'leadCreationStep']),
+      leadCreationStep: state.getIn(['dashboard', 'leadCreationStep']),
       leadDraftId: state.getIn(['leadCreation', 'leadDraftId']),
       selectedExpertiseList: state.getIn(['leadCreation', 'selectedExpertiseList']),
       expertisePriorities: state.getIn(['leadCreation', 'expertisePriorities']),
@@ -68,7 +68,7 @@ const LeadCreationPage = (props) => {
 
   useEffect(() => {
     setActiveStep(leadCreationStep)
-  }, []);
+  }, [leadCreationStep]);
 
   const [leadId, setLeadId] = useState();
   const [splittedUrl, setSplittedUrl] = useState();
@@ -217,7 +217,9 @@ const LeadCreationPage = (props) => {
     }
 
     const formattedSensitivity = selectedSensitivity => {
-      return selectedSensitivity?.map(x => ({ sensitivity: { code: x.code, text: x.text }, essential: selectedSensitivity[0].text === sensitivityPriority[0] }));
+      const sensitivity = selectedSensitivity?.map(x => ({ sensitivity: { code: x.code, text: x.text }, essential: selectedSensitivity[0].text === sensitivityPriority[0] }));
+      const [extractedSensitivity] = sensitivity;
+      return extractedSensitivity;
     }
 
     const formattedLanguage = selectedLanguage => {
