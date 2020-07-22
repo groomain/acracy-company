@@ -163,7 +163,10 @@ const { actions, reducer } = createSlice({
     deleteAttachmentSuccess: (state, action) => state
       .set('deleteFileLoading', false),
     deleteAttachmentFailure: (state, action) => state
-      .set('deleteFileLoading', false)
+      .set('deleteFileLoading', false),
+    // Misc
+    dispatchLeadId: (state, action) => state
+      .set('leadDraftId', action.payload)
   }
 });
 
@@ -212,6 +215,8 @@ export const {
   deleteAttachmentLaunched,
   deleteAttachmentSuccess,
   deleteAttachmentFailure,
+  //
+  dispatchLeadId
 } = actions;
 
 export default reducer;

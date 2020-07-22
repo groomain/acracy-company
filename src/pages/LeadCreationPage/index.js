@@ -18,7 +18,7 @@ import acracyLogo from "../../assets/icons/logo-acracy.svg";
 import phonecall from '../../assets/icons/phone-call.svg';
 import { useTranslation } from "react-i18next";
 import styles from './styles';
-import { leadSaveLaunched, getLeadDraftLaunched, putLeadDraftLaunched } from "./reducer";
+import { leadSaveLaunched, getLeadDraftLaunched, putLeadDraftLaunched, dispatchLeadId } from "./reducer";
 import clsx from "clsx";
 import useScrollTrigger from "@material-ui/core/useScrollTrigger";
 import CustomLoader from '../../components/Loader';
@@ -79,6 +79,7 @@ const LeadCreationPage = (props) => {
     } else if (location.pathname) {
       setSplittedUrl(location.pathname.split("/"));
       setLeadId(location.pathname.split("/")[2]);
+      dispatch(dispatchLeadId(location.pathname.split('/')[2]))
     } else if (leadDraftId) {
       setLeadId(leadDraftId)
     }
@@ -213,17 +214,23 @@ const LeadCreationPage = (props) => {
     };
 
     const formattedExpertiseList = selectedExpertiseList => {
-      return selectedExpertiseList?.map(x => ({ expertise: { code: x.code, text: x.text }, priority: expertisePriorities.includes(x.text) }));
+      if (selectedExpertiseList) {
+        return selectedExpertiseList?.map(x => ({ expertise: { code: x.code, text: x.text }, priority: expertisePriorities.includes(x.text) }));
+      }
     }
 
     const formattedSensitivity = selectedSensitivity => {
-      const sensitivity = selectedSensitivity?.map(x => ({ sensitivity: { code: x.code, text: x.text }, essential: selectedSensitivity[0].text === sensitivityPriority[0] }));
-      const [extractedSensitivity] = sensitivity;
-      return extractedSensitivity;
+      if (selectedSensitivity) {
+        const sensitivity = selectedSensitivity?.map(x => ({ sensitivity: { code: x.code, text: x.text }, essential: selectedSensitivity[0].text === sensitivityPriority[0] }));
+        const [extractedSensitivity] = sensitivity;
+        return extractedSensitivity;
+      }
     }
 
     const formattedLanguage = selectedLanguage => {
-      return selectedLanguage?.map(x => ({ language: x.type, essential: x.text === languagePriority[0] }))
+      if (selectedLanguage) {
+        return selectedLanguage?.map(x => ({ language: x.type, essential: x.text === languagePriority[0] }));
+      }
     }
 
     if (activeStep === 0) {
@@ -242,9 +249,9 @@ const LeadCreationPage = (props) => {
           ]
         },
         missionRequirements: {
-          expertises: formattedExpertiseList(selectedExpertiseList) ?? '',
+          expertises: formattedExpertiseList(selectedExpertiseList) ?? [],
           sensitivity: formattedSensitivity(selectedSensitivity) ?? '',
-          languages: formattedLanguage(selectedLanguage) ?? '',
+          languages: formattedLanguage(selectedLanguage) ?? [],
           seniority: formatSeniorityType(values?.seniority) ?? ''
         }
       }
