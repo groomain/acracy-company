@@ -27,6 +27,7 @@ function* doLeadSave(action) { // create a new lead
     });
 
     yield put(leadSaveSuccess(leadId));
+    yield put(setLeadCreationStep(1));
     if (redirect) {
       yield put(push('/home'));
     }
