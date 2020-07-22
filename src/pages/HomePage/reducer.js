@@ -73,7 +73,7 @@ const { actions, reducer } = createSlice({
       .set('briefsData', null),
     getBriefsSuccess: (state, action) => state
       .set('briefsLoading', false)
-      .set('briefsData', action.payload.briefs),
+      .set('briefsData', action.payload),
     getBriefsFailure: (state, action) => state
       .set('briefsLoading', false)
       .set('briefsData', null),

@@ -61,8 +61,12 @@ export const Missions = () => {
   })
 
   useEffect(() => {
-    setBriefsList(briefsData?.concat(toValidateMission?.length > 0 && missionAsMatchingProfile))
-  }, []) // Might need "briefsData, missionAsMatchingProfile, toValidateMission", but check infinite loop
+    if (toValidateMission?.length > 0) {
+      setBriefsList(briefsData?.concat(missionAsMatchingProfile));
+    } else {
+      setBriefsList(briefsData);
+    }
+  }, [briefsData, toValidateMission, missionAsMatchingProfile]);
 
   const inProgressMissions = missions?.filter(x => (x?.status === IN_PROGRESS && x?.dateStart < today && x?.dateEnd?.length < 1) || (x.status === FINISHED && x.dateEnd?.length < 1));
   const futureMissions = missions?.filter(x => x.status === IN_PROGRESS && x.dateStart > today);
