@@ -9,6 +9,10 @@ const config = {
     APP_CLIENT_ID: process.env.REACT_APP_COGNITO_APP_CLIENT_ID,
     IDENTITY_POOL_ID: process.env.REACT_APP_COGNITO_IDENTITY_POOL_ID
   },
+  s3: {
+    BUCKET_NAME: process.env.REACT_APP_TEMP_BUCKET_NAME,
+    BUCKET_REGION: process.env.REACT_APP_AWS_REGION,
+  },
   apiKey: process.env.REACT_APP_APIKEY
 };
 
@@ -29,6 +33,12 @@ const amplifyConfig = {
         region: config.AWS_REGION
       }
     ]
+  },
+  Storage: {
+    AWSS3: {
+      bucket: config.s3.BUCKET_NAME,
+      region: config.s3.BUCKET_REGION,
+    }
   }
 };
 
