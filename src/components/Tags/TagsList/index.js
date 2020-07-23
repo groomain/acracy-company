@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch } from "react-redux";
 import { useTranslation } from 'react-i18next';
 import { Grid, Box } from '@material-ui/core/';
@@ -9,16 +9,24 @@ import CustomButton from '../../Button';
 
 import { setExpansionPanelOpen, setSelectedExpertise, setSelectedSensitivity, setSelectedLanguage } from '../../../pages/LeadCreationPage/reducer';
 
-export const TagsList = ({ tags, type, maxSelection, checkedArray }) => {
+export const TagsList = ({ tags, type, maxSelection, selectedExpertiseArray, selectedSensitivityArray }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
-  const [tagsListWithCheckedKey, setTagsListWithCheckedKey] = useState(tags.map(x => ({ ...x, checked: checkedArray?.includes(x.text) })));
+  const [tagsListWithCheckedKey, setTagsListWithCheckedKey] = useState();
   const selectedTags = tagsListWithCheckedKey?.filter(item => item.checked)
 
   const onCheckChange = (index) => {
     setTagsListWithCheckedKey(tagsListWithCheckedKey.map((item, i) => (index === i) ? { ...item, checked: !item.checked } : item));
   }
+
+  useEffect(() => {
+    if (type === 'expertise') {
+      setTagsListWithCheckedKey(tags.map(x => ({ ...x, checked: selectedExpertiseArray?.includes(x.text) })))
+    } else if (type === 'sensitivity') {
+      setTagsListWithCheckedKey(tags.map(x => ({ ...x, checked: selectedSensitivityArray?.includes(x.text) })))
+    }
+  }, [selectedExpertiseArray, type, selectedSensitivityArray]);
 
   const handleSelection = () => {
     if (type === 'expertise') {

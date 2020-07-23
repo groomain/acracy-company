@@ -558,7 +558,15 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
     } else {
       setExpertisePriorityList(selectedExpertiseList);
     }
-  }, [leadDraftData, selectedExpertiseList]);
+
+    if (leadDraftData?.missionRequirements?.sensitivity && (!selectedSensitivity || selectedSensitivity?.length < 1)) {
+      setSensitivityPriorityList([leadDraftData?.missionRequirements?.sensitivity]);
+      dispatch(setSensitivityPriority([leadDraftData?.missionRequirements?.sensitivity]?.filter(x => x.essential).map(x => x.sensitivity.text)));
+    } else {
+      setSensitivityPriorityList(selectedSensitivity);
+    }
+
+  }, [leadDraftData, selectedExpertiseList, selectedSensitivity]);
 
   const handlePriorityCheck = (index) => {
     const prio = expertisePriorityList?.map((item, i) => (index === i) ? { ...item, priority: !item.priority } : item);
@@ -567,9 +575,9 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
   }
 
   const handleSensitivityCheck = (index) => {
-    const prio = sensitivityPriorityList?.map((item, i) => (index === i) ? { ...item, priority: !item.priority } : item);
+    const prio = sensitivityPriorityList?.map((item, i) => (index === i) ? { ...item, essential: !item.essential } : item);
     setSensitivityPriorityList(prio);
-    dispatch(setSensitivityPriority(prio.filter(x => x.priority).map(x => x.text)));
+    dispatch(setSensitivityPriority(prio.filter(x => x.essential).map(x => x.text || x.sensitivity.text)));
   }
 
   const handleLanguageCheck = (index) => {
@@ -617,23 +625,20 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
               panelTitle={t('leadCreation.profileExpertises')}
               type='expertise'
               maxSelection={5}
-              checkedArray={expertisePriorityList?.map(x => x.expertise?.text || expertisePriorityList?.map(x => x.text))}
+              selectedExpertiseArray={expertisePriorityList?.map(x => x.expertise?.text || x.text)}
             />
             {expansionPanelOpen !== 'expertise' &&
               <Grid item container direction='row'>
-                {expertisePriorityList?.length > 0 && expertisePriorityList?.map((tag, key) => {
-                  // console.log('setLeadDetails -> tag', tag)
-                  return (
-                    <Tag key={key}
-                      title={tag.text || tag?.expertise?.text}
-                      isPrimaryColor
-                      tagType="Prioritaire"
-                      isWithCheckbox
-                      onCheckChange={() => handlePriorityCheck(key)}
-                      checkedArray={expertisePriorities}
-                    />
-                  )
-                })}
+                {expertisePriorityList?.length > 0 && expertisePriorityList?.map((tag, key) => (
+                  <Tag key={key}
+                    title={tag.text || tag?.expertise?.text}
+                    isPrimaryColor
+                    tagType="Prioritaire"
+                    isWithCheckbox
+                    onCheckChange={() => handlePriorityCheck(key)}
+                    checkedArray={expertisePriorities}
+                  />
+                ))}
               </Grid>}
           </Grid>}
 
@@ -650,12 +655,13 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
                   panelTitle={t('leadCreation.profileSensitivity')}
                   type='sensitivity'
                   maxSelection={1}
+                  selectedSensitivityArray={sensitivityPriorityList?.map(x => x.sensitivity?.text || x.text)}
                 />
                 {expansionPanelOpen !== 'sensitivity' &&
                   <Grid item container direction='row'>
                     {sensitivityPriorityList?.length > 0 && sensitivityPriorityList?.map((tag, key) => (
                       <Tag key={key}
-                        title={tag.text}
+                        title={tag.text || tag?.sensitivity?.text}
                         isPrimaryColor
                         tagType="Critère indispensable"
                         isWithCheckbox
