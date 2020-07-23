@@ -214,22 +214,34 @@ const LeadCreationPage = (props) => {
     };
 
     const formattedExpertiseList = selectedExpertiseList => {
-      if (selectedExpertiseList) {
+      if (selectedExpertiseList.length > 0) { // change the whole object
         return selectedExpertiseList?.map(x => ({ expertise: { code: x.code, text: x.text }, priority: expertisePriorities.includes(x.text) }));
+      } else if (selectedExpertiseList.length === 0 && expertisePriorities !== leadDraftData?.missionRequirements?.expertises.filter(x => x.priority).map(x => x.expertise.text)) { // If only change priorities
+        return leadDraftData?.missionRequirements?.expertises.map(x => ({ expertise: { code: x.expertise.code, text: x.expertise.text }, priority: expertisePriorities.includes(x.expertise.text) }))
+      } else {
+        return leadDraftData?.missionRequirements?.expertises // no changes for this category
       }
     }
 
     const formattedSensitivity = selectedSensitivity => {
-      if (selectedSensitivity) {
+      if (selectedSensitivity.length > 0) {
         const sensitivity = selectedSensitivity?.map(x => ({ sensitivity: { code: x.code, text: x.text }, essential: selectedSensitivity[0].text === sensitivityPriority[0] }));
         const [extractedSensitivity] = sensitivity;
         return extractedSensitivity;
+      } else if (selectedSensitivity.length === 0 && sensitivityPriority !== [leadDraftData?.missionRequirements?.sensitivity].filter(x => x.essential).map(x => x.sensitivity.text)) {
+        const sensitivity = [leadDraftData?.missionRequirements?.sensitivity].map(x => ({ sensitivity: { code: x.sensitivity.code, text: x.sensitivity.text }, essential: sensitivityPriority.includes(x.sensitivity.text) }));
+        const [extractedSensitivity] = sensitivity;
+        return extractedSensitivity;
+      } else {
+        return leadDraftData?.missionRequirements?.sensitivity
       }
     }
 
     const formattedLanguage = selectedLanguage => {
-      if (selectedLanguage) {
+      if (selectedLanguage.length > 0) {
         return selectedLanguage?.map(x => ({ language: x.type, essential: x.text === languagePriority[0] }));
+      } else {
+        return leadDraftData?.missionRequirements?.language
       }
     }
 
@@ -239,8 +251,8 @@ const LeadCreationPage = (props) => {
       lead = {
         ...leadDraft,
         missionDetail: {
-          contextAndTasks: values?.contextAndTasks ?? '',
-          detailsOfDeliverables: values?.detailsOfDeliverables ?? '',
+          contextAndTasks: leadDraftData?.missionDetail?.contextAndTasks || values?.contextAndTasks || '',
+          detailsOfDeliverables: leadDraftData?.missionDetail?.contextAndTasks || values?.detailsOfDeliverables || '',
           sharedDocuments: [
             {
               name: uploadedFileName ?? '',
