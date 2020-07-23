@@ -7,13 +7,13 @@ import CustomExpansionPanel from '../../CustomExpansionPanel';
 import CheckableTag from '../CheckableTag';
 import CustomButton from '../../Button';
 
-import { setExpansionPanelOpen, setSelectedExpertise, setExpertisePriorities, setSelectedSensitivity, setSelectedLanguage } from '../../../pages/LeadCreationPage/reducer';
+import { setExpansionPanelOpen, setSelectedExpertise, setSelectedSensitivity, setSelectedLanguage } from '../../../pages/LeadCreationPage/reducer';
 
-export const TagsList = ({ tags, type, maxSelection }) => {
+export const TagsList = ({ tags, type, maxSelection, checkedArray }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
-  const [tagsListWithCheckedKey, setTagsListWithCheckedKey] = useState(tags.map(x => ({ ...x, checked: false })));
+  const [tagsListWithCheckedKey, setTagsListWithCheckedKey] = useState(tags.map(x => ({ ...x, checked: checkedArray?.includes(x.text) })));
   const selectedTags = tagsListWithCheckedKey?.filter(item => item.checked)
 
   const onCheckChange = (index) => {
@@ -23,7 +23,6 @@ export const TagsList = ({ tags, type, maxSelection }) => {
   const handleSelection = () => {
     if (type === 'expertise') {
       dispatch(setSelectedExpertise(selectedTags));
-      dispatch(setExpertisePriorities([]))
     } else if (type === 'sensitivity') {
       dispatch(setSelectedSensitivity(selectedTags))
     } else if (type === 'languages') {
@@ -37,7 +36,7 @@ export const TagsList = ({ tags, type, maxSelection }) => {
       <CustomExpansionPanel
         id={type}
         isTag
-        panelTitle={selectedTags.length > 0 ? t('tagsList.fieldTitleStarted') : t('tagsList.fieldTitleNewSelection')}>
+        panelTitle={selectedTags?.length > 0 ? t('tagsList.fieldTitleStarted') : t('tagsList.fieldTitleNewSelection')}>
         <Grid>
           <div>
             {tagsListWithCheckedKey?.map((tag, key) => <CheckableTag
@@ -52,7 +51,7 @@ export const TagsList = ({ tags, type, maxSelection }) => {
               title={t('buttonTitles.validate')}
               theme="asLink"
               rippleDisabled
-              disabled={selectedTags.length < 1}
+              disabled={selectedTags?.length < 1}
               handleClick={handleSelection}
             />
           </div>

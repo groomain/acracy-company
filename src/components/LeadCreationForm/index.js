@@ -16,7 +16,7 @@ import { Typography, Grid, Stepper, Step, StepLabel, StepButton, Box, InputAdorn
 import {
   setLeadDraftSearchData, setDeliverablesArray, setDailyRate,
   changeLeadStatusLaunched, getExpertisesLaunched, setExpertisePriorities,
-  getSensitivitiesLaunched, setSensitivityPriority, setLanguagePriority
+  getSensitivitiesLaunched, setSensitivityPriority, setLanguagePriority, setSelectedExpertise, setSelectedSensitivity, setSelectedLanguage
 } from '../../pages/LeadCreationPage/reducer';
 import { setLeadCreationStep } from '../../pages/HomePage/reducer';
 import { handleCurrentStep } from "../App/reducer";
@@ -86,6 +86,15 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
   useEffect(() => {
     setActiveStep(leadCreationStep);
   }, [leadCreationStep]);
+
+  useEffect(() => { // Empty the tagsLists selection from redux to prevent passing data from one lead to another
+    dispatch(setSelectedExpertise([]));
+    dispatch(setSelectedSensitivity([]));
+    dispatch(setSelectedLanguage([]));
+    dispatch(setExpertisePriorities([]));
+    dispatch(setSensitivityPriority([]));
+    dispatch(setLanguagePriority([]));
+  }, []);
 
   const getSteps = () => {
     return [t('leadCreation.synthesis'), t('leadCreation.details')];
@@ -543,15 +552,18 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
   const [disableSendBrief, setDisableSendBrief] = useState(true);
 
   useEffect(() => {
-    setExpertisePriorityList(selectedExpertiseList?.map(x => ({ ...x, priority: false })));
-    setSensitivityPriorityList(selectedSensitivity?.map(x => ({ ...x, priority: false })));
-    setLanguagePriorityList(selectedLanguage?.map(x => ({ ...x, priority: false })))
-  }, [selectedExpertiseList, selectedSensitivity, selectedLanguage]);
+    if (leadDraftData?.missionRequirements?.expertises && selectedExpertiseList?.length < 1) { // If data from DB, while selection is not overriden
+      setExpertisePriorityList(leadDraftData?.missionRequirements?.expertises); // First, get selected expertises from DB
+      dispatch(setExpertisePriorities(leadDraftData?.missionRequirements?.expertises?.filter(x => x.priority).map(x => x.expertise.text))); // Then, check which are selected as a priority to display the check mark
+    } else {
+      setExpertisePriorityList(selectedExpertiseList);
+    }
+  }, [leadDraftData, selectedExpertiseList]);
 
   const handlePriorityCheck = (index) => {
     const prio = expertisePriorityList?.map((item, i) => (index === i) ? { ...item, priority: !item.priority } : item);
     setExpertisePriorityList(prio);
-    dispatch(setExpertisePriorities(prio.filter(x => x.priority).map(x => x.text)));
+    dispatch(setExpertisePriorities(prio.filter(x => x.priority).map(x => x.text || x.expertise.text)));
   }
 
   const handleSensitivityCheck = (index) => {
@@ -605,18 +617,23 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
               panelTitle={t('leadCreation.profileExpertises')}
               type='expertise'
               maxSelection={5}
+              checkedArray={expertisePriorityList?.map(x => x.expertise?.text || expertisePriorityList?.map(x => x.text))}
             />
             {expansionPanelOpen !== 'expertise' &&
               <Grid item container direction='row'>
-                {expertisePriorityList?.length > 0 && expertisePriorityList?.map((tag, key) => (
-                  <Tag key={key}
-                    title={tag.text}
-                    isPrimaryColor
-                    tagType="Prioritaire"
-                    isWithCheckbox
-                    onCheckChange={() => handlePriorityCheck(key)}
-                    checkedArray={expertisePriorities}
-                  />))}
+                {expertisePriorityList?.length > 0 && expertisePriorityList?.map((tag, key) => {
+                  // console.log('setLeadDetails -> tag', tag)
+                  return (
+                    <Tag key={key}
+                      title={tag.text || tag?.expertise?.text}
+                      isPrimaryColor
+                      tagType="Prioritaire"
+                      isWithCheckbox
+                      onCheckChange={() => handlePriorityCheck(key)}
+                      checkedArray={expertisePriorities}
+                    />
+                  )
+                })}
               </Grid>}
           </Grid>}
 
