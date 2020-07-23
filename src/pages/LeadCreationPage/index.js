@@ -192,8 +192,8 @@ const LeadCreationPage = (props) => {
     let leadDraft, lead;
 
     leadDraft = {
-      search: getSearchResult || '',
-      desireds: getDesireds || '',
+      search: leadDraftData?.search || getSearchResult || '',
+      desireds: leadDraftData?.desireds || getDesireds || '',
       missionContext: {
         title: values?.missionTitle || '',
         startDate: dateFromCalendar ? new Date(dateFromCalendar).toISOString() : new Date(minDate).toISOString(), // operateur ternaire pour remettre profil à 0 quand profil a été recherché
