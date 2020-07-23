@@ -9,6 +9,7 @@ import {
 } from "./reducer";
 
 import { openSnackBar, handleCurrentStep } from "../../components/App/reducer";
+import {s3Upload} from "../../utils/services/awsLib";
 
 // mocks
 // import expertise from '../../mock/expertises.json';
@@ -61,7 +62,7 @@ function* doGetLeadDraft(action) { // get a lead's data
 }
 
 function* doUpdateLeadDraft(action) { // update an existing lead
-  // console.log('action: ', action.payload)
+  console.log('action: ', action.payload)
   const { id, form, redirect, redirectToMission } = action.payload;
   try {
     const draft = yield API.put(config.apiGateway.NAME, encodeURI(`/leads/${id}`),
@@ -149,6 +150,7 @@ function* doUploadFile(action) {
 
   if (payload.file.size < 1.5e+7)
     try {
+      const storedKey = yield s3Upload(`${payload.leadId.leadId}-${payload.file.name}`, payload.file);
       const leadAttachmentId = yield API.post(config.apiGateway.NAME, encodeURI('/attachments'),
         {
           headers: {
@@ -157,9 +159,9 @@ function* doUploadFile(action) {
           body: {
             type: 'MISSION_SHARED_DOCUMENT',
             name: payload.file.name,
-            filename: payload.src,
+            filename: storedKey,
             payload: {
-              leadId: payload.leadId
+              leadId: payload.leadId.leadId
             }
           }
         });

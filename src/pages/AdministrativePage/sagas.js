@@ -20,10 +20,9 @@ import { push } from "connected-react-router";
 import {clearSnackBar, closeSnackBar, openSnackBar} from "../../components/App/reducer";
 
 function* getCompany(action) {
-  const { companyId } = action.payload;
   try {
     // let companyData = companyMock;
-    const companyData = yield API.get(config.apiGateway.NAME, `/companies/${companyId}`, {
+    const companyData = yield API.get(config.apiGateway.NAME, `/companies/${action.payload}`, {
       headers: {
         'x-api-key': config.apiKey
       }
@@ -34,7 +33,7 @@ function* getCompany(action) {
   } catch (error) {
     console.log(error);
     yield put(getCompanyFailure());
-    yield put(openAdminSnackBar({ message: "Une erreur est survenue", error: true }));
+    yield put(openSnackBar({ message: "Une erreur est survenue", error: true }));
     yield put(push('/'));
   }
 }

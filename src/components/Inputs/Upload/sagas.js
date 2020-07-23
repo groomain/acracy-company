@@ -14,13 +14,17 @@ import {
   changeAttachmentFromData,
   openAdminSnackBar
 } from "../../../pages/AdministrativePage/reducer";
+import {s3Upload} from "../../../utils/services/awsLib";
 
 function* doUploadFile(action) {
+  console.log("ACTION",action);
   const payload = action.payload.files[0];
   const type = action.payload.type;
 
-  if (payload.file.size < 1.5e+7)
+  if (payload.file.size < 1.5e+7) {
     try {
+      const storedKey = yield s3Upload(`${action.payload.companyData.externalId}-${action.payload.name}`, payload.file);
+      console.log("storedKey", storedKey);
       const externalId = yield API.post(config.apiGateway.NAME, encodeURI('/attachments'),
         {
           headers: {
@@ -29,21 +33,23 @@ function* doUploadFile(action) {
           body: {
             type: type,
             name: action.payload.name || payload.file.name,
-            filename: payload.src,
+            filename: storedKey,
             payload: {
-              leadId: payload.leadId
+              companyId: action.payload.companyData.externalId
             }
           }
         });
       if (action.payload.companyData) {
-        const newCompanyData = {...action.payload.companyData, administrativeProfile: {...action.payload.companyData.administrativeProfile, legalDocuments: [...action.payload.companyData.administrativeProfile.legalDocuments, {externalId: externalId, name: action.payload.name}]}};
+        const newCompanyData = {...action.payload.companyData, administrativeProfile: {...action.payload.companyData.administrativeProfile, legalDocuments: [...action.payload.companyData.administrativeProfile.legalDocuments, {externalId: externalId, name: `${action.payload.companyData.externalId}-${action.payload.name}`}]}};
+        console.log("newCompanyData", newCompanyData);
         yield put(changeAttachmentFromData(newCompanyData));
       }
       yield put(uploadFileSuccess());
     } catch (error) {
       yield put(uploadFileFailure());
       yield put(openSnackBar({ message: "Erreur pendant l'envoi du fichier", error: true }));
-    } else {
+    }
+  } else {
     yield put(openSnackBar({ message: "Taille du fichier max. : 15Mo", error: true }));
   }
 
@@ -68,12 +74,14 @@ function* doDeleteAttachment(action) {
 }
 
 function* doGetAttachments(action) {
+  console.log(action.payload);
   try {
     const attachments = yield API.get(config.apiGateway.NAME, `/attachments/${action.payload}`, {
       header: {
         'x-api-key': config.apiKey
       },
     });
+    console.log("attachments", attachments);
     yield put(getAttachmentsSuccess(attachments))
     window.open(attachments);
   } catch (error) {

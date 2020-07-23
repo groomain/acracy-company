@@ -26,7 +26,6 @@ export const CustomAppBar = (props) => {
     disableHysteresis: true,
     threshold: 0,
   });
-  console.log('CustomAppBar -> scroll', scroll)
 
   const renderButtons = () => {
     switch (props.path || location.pathname) {
