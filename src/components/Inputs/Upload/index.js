@@ -62,6 +62,7 @@ export const Upload = (props) => {
     const [hoveredClose, setHoveredClose] = React.useState(false);
     const [hoveredGet, setHoveredGet] = React.useState(false);
 
+
     const handleChange = (e) => {
         const fileList = e.target.files;
         const arrFiles = Array.from(fileList)
@@ -108,6 +109,9 @@ export const Upload = (props) => {
         dispatch(changeAttachmentFromData(newCompanyData))
     };
 
+    console.log(companyData?.administrativeProfile?.legalDocuments?.filter((file) => file?.name !== companyData.externalId + '-' + props.name));
+    console.log(companyData?.administrativeProfile?.legalDocuments?.filter((file) => file?.name !== companyData.externalId + '-' + props.name)[0]?.externalId);
+
     return (
         <>
             {
@@ -115,17 +119,18 @@ export const Upload = (props) => {
                     <form className="form">
                         <Grid container>
                             {uploadedFiles?.map(({ file, src, id }, index) => {
+                                console.log('TEST', props.name, companyData?.administrativeProfile?.legalDocuments?.filter((value) => value?.name === companyData.externalId + '-' + props.name)[0]);
                                 return (
                                     <Box mx={2} key={`file-row${index}`}>
                                         <Grid container direction="column" alignItems="center">
                                             <div style={{ position: 'relative' }}>
-                                                <img src={fileIcon} alt="uploaded file" onClick={() => dispatch(getAttachmentsLaunched(file.externalId))} className={classes.img}/>
+                                                <img src={fileIcon} alt="uploaded file" onClick={() => dispatch(getAttachmentsLaunched(companyData?.administrativeProfile?.legalDocuments?.filter((value) => value?.name === companyData.externalId + '-' + props.name)[0]?.externalId))} className={classes.img}/>
                                                 <CloseIcon
                                                     hovered={hoveredClose}
                                                     onMouseEnter={() => setHoveredClose(true)}
                                                     onMouseLeave={() => setHoveredClose(false)}
                                                     className={classes.closeButton}
-                                                    onClick={() => handleFileDeleteFromData(file.externalId)}
+                                                    onClick={() => handleFileDeleteFromData(companyData?.administrativeProfile?.legalDocuments?.filter((value) => value?.name === companyData.externalId + '-' + props.name)[0]?.externalId)}
                                                 />
                                             </div>
                                             <Box my={1}>

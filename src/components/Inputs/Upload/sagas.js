@@ -45,6 +45,7 @@ function* doUploadFile(action) {
         yield put(changeAttachmentFromData(newCompanyData));
       }
       yield put(uploadFileSuccess());
+      yield put(openAdminSnackBar({ message: "Votre document a bien été ajouté", error: false }));
     } catch (error) {
       yield put(uploadFileFailure());
       yield put(openSnackBar({ message: "Erreur pendant l'envoi du fichier", error: true }));
@@ -77,13 +78,13 @@ function* doGetAttachments(action) {
   console.log(action.payload);
   try {
     const attachments = yield API.get(config.apiGateway.NAME, `/attachments/${action.payload}`, {
-      header: {
+      headers: {
         'x-api-key': config.apiKey
       },
     });
     console.log("attachments", attachments);
-    yield put(getAttachmentsSuccess(attachments))
-    window.open(attachments);
+    yield put(getAttachmentsSuccess(attachments));
+    window.open(attachments.url);
   } catch (error) {
     yield put(getAttachmentsFailure())
     yield put(openAdminSnackBar({ message: "Une erreur est survenue", error: true }));

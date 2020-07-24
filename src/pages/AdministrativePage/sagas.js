@@ -59,51 +59,6 @@ function* doUpdateCompany(action) {
 
 
 
-function* doGetAttachments() {
-  try {
-    const attachments = yield API.get(config.apiGateway.NAME, `/attachments`, {
-      header: {
-        'x-api-key': config.apiKey
-      },
-    });
-    yield put(getAttachmentsSuccess(attachments))
-  } catch (error) {
-    yield put(getAttachmentsFailure())
-    yield put(openAdminSnackBar({ message: "Une erreur est survenue", error: true }));
-  }
-}
-
-function* doUploadAttachment() {
-  try {
-    const attachment = yield API.post(config.apiGateway.NAME, `/attachments`, {
-      header: {
-        'x-api-key': config.apiKey
-      },
-    });
-    yield put(uploadAttachmentSuccess(attachment));
-    yield put(openAdminSnackBar({ message: "Votre document a bien été uploadé", error: false }));
-  } catch (error) {
-    yield put(uploadAttachmentFailure());
-    yield put(openAdminSnackBar({ message: "Une erreur est survenue", error: true }));
-  }
-}
-
-function* doDeleteAttachment(action) {
-  const { id } = action.payload;
-  try {
-    const attachment = yield API.del(config.apiGateway.NAME, `/attachments/${id}`, {
-      header: {
-        'x-api-key': config.apiKey
-      },
-    })
-    yield put(deleteAttachmentSuccess(attachment))
-    // utiliser le nom du doc dans la snackbar ??
-    yield put(openAdminSnackBar({ message: "Votre document a bien été supprimé", error: false }));
-  } catch (error) {
-    yield put(deleteAttachmentFailure())
-    yield put(openAdminSnackBar({ message: "Une erreur est survenue", error: true }));
-  }
-}
 
 function* setAdminSnackBar() {
   yield delay(5000);
@@ -116,9 +71,6 @@ export default function* administrativeSaga() {
   yield all([
     takeLatest('Administrative/getCompanyLaunched', getCompany),
     takeLatest('Administrative/putCompanyLaunched', doUpdateCompany),
-    takeLatest('Administrative/getAttachmentsLaunched', doGetAttachments),
-    takeLatest('Administrative/uploadAttachmentLaunched', doUploadAttachment),
-    takeLatest('Administrative/deleteAttachmentLaunched', doDeleteAttachment),
     takeLatest('Administrative/openAdminSnackBar', setAdminSnackBar)
   ]);
 }
