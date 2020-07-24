@@ -17,14 +17,12 @@ import {
 import {s3Upload} from "../../../utils/services/awsLib";
 
 function* doUploadFile(action) {
-  console.log("ACTION",action);
   const payload = action.payload.files[0];
   const type = action.payload.type;
 
   if (payload.file.size < 1.5e+7) {
     try {
       const storedKey = yield s3Upload(`${action.payload.companyData.externalId}-${action.payload.name}`, payload.file);
-      console.log("storedKey", storedKey);
       const externalId = yield API.post(config.apiGateway.NAME, encodeURI('/attachments'),
         {
           headers: {
@@ -41,7 +39,6 @@ function* doUploadFile(action) {
         });
       if (action.payload.companyData) {
         const newCompanyData = {...action.payload.companyData, administrativeProfile: {...action.payload.companyData.administrativeProfile, legalDocuments: [...action.payload.companyData.administrativeProfile.legalDocuments, {externalId: externalId, name: `${action.payload.companyData.externalId}-${action.payload.name}`}]}};
-        console.log("newCompanyData", newCompanyData);
         yield put(changeAttachmentFromData(newCompanyData));
       }
       yield put(uploadFileSuccess());
