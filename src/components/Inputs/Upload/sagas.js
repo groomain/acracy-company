@@ -14,13 +14,15 @@ import {
   changeAttachmentFromData,
   openAdminSnackBar
 } from "../../../pages/AdministrativePage/reducer";
+import {s3Upload} from "../../../utils/services/awsLib";
 
 function* doUploadFile(action) {
   const payload = action.payload.files[0];
   const type = action.payload.type;
 
-  if (payload.file.size < 1.5e+7)
+  if (payload.file.size < 1.5e+7) {
     try {
+      const storedKey = yield s3Upload(`${action.payload.companyData.externalId}-${action.payload.name}`, payload.file);
       const externalId = yield API.post(config.apiGateway.NAME, encodeURI('/attachments'),
         {
           headers: {
@@ -29,21 +31,23 @@ function* doUploadFile(action) {
           body: {
             type: type,
             name: action.payload.name || payload.file.name,
-            filename: payload.src,
+            filename: storedKey,
             payload: {
-              leadId: payload.leadId
+              companyId: action.payload.companyData.externalId
             }
           }
         });
       if (action.payload.companyData) {
-        const newCompanyData = {...action.payload.companyData, administrativeProfile: {...action.payload.companyData.administrativeProfile, legalDocuments: [...action.payload.companyData.administrativeProfile.legalDocuments, {externalId: externalId, name: action.payload.name}]}};
+        const newCompanyData = {...action.payload.companyData, administrativeProfile: {...action.payload.companyData.administrativeProfile, legalDocuments: [...action.payload.companyData.administrativeProfile.legalDocuments, {externalId: externalId, name: `${action.payload.companyData.externalId}-${action.payload.name}`}]}};
         yield put(changeAttachmentFromData(newCompanyData));
       }
       yield put(uploadFileSuccess());
+      yield put(openAdminSnackBar({ message: "Votre document a bien été ajouté", error: false }));
     } catch (error) {
       yield put(uploadFileFailure());
       yield put(openSnackBar({ message: "Erreur pendant l'envoi du fichier", error: true }));
-    } else {
+    }
+  } else {
     yield put(openSnackBar({ message: "Taille du fichier max. : 15Mo", error: true }));
   }
 
@@ -51,7 +55,6 @@ function* doUploadFile(action) {
 
 function* doDeleteAttachment(action) {
   const attachmentId = action.payload;
-
   try {
     yield API.del(config.apiGateway.NAME, encodeURI(`/attachments/${attachmentId}`),
       {
@@ -70,12 +73,12 @@ function* doDeleteAttachment(action) {
 function* doGetAttachments(action) {
   try {
     const attachments = yield API.get(config.apiGateway.NAME, `/attachments/${action.payload}`, {
-      header: {
+      headers: {
         'x-api-key': config.apiKey
       },
     });
-    yield put(getAttachmentsSuccess(attachments))
-    window.open(attachments);
+    yield put(getAttachmentsSuccess(attachments));
+    window.open(attachments.url);
   } catch (error) {
     yield put(getAttachmentsFailure())
     yield put(openAdminSnackBar({ message: "Une erreur est survenue", error: true }));

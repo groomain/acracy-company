@@ -45,25 +45,29 @@ export const AdministrativePage = (props) => {
   const [cin3, setCin3] = useState(null);
   const [cin4, setCin4] = useState(null);
 
-  const { companyData, companyLoading, companyId, adminSnackBarOpen, adminSnackBarMessage, adminSnackBarError } = useSelector(state => ({
+  const { companyData, companyLoading, userDynamo, adminSnackBarOpen, adminSnackBarMessage, adminSnackBarError } = useSelector(state => ({
     companyData: state.getIn(['Administrative', 'companyData']),
     companyLoading: state.getIn(['Administrative', 'companyLoading']),
-    companyId: state.getIn(['app', 'userDynamo', 'companyId']),
+    userDynamo: state.getIn(['app', 'userDynamo']),
     // companyId: 827,                                              ///// mock ID for offline use
     adminSnackBarOpen: state.getIn(['Administrative', 'adminSnackBarOpen']),
     adminSnackBarMessage: state.getIn(['Administrative', 'adminSnackBarMessage']),
     adminSnackBarError: state.getIn(['Administrative', 'adminSnackBarError']),
   }));
 
+  console.log("companyData", companyData);
+
   useEffect(() => {
     dispatch(handleCurrentStep(0))
-    dispatch(getCompanyLaunched(companyId));
+    dispatch(getCompanyLaunched(userDynamo.companyId));
     scrollSpy.update();
   }, [dispatch]);
 
   useEffect(() => {
-    if (companyData?.administrativeProfile?.legalDocuments?.filter((file) => file.name === 'kbis' || file.name === 'cin1' || file.name === 'status').length === 3) {
+    if (companyData?.administrativeProfile?.legalDocuments?.filter((file) => file.name === companyData.externalId + '-kbis' || file.name === companyData.externalId + '-cin1' || file.name === companyData.externalId + '-status').length === 3) {
       dispatch(checkMissingFilesForm(true))
+    } else {
+      dispatch(checkMissingFilesForm(false))
     }
   }, [companyData]);
 
@@ -150,7 +154,7 @@ export const AdministrativePage = (props) => {
   });
 
   const handleSubmit = (payload) => {
-    dispatch(putCompanyLaunched({ ...payload, companyId }))
+    dispatch(putCompanyLaunched({ ...payload, companyId: userDynamo.companyId }))
   }
 
   return (

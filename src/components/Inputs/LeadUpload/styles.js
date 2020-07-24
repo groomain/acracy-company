@@ -14,15 +14,11 @@ export default makeStyles(theme => ({
   },
   closeButton: {
     position: 'absolute',
-    top: -2,
-    right: -15,
-    '& span svg g': {
-      stroke: theme.palette.primary.main,
-      transition: '.1s'
+    top: 10,
+    right: -5,
+    '&:hover': {
+      cursor: 'pointer',
     },
-    '&:hover span svg g': {
-      stroke: theme.palette.secondary.main
-    }
   },
   uploadIconWrapper: {
     maxWidth: '7rem',
@@ -30,5 +26,10 @@ export default makeStyles(theme => ({
   },
   maxedFileSize: {
     color: theme.palette.primary.danger
+  },
+  img: {
+    '&:hover': {
+      cursor: 'pointer',
+    },
   }
 }));
