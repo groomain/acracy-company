@@ -605,7 +605,9 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
 
   useEffect(() => {
     if (
-      selectedExpertiseList?.length > 0
+      (leadDraftData?.missionRequirements?.expertises?.length > 0 || selectedExpertiseList?.length > 0)
+      && (leadDraftData?.missionRequirements?.sensitivity?.sensitivity || selectedSensitivity?.length > 0)
+      && (leadDraftData?.missionRequirements?.languages?.length > 0 || selectedLanguage?.length > 0)
       && seniority !== "Sélectionnez le niveau d'epérience minimum"
       && checkLength(contextAndTasks, 0)
       && checkLength(detailsOfDeliverables, 0)

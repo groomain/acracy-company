@@ -76,7 +76,7 @@ const LeadCreationPage = (props) => {
   useEffect(() => {
     if (location.search) {
       setSplittedUrl(location.search.split('&'));
-    } else if (location.pathname) {
+    } else if (location.pathname.split("/").length > 2) {
       setSplittedUrl(location.pathname.split("/"));
       setLeadId(location.pathname.split("/")[2]);
       dispatch(dispatchLeadId(location.pathname.split('/')[2]))
@@ -216,7 +216,7 @@ const LeadCreationPage = (props) => {
     const formattedExpertiseList = selectedExpertiseList => {
       if (selectedExpertiseList.length > 0) { // change the whole object
         return selectedExpertiseList?.map(x => ({ expertise: { code: x.code, text: x.text }, priority: expertisePriorities.includes(x.text) }));
-      } else if (selectedExpertiseList.length === 0 && expertisePriorities !== leadDraftData?.missionRequirements?.expertises.filter(x => x.priority).map(x => x.expertise.text)) { // If only change priorities
+      } else if (selectedExpertiseList?.length === 0 && expertisePriorities !== leadDraftData?.missionRequirements?.expertises.filter(x => x.priority).map(x => x.expertise.text)) { // If only change priorities
         return leadDraftData?.missionRequirements?.expertises.map(x => ({ expertise: { code: x.expertise.code, text: x.expertise.text }, priority: expertisePriorities.includes(x.expertise.text) }))
       } else {
         return leadDraftData?.missionRequirements?.expertises // no changes for this category
@@ -228,8 +228,8 @@ const LeadCreationPage = (props) => {
         const sensitivity = selectedSensitivity?.map(x => ({ sensitivity: { code: x.code, text: x.text }, essential: selectedSensitivity[0].text === sensitivityPriority[0] }));
         const [extractedSensitivity] = sensitivity;
         return extractedSensitivity;
-      } else if (selectedSensitivity.length === 0 && sensitivityPriority !== [leadDraftData?.missionRequirements?.sensitivity].filter(x => x.essential).map(x => x.sensitivity.text)) {
-        const sensitivity = [leadDraftData?.missionRequirements?.sensitivity].map(x => ({ sensitivity: { code: x.sensitivity.code, text: x.sensitivity.text }, essential: sensitivityPriority.includes(x.sensitivity.text) }));
+      } else if (selectedSensitivity.length === 0 && sensitivityPriority !== [leadDraftData?.missionRequirements?.sensitivity].filter(x => x?.essential).map(x => x?.sensitivity?.text)) {
+        const sensitivity = [leadDraftData?.missionRequirements?.sensitivity].map(x => ({ sensitivity: { code: x?.sensitivity.code, text: x?.sensitivity.text }, essential: sensitivityPriority.includes(x?.sensitivity?.text) }));
         const [extractedSensitivity] = sensitivity;
         return extractedSensitivity;
       } else {
@@ -240,7 +240,7 @@ const LeadCreationPage = (props) => {
     const formattedLanguage = selectedLanguage => {
       if (selectedLanguage.length > 0) {
         return selectedLanguage?.map(x => ({ language: x.type, essential: x.text === languagePriority[0] }));
-      } else if (selectedLanguage.length === 0 && languagePriority !== leadDraft?.missionRequirements?.languages.filter(x => x.essential).map(x => formatLanguagesValues(x.language))) {
+      } else if (selectedLanguage?.length === 0 && languagePriority !== leadDraft?.missionRequirements?.languages.filter(x => x?.essential).map(x => formatLanguagesValues(x.language))) {
         return leadDraftData?.missionRequirements?.languages.map(x => ({ language: x.language, essential: languagePriority.includes(formatLanguagesValues(x.language)) }))
       } else {
         return leadDraftData?.missionRequirements?.language
