@@ -32,15 +32,16 @@ import Dialog from '@material-ui/core/Dialog';
 import Popover from "@material-ui/core/Popover";
 import CloseIcon from '@material-ui/icons/Close';
 import IconButton from "@material-ui/core/IconButton";
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 const ProfileSelection = (props) => {
   const quoteId = props?.match?.params;
-
+  const small = !useMediaQuery(theme => theme.breakpoints.up('sm'))
   // console.log(quoteId);
 
   const classes = styles();
   const dispatch = useDispatch();
-  const { briefData, quotesData, validateCodeError, validateLoading, userDynamo, checkedProfilesStore, contactLoading } = useSelector(state => ({
+  let { briefData, quotesData, validateCodeError, validateLoading, userDynamo, checkedProfilesStore, contactLoading } = useSelector(state => ({
     briefData: state.getIn(['SelectionProfil', 'briefData']),
     quotesData: state.getIn(['SelectionProfil', 'quotesData']),
     validateCodeError: state.getIn(['SelectionProfil', 'validateCodeError']),
@@ -49,6 +50,8 @@ const ProfileSelection = (props) => {
     checkedProfilesStore: state.getIn(['SelectionProfil', 'checkedProfilesStore']),
     contactLoading: state.getIn(['SelectionProfil', 'contactLoading'])
   }));
+
+  userDynamo = { companyId: "get_ELIGIBLE" };
 
   // Scroll
   let [checkedProfiles, setCheckedProfiles] = React.useState(checkedProfilesStore);
@@ -176,7 +179,7 @@ const ProfileSelection = (props) => {
         className={classes.container}
       >
         {briefData &&
-          <Grid item container xs={3} direction={'row'} justify="center" alignItems="flex-start">
+          <Grid item style={{ border: 'red solid 2px' }} container xs={3} direction={'row'} justify="center" alignItems="flex-start">
             <List className={classes.list}>
               <ListItem className={classes.listItem} onClick={() => scroll.scrollToTop()}>
                 <ListItemAvatar>
@@ -185,7 +188,7 @@ const ProfileSelection = (props) => {
                     <img src={acracy} alt="acracyLogo" className={classes.logoAcracy} />
                   </Avatar>
                 </ListItemAvatar>
-                <ListItemText primary="Recommandation globale"
+                <ListItemText primary={small ? '' : "Recommandation globale"}
                   primaryTypographyProps={{
                     className: {
                       [classes.listItemText]: elementPosition.y < margin,
@@ -206,13 +209,13 @@ const ProfileSelection = (props) => {
                         className={clsx(classes.avatar, { [classes.avatarActive]: isActive })}
                         src={profil.serviceProviderProfile.linkedinAvatar} />
                     </ListItemAvatar>
-                    <ListItemText primary={`${profil.serviceProviderProfile.firstName} ${profil.serviceProviderProfile.lastName}`}
+                    {small ? null : <ListItemText primary={`${profil.serviceProviderProfile.firstName} ${profil.serviceProviderProfile.lastName}`}
                       primaryTypographyProps={{
                         className: {
                           [classes.listItemText]: !isActive,
                           [classes.listItemTextActive]: isActive
                         }
-                      }} />
+                      }} />}
                   </ListItem>
                 </Link>)
               })}
@@ -241,7 +244,7 @@ const ProfileSelection = (props) => {
 
 
         {briefData ?
-          <Grid item container xs={6} className={classes.middleContainer} direction="column">
+          <Grid style={{ border: 'pink solid 2px' }} item container xs={6} className={classes.middleContainer} direction="column">
             <Grid item container direction="column" className={classes.firstMiddleContainer}>
               <Typography className={classes.mainTitle}>Il est temps de faire votre sélection
                                 !</Typography>
@@ -312,7 +315,7 @@ const ProfileSelection = (props) => {
                 <Typography variant={'h4'} className={classes.title}>Expertises clés du
                                     profil</Typography>
                 <Grid item container direction={"row"} spacing={1}>
-                  {briefData.missionRequirement.expertises.map((tag, key) => <Grid item><Tag
+                  {briefData.missionRequirements.expertises.map((tag, key) => <Grid item><Tag
                     key={key} title={tag.expertise.text} isPrimaryColor
                     tagType="Prioritaire" isWithCheckbox checked={tag.priority} /></Grid>)}
                 </Grid>
@@ -321,11 +324,11 @@ const ProfileSelection = (props) => {
                 <Typography variant={'h4'} className={classes.title}>Langue souhaitée</Typography>
                 <Grid style={{ width: '80%' }} item container direction={"row"} spacing={1}>
                   <Grid item>
-                    <Tag title={briefData.missionRequirement.language.language}
+                    <Tag title={briefData.missionRequirements.languages.language}
                       isPrimaryColor
                       tagType="Critère indispensable"
                       isWithCheckbox
-                      checked={briefData.missionRequirement.language.essential}
+                      checked={briefData.missionRequirements.languages.essential}
                     />
                   </Grid>
                 </Grid>
@@ -334,11 +337,11 @@ const ProfileSelection = (props) => {
                 <Typography variant={'h4'} className={classes.title}>Sensibilité souhaitée</Typography>
                 <Grid style={{ width: '80%' }} item container direction={"row"} spacing={1}>
                   <Grid item>
-                    <Tag title={briefData.missionRequirement.sensitivity.sensitivity.text}
+                    <Tag title={briefData.missionRequirements.sensitivity.sensitivity.text}
                       isPrimaryColor
                       tagType="Critère indispensable"
                       isWithCheckbox
-                      checked={briefData.missionRequirement.sensitivity.essential}
+                      checked={briefData.missionRequirements.sensitivity.essential}
                     />
                   </Grid>
                 </Grid>
@@ -346,7 +349,7 @@ const ProfileSelection = (props) => {
               <div className={classes.bloc}>
                 <Typography variant={'h4'} className={classes.title}>Séniorite souhaitée</Typography>
                 <Typography variant={'h4'}
-                  className={classes.briefSeniority}>{briefData.missionRequirement.seniority}</Typography>
+                  className={classes.briefSeniority}>{briefData.missionRequirements.seniority}</Typography>
               </div>
               <div className={classes.secondTitle}>
                 <Typography variant={'h1'}>Ma Mission</Typography>
@@ -429,8 +432,8 @@ const ProfileSelection = (props) => {
         }
 
         {briefData &&
-          <Grid item container xs={3}>
-            <Grid item container direction={'column'} className={classes.card}>
+          <Grid style={{ border: 'green solid 2px' }} item container direction={'row'} xs={3}>
+            <Grid className={classes.card}>
               <Typography variant={'h3'} className={classes.cardTitle}>Faites votre choix</Typography>
               <Typography variant={'body1'}>Cliquez sur ce bouton <img src={miniSwitch} alt="mini-switch" className={classes.miniSwitch} /> pour pré-selectionner un ou
                             plusieurs profils. Vous
@@ -440,7 +443,7 @@ const ProfileSelection = (props) => {
         }
       </Grid>
       {briefData &&
-        <Grid item container className={classes.cart} direction={'row'} xs={12}>
+        <Grid style={{ border: 'blue solid 2px' }} item container className={classes.cart} direction={'row'} xs={12}>
           <Grid container item xs={9} direction={'row'}>
             <Typography
               className={classes.cartTitle}>{checkedProfiles.length === 0 ?
