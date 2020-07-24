@@ -154,7 +154,8 @@ const LeadCreationPage = (props) => {
       return ({
         type: search.TYPE,
         text: search.TEXT,
-        code: search.objectID
+        code: search.objectID,
+        links: search.DELIVERABLES || search.PROFILES
       })
     }
   }
