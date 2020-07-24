@@ -12,7 +12,7 @@ import Missions from '../../components/Missions';
 import sharedStyles from "../../utils/styles";
 
 import { pushToLeadCreationPageWithSearchResult, setLeadCreationStep } from './reducer';
-import { getLeadDraftFailure } from '../LeadCreationPage/reducer';
+import { getLeadDraftFailure, dispatchLeadId, uploadFileFailure } from '../LeadCreationPage/reducer';
 
 export const Dashboard = () => {
   const { t } = useTranslation();
@@ -40,6 +40,8 @@ export const Dashboard = () => {
   useEffect(() => {
     dispatch(setLeadCreationStep(0));
     dispatch(getLeadDraftFailure()); // Resets lead infos when arriving on the dashboard
+    dispatch(dispatchLeadId(null));
+    dispatch(uploadFileFailure()); // Resets uploaded file
   }, [])
 
   return (

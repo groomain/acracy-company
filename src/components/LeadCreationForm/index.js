@@ -63,14 +63,18 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
       leadDraftData: state.getIn(['leadCreation', 'leadDraftData']),
     }));
 
-  const [activeStep, setActiveStep] = useState();
-  const [searchedCategory, setSearchedCategory] = useState({});
+  const [activeStep, setActiveStep] = useState(leadCreationStep);
+  const [searchedCategory, setSearchedCategory] = useState();
   const [deliverables, setDeliverables] = useState([]);
   const [dailyCost, setDailyCost] = useState();
   const [withCommission, setWithCommission] = useState();
   const [openCallMeModal, setOpenCallMeModal] = useState(false);
   const [disableCallMeBtn, setDisableCallMeBtn] = useState(true);
   const [disableGoToFinalizationBtn, setDisableGoToFinalizationBtn] = useState(true);
+
+  useEffect(() => {
+    setSearchedCategory(leadDraftData?.search)
+  }, [leadDraftData]);
 
   useEffect(() => { // Disable the "need help" button
     if (leadDraftSearchData?.search !== null) {
@@ -236,9 +240,9 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
   }
 
   const showDeliverablesSettings = () => {
-    const selectableDeliverables = searchedCategory.DELIVERABLES || leadCreationPageWithSearchResult.DELIVERABLES;
+    const selectableDeliverables = searchedCategory?.DELIVERABLES || searchedCategory?.links || leadCreationPageWithSearchResult?.DELIVERABLES;
     let deliverablesList = [];
-    deliverablesList = selectableDeliverables.map((item) => {
+    deliverablesList = selectableDeliverables?.map((item) => {
       return item.TEXT;
     });
     deliverablesList.push('Ne figure pas dans la liste');
@@ -253,6 +257,7 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
             name='deliverable'
             optionsValues={deliverablesList}
             onBlur={handleBlur}
+            checkedArray={searchedCategory === leadDraftData?.search ? leadDraftData?.desireds : []}
           // onChange={handleChange} //// nope, isMulti
           />
           <Grid item container direction='row'>
@@ -278,7 +283,7 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
   }
 
   const showProfilesSettings = () => {
-    let selectableProfiles = searchedCategory.PROFILES || leadCreationPageWithSearchResult?.PROFILES;
+    let selectableProfiles = searchedCategory?.PROFILES || searchedCategory?.links || leadCreationPageWithSearchResult?.PROFILES;
     let selectableProfilesCopy = [...selectableProfiles];
     let enhancedList = selectableProfilesCopy.concat({ "TEXT": "Recevoir une recommandation acracy" })
     const profilesList = enhancedList.map((item) => {
@@ -301,9 +306,9 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
   }
 
   const renderSearchedTypeSettings = (searchedCategory) => {
-    if (searchedCategory.TYPE === 'PROFILE' || leadCreationPageWithSearchResult?.DELIVERABLES) {
+    if (searchedCategory?.TYPE === 'PROFILE' || searchedCategory?.type === 'PROFILE' || leadCreationPageWithSearchResult?.DELIVERABLES) {
       return showDeliverablesSettings()
-    } else if (searchedCategory.TYPE === 'DELIVERABLE' || leadCreationPageWithSearchResult?.PROFILES) {
+    } else if (searchedCategory?.TYPE === 'DELIVERABLE' || searchedCategory?.type === 'DELIVERABLES' || leadCreationPageWithSearchResult?.PROFILES) {
       return showProfilesSettings()
     }
   }
