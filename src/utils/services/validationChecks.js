@@ -19,7 +19,7 @@ export const checkLength = (text, length) => {
 export const getPath = (obj, path) => {
   var props = [];
   for (var key in obj) {
-    if (obj[key] === "" || obj[key].length === 0) {
+    if (obj[key] === "" || obj[key]?.length === 0) {
       props.push(path + '.' + key);
     }
     if (obj[key] instanceof Object) {
