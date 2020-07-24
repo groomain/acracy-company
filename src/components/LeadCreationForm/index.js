@@ -398,6 +398,7 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
               name='missionStartDate'
               onChange={handleChange}
               minDate={minDate}
+              startDate={leadDraftData?.missionContext?.startDate}
             />
           </Grid>
 
