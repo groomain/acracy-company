@@ -29,6 +29,7 @@ import { languages, seniorityValues } from './options';
 import UploadInput from '../Inputs/LeadUpload';
 
 import { checkLength } from '../../utils/services/validationChecks';
+import { formatLanguagesValues } from '../../utils/services/format';
 
 const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, handleChange, leadId, onUpdateMissionTitle, ...props }) => {
   const { t } = useTranslation();
@@ -566,7 +567,14 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
       setSensitivityPriorityList(selectedSensitivity);
     }
 
-  }, [leadDraftData, selectedExpertiseList, selectedSensitivity]);
+    if (leadDraftData?.missionRequirements?.languages && (selectedLanguage?.length < 1)) {
+      setLanguagePriorityList(leadDraftData?.missionRequirements?.languages);
+      dispatch(setLanguagePriority(leadDraftData?.missionRequirements?.languages?.filter(x => x.essential).map(x => formatLanguagesValues(x.language))));
+    } else {
+      setLanguagePriorityList(selectedLanguage)
+    }
+
+  }, [leadDraftData, selectedExpertiseList, selectedSensitivity, selectedLanguage]);
 
   const handlePriorityCheck = (index) => {
     const prio = expertisePriorityList?.map((item, i) => (index === i) ? { ...item, priority: !item.priority } : item);
@@ -581,9 +589,9 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
   }
 
   const handleLanguageCheck = (index) => {
-    const prio = languagePriorityList?.map((item, i) => (index === i) ? { ...item, priority: !item.priority } : item);
+    const prio = languagePriorityList?.map((item, i) => (index === i) ? { ...item, essential: !item.essential } : item);
     setLanguagePriorityList(prio);
-    dispatch(setLanguagePriority(prio.filter(x => x.priority).map(x => x.text)))
+    dispatch(setLanguagePriority(prio.filter(x => x.essential).map(x => formatLanguagesValues(x.language) || x.text)));
   }
 
   // Set the Deliverables details section
@@ -684,12 +692,13 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
                   panelTitle={t('leadCreation.profileLanguages')}
                   type='languages'
                   maxSelection={1}
+                  selectedLanguagesArray={languagePriorityList?.map(x => formatLanguagesValues(x.language) || x.text)}
                 />
                 {expansionPanelOpen !== 'languages' &&
                   <Grid item container direction='row'>
                     {languagePriorityList?.length > 0 && languagePriorityList?.map((tag, key) => (
                       <Tag key={key}
-                        title={tag.text}
+                        title={tag.text || formatLanguagesValues(tag?.language)}
                         isPrimaryColor
                         tagType="Critère indispensable"
                         isWithCheckbox

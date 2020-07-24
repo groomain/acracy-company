@@ -23,7 +23,7 @@ import clsx from "clsx";
 import useScrollTrigger from "@material-ui/core/useScrollTrigger";
 import CustomLoader from '../../components/Loader';
 
-import { formatType, formatFrequencyType, formatDurationType, formatBudgetType, formatSeniorityType } from '../../utils/services/format';
+import { formatType, formatFrequencyType, formatDurationType, formatBudgetType, formatSeniorityType, formatLanguagesValues } from '../../utils/services/format';
 
 let leadSave;
 let formData = false;
@@ -240,6 +240,8 @@ const LeadCreationPage = (props) => {
     const formattedLanguage = selectedLanguage => {
       if (selectedLanguage.length > 0) {
         return selectedLanguage?.map(x => ({ language: x.type, essential: x.text === languagePriority[0] }));
+      } else if (selectedLanguage.length === 0 && languagePriority !== leadDraft?.missionRequirements?.languages.filter(x => x.essential).map(x => formatLanguagesValues(x.language))) {
+        return leadDraftData?.missionRequirements?.languages.map(x => ({ language: x.language, essential: languagePriority.includes(formatLanguagesValues(x.language)) }))
       } else {
         return leadDraftData?.missionRequirements?.language
       }

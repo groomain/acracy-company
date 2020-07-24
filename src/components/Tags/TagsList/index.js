@@ -9,7 +9,7 @@ import CustomButton from '../../Button';
 
 import { setExpansionPanelOpen, setSelectedExpertise, setSelectedSensitivity, setSelectedLanguage } from '../../../pages/LeadCreationPage/reducer';
 
-export const TagsList = ({ tags, type, maxSelection, selectedExpertiseArray, selectedSensitivityArray }) => {
+export const TagsList = ({ tags, type, maxSelection, selectedExpertiseArray, selectedSensitivityArray, selectedLanguagesArray }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
@@ -25,8 +25,10 @@ export const TagsList = ({ tags, type, maxSelection, selectedExpertiseArray, sel
       setTagsListWithCheckedKey(tags.map(x => ({ ...x, checked: selectedExpertiseArray?.includes(x.text) })))
     } else if (type === 'sensitivity') {
       setTagsListWithCheckedKey(tags.map(x => ({ ...x, checked: selectedSensitivityArray?.includes(x.text) })))
+    } else if (type === 'languages') {
+      setTagsListWithCheckedKey(tags.map(x => ({ ...x, checked: selectedLanguagesArray?.includes(x.text) })))
     }
-  }, [selectedExpertiseArray, type, selectedSensitivityArray]);
+  }, [selectedExpertiseArray, type, selectedSensitivityArray, selectedLanguagesArray]);
 
   const handleSelection = () => {
     if (type === 'expertise') {

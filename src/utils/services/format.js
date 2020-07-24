@@ -189,3 +189,29 @@ export const formatSeniorityType = seniority => {
     default:
   }
 }
+
+export const formatLanguagesValues = val => {
+  switch (val) {
+    case 'FLUENT_ENGLISH':
+      return 'Anglais courant'
+    case 'FLUENT_FRENCH':
+      return 'Français courant'
+    case 'FLUENT_GERMAN':
+      return 'Allemand courant'
+    case 'FLUENT_SPANISH':
+      return 'Espagnol courant'
+    case 'FLUENT_ITALIAN':
+      return 'Italien courant'
+    case 'NATIVE_ENGLISH':
+      return 'Anglais natif'
+    case 'NATIVE_FRENCH':
+      return 'Français natif'
+    case 'NATIVE_GERMAN':
+      return 'Allemand natif'
+    case 'NATIVE_SPANISH':
+      return 'Espagnol natif'
+    case 'NATIVE_ITALIAN':
+      return 'Italien natif'
+    default:
+  }
+}
