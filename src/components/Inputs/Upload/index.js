@@ -119,7 +119,6 @@ export const Upload = (props) => {
                     <form className="form">
                         <Grid container>
                             {uploadedFiles?.map(({ file, src, id }, index) => {
-                                console.log('TEST', props.name, companyData?.administrativeProfile?.legalDocuments?.filter((value) => value?.name === companyData.externalId + '-' + props.name)[0]);
                                 return (
                                     <Box mx={2} key={`file-row${index}`}>
                                         <Grid container direction="column" alignItems="center">
