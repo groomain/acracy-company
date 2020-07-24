@@ -4,13 +4,13 @@ import styles from '../styles';
 import KeyboardArrowDownRoundedIcon from '@material-ui/icons/KeyboardArrowDownRounded';
 import CustomCheckbox from '../../CheckBox';
 
-export const CustomSelect = ({ label, value, placeholder, type, error, isMulti, onUpdateSelection, optionsValues, handleChangeOut, context, withDisabledValue, className, ...props }) => {
+export const CustomSelect = ({ label, value, placeholder, type, error, isMulti, onUpdateSelection, optionsValues, handleChangeOut, context, withDisabledValue, className, checkedArray, ...props }) => {
   const classes = styles();
 
   const [open, setOpen] = useState(false);
 
   // Keep state + handleChange for the multi-select component for now
-  const [options, setOptions] = useState([]);
+  const [options, setOptions] = useState(checkedArray?.map(x => x?.text));
   const handleChange = (event) => {
     if (event.target.value.length <= 5) {
       setOptions(event.target.value);
@@ -75,7 +75,7 @@ export const CustomSelect = ({ label, value, placeholder, type, error, isMulti, 
             >
               <ListItemText primary={option} />
               <CustomCheckbox
-                checked={options.indexOf(option) > -1}
+                checked={options?.indexOf(option) > -1}
                 size="small"
               />
             </MenuItem>
