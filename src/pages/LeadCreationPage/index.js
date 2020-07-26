@@ -18,12 +18,12 @@ import acracyLogo from "../../assets/icons/logo-acracy.svg";
 import phonecall from '../../assets/icons/phone-call.svg';
 import { useTranslation } from "react-i18next";
 import styles from './styles';
-import { leadSaveLaunched, getLeadDraftLaunched, putLeadDraftLaunched } from "./reducer";
+import { leadSaveLaunched, getLeadDraftLaunched, putLeadDraftLaunched, dispatchLeadId } from "./reducer";
 import clsx from "clsx";
 import useScrollTrigger from "@material-ui/core/useScrollTrigger";
 import CustomLoader from '../../components/Loader';
 
-import { formatType, formatFrequencyType, formatDurationType, formatBudgetType, formatSeniorityType } from '../../utils/services/format';
+import { formatType, formatFrequencyType, formatDurationType, formatBudgetType, formatSeniorityType, formatLanguagesValues } from '../../utils/services/format';
 
 let leadSave;
 let formData = false;
@@ -54,7 +54,7 @@ const LeadCreationPage = (props) => {
       dateFromCalendar: state.getIn(['leadCreation', 'dateFromCalendar']),
       dailyRate: state.getIn(['leadCreation', 'dailyRate']),
       leadDraftData: state.getIn(['leadCreation', 'leadDraftData']),
-      leadCreationStep: state.getIn(['leadCreation', 'leadCreationStep']),
+      leadCreationStep: state.getIn(['dashboard', 'leadCreationStep']),
       leadDraftId: state.getIn(['leadCreation', 'leadDraftId']),
       selectedExpertiseList: state.getIn(['leadCreation', 'selectedExpertiseList']),
       expertisePriorities: state.getIn(['leadCreation', 'expertisePriorities']),
@@ -68,7 +68,7 @@ const LeadCreationPage = (props) => {
 
   useEffect(() => {
     setActiveStep(leadCreationStep)
-  }, []);
+  }, [leadCreationStep]);
 
   const [leadId, setLeadId] = useState();
   const [splittedUrl, setSplittedUrl] = useState();
@@ -76,9 +76,12 @@ const LeadCreationPage = (props) => {
   useEffect(() => {
     if (location.search) {
       setSplittedUrl(location.search.split('&'));
-    } else if (location.pathname) {
+    } else if (location.pathname.split("/").length > 2) {
       setSplittedUrl(location.pathname.split("/"));
-      setLeadId(location.pathname.split("/")[2] || leadDraftId);
+      setLeadId(location.pathname.split("/")[2]);
+      dispatch(dispatchLeadId(location.pathname.split('/')[2]))
+    } else if (leadDraftId) {
+      setLeadId(leadDraftId)
     }
   }, [dispatch, location.search, location.pathname, leadDraftId, leadId]);
 
@@ -190,8 +193,8 @@ const LeadCreationPage = (props) => {
     let leadDraft, lead;
 
     leadDraft = {
-      search: getSearchResult || '',
-      desireds: getDesireds || '',
+      search: leadDraftData?.search || getSearchResult || '',
+      desireds: leadDraftData?.desireds || getDesireds || '',
       missionContext: {
         title: values?.missionTitle || '',
         startDate: dateFromCalendar ? new Date(dateFromCalendar).toISOString() : new Date(minDate).toISOString(), // operateur ternaire pour remettre profil à 0 quand profil a été recherché
@@ -205,22 +208,44 @@ const LeadCreationPage = (props) => {
           value: +values?.budget || null,
           type: values?.budgetType === 'Jours' ? 'DAILY_RATE' : 'TOTAL' || ''
         },
-        estimatedAverageDailyRate: dailyRate || null,
+        estimatedAverageDailyRate: dailyRate || leadDraftData?.missionContext?.estimatedAverageDailyRate || null,
         profileNumber: values?.profilesNumber || '',
         address: values?.companyAddress || '',
       },
     };
 
     const formattedExpertiseList = selectedExpertiseList => {
-      return selectedExpertiseList?.map(x => ({ expertise: { code: x.code, text: x.text }, priority: expertisePriorities.includes(x.text) }));
+      if (selectedExpertiseList.length > 0) { // change the whole object
+        return selectedExpertiseList?.map(x => ({ expertise: { code: x.code, text: x.text }, priority: expertisePriorities.includes(x.text) }));
+      } else if (selectedExpertiseList?.length === 0 && expertisePriorities !== leadDraftData?.missionRequirements?.expertises.filter(x => x.priority).map(x => x.expertise.text)) { // If only change priorities
+        return leadDraftData?.missionRequirements?.expertises.map(x => ({ expertise: { code: x.expertise.code, text: x.expertise.text }, priority: expertisePriorities.includes(x.expertise.text) }))
+      } else {
+        return leadDraftData?.missionRequirements?.expertises // no changes for this category
+      }
     }
 
     const formattedSensitivity = selectedSensitivity => {
-      return selectedSensitivity?.map(x => ({ sensitivity: { code: x.code, text: x.text }, essential: selectedSensitivity[0].text === sensitivityPriority[0] }));
+      if (selectedSensitivity.length > 0) {
+        const sensitivity = selectedSensitivity?.map(x => ({ sensitivity: { code: x.code, text: x.text }, essential: selectedSensitivity[0].text === sensitivityPriority[0] }));
+        const [extractedSensitivity] = sensitivity;
+        return extractedSensitivity;
+      } else if (selectedSensitivity.length === 0 && sensitivityPriority !== [leadDraftData?.missionRequirements?.sensitivity].filter(x => x?.essential).map(x => x?.sensitivity?.text)) {
+        const sensitivity = [leadDraftData?.missionRequirements?.sensitivity].map(x => ({ sensitivity: { code: x?.sensitivity.code, text: x?.sensitivity.text }, essential: sensitivityPriority.includes(x?.sensitivity?.text) }));
+        const [extractedSensitivity] = sensitivity;
+        return extractedSensitivity;
+      } else {
+        return leadDraftData?.missionRequirements?.sensitivity
+      }
     }
 
     const formattedLanguage = selectedLanguage => {
-      return selectedLanguage?.map(x => ({ language: x.type, essential: x.text === languagePriority[0] }))
+      if (selectedLanguage.length > 0) {
+        return selectedLanguage?.map(x => ({ language: x.type, essential: x.text === languagePriority[0] }));
+      } else if (selectedLanguage?.length === 0 && languagePriority !== leadDraft?.missionRequirements?.languages.filter(x => x?.essential).map(x => formatLanguagesValues(x.language))) {
+        return leadDraftData?.missionRequirements?.languages.map(x => ({ language: x.language, essential: languagePriority.includes(formatLanguagesValues(x.language)) }))
+      } else {
+        return leadDraftData?.missionRequirements?.language
+      }
     }
 
     if (activeStep === 0) {
@@ -229,8 +254,8 @@ const LeadCreationPage = (props) => {
       lead = {
         ...leadDraft,
         missionDetail: {
-          contextAndTasks: values?.contextAndTasks ?? '',
-          detailsOfDeliverables: values?.detailsOfDeliverables ?? '',
+          contextAndTasks: leadDraftData?.missionDetail?.contextAndTasks || values?.contextAndTasks || '',
+          detailsOfDeliverables: leadDraftData?.missionDetail?.contextAndTasks || values?.detailsOfDeliverables || '',
           sharedDocuments: [
             {
               name: uploadedFileName ?? '',
@@ -239,9 +264,9 @@ const LeadCreationPage = (props) => {
           ]
         },
         missionRequirements: {
-          expertises: formattedExpertiseList(selectedExpertiseList) ?? '',
+          expertises: formattedExpertiseList(selectedExpertiseList) ?? [],
           sensitivity: formattedSensitivity(selectedSensitivity) ?? '',
-          languages: formattedLanguage(selectedLanguage) ?? '',
+          languages: formattedLanguage(selectedLanguage) ?? [],
           seniority: formatSeniorityType(values?.seniority) ?? ''
         }
       }
@@ -250,7 +275,7 @@ const LeadCreationPage = (props) => {
     // console.log('lead :', lead, 'redirect :', redirect);
 
     if (leadId) {
-      dispatch(putLeadDraftLaunched({ lead, redirect, redirectToMission }))
+      dispatch(putLeadDraftLaunched({ leadId, lead, redirect, redirectToMission }))
     } else {
       dispatch(leadSaveLaunched({ lead, redirect, redirectToMission }));
     }
@@ -266,7 +291,7 @@ const LeadCreationPage = (props) => {
     missionTitle: leadDraftData?.missionContext?.title || '',
     missionStartDate: leadDraftData?.missionContext?.startDate || '',
     workspace: formatType(leadDraftData?.missionContext?.format) || 'Peu importe',
-    companyAddress: leadDraftData?.missionContext?.adress || '',
+    companyAddress: leadDraftData?.missionContext?.address || '',
     frequency: formatFrequencyType(leadDraftData?.missionContext?.weeklyRythm) || 'Plein temps (5 jours)',
     duration: leadDraftData?.missionContext?.duration?.nb || '',
     durationType: formatDurationType(leadDraftData?.missionContext?.duration?.unit) || 'Jours',

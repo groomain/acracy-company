@@ -16,7 +16,7 @@ import { Typography, Grid, Stepper, Step, StepLabel, StepButton, Box, InputAdorn
 import {
   setLeadDraftSearchData, setDeliverablesArray, setDailyRate,
   changeLeadStatusLaunched, getExpertisesLaunched, setExpertisePriorities,
-  getSensitivitiesLaunched, setSensitivityPriority, setLanguagePriority
+  getSensitivitiesLaunched, setSensitivityPriority, setLanguagePriority, setSelectedExpertise, setSelectedSensitivity, setSelectedLanguage
 } from '../../pages/LeadCreationPage/reducer';
 import { setLeadCreationStep } from '../../pages/HomePage/reducer';
 import { handleCurrentStep } from "../App/reducer";
@@ -29,6 +29,7 @@ import { languages, seniorityValues } from './options';
 import UploadInput from '../Inputs/LeadUpload';
 
 import { checkLength } from '../../utils/services/validationChecks';
+import { formatLanguagesValues } from '../../utils/services/format';
 
 const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, handleChange, leadId, onUpdateMissionTitle, ...props }) => {
   const { t } = useTranslation();
@@ -46,7 +47,7 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
       dateFromCalendar: state.getIn(['leadCreation', 'dateFromCalendar']),
       leadDraftSearchData: state.getIn(['leadCreation', 'leadDraftSearchData']),
       deliverablesArray: state.getIn(['leadCreation', 'deliverablesArray']),
-      leadCreationStep: state.getIn(['leadCreation', 'leadCreationStep']),
+      leadCreationStep: state.getIn(['dashboard', 'leadCreationStep']),
       expertises: state.getIn(['leadCreation', 'expertises']),
       selectedExpertiseList: state.getIn(['leadCreation', 'selectedExpertiseList']),
       expansionPanelOpen: state.getIn(['leadCreation', 'expansionPanelOpen']),
@@ -86,6 +87,19 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
   useEffect(() => {
     onUpdateMissionTitle(missionTitle)
   }, [missionTitle])
+
+  useEffect(() => {
+    setActiveStep(leadCreationStep);
+  }, [leadCreationStep]);
+
+  useEffect(() => { // Empty the tagsLists selection from redux to prevent passing data from one lead to another
+    dispatch(setSelectedExpertise([]));
+    dispatch(setSelectedSensitivity([]));
+    dispatch(setSelectedLanguage([]));
+    dispatch(setExpertisePriorities([]));
+    dispatch(setSensitivityPriority([]));
+    dispatch(setLanguagePriority([]));
+  }, []);
 
   const getSteps = () => {
     return [t('leadCreation.synthesis'), t('leadCreation.details')];
@@ -545,27 +559,45 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
   const [disableSendBrief, setDisableSendBrief] = useState(true);
 
   useEffect(() => {
-    setExpertisePriorityList(selectedExpertiseList?.map(x => ({ ...x, priority: false })));
-    setSensitivityPriorityList(selectedSensitivity?.map(x => ({ ...x, priority: false })));
-    setLanguagePriorityList(selectedLanguage?.map(x => ({ ...x, priority: false })))
-  }, [selectedExpertiseList, selectedSensitivity, selectedLanguage]);
+    if (leadDraftData?.missionRequirements?.expertises && selectedExpertiseList?.length < 1) { // If data from DB, while selection is not overriden
+      setExpertisePriorityList(leadDraftData?.missionRequirements?.expertises); // First, get selected expertises from DB
+      dispatch(setExpertisePriorities(leadDraftData?.missionRequirements?.expertises?.filter(x => x.priority).map(x => x.expertise.text))); // Then, check which are selected as a priority to display the check mark
+    } else {
+      setExpertisePriorityList(selectedExpertiseList);
+    }
+
+    if (leadDraftData?.missionRequirements?.sensitivity && (!selectedSensitivity || selectedSensitivity?.length < 1)) {
+      setSensitivityPriorityList([leadDraftData?.missionRequirements?.sensitivity]);
+      dispatch(setSensitivityPriority([leadDraftData?.missionRequirements?.sensitivity]?.filter(x => x.essential).map(x => x.sensitivity.text)));
+    } else {
+      setSensitivityPriorityList(selectedSensitivity);
+    }
+
+    if (leadDraftData?.missionRequirements?.languages && (selectedLanguage?.length < 1)) {
+      setLanguagePriorityList(leadDraftData?.missionRequirements?.languages);
+      dispatch(setLanguagePriority(leadDraftData?.missionRequirements?.languages?.filter(x => x.essential).map(x => formatLanguagesValues(x.language))));
+    } else {
+      setLanguagePriorityList(selectedLanguage)
+    }
+
+  }, [leadDraftData, selectedExpertiseList, selectedSensitivity, selectedLanguage]);
 
   const handlePriorityCheck = (index) => {
     const prio = expertisePriorityList?.map((item, i) => (index === i) ? { ...item, priority: !item.priority } : item);
     setExpertisePriorityList(prio);
-    dispatch(setExpertisePriorities(prio.filter(x => x.priority).map(x => x.text)));
+    dispatch(setExpertisePriorities(prio.filter(x => x.priority).map(x => x.text || x.expertise.text)));
   }
 
   const handleSensitivityCheck = (index) => {
-    const prio = sensitivityPriorityList?.map((item, i) => (index === i) ? { ...item, priority: !item.priority } : item);
+    const prio = sensitivityPriorityList?.map((item, i) => (index === i) ? { ...item, essential: !item.essential } : item);
     setSensitivityPriorityList(prio);
-    dispatch(setSensitivityPriority(prio.filter(x => x.priority).map(x => x.text)));
+    dispatch(setSensitivityPriority(prio.filter(x => x.essential).map(x => x.text || x.sensitivity.text)));
   }
 
   const handleLanguageCheck = (index) => {
-    const prio = languagePriorityList?.map((item, i) => (index === i) ? { ...item, priority: !item.priority } : item);
+    const prio = languagePriorityList?.map((item, i) => (index === i) ? { ...item, essential: !item.essential } : item);
     setLanguagePriorityList(prio);
-    dispatch(setLanguagePriority(prio.filter(x => x.priority).map(x => x.text)))
+    dispatch(setLanguagePriority(prio.filter(x => x.essential).map(x => formatLanguagesValues(x.language) || x.text)));
   }
 
   // Set the Deliverables details section
@@ -578,7 +610,9 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
 
   useEffect(() => {
     if (
-      selectedExpertiseList?.length > 0
+      (leadDraftData?.missionRequirements?.expertises?.length > 0 || selectedExpertiseList?.length > 0)
+      && (leadDraftData?.missionRequirements?.sensitivity?.sensitivity || selectedSensitivity?.length > 0)
+      && (leadDraftData?.missionRequirements?.languages?.length > 0 || selectedLanguage?.length > 0)
       && seniority !== "Sélectionnez le niveau d'epérience minimum"
       && checkLength(contextAndTasks, 0)
       && checkLength(detailsOfDeliverables, 0)
@@ -607,18 +641,20 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
               panelTitle={t('leadCreation.profileExpertises')}
               type='expertise'
               maxSelection={5}
+              selectedExpertiseArray={expertisePriorityList?.map(x => x.expertise?.text || x.text)}
             />
             {expansionPanelOpen !== 'expertise' &&
               <Grid item container direction='row'>
                 {expertisePriorityList?.length > 0 && expertisePriorityList?.map((tag, key) => (
                   <Tag key={key}
-                    title={tag.text}
+                    title={tag.text || tag?.expertise?.text}
                     isPrimaryColor
                     tagType="Prioritaire"
                     isWithCheckbox
                     onCheckChange={() => handlePriorityCheck(key)}
                     checkedArray={expertisePriorities}
-                  />))}
+                  />
+                ))}
               </Grid>}
           </Grid>}
 
@@ -635,12 +671,13 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
                   panelTitle={t('leadCreation.profileSensitivity')}
                   type='sensitivity'
                   maxSelection={1}
+                  selectedSensitivityArray={sensitivityPriorityList?.map(x => x.sensitivity?.text || x.text)}
                 />
                 {expansionPanelOpen !== 'sensitivity' &&
                   <Grid item container direction='row'>
                     {sensitivityPriorityList?.length > 0 && sensitivityPriorityList?.map((tag, key) => (
                       <Tag key={key}
-                        title={tag.text}
+                        title={tag.text || tag?.sensitivity?.text}
                         isPrimaryColor
                         tagType="Critère indispensable"
                         isWithCheckbox
@@ -663,12 +700,13 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
                   panelTitle={t('leadCreation.profileLanguages')}
                   type='languages'
                   maxSelection={1}
+                  selectedLanguagesArray={languagePriorityList?.map(x => formatLanguagesValues(x.language) || x.text)}
                 />
                 {expansionPanelOpen !== 'languages' &&
                   <Grid item container direction='row'>
                     {languagePriorityList?.length > 0 && languagePriorityList?.map((tag, key) => (
                       <Tag key={key}
-                        title={tag.text}
+                        title={tag.text || formatLanguagesValues(tag?.language)}
                         isPrimaryColor
                         tagType="Critère indispensable"
                         isWithCheckbox

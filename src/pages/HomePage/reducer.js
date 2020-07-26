@@ -10,7 +10,7 @@ const initialState = Immutable.Map({
   deletingLeadLoading: false,
   missionsLoading: false,
   missionsData: null,
-  leadCreationStep: null,
+  leadCreationStep: 0,
   briefsLoading: false,
   briefsData: null,
   quotes: null,
@@ -73,7 +73,7 @@ const { actions, reducer } = createSlice({
       .set('briefsData', null),
     getBriefsSuccess: (state, action) => state
       .set('briefsLoading', false)
-      .set('briefsData', action.payload.briefs),
+      .set('briefsData', action.payload),
     getBriefsFailure: (state, action) => state
       .set('briefsLoading', false)
       .set('briefsData', null),
