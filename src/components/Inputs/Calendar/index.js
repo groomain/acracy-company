@@ -28,10 +28,12 @@ export const Calendar = ({ error, label, minDate, startDate }) => {
   const [selectedDate, setSelectedDate] = useState();
 
   useEffect(() => {
-    if (startDate) {
-      setSelectedDate(startDate)
-    } else {
-      setSelectedDate(minDate)
+    if (!selectedDate) {
+      if (startDate) {
+        setSelectedDate(startDate)
+      } else {
+        setSelectedDate(minDate)
+      }
     }
   }, [startDate, minDate])
 
