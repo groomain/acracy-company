@@ -57,7 +57,7 @@ function* doDeleteLead(action) {
       }
     };
 
-    yield API.post(config.apiGateway.NAME, apiURL, params);
+    yield API.put(config.apiGateway.NAME, apiURL, params);
     yield put(deleteLeadSuccess(action.payload));
     yield call(doGetLeads());
   } catch (err) {
