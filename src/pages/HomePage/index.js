@@ -16,7 +16,7 @@ import styles from "../../components/AppBar/styles";
 import acracyLogo from "../../assets/icons/logo-acracy.svg";
 
 import useScrollTrigger from "@material-ui/core/useScrollTrigger";
-import { getLeadDraftFailure } from '../LeadCreationPage/reducer';
+import { dispatchLeadId } from '../LeadCreationPage/reducer';
 
 export const HomePage = (props) => {
   const classes = styles();
@@ -41,6 +41,7 @@ export const HomePage = (props) => {
     dispatch(handleCurrentStep(0));
   }, [dispatch]);
 
+
   return (
     <>
       {/* Navigation is reapplied here since the global one doesn't work */}
@@ -54,7 +55,7 @@ export const HomePage = (props) => {
           <div className={clsx(classes.div, classes.home)}>
             <CustomButton theme={"filledButton"} title={t('header.newBrief')}
               component={RouterLink} to="/lead"
-              onClick={() => dispatch(getLeadDraftFailure())} />
+              onClick={() => dispatch(dispatchLeadId(null))} />
             <ProfilMenu />
           </div>
         </Toolbar>

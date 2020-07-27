@@ -37,29 +37,26 @@ const Draft = ({ draft }) => {
   const [getStatusResult, setGetStatusResult] = useState();
 
   const startDate = draft?.missionContext.startDate;
-  const date = moment(startDate).format("MM.DD à hh:mm");
-
-  const missionContextLength = getPath(draft?.missionContext, 'missionContext').length;
+  const date = moment(startDate).format("DD.MM à hh:mm");
 
   useEffect(() => {
     const getStatus = (draftStatus) => {
       let status;
       if (draftStatus === 'DRAFT') {
-        if (missionContextLength !== 0) {
+        if (draft?.missionDetail) {
+          return status = {
+            title: FINALIZE_BRIEF,
+            progress: 80
+          }
+        } else {
           return status = {
             title: START_LEAD,
             progress: 10,
             status: 'lead'
           }
         }
-        else {
-          return status = {
-            title: FINALIZE_BRIEF,
-            progress: 80
-          }
-        }
       } else if (draftStatus === 'HELP_NEEDED') {
-        if (missionContextLength !== 0) {
+        if (!draft?.missionDetail) {
           return status = {
             title: GET_CALLED,
             progress: 40,
@@ -75,7 +72,7 @@ const Draft = ({ draft }) => {
     }
     const result = getStatus(draft?.status);
     setGetStatusResult(result);
-  }, [FINALIZE_BRIEF, GET_CALLED, START_LEAD, draft, draft.status, missionContextLength]);
+  }, [FINALIZE_BRIEF, GET_CALLED, START_LEAD, draft, draft.status, draft.missionDetail]);
 
   const renderIcon = (getStatusResult) => {
     if (getStatusResult?.title === GET_CALLED) {

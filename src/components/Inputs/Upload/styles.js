@@ -27,5 +27,10 @@ export default makeStyles(theme => ({
   },
   maxedFileSize: {
     color: theme.palette.primary.danger
+  },
+  img: {
+    '&:hover': {
+      cursor: 'pointer',
+    },
   }
 }));

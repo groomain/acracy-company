@@ -50,6 +50,12 @@ export default makeStyles(theme => ({
     transform: 'translate(-30px, 7px) scale(1.5) rotate(180deg)'
   },
   dropdownStyle: {
+    overflowStyle: 'none', // IE scrollbar
+    scrollbarWidth: 'none', // Firefox scrollbar
+    scrollbarColor: 'transparent transparent', // Firefox scrollbar
+    '& ::-webkit-scrollbar': {
+      width: 0,
+    },
     background: theme.palette.secondary.dark,
     color: theme.palette.secondary.main,
     borderRadius: 15,
@@ -58,9 +64,11 @@ export default makeStyles(theme => ({
     margin: '.5rem 0',
     '& .MuiList-root': {
       padding: 0,
+
     }
   },
   menuItem: {
+    marginRight: 20,
     margin: 0,
     height: 61,
     fontSize: 17,

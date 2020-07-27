@@ -56,10 +56,11 @@ export const Upload = (props) => {
         companyData: state.getIn(['Administrative', 'companyData']),
     }));
 
-    const [uploadedFiles, setUploadedFiles] = useState(props.name && companyData?.administrativeProfile?.legalDocuments?.filter((file) => file.name === props.name).length !== 0
-        ? [{file: companyData?.administrativeProfile?.legalDocuments?.filter((file) => file.name === props.name)[0]}] : []);
+    const [uploadedFiles, setUploadedFiles] = useState(props.name && companyData?.administrativeProfile?.legalDocuments?.filter((file) => file.name === companyData.externalId + '-' + props.name).length !== 0
+        ? [{file: companyData?.administrativeProfile?.legalDocuments?.filter((file) => file.name === companyData.externalId + '-' + props.name)[0]}] : []);
     const [fileSizeError, setFileSizeError] = useState(false);
-    const [hovered, setOvered] = React.useState(false);
+    const [hoveredClose, setHoveredClose] = React.useState(false);
+    const [hoveredGet, setHoveredGet] = React.useState(false);
 
 
     const handleChange = (e) => {
@@ -87,27 +88,29 @@ export const Upload = (props) => {
     };
 
     useEffect(() => {
-        if (companyData?.administrativeProfile?.legalDocuments?.filter((file) => file.name === 'kbis' || file.name === 'cin1' || file.name === 'status').length < 3) {
+        if (companyData?.administrativeProfile?.legalDocuments?.filter((file) => file.name === companyData.externalId + '-kbis' || file.name === companyData.externalId + '-cin1' || file.name === companyData.externalId + '-status').length === 3) {
             dispatch(checkMissingFilesForm(false))
         } else {
             dispatch(checkMissingFilesForm(true))
 
         }
-    }, [companyData.administrativeProfile.legalDocuments]);
+    }, [companyData]);
 
     const handleFileDelete = () => {
         setUploadedFiles([]);
         dispatch(deleteAttachmentLaunched(leadAttachmentId))
     };
 
-    const handleFileDeleteFromData = () => {
+    const handleFileDeleteFromData = (id) => {
         setUploadedFiles([]);
-        dispatch(deleteAttachmentLaunched(leadAttachmentId))
-        const newLegalDocuments = companyData?.administrativeProfile?.legalDocuments?.filter((file) => file.name !== props.name);
-        const newCompanyData = companyData;
-        newCompanyData.administrativeProfile.legalDocuments = newLegalDocuments;
+        dispatch(deleteAttachmentLaunched(id));
+        const newLegalDocuments = companyData?.administrativeProfile?.legalDocuments?.filter((file) => file?.name !== companyData.externalId + '-' + props.name);
+        const newCompanyData = {...companyData, administrativeProfile: {...companyData.administrativeProfile, legalDocuments: newLegalDocuments}};
         dispatch(changeAttachmentFromData(newCompanyData))
     };
+
+    console.log(companyData?.administrativeProfile?.legalDocuments?.filter((file) => file?.name !== companyData.externalId + '-' + props.name));
+    console.log(companyData?.administrativeProfile?.legalDocuments?.filter((file) => file?.name !== companyData.externalId + '-' + props.name)[0]?.externalId);
 
     return (
         <>
@@ -120,17 +123,17 @@ export const Upload = (props) => {
                                     <Box mx={2} key={`file-row${index}`}>
                                         <Grid container direction="column" alignItems="center">
                                             <div style={{ position: 'relative' }}>
-                                                <img src={fileIcon} alt="uploaded file" onClick={() => dispatch(getAttachmentsLaunched(file.externalId))}/>
+                                                <img src={fileIcon} alt="uploaded file" onClick={() => dispatch(getAttachmentsLaunched(companyData?.administrativeProfile?.legalDocuments?.filter((value) => value?.name === companyData.externalId + '-' + props.name)[0]?.externalId))} className={classes.img}/>
                                                 <CloseIcon
-                                                    hovered={hovered}
-                                                    onMouseEnter={() => setOvered(true)}
-                                                    onMouseLeave={() => setOvered(false)}
+                                                    hovered={hoveredClose}
+                                                    onMouseEnter={() => setHoveredClose(true)}
+                                                    onMouseLeave={() => setHoveredClose(false)}
                                                     className={classes.closeButton}
-                                                    onClick={handleFileDeleteFromData}
+                                                    onClick={() => handleFileDeleteFromData(companyData?.administrativeProfile?.legalDocuments?.filter((value) => value?.name === companyData.externalId + '-' + props.name)[0]?.externalId)}
                                                 />
                                             </div>
                                             <Box my={1}>
-                                                <Typography className={fileSizeError ? classes.maxedFileSize : null}>{getName(file.name)}</Typography>
+                                                <Typography className={fileSizeError ? classes.maxedFileSize : null}>{props.placeHolder}</Typography>
                                             </Box>
                                         </Grid>
                                     </Box>

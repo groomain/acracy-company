@@ -6,9 +6,10 @@ import DarkWrapper from '../../Layout/DarkWrapper';
 import fileIcon from '../../../assets/icons/file-icon.svg';
 import uploadFileIcon from '../../../assets/icons/upload-file.svg';
 import { CloseIcon } from '../../../assets/icons/CloseIcon';
-import { Grid, Typography, Box, IconButton } from '@material-ui/core';
+import { Grid, Typography, Box } from '@material-ui/core';
 import styles from './styles';
 import { uploadFileLaunched, deleteAttachmentLaunched, uploadedFileName } from '../../../pages/LeadCreationPage/reducer';
+import { getAttachmentsLaunched } from "../Upload/reducer";
 
 const UploadInput = (props) => {
   const classes = styles();
@@ -40,9 +41,10 @@ export const LeadUpload = () => {
 
   const [uploadedFiles, setUploadedFiles] = useState([]);
   const [fileSizeError, setFileSizeError] = useState(false);
+  const [hoveredClose, setHoveredClose] = React.useState(false);
 
   useEffect(() => {
-    if (leadDraftData) {
+    if (leadDraftData?.missionDetail?.sharedDocuments[0]?.externalId) {
       setUploadedFiles(leadDraftData?.missionDetail?.sharedDocuments);
     }
   }, [leadDraftData])
@@ -70,7 +72,7 @@ export const LeadUpload = () => {
 
   const handleFileDelete = () => {
     setUploadedFiles([]);
-    dispatch(deleteAttachmentLaunched(leadAttachmentId))
+    dispatch(deleteAttachmentLaunched(leadAttachmentId || leadDraftData?.missionDetail?.sharedDocuments[0].externalId))
   };
 
   return (
@@ -89,14 +91,14 @@ export const LeadUpload = () => {
                 <Box mx={2} key={`file-row${index}`}>
                   <Grid container direction="column" alignItems="center">
                     <div style={{ position: 'relative' }}>
-                      <img src={fileIcon} alt="uploaded file" />
-                      <IconButton
-                        onClick={handleFileDelete}
-                        disableRipple
+                      <img src={fileIcon} alt="uploaded file" onClick={() => dispatch(getAttachmentsLaunched(leadAttachmentId))} className={classes.img} />
+                      <CloseIcon
+                        hovered={hoveredClose}
+                        onMouseEnter={() => setHoveredClose(true)}
+                        onMouseLeave={() => setHoveredClose(false)}
                         className={classes.closeButton}
-                      >
-                        <CloseIcon />
-                      </IconButton>
+                        onClick={handleFileDelete}
+                      />
                     </div>
                     <Box my={1}>
                       <Typography className={fileSizeError ? classes.maxedFileSize : null}>{file?.name || file?.file?.name}</Typography>

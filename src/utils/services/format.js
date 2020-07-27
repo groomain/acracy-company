@@ -109,7 +109,7 @@ export const formatType = (val) => {
     case 'WHATEVER':
       return 'Peu importe'
     case 'REMOTE_ONLY':
-      return 'en remote uniquement'
+      return 'En remote uniquement'
     case 'INPLACE_ONLY':
       return 'Sur place uniquement'
     case 'BOTH':
@@ -155,9 +155,9 @@ export const formatDurationType = val => {
 export const formatBudgetType = val => {
   switch (val) {
     case 'TOTAL':
-      return 'Budget Total'
+      return 'Budget total'
     case 'DAILY_RATE':
-      return 'Taux Journalier'
+      return 'Taux journalier'
     default:
   }
 }
@@ -186,6 +186,32 @@ export const formatSeniorityType = seniority => {
       return 'Expert (7 à 10 ans)'
     case 'GURU':
       return 'Guru (10 ans et plus)'
+    default:
+  }
+}
+
+export const formatLanguagesValues = val => {
+  switch (val) {
+    case 'FLUENT_ENGLISH':
+      return 'Anglais courant'
+    case 'FLUENT_FRENCH':
+      return 'Français courant'
+    case 'FLUENT_GERMAN':
+      return 'Allemand courant'
+    case 'FLUENT_SPANISH':
+      return 'Espagnol courant'
+    case 'FLUENT_ITALIAN':
+      return 'Italien courant'
+    case 'NATIVE_ENGLISH':
+      return 'Anglais natif'
+    case 'NATIVE_FRENCH':
+      return 'Français natif'
+    case 'NATIVE_GERMAN':
+      return 'Allemand natif'
+    case 'NATIVE_SPANISH':
+      return 'Espagnol natif'
+    case 'NATIVE_ITALIAN':
+      return 'Italien natif'
     default:
   }
 }
