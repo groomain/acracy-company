@@ -242,9 +242,11 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
   const showDeliverablesSettings = () => {
     const selectableDeliverables = searchedCategory?.DELIVERABLES || searchedCategory?.links || leadCreationPageWithSearchResult?.DELIVERABLES;
     let deliverablesList = [];
-    deliverablesList = selectableDeliverables?.map((item) => {
-      return item.TEXT;
-    });
+    if (selectableDeliverables) {
+      deliverablesList = selectableDeliverables?.map((item) => {
+        return item.TEXT;
+      });
+    }
     deliverablesList.push('Ne figure pas dans la liste');
     return (
       <>
