@@ -8,7 +8,7 @@ const initialState = Immutable.Map({
   companyError: null,
   companyUpdateLoading: false,
   companyUpdateError: null,
-  compnayUpdateResponse: null,
+  companyUpdateResponse: null,
   attachments: [],
   missingInfosForm1: false,
   missingInfosForm2: false,
@@ -42,13 +42,13 @@ const { actions, reducer } = createSlice({
     putCompanyLaunched: (state, action) => state
       .set('companyUpdateLoading', true)
       .set('companyUpdateError', null)
-      .set('compnayUpdateResponse', null),
+      .set('companyUpdateResponse', null),
     putCompanySuccess: (state, action) => state
       .set('companyUpdateLoading', false)
-      .set('compnayUpdateResponse', action.payload),
+      .set('companyUpdateResponse', action.payload),
     putCompanyFailure: (state, action) => state
       .set('companyUpdateLoading', false)
-      .set('compnayUpdateResponse', null)
+      .set('companyUpdateResponse', null)
       .set('companyUpdateError', action.payload),
     // checking missing infos in 6 different forms
     checkMissingInfosForm1: (state, action) => state
