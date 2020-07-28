@@ -9,6 +9,7 @@ import {
   changePasswordSuccess,
   changePasswordFailure
 } from "./reducer";
+import {openSnackBar} from "../../components/App/reducer";
 
 function* doGetMyProfile(action) {
   const employeeId = action.payload;
@@ -22,6 +23,7 @@ function* doGetMyProfile(action) {
   } catch (error) {
     console.log(error);
     yield put(getMyProfilePersonalInformationsFailure());
+    yield put(openSnackBar({ message: "Une erreur est survenue lors de la récupération des données", error: true }));
   }
 }
 
@@ -44,9 +46,11 @@ function* doPutMyProfile(action) {
       }
     });
     yield put(putMyProfilePersonalInformationsSuccess(myProfile));
+    yield put(openSnackBar({ message: "Les données ont été modifiées avec succès", error: false }));
   } catch (error) {
     console.log(error);
     yield put(putMyProfilePersonalInformationsFailure());
+    yield put(openSnackBar({ message: "Une erreur est survenue lors de l'enregistrement des données", error: true }));
   }
 }
 
@@ -56,9 +60,11 @@ function* doChangePassword(action) {
     const currentUser = yield Auth.currentAuthenticatedUser();
     yield Auth.changePassword(currentUser, oldPassword, newPassword);
     yield put(changePasswordSuccess());
+    yield put(openSnackBar({ message: "Le mot de passe a été changé avec succès", error: false }));
   } catch (error) {
     console.log(error);
     yield put(changePasswordFailure());
+    yield put(openSnackBar({ message: "Une erreur est survenue lors du changement de mot de passe", error: true }));
   }
 }
 
