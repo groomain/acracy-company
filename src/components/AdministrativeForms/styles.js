@@ -21,7 +21,11 @@ export default makeStyles(theme => ({
   textfield: {
     maxWidth: '100%',
     marginTop: 15,
-    marginBottom: 15
+    marginBottom: 15,
+    '& input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button': {
+      '-webkit-appearance': 'none',
+      margin: 0
+    }
   },
   switch: {
     marginLeft: 10,

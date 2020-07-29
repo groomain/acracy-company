@@ -76,25 +76,29 @@ export const AdministrativePage = (props) => {
   };
 
   const initialValuesForm1 = {
-    legalForm: companyData?.administrativeProfile?.legalForm || '',
-    socialReason: companyData?.administrativeProfile?.socialReason || '',
-    siret: companyData?.administrativeProfile?.siret || '',
-    shareCapital: companyData?.administrativeProfile?.shareCapital || '',
+    administrativeProfile:{
+      legalForm: companyData?.administrativeProfile?.legalForm || '',
+      socialReason: companyData?.administrativeProfile?.socialReason || '',
+      siret: companyData?.administrativeProfile?.siret || null,
+      shareCapital: companyData?.administrativeProfile?.shareCapital || null,
+      cityOfRcsRegistration: companyData?.administrativeProfile?.cityOfRcsRegistration || '',
+      intraCommunityVAT: companyData?.administrativeProfile?.intraCommunityVAT || '',
+      vatNumber: companyData?.administrativeProfile?.vatNumber || '',
+    },
     webSite: companyData?.webSite || '',
-    cityOfRcsRegistration: companyData?.administrativeProfile?.cityOfRcsRegistration || '',
-    intraCommunityVAT: companyData?.administrativeProfile?.intraCommunityVAT || '',
-    vatNumber: companyData?.administrativeProfile?.vatNumber || '',
   };
 
   const ValidationSchemaForm1 = Yup.object().shape({
-    legalForm: Yup.string().required(),
-    socialReason: Yup.string().required(),
-    siret: Yup.number().required(),
-    shareCapital: Yup.number().required(),
+    administrativeProfile:{
+      legalForm: Yup.string().required(),
+      socialReason: Yup.string().required(),
+      siret: Yup.number().required(),
+      shareCapital: Yup.number().required(),
+      cityOfRcsRegistration: Yup.string(),
+      intraCommunityVAT: Yup.bool(),
+      vatNumber: Yup.number(),
+    },
     webSite: Yup.string(),
-    cityOfRcsRegistration: Yup.string(),
-    intraCommunityVAT: Yup.bool(),
-    vatNumber: Yup.number(),
   });
 
   const initialValuesForm2 = {
