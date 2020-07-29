@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
@@ -24,9 +24,14 @@ export const Form1 = ({
   useEffect(() => {
     if (!isNullOrEmpty(administrativeProfile.legalForm?.trim()) && !isNullOrEmpty(administrativeProfile.socialReason?.trim()) && administrativeProfile.siret > 0 && administrativeProfile.shareCapital > 0) {
       dispatch(checkMissingInfosForm1(true));
+    } else {
+        dispatch(checkMissingInfosForm1(false));
     }
   }, [administrativeProfile.legalForm, administrativeProfile.socialReason, administrativeProfile.siret, administrativeProfile.shareCapital]);
 
+    const { companyLoading } = useSelector(state => ({
+        companyLoading: state.getIn(['Administrative', 'companyLoading']),
+    }));
 
   return (
     <Grid item container direction="column" className={classes.card}>
@@ -141,6 +146,7 @@ Je suis soumis à la TVA
             className={classes.saveButton}
             disabled={isNullOrEmpty(administrativeProfile.legalForm) || isNullOrEmpty(administrativeProfile.socialReason) || isNullOrEmpty(administrativeProfile.siret) || isNullOrEmpty(administrativeProfile.shareCapital)}
             handleClick={() => handleSubmit({ administrativeProfile, webSite })}
+            loading={companyLoading}
           />
         </Grid>
         <Grid item container direction="column" xs={6} className={classes.columnContainer}>

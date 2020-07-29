@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useDispatch } from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import { useTranslation } from "react-i18next";
 import styles from "../styles";
 import CustomTextField from "../../Inputs/CustomTextField";
@@ -21,10 +21,14 @@ export const Form2 = ({ values, errors, touched, handleBlur, handleChange, handl
   useEffect(() => {
     if (!isNullOrEmpty(administrativeProfile.headOffice?.address?.trim()) && !isNullOrEmpty(administrativeProfile.headOffice?.zipCode) && !isNullOrEmpty(administrativeProfile.headOffice?.city?.trim()) && !isNullOrEmpty(administrativeProfile.headOffice?.country?.trim())) {
       dispatch(checkMissingInfosForm2(true))
+    } else {
+      dispatch(checkMissingInfosForm2(false))
     }
   }, [administrativeProfile.headOffice]);
 
-    console.log(isNullOrEmpty(administrativeProfile.headOffice.address));
+  const { companyLoading } = useSelector(state => ({
+    companyLoading: state.getIn(['Administrative', 'companyLoading']),
+  }));
 
     return (
     <Grid item container direction={'column'} className={classes.card}>
@@ -76,6 +80,7 @@ export const Form2 = ({ values, errors, touched, handleBlur, handleChange, handl
             zipCode: administrativeProfile.headOffice.zipCode,
             city: administrativeProfile.headOffice.city,
             country: administrativeProfile.headOffice.country })}
+                      loading={companyLoading}
         />
       </Grid>
     </Grid>

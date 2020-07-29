@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import styles from "../styles";
 import CustomButton from "../../Button";
 import Typography from "@material-ui/core/Typography";
@@ -23,8 +23,14 @@ export const Form5 = ({ values, errors, touched, handleBlur, handleChange, handl
   useEffect(() => {
     if (administrativeProfile.cguCheck === true && administrativeProfile.purchaseOrder === true) {
       dispatch(checkMissingInfosForm5(true))
+    } else {
+      dispatch(checkMissingInfosForm5(false))
     }
   }, [checked]);
+
+  const { companyLoading } = useSelector(state => ({
+    companyLoading: state.getIn(['Administrative', 'companyLoading']),
+  }));
 
   return (
     <Grid item container direction={'column'} className={classes.card}>
@@ -50,7 +56,9 @@ export const Form5 = ({ values, errors, touched, handleBlur, handleChange, handl
         </Grid>
         <CustomButton title={'Sauvegarder'} theme={'filledButton'} className={classes.saveButton}
           disabled={administrativeProfile.cguCheck === false}
-          handleClick={() => handleSubmit({ purchaseOrder: administrativeProfile.purchaseOrder, cguCheck: administrativeProfile.cguCheck })} />
+          handleClick={() => handleSubmit({ purchaseOrder: administrativeProfile.purchaseOrder, cguCheck: administrativeProfile.cguCheck })}
+                      loading={companyLoading}
+        />
       </Grid>
     </Grid>
   );

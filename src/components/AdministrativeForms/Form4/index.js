@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useDispatch } from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import { useTranslation } from "react-i18next";
 import styles from "../styles";
 import CustomTextField from "../../Inputs/CustomTextField";
@@ -22,8 +22,14 @@ export const Form4 = ({ values, errors, touched, handleBlur, handleChange, handl
   useEffect(() => {
     if (!isNullOrEmpty(administrativeProfile?.billing?.lastName?.trim()) && !isNullOrEmpty(administrativeProfile?.billing?.email) && !isNullOrEmpty(administrativeProfile?.billing?.phonePrefix) && administrativeProfile?.billing?.phoneNumber > 0) {
       dispatch(checkMissingInfosForm4(true))
+    } else {
+      dispatch(checkMissingInfosForm4(false))
     }
   }, [administrativeProfile.billing]);
+
+  const { companyLoading } = useSelector(state => ({
+    companyLoading: state.getIn(['Administrative', 'companyLoading']),
+  }));
 
   return (
     <Grid item container direction={'column'} className={classes.card}>
@@ -51,7 +57,9 @@ export const Form4 = ({ values, errors, touched, handleBlur, handleChange, handl
           />
           <CustomButton title={'Sauvegarder'} theme={'filledButton'} className={classes.saveButton}
             disabled={isNullOrEmpty(administrativeProfile.billing.firstName) || isNullOrEmpty(administrativeProfile.billing.lastName) || isNullOrEmpty(administrativeProfile.billing.email) || isNullOrEmpty(administrativeProfile.billing.phonePrefix) || isNullOrEmpty(administrativeProfile.billing.phoneNumber)}
-            handleClick={() => handleSubmit({ firstName: administrativeProfile.billing.firstName, lastName: administrativeProfile.billing.lastName, email: administrativeProfile.billing.email, phonePrefix: getPhonePrefixCode(administrativeProfile.billing.phonePrefix), phoneNumber: administrativeProfile.billing.phoneNumber })} />
+            handleClick={() => handleSubmit({ firstName: administrativeProfile.billing.firstName, lastName: administrativeProfile.billing.lastName, email: administrativeProfile.billing.email, phonePrefix: getPhonePrefixCode(administrativeProfile.billing.phonePrefix), phoneNumber: administrativeProfile.billing.phoneNumber })}
+                        loading={companyLoading}
+          />
         </Grid>
         <Grid item container direction={'column'} className={classes.columnContainer}>
           <CustomTextField className={classes.textfield}
