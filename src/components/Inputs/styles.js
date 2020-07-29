@@ -68,7 +68,6 @@ export default makeStyles(theme => ({
     }
   },
   menuItem: {
-    marginRight: 20,
     margin: 0,
     height: 61,
     fontSize: 17,
