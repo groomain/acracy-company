@@ -182,7 +182,7 @@ export const AdministrativePage = (props) => {
 
   const handleSubmit = (payload) => {
     dispatch(putCompanyLaunched({ ...payload, companyId: userDynamo.companyId }))
-  }
+  };
 
   return (
     <Grid item xs={12} container className={classes.container}>

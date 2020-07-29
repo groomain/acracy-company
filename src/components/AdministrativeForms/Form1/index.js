@@ -91,7 +91,6 @@ export const Form1 = ({
             placeholder="SIRET"
             value={administrativeProfile.siret}
             name="administrativeProfile.siret"
-            type="number"
             onBlur={handleBlur}
             onChange={handleChange}
             error={!!touched.siret && !!errors.siret}
@@ -160,7 +159,6 @@ Je suis soumis à la TVA
             label="Capital social (€)*"
             placeholder="Capital social (€)"
             name="administrativeProfile.shareCapital"
-            type="number"
             value={administrativeProfile.shareCapital}
             onBlur={handleBlur}
             onChange={handleChange}
