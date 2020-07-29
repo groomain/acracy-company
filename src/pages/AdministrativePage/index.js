@@ -122,19 +122,27 @@ export const AdministrativePage = (props) => {
   });
 
   const initialValuesForm3 = {
-    sameAddress: companyData?.administrativeProfile?.sameAddress || false,
-    address: companyData?.administrativeProfile?.billing?.address || '',
-    zipCode: companyData?.administrativeProfile?.billing?.zipCode || '',
-    city: companyData?.administrativeProfile?.billing?.city || '',
-    country: companyData?.administrativeProfile?.billing?.country || '',
+    administrativeProfile: {
+      sameAddress: companyData?.administrativeProfile?.sameAddress || false,
+      billing: {
+        address: companyData?.administrativeProfile?.billing?.address || null,
+        zipCode: companyData?.administrativeProfile?.billing?.zipCode || null,
+        city: companyData?.administrativeProfile?.billing?.city || null,
+        country: companyData?.administrativeProfile?.billing?.country || null
+      }
+    }
   };
 
   const ValidationSchemaForm3 = Yup.object().shape({
-    sameAddress: Yup.bool(),
-    address: Yup.string().required(),
-    zipCode: Yup.number().required(),
-    city: Yup.string().required(),
-    country: Yup.string().required(),
+    administrativeProfile: {
+      sameAddress: Yup.bool(),
+      billing: {
+        address: Yup.string().required(),
+        zipCode: Yup.number().required(),
+        city: Yup.string().required(),
+        country: Yup.string().required()
+      }
+    }
   });
 
   const initialValuesForm4 = {

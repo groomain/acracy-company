@@ -10,24 +10,25 @@ import Grid from "@material-ui/core/Grid";
 import CustomSwitch from "../../Switch";
 import countries from "../../../utils/countries.json";
 import { checkMissingInfosForm3 } from '../../../pages/AdministrativePage/reducer';
+import {isNullOrEmpty} from "../isNullOrEmpty";
 
 export const Form3 = ({ values, errors, touched, handleBlur, handleChange, handleSubmit }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const classes = styles();
 
-  const { sameAddress, address, zipCode, city, country } = values;
-  const [switchAddress, setSwitchAddress] = useState(sameAddress === true ? true : false);
+  const { administrativeProfile } = values;
+  const [switchAddress, setSwitchAddress] = useState(administrativeProfile.sameAddress === true ? true : false);
 
   useEffect(() => {
-    if (sameAddress === true ) {
+    if (administrativeProfile.sameAddress === true ) {
       dispatch(checkMissingInfosForm3(true))
     } else {
-      if (address.trim() != "" && zipCode != "" && city.trim() != "" && country.trim() != "") {
+      if (!isNullOrEmpty(administrativeProfile?.billing?.address?.trim()) && !isNullOrEmpty(administrativeProfile?.billing?.zipCode) && !isNullOrEmpty(administrativeProfile?.billing?.city?.trim()) && !isNullOrEmpty(administrativeProfile?.billing?.country?.trim())) {
         dispatch(checkMissingInfosForm3(true))
       }
     }
-  }, [address, zipCode, city, country, sameAddress]);
+  }, [administrativeProfile, administrativeProfile.billing]);
 
   return (
     <Grid item container direction={'column'} className={classes.card}>
@@ -37,8 +38,8 @@ export const Form3 = ({ values, errors, touched, handleBlur, handleChange, handl
           <CustomSwitch switchSize={'small'}
             setChecked={setSwitchAddress}
             checked={switchAddress}
-            name={'sameAddress'}
-            value={sameAddress}
+            name={'administrativeProfile.sameAddress'}
+            value={administrativeProfile.sameAddress}
             onBlur={handleBlur}
             onChange={handleChange}
             error={!!touched.sameAddress && !!errors.sameAddress}
@@ -50,8 +51,8 @@ export const Form3 = ({ values, errors, touched, handleBlur, handleChange, handl
             <CustomTextField className={classes.textfield}
               label={'Adresse*'}
               placeholder={'Adresse'}
-              name={'address'}
-              value={address}
+              name={'administrativeProfile.billing.address'}
+              value={administrativeProfile.billing.address}
               onBlur={handleBlur}
               onChange={handleChange}
               error={!!touched.address && !!errors.address}
@@ -60,8 +61,8 @@ export const Form3 = ({ values, errors, touched, handleBlur, handleChange, handl
               <CustomTextField className={classes.zipCode}
                 label={'Code postal*'}
                 placeholder={'Code Postal'}
-                name={'zipCode'}
-                value={zipCode}
+                name={'administrativeProfile.billing.zipCode'}
+                value={administrativeProfile.billing.zipCode}
                 onBlur={handleBlur}
                 onChange={handleChange}
                 error={!!touched.zipCode && !!errors.zipCode}
@@ -69,8 +70,8 @@ export const Form3 = ({ values, errors, touched, handleBlur, handleChange, handl
               <CustomTextField className={classes.city}
                 label={'Ville*'}
                 placeholder={'Ville'}
-                name={'city'}
-                value={city}
+                name={'administrativeProfile.billing.city'}
+                value={administrativeProfile.billing.city}
                 onBlur={handleBlur}
                 onChange={handleChange}
                 error={!!touched.city && !!errors.city}
@@ -80,8 +81,8 @@ export const Form3 = ({ values, errors, touched, handleBlur, handleChange, handl
               label={'Pays*'}
               optionsValues={countries}
               placeholder={'Pays'}
-              name={'country'}
-              value={country}
+              name={'administrativeProfile.billing.country'}
+              value={administrativeProfile.billing.country}
               onBlur={handleBlur}
               onChange={handleChange}
               error={!!touched.country && !!errors.country}
@@ -89,8 +90,8 @@ export const Form3 = ({ values, errors, touched, handleBlur, handleChange, handl
           </Grid>
         }
         <CustomButton title={'Sauvegarder'} theme={'filledButton'} className={classes.saveButton}
-          disabled={(address === "" || zipCode === "" || city === "" || country === "") && switchAddress === false}
-          handleClick={() => switchAddress ? handleSubmit({ sameAddress: true }) : handleSubmit({ sameAddress: false, address, zipCode, city, country })}
+          disabled={isNullOrEmpty(administrativeProfile.billing.address) || isNullOrEmpty(administrativeProfile.billing.zipCode) || isNullOrEmpty(administrativeProfile.billing.city) || isNullOrEmpty(administrativeProfile.billing.country) && switchAddress === false}
+          handleClick={() => switchAddress ? handleSubmit({ sameAddress: true }) : handleSubmit({ sameAddress: false, address: administrativeProfile.billing.address, zipCode: administrativeProfile.billing.zipCode, city: administrativeProfile.billing.city, country: administrativeProfile.billing.country })}
         />
       </Grid>
     </Grid>

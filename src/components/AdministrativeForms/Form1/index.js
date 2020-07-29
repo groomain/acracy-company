@@ -9,6 +9,7 @@ import CustomButton from '../../Button';
 import CustomSwitch from '../../Switch';
 import CustomSelect from '../../Inputs/CustomSelectAdministrative';
 import { checkMissingInfosForm1 } from '../../../pages/AdministrativePage/reducer';
+import {isNullOrEmpty} from "../isNullOrEmpty";
 
 export const Form1 = ({
   values, errors, touched, handleBlur, handleChange, handleSubmit
@@ -21,7 +22,7 @@ export const Form1 = ({
   const [switchTVA, setSwitchTVA] = useState(administrativeProfile.vatNumber !== '' && administrativeProfile.vatNumber !== null);
 
   useEffect(() => {
-    if (administrativeProfile.legalForm?.trim() !== '' && administrativeProfile.socialReason?.trim() !== '' && administrativeProfile.siret > 0 && administrativeProfile.shareCapital > 0) {
+    if (!isNullOrEmpty(administrativeProfile.legalForm?.trim()) && !isNullOrEmpty(administrativeProfile.socialReason?.trim()) && administrativeProfile.siret > 0 && administrativeProfile.shareCapital > 0) {
       dispatch(checkMissingInfosForm1(true));
     }
   }, [administrativeProfile.legalForm, administrativeProfile.socialReason, administrativeProfile.siret, administrativeProfile.shareCapital]);
@@ -139,7 +140,7 @@ Je suis soumis à la TVA
             title="Sauvegarder"
             theme="filledButton"
             className={classes.saveButton}
-            disabled={administrativeProfile.legalForm === '' || administrativeProfile.socialReason === '' || administrativeProfile.siret === '' || administrativeProfile.shareCapital === ''}
+            disabled={isNullOrEmpty(administrativeProfile.legalForm) || isNullOrEmpty(administrativeProfile.socialReason) || isNullOrEmpty(administrativeProfile.siret) || isNullOrEmpty(administrativeProfile.shareCapital)}
             handleClick={() => handleSubmit({ administrativeProfile, webSite })}
           />
         </Grid>
