@@ -27,8 +27,8 @@ export const Form4 = ({ values, errors, touched, handleBlur, handleChange, handl
     }
   }, [administrativeProfile.billing]);
 
-  const { companyLoading } = useSelector(state => ({
-    companyLoading: state.getIn(['Administrative', 'companyLoading']),
+  const { companyUpdateLoading } = useSelector(state => ({
+    companyUpdateLoading: state.getIn(['Administrative', 'companyUpdateLoading']),
   }));
 
   return (
@@ -58,7 +58,7 @@ export const Form4 = ({ values, errors, touched, handleBlur, handleChange, handl
           <CustomButton title={'Sauvegarder'} theme={'filledButton'} className={classes.saveButton}
             disabled={isNullOrEmpty(administrativeProfile.billing.firstName) || isNullOrEmpty(administrativeProfile.billing.lastName) || isNullOrEmpty(administrativeProfile.billing.email) || isNullOrEmpty(administrativeProfile.billing.phonePrefix) || isNullOrEmpty(administrativeProfile.billing.phoneNumber)}
             handleClick={() => handleSubmit({ firstName: administrativeProfile.billing.firstName, lastName: administrativeProfile.billing.lastName, email: administrativeProfile.billing.email, phonePrefix: getPhonePrefixCode(administrativeProfile.billing.phonePrefix), phoneNumber: administrativeProfile.billing.phoneNumber })}
-                        loading={companyLoading}
+                        loading={companyUpdateLoading}
           />
         </Grid>
         <Grid item container direction={'column'} className={classes.columnContainer}>

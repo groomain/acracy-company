@@ -28,8 +28,8 @@ export const Form5 = ({ values, errors, touched, handleBlur, handleChange, handl
     }
   }, [checked]);
 
-  const { companyLoading } = useSelector(state => ({
-    companyLoading: state.getIn(['Administrative', 'companyLoading']),
+  const { companyUpdateLoading } = useSelector(state => ({
+    companyUpdateLoading: state.getIn(['Administrative', 'companyUpdateLoading']),
   }));
 
   return (
@@ -57,7 +57,7 @@ export const Form5 = ({ values, errors, touched, handleBlur, handleChange, handl
         <CustomButton title={'Sauvegarder'} theme={'filledButton'} className={classes.saveButton}
           disabled={administrativeProfile.cguCheck === false}
           handleClick={() => handleSubmit({ purchaseOrder: administrativeProfile.purchaseOrder, cguCheck: administrativeProfile.cguCheck })}
-                      loading={companyLoading}
+                      loading={companyUpdateLoading}
         />
       </Grid>
     </Grid>

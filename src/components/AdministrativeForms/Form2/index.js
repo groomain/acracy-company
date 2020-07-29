@@ -26,8 +26,8 @@ export const Form2 = ({ values, errors, touched, handleBlur, handleChange, handl
     }
   }, [administrativeProfile.headOffice]);
 
-  const { companyLoading } = useSelector(state => ({
-    companyLoading: state.getIn(['Administrative', 'companyLoading']),
+  const { companyUpdateLoading } = useSelector(state => ({
+    companyUpdateLoading: state.getIn(['Administrative', 'companyUpdateLoading']),
   }));
 
     return (
@@ -80,7 +80,7 @@ export const Form2 = ({ values, errors, touched, handleBlur, handleChange, handl
             zipCode: administrativeProfile.headOffice.zipCode,
             city: administrativeProfile.headOffice.city,
             country: administrativeProfile.headOffice.country })}
-                      loading={companyLoading}
+                      loading={companyUpdateLoading}
         />
       </Grid>
     </Grid>

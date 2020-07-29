@@ -29,8 +29,8 @@ export const Form1 = ({
     }
   }, [administrativeProfile.legalForm, administrativeProfile.socialReason, administrativeProfile.siret, administrativeProfile.shareCapital]);
 
-    const { companyLoading } = useSelector(state => ({
-        companyLoading: state.getIn(['Administrative', 'companyLoading']),
+    const { companyUpdateLoading } = useSelector(state => ({
+        companyUpdateLoading: state.getIn(['Administrative', 'companyUpdateLoading']),
     }));
 
   return (
@@ -146,7 +146,7 @@ Je suis soumis à la TVA
             className={classes.saveButton}
             disabled={isNullOrEmpty(administrativeProfile.legalForm) || isNullOrEmpty(administrativeProfile.socialReason) || isNullOrEmpty(administrativeProfile.siret) || isNullOrEmpty(administrativeProfile.shareCapital)}
             handleClick={() => handleSubmit({ administrativeProfile, webSite })}
-            loading={companyLoading}
+            loading={companyUpdateLoading}
           />
         </Grid>
         <Grid item container direction="column" xs={6} className={classes.columnContainer}>
