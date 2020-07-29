@@ -77,15 +77,15 @@ export const AdministrativePage = (props) => {
 
   const initialValuesForm1 = {
     administrativeProfile:{
-      legalForm: companyData?.administrativeProfile?.legalForm || '',
-      socialReason: companyData?.administrativeProfile?.socialReason || '',
+      legalForm: companyData?.administrativeProfile?.legalForm || null,
+      socialReason: companyData?.administrativeProfile?.socialReason || null,
       siret: companyData?.administrativeProfile?.siret || null,
       shareCapital: companyData?.administrativeProfile?.shareCapital || null,
-      cityOfRcsRegistration: companyData?.administrativeProfile?.cityOfRcsRegistration || '',
-      intraCommunityVAT: companyData?.administrativeProfile?.intraCommunityVAT || '',
-      vatNumber: companyData?.administrativeProfile?.vatNumber || '',
+      cityOfRcsRegistration: companyData?.administrativeProfile?.cityOfRcsRegistration || null,
+      intraCommunityVAT: companyData?.administrativeProfile?.intraCommunityVAT || false,
+      vatNumber: companyData?.administrativeProfile?.vatNumber || null,
     },
-    webSite: companyData?.webSite || '',
+    webSite: companyData?.webSite || null,
   };
 
   const ValidationSchemaForm1 = Yup.object().shape({

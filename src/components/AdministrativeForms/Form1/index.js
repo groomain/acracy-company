@@ -18,10 +18,10 @@ export const Form1 = ({
   const classes = styles();
 
   const { administrativeProfile, webSite } = values;
-  const [switchTVA, setSwitchTVA] = useState(administrativeProfile.vatNumber != '');
+  const [switchTVA, setSwitchTVA] = useState(administrativeProfile.vatNumber !== '' && administrativeProfile.vatNumber !== null);
 
   useEffect(() => {
-    if (administrativeProfile.legalForm.trim() != '' && administrativeProfile.socialReason.trim() != '' && administrativeProfile.siret > 0 && administrativeProfile.shareCapital > 0) {
+    if (administrativeProfile.legalForm?.trim() !== '' && administrativeProfile.socialReason?.trim() !== '' && administrativeProfile.siret > 0 && administrativeProfile.shareCapital > 0) {
       dispatch(checkMissingInfosForm1(true));
     }
   }, [administrativeProfile.legalForm, administrativeProfile.socialReason, administrativeProfile.siret, administrativeProfile.shareCapital]);
@@ -40,42 +40,42 @@ export const Form1 = ({
                 value: 'SA',
                 label: 'SA Société Anonyme'
               },
-                {
-                    value: 'SAS',
-                    label: 'SAS Société par Actions Simplifiées'
-                },
-                {
-                    value: 'EURL',
-                    label: 'EURL Entreprise Unipersonnelle à Responsabilité Limitée'
-                },
-                {
-                    value: 'EIRL',
-                    label: 'EIRL Entrepreneur Individuel à Responsabilité Limitée'
-                },
-                {
-                    value: 'EI',
-                    label: 'EI Entreprise Individuelle'
-                },
-                {
-                    value: 'AE',
-                    label: 'AE Auto-Entrepreneur'
-                },
-                {
-                    value: 'SASU',
-                    label: 'SASU Société par Actions Simplifiée Unipersonnelle'
-                },
-                {
-                    value: 'SAU',
-                    label: 'SAU Société Anonyme Unipersonnelle'
-                },
-                {
-                    value: 'GIE',
-                    label: 'GIE Groupement d’Intérêt Économique'
-                },
-                {
-                    value: 'SARL',
-                    label: 'SARL Société Anonyme à Responsabilité Limitée'
-                },
+              {
+                value: 'SAS',
+                label: 'SAS Société par Actions Simplifiées'
+              },
+              {
+                value: 'EURL',
+                label: 'EURL Entreprise Unipersonnelle à Responsabilité Limitée'
+              },
+              {
+                value: 'EIRL',
+                label: 'EIRL Entrepreneur Individuel à Responsabilité Limitée'
+              },
+              {
+                value: 'EI',
+                label: 'EI Entreprise Individuelle'
+              },
+              {
+                value: 'AE',
+                label: 'AE Auto-Entrepreneur'
+              },
+              {
+                value: 'SASU',
+                label: 'SASU Société par Actions Simplifiée Unipersonnelle'
+              },
+              {
+                value: 'SAU',
+                label: 'SAU Société Anonyme Unipersonnelle'
+              },
+              {
+                value: 'GIE',
+                label: 'GIE Groupement d’Intérêt Économique'
+              },
+              {
+                value: 'SARL',
+                label: 'SARL Société Anonyme à Responsabilité Limitée'
+              },
             ]}
             placeholder="Forme juridique"
             name="administrativeProfile.legalForm"
