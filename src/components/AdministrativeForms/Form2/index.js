@@ -9,6 +9,7 @@ import CustomSelect from "../../Inputs/CustomSelect";
 import Grid from "@material-ui/core/Grid";
 import countries from "../../../utils/countries.json";
 import { checkMissingInfosForm2 } from '../../../pages/AdministrativePage/reducer';
+import {isNullOrEmpty} from "../isNullOrEmpty";
 
 export const Form2 = ({ values, errors, touched, handleBlur, handleChange, handleSubmit }) => {
   const { t } = useTranslation();
@@ -18,12 +19,14 @@ export const Form2 = ({ values, errors, touched, handleBlur, handleChange, handl
   const { administrativeProfile } = values;
 
   useEffect(() => {
-    if (administrativeProfile.headOffice?.address?.trim() != "" && administrativeProfile.headOffice?.zipCode != "" && administrativeProfile.headOffice?.city?.trim() != "" && administrativeProfile.headOffice?.country?.trim() != "") {
+    if (!isNullOrEmpty(administrativeProfile.headOffice?.address?.trim()) && !isNullOrEmpty(administrativeProfile.headOffice?.zipCode) && !isNullOrEmpty(administrativeProfile.headOffice?.city?.trim()) && !isNullOrEmpty(administrativeProfile.headOffice?.country?.trim())) {
       dispatch(checkMissingInfosForm2(true))
     }
   }, [administrativeProfile.headOffice]);
 
-  return (
+    console.log(isNullOrEmpty(administrativeProfile.headOffice.address));
+
+    return (
     <Grid item container direction={'column'} className={classes.card}>
       <Typography variant={'h2'} className={classes.cardTitle}>Siège social</Typography>
       <Grid item container direction={'column'} className={classes.container}>
@@ -67,7 +70,7 @@ export const Form2 = ({ values, errors, touched, handleBlur, handleChange, handl
           error={!!touched.country && !!errors.country}
         />
         <CustomButton title={'Sauvegarder'} theme={'filledButton'} className={classes.saveButton}
-          disabled={administrativeProfile.headOffice.address === "" || administrativeProfile.headOffice.zipCode === "" || administrativeProfile.headOffice.city === "" || administrativeProfile.headOffice.country === ""}
+          disabled={isNullOrEmpty(administrativeProfile.headOffice.address) || isNullOrEmpty(administrativeProfile.headOffice.zipCode) || isNullOrEmpty(administrativeProfile.headOffice.city) || isNullOrEmpty(administrativeProfile.headOffice.country)}
           handleClick={() => handleSubmit({
             address: administrativeProfile.headOffice.address,
             zipCode: administrativeProfile.headOffice.zipCode,
