@@ -91,7 +91,7 @@ export const LeadUpload = () => {
                 <Box mx={2} key={`file-row${index}`}>
                   <Grid container direction="column" alignItems="center">
                     <div style={{ position: 'relative' }}>
-                      <img src={fileIcon} alt="uploaded file" onClick={() => dispatch(getAttachmentsLaunched(leadAttachmentId))} className={classes.img} />
+                      <img src={fileIcon} alt="uploaded file" onClick={() => dispatch(getAttachmentsLaunched(leadAttachmentId || uploadedFiles[0].externalId))} className={classes.img} />
                       <CloseIcon
                         hovered={hoveredClose}
                         onMouseEnter={() => setHoveredClose(true)}
