@@ -18,7 +18,7 @@ export const Form3 = ({ values, errors, touched, handleBlur, handleChange, handl
   const classes = styles();
 
   const { administrativeProfile } = values;
-  const [switchAddress, setSwitchAddress] = useState(administrativeProfile.sameAddress === true ? true : false);
+  const [switchAddress, setSwitchAddress] = useState(administrativeProfile.sameAddress === true);
 
   useEffect(() => {
     if (administrativeProfile.sameAddress === true ) {

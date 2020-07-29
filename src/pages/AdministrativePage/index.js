@@ -129,8 +129,7 @@ export const AdministrativePage = (props) => {
         zipCode: companyData?.administrativeProfile?.billing?.zipCode || null,
         city: companyData?.administrativeProfile?.billing?.city || null,
         country: companyData?.administrativeProfile?.billing?.country || null
-      }
-    }
+      }}
   };
 
   const ValidationSchemaForm3 = Yup.object().shape({
@@ -146,28 +145,38 @@ export const AdministrativePage = (props) => {
   });
 
   const initialValuesForm4 = {
-    firstName: companyData?.administrativeProfile?.billing?.firstName || '',
-    lastName: companyData?.administrativeProfile?.billing?.lastName || '',
-    email: companyData?.administrativeProfile?.billing?.email || '',
-    phonePrefix: companyData?.administrativeProfile?.billing?.phone?.code ? getAreaCodeFromNumber(companyData?.administrativeProfile?.billing?.phone?.code) : '',
-    phoneNumber: companyData?.administrativeProfile?.billing?.phone?.number || '',
+    administrativeProfile: {
+      billing: {
+        firstName: companyData?.administrativeProfile?.billing?.firstName || null,
+        lastName: companyData?.administrativeProfile?.billing?.lastName || null,
+        email: companyData?.administrativeProfile?.billing?.email || null,
+        phonePrefix: companyData?.administrativeProfile?.billing?.phone?.code ? getAreaCodeFromNumber(companyData?.administrativeProfile?.billing?.phone?.code) : null,
+        phoneNumber: companyData?.administrativeProfile?.billing?.phone?.number || null
+      }}
   };
 
   const ValidationSchemaForm4 = Yup.object().shape({
-    firstName: Yup.string().required(),
-    lastName: Yup.string().required(),
-    email: Yup.string().required(),
-    phonePrefix: Yup.string().required(),
-    phoneNumber: Yup.number().required(),
+    administrativeProfile: {
+      billing: {
+        firstName: Yup.string().required(),
+        lastName: Yup.string().required(),
+        email: Yup.string().required(),
+        phonePrefix: Yup.string().required(),
+        phoneNumber: Yup.number().required()
+      }}
   });
 
   const initialValuesForm5 = {
-    purchaseOrder: companyData?.administrativeProfile?.purchaseOrder || false,
+    administrativeProfile: {
+      purchaseOrder: companyData?.administrativeProfile?.purchaseOrder || false
+    },
     chart: false,
   };
 
   const ValidationSchemaForm5 = Yup.object().shape({
-    purchaseOrder: Yup.bool().required(),
+    administrativeProfile: {
+      purchaseOrder: Yup.bool().required()
+    },
     chart: Yup.bool().required(),
   });
 

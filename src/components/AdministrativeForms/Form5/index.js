@@ -18,7 +18,7 @@ export const Form5 = ({ values, errors, touched, handleBlur, handleChange, handl
   const [switchOrders, setSwitchOrders] = useState(false);
   const [checked, setChecked] = useState(false);
 
-  const { purchaseOrder, chart } = values;
+  const { administrativeProfile, chart } = values;
 
   const handleCheck = () => {
     if (checked === true) {
@@ -41,7 +41,7 @@ export const Form5 = ({ values, errors, touched, handleBlur, handleChange, handl
       <Grid item container direction={'column'} className={classes.container}>
         <Grid item container direction={'row'} alignItems={'center'} className={classes.switch}>
           <CustomSwitch switchSize={'small'}
-            name={'purchaseOrder'}
+            name={'administrativeProfile.purchaseOrder'}
             setChecked={setSwitchOrders}
             onBlur={handleBlur}
             onChange={handleChange}
@@ -60,7 +60,7 @@ export const Form5 = ({ values, errors, touched, handleBlur, handleChange, handl
         </Grid>
         <CustomButton title={'Sauvegarder'} theme={'filledButton'} className={classes.saveButton}
           disabled={chart === false}
-          handleClick={() => handleSubmit({ purchaseOrder, chart })} />
+          handleClick={() => handleSubmit({ purchaseOrder: administrativeProfile.purchaseOrder, chart })} />
       </Grid>
     </Grid>
   );
