@@ -168,16 +168,16 @@ export const AdministrativePage = (props) => {
 
   const initialValuesForm5 = {
     administrativeProfile: {
-      purchaseOrder: companyData?.administrativeProfile?.purchaseOrder || false
+      purchaseOrder: companyData?.administrativeProfile?.purchaseOrder || false,
+      cguCheck: companyData?.administrativeProfile?.cguCheck || false
     },
-    chart: false,
   };
 
   const ValidationSchemaForm5 = Yup.object().shape({
     administrativeProfile: {
-      purchaseOrder: Yup.bool().required()
+      purchaseOrder: Yup.bool().required(),
+      cguCheck: Yup.bool().required(),
     },
-    chart: Yup.bool().required(),
   });
 
   const handleSubmit = (payload) => {

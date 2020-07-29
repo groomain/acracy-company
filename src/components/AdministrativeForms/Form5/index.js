@@ -18,19 +18,10 @@ export const Form5 = ({ values, errors, touched, handleBlur, handleChange, handl
   const [switchOrders, setSwitchOrders] = useState(false);
   const [checked, setChecked] = useState(false);
 
-  const { administrativeProfile, chart } = values;
-
-  const handleCheck = () => {
-    if (checked === true) {
-      setChecked(false)
-    } else {
-      setChecked(true)
-    }
-    return checked
-  }
+  const { administrativeProfile } = values;
 
   useEffect(() => {
-    if (checked === true) {
+    if (administrativeProfile.cguCheck === true && administrativeProfile.purchaseOrder === true) {
       dispatch(checkMissingInfosForm5(true))
     }
   }, [checked]);
@@ -51,16 +42,15 @@ export const Form5 = ({ values, errors, touched, handleBlur, handleChange, handl
         </Grid>
         <Grid item container direction={'row'} alignItems={'center'} className={classes.charteContainer}>
           <CustomCheckBox style={{ position: 'relative', left: -10 }}
-            name={'chart'}
+            name={'administrativeProfile.cguCheck'}
             onChange={handleChange}
-          // checked={handleCheck}
           />
           <Typography variant={'body1'}>J’ai lu et j’accepte la charte acracy</Typography>
           <img src={charte} alt={'charte'} className={classes.chart} />
         </Grid>
         <CustomButton title={'Sauvegarder'} theme={'filledButton'} className={classes.saveButton}
-          disabled={chart === false}
-          handleClick={() => handleSubmit({ purchaseOrder: administrativeProfile.purchaseOrder, chart })} />
+          disabled={administrativeProfile.cguCheck === false}
+          handleClick={() => handleSubmit({ purchaseOrder: administrativeProfile.purchaseOrder, cguCheck: administrativeProfile.cguCheck })} />
       </Grid>
     </Grid>
   );
