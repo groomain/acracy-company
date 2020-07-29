@@ -18,7 +18,7 @@ export const Form2 = ({ values, errors, touched, handleBlur, handleChange, handl
   const { administrativeProfile } = values;
 
   useEffect(() => {
-    if (administrativeProfile.headOffice.address.trim() != "" && administrativeProfile.headOffice.zipCode != "" && administrativeProfile.headOffice.city.trim() != "" && administrativeProfile.headOffice.country.trim() != "") {
+    if (administrativeProfile.headOffice?.address?.trim() != "" && administrativeProfile.headOffice?.zipCode != "" && administrativeProfile.headOffice?.city?.trim() != "" && administrativeProfile.headOffice?.country?.trim() != "") {
       dispatch(checkMissingInfosForm2(true))
     }
   }, [administrativeProfile.headOffice]);
