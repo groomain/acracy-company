@@ -36,8 +36,8 @@ const Draft = ({ draft }) => {
   const [open, setOpen] = useState(false);
   const [getStatusResult, setGetStatusResult] = useState();
 
-  const startDate = draft?.missionContext.startDate;
-  const date = moment(startDate).format("DD.MM à hh:mm");
+  const creationDate = draft?.metadata?.creationDate;
+  const date = moment(creationDate).format("DD.MM à HH:mm");
 
   useEffect(() => {
     const getStatus = (draftStatus) => {
