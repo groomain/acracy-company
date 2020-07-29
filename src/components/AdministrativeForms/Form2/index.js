@@ -15,13 +15,13 @@ export const Form2 = ({ values, errors, touched, handleBlur, handleChange, handl
   const dispatch = useDispatch();
   const classes = styles();
 
-  const { address, zipCode, city, country } = values;
+  const { administrativeProfile } = values;
 
   useEffect(() => {
-    if (address.trim() != "" && zipCode != "" && city.trim() != "" && country.trim() != "") {
+    if (administrativeProfile.headOffice.address.trim() != "" && administrativeProfile.headOffice.zipCode != "" && administrativeProfile.headOffice.city.trim() != "" && administrativeProfile.headOffice.country.trim() != "") {
       dispatch(checkMissingInfosForm2(true))
     }
-  }, [address, zipCode, city, country]);
+  }, [administrativeProfile.headOffice]);
 
   return (
     <Grid item container direction={'column'} className={classes.card}>
@@ -30,8 +30,8 @@ export const Form2 = ({ values, errors, touched, handleBlur, handleChange, handl
         <CustomTextField className={classes.textfield}
           label={'Adresse*'}
           placeholder={'Adresse'}
-          name={'address'}
-          value={address}
+          name={'administrativeProfile.headOffice.address'}
+          value={administrativeProfile.headOffice.address}
           onBlur={handleBlur}
           onChange={handleChange}
           error={!!touched.address && !!errors.address}
@@ -40,8 +40,8 @@ export const Form2 = ({ values, errors, touched, handleBlur, handleChange, handl
           <CustomTextField className={classes.zipCode}
             label={'Code postal*'}
             placeholder={'Code Postal'}
-            name={'zipCode'}
-            value={zipCode}
+            name={'administrativeProfile.headOffice.zipCode'}
+            value={administrativeProfile.headOffice.zipCode}
             onBlur={handleBlur}
             onChange={handleChange}
             error={!!touched.zipCode && !!errors.zipCode}
@@ -49,8 +49,8 @@ export const Form2 = ({ values, errors, touched, handleBlur, handleChange, handl
           <CustomTextField className={classes.city}
             label={'Ville*'}
             placeholder={'Ville'}
-            name={'city'}
-            value={city}
+            name={'administrativeProfile.headOffice.city'}
+            value={administrativeProfile.headOffice.city}
             onBlur={handleBlur}
             onChange={handleChange}
             error={!!touched.city && !!errors.city}
@@ -60,15 +60,19 @@ export const Form2 = ({ values, errors, touched, handleBlur, handleChange, handl
           label={'Pays*'}
           optionsValues={countries}
           placeholder={'Pays'}
-          name={'country'}
-          value={country}
+          name={'administrativeProfile.headOffice.country'}
+          value={administrativeProfile.headOffice.country}
           onBlur={handleBlur}
           onChange={handleChange}
           error={!!touched.country && !!errors.country}
         />
         <CustomButton title={'Sauvegarder'} theme={'filledButton'} className={classes.saveButton}
-          disabled={address === "" || zipCode === "" || city === "" || country === ""}
-          handleClick={() => handleSubmit({ address, zipCode, city, country })}
+          disabled={administrativeProfile.headOffice.address === "" || administrativeProfile.headOffice.zipCode === "" || administrativeProfile.headOffice.city === "" || administrativeProfile.headOffice.country === ""}
+          handleClick={() => handleSubmit({
+            address: administrativeProfile.headOffice.address,
+            zipCode: administrativeProfile.headOffice.zipCode,
+            city: administrativeProfile.headOffice.city,
+            country: administrativeProfile.headOffice.country })}
         />
       </Grid>
     </Grid>
