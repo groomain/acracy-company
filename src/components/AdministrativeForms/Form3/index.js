@@ -11,6 +11,7 @@ import CustomSwitch from "../../Switch";
 import countries from "../../../utils/countries.json";
 import {checkMissingInfosForm3} from '../../../pages/AdministrativePage/reducer';
 import {isNullOrEmpty} from "../isNullOrEmpty";
+import {getIn} from "formik";
 
 export const Form3 = ({values, errors, touched, handleBlur, handleChange, handleSubmit}) => {
     const {t} = useTranslation();
@@ -46,7 +47,7 @@ export const Form3 = ({values, errors, touched, handleBlur, handleChange, handle
                                   value={administrativeProfile.sameAddress}
                                   onBlur={handleBlur}
                                   onChange={handleChange}
-                                  error={!!touched.sameAddress && !!errors.sameAddress}
+                                  error={!!getIn(touched, 'administrativeProfile.sameAddress') && !!getIn(errors, 'administrativeProfile.sameAddress')}
                     />
                     <Typography variant={'body1'}>L'adresse de facturation est identique à celle du siège
                         social</Typography>
@@ -60,7 +61,7 @@ export const Form3 = ({values, errors, touched, handleBlur, handleChange, handle
                                      value={administrativeProfile.billing.address}
                                      onBlur={handleBlur}
                                      onChange={handleChange}
-                                     error={!!touched.address && !!errors.address}
+                                     error={!!getIn(touched, 'administrativeProfile.billing.address') && !!getIn(errors,'administrativeProfile.billing.address')}
                     />
                     < Grid item container direction={'row'}>
                         <CustomTextField className={classes.zipCode}
@@ -70,7 +71,7 @@ export const Form3 = ({values, errors, touched, handleBlur, handleChange, handle
                                          value={administrativeProfile.billing.zipCode}
                                          onBlur={handleBlur}
                                          onChange={handleChange}
-                                         error={!!touched.zipCode && !!errors.zipCode}
+                                         error={!!getIn(touched,'administrativeProfile.billing.zipCode') && !!getIn(errors,'administrativeProfile.billing.zipCode')}
                         />
                         <CustomTextField className={classes.city}
                                          label={'Ville*'}
@@ -79,7 +80,7 @@ export const Form3 = ({values, errors, touched, handleBlur, handleChange, handle
                                          value={administrativeProfile.billing.city}
                                          onBlur={handleBlur}
                                          onChange={handleChange}
-                                         error={!!touched.city && !!errors.city}
+                                         error={!!getIn(touched, 'administrativeProfile.billing.city') && !!getIn(errors, 'administrativeProfile.billing.city')}
                         />
                     </Grid>
                     <CustomSelect className={classes.select}
@@ -90,7 +91,7 @@ export const Form3 = ({values, errors, touched, handleBlur, handleChange, handle
                                   value={administrativeProfile.billing.country}
                                   onBlur={handleBlur}
                                   onChange={handleChange}
-                                  error={!!touched.country && !!errors.country}
+                                  error={!!getIn(touched, 'administrativeProfile.billing.country') && !!getIn(errors, 'administrativeProfile.billing.country')}
                     />
                 </Grid>
                 }
