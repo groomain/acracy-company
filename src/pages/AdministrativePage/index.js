@@ -112,13 +112,13 @@ export const AdministrativePage = (props) => {
   };
 
   const ValidationSchemaForm2 = Yup.object().shape({
-    administrativeProfile: {
-      headOffice: {
+    administrativeProfile: Yup.object().shape({
+      headOffice: Yup.object().shape({
         address: Yup.string().required(),
         zipCode: Yup.number().required(),
         city: Yup.string().required(),
         country: Yup.string().required(),
-      }}
+      })})
   });
 
   const initialValuesForm3 = {
