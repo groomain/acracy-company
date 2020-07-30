@@ -64,7 +64,7 @@ export const AdministrativePage = (props) => {
   }, [dispatch]);
 
   useEffect(() => {
-    if (companyData?.administrativeProfile?.legalDocuments?.filter((file) => file.name === companyData.externalId + '-kbis' || file.name === companyData.externalId + '-cin1' || file.name === companyData.externalId + '-status').length === 3) {
+    if (companyData?.administrativeProfile?.legalDocuments?.filter((file) => file.name === companyData.externalId + '-kbis' || file.name === companyData.externalId + '-cin1' || file.name === companyData.externalId + '-status').length > 2) {
       dispatch(checkMissingFilesForm(true))
     } else {
       dispatch(checkMissingFilesForm(false))
@@ -76,86 +76,117 @@ export const AdministrativePage = (props) => {
   };
 
   const initialValuesForm1 = {
-    legalForm: companyData?.administrativeProfile?.legalForm || '',
-    socialReason: companyData?.administrativeProfile?.socialReason || '',
-    siret: companyData?.administrativeProfile?.siret || '',
-    shareCapital: companyData?.administrativeProfile?.shareCapital || '',
-    webSite: companyData?.webSite || '',
-    cityOfRcsRegistration: companyData?.administrativeProfile?.cityOfRcsRegistration || '',
-    intraCommunityVAT: companyData?.administrativeProfile?.intraCommunityVAT || '',
-    vatNumber: companyData?.administrativeProfile?.vatNumber || '',
+    administrativeProfile:{
+      legalForm: companyData?.administrativeProfile?.legalForm || null,
+      socialReason: companyData?.administrativeProfile?.socialReason || null,
+      siret: companyData?.administrativeProfile?.siret || null,
+      shareCapital: companyData?.administrativeProfile?.shareCapital || null,
+      cityOfRcsRegistration: companyData?.administrativeProfile?.cityOfRcsRegistration || null,
+      intraCommunityVAT: companyData?.administrativeProfile?.intraCommunityVAT || false,
+      vatNumber: companyData?.administrativeProfile?.vatNumber || null,
+    },
+    webSite: companyData?.webSite || null,
   };
 
   const ValidationSchemaForm1 = Yup.object().shape({
-    legalForm: Yup.string().required(),
-    socialReason: Yup.string().required(),
-    siret: Yup.number().required(),
-    shareCapital: Yup.number().required(),
+    administrativeProfile:{
+      legalForm: Yup.string().required(),
+      socialReason: Yup.string().required(),
+      siret: Yup.number().required(),
+      shareCapital: Yup.number().required(),
+      cityOfRcsRegistration: Yup.string(),
+      intraCommunityVAT: Yup.bool(),
+      vatNumber: Yup.number(),
+    },
     webSite: Yup.string(),
-    cityOfRcsRegistration: Yup.string(),
-    intraCommunityVAT: Yup.bool(),
-    vatNumber: Yup.number(),
   });
 
   const initialValuesForm2 = {
-    address: companyData?.administrativeProfile?.headOffice?.address || '',
-    zipCode: companyData?.administrativeProfile?.headOffice?.zipCode || '',
-    city: companyData?.administrativeProfile?.headOffice?.city || '',
-    country: companyData?.administrativeProfile?.headOffice?.country || '',
+    administrativeProfile: {
+      headOffice: {
+        address: companyData?.administrativeProfile?.headOffice?.address || null,
+        zipCode: companyData?.administrativeProfile?.headOffice?.zipCode || null,
+        city: companyData?.administrativeProfile?.headOffice?.city || null,
+        country: companyData?.administrativeProfile?.headOffice?.country || null
+      }}
   };
 
   const ValidationSchemaForm2 = Yup.object().shape({
-    address: Yup.string().required(),
-    zipCode: Yup.number().required(),
-    city: Yup.string().required(),
-    country: Yup.string().required(),
+    administrativeProfile: {
+      headOffice: {
+        address: Yup.string().required(),
+        zipCode: Yup.number().required(),
+        city: Yup.string().required(),
+        country: Yup.string().required(),
+      }}
   });
 
   const initialValuesForm3 = {
-    sameAddress: companyData?.administrativeProfile?.sameAddress || false,
-    address: companyData?.administrativeProfile?.billing?.address || '',
-    zipCode: companyData?.administrativeProfile?.billing?.zipCode || '',
-    city: companyData?.administrativeProfile?.billing?.city || '',
-    country: companyData?.administrativeProfile?.billing?.country || '',
+    administrativeProfile: {
+      sameAddress: companyData?.administrativeProfile?.sameAddress || false,
+      billing: {
+        address: companyData?.administrativeProfile?.billing?.address || null,
+        zipCode: companyData?.administrativeProfile?.billing?.zipCode || null,
+        city: companyData?.administrativeProfile?.billing?.city || null,
+        country: companyData?.administrativeProfile?.billing?.country || null
+      }}
   };
 
   const ValidationSchemaForm3 = Yup.object().shape({
-    sameAddress: Yup.bool(),
-    address: Yup.string().required(),
-    zipCode: Yup.number().required(),
-    city: Yup.string().required(),
-    country: Yup.string().required(),
+    administrativeProfile: {
+      sameAddress: Yup.bool(),
+      billing: {
+        address: Yup.string().required(),
+        zipCode: Yup.number().required(),
+        city: Yup.string().required(),
+        country: Yup.string().required()
+      }
+    }
   });
 
   const initialValuesForm4 = {
-    firstName: companyData?.administrativeProfile?.billing?.firstName || '',
-    lastName: companyData?.administrativeProfile?.billing?.lastName || '',
-    email: companyData?.administrativeProfile?.billing?.email || '',
-    phonePrefix: companyData?.administrativeProfile?.billing?.phone?.code ? getAreaCodeFromNumber(companyData?.administrativeProfile?.billing?.phone?.code) : '',
-    phoneNumber: companyData?.administrativeProfile?.billing?.phone?.number || '',
+    administrativeProfile: {
+      billing: {
+        firstName: companyData?.administrativeProfile?.billing?.firstName || null,
+        lastName: companyData?.administrativeProfile?.billing?.lastName || null,
+        email: companyData?.administrativeProfile?.billing?.email || null,
+        phone: {
+          code: companyData?.administrativeProfile?.billing?.phone?.code ? getAreaCodeFromNumber(companyData?.administrativeProfile?.billing?.phone?.code) : null,
+          number: companyData?.administrativeProfile?.billing?.phone?.number || null
+        }
+      }}
   };
 
   const ValidationSchemaForm4 = Yup.object().shape({
-    firstName: Yup.string().required(),
-    lastName: Yup.string().required(),
-    email: Yup.string().required(),
-    phonePrefix: Yup.string().required(),
-    phoneNumber: Yup.number().required(),
+    administrativeProfile: {
+      billing: {
+        firstName: Yup.string().required(),
+        lastName: Yup.string().required(),
+        email: Yup.string().required(),
+        phone: {
+          code: Yup.string().required(),
+          number: Yup.number().required()
+        }
+      }}
   });
 
   const initialValuesForm5 = {
-    purchaseOrder: companyData?.administrativeProfile?.purchaseOrder || false,
-    chart: false,
+    administrativeProfile: {
+      purchaseOrder: companyData?.administrativeProfile?.purchaseOrder || false,
+      cguCheck: companyData?.administrativeProfile?.cguCheck || false
+    },
   };
 
   const ValidationSchemaForm5 = Yup.object().shape({
-    purchaseOrder: Yup.bool().required(),
-    chart: Yup.bool().required(),
+    administrativeProfile: {
+      purchaseOrder: Yup.bool().required(),
+      cguCheck: Yup.bool().required(),
+    },
   });
 
   const handleSubmit = (payload) => {
     dispatch(putCompanyLaunched({ ...payload, companyId: userDynamo.companyId }))
-  }
+  };
 
   return (
     <Grid item xs={12} container className={classes.container}>
