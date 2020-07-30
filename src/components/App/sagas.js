@@ -47,9 +47,6 @@ function* getCurrentSession(action) {
     const userDynamo = yield API.post(config.apiGateway.NAME, '/sessions', {
       headers: {
         'x-api-key': config.apiKey
-      },
-      body: {
-        email: userInfo.attributes.email
       }
     });
 
