@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { Formik } from 'formik';
@@ -12,13 +12,14 @@ import SearchResultPannel from '../../components/SearchResultPannel';
 import PartnersList from '../../components/PartnersList';
 import styles from '../../utils/styles';
 
-const SignUpPage = () => {
+const SignUpPage = (props) => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const classes = styles();
+  const queryString = require('query-string');
+  let test = 1
 
-  // Form data
-  const initialValues = {
+  const [initialValues, setInitialValues] = useState({
     companyName: '',
     firstName: '',
     lastName: '',
@@ -28,11 +29,36 @@ const SignUpPage = () => {
     password: '',
     confirmPassword: '',
     phonePrefix: 'Fr : +33',
-    searchValue: 'Social Media Strategist',
+    searchValue: '',
     searchType: 'DELIVERABLE',
     searchCode: 'BB-8',
     conditions: false
-  };
+  });
+  // Form data
+  // const initialValues = {
+  //   companyName: '',
+  //   firstName: '',
+  //   lastName: '',
+  //   role: '',
+  //   phoneNumber: '',
+  //   email: '',
+  //   password: '',
+  //   confirmPassword: '',
+  //   phonePrefix: 'Fr : +33',
+  //   searchValue: '',
+  //   searchType: 'DELIVERABLE',
+  //   searchCode: 'BB-8',
+  //   conditions: false
+  // };
+
+  useEffect(() => {
+    console.log(initialValues)
+    setInitialValues({ ...initialValues, searchValue: queryString.parse(props.location.search).search })
+
+    initialValues.searchValue = queryString.parse(props.location.search).search
+    test++
+  }, []);
+
 
   // Form Submitting Function
   const signup = (credentials) => {
