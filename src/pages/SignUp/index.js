@@ -17,7 +17,6 @@ const SignUpPage = (props) => {
   const { t } = useTranslation();
   const classes = styles();
   const queryString = require('query-string');
-  let test = 1
 
   const [initialValues, setInitialValues] = useState({
     companyName: '',
@@ -51,12 +50,14 @@ const SignUpPage = (props) => {
   //   conditions: false
   // };
 
+  // example of base 64 parameter: eyJzZWFyY2h2YWx1ZSI6ImNvdWNvdSIsInNlYXJjaFR5cGUiOiJERUxJVkVSQUJMRSIsInNlYXJjaENvZGUiOiJiYi04In0=
   useEffect(() => {
-    console.log(initialValues)
-    setInitialValues({ ...initialValues, searchValue: queryString.parse(props.location.search).search })
-
-    initialValues.searchValue = queryString.parse(props.location.search).search
-    test++
+    if (props.location.search) {
+      let searchObjectBase64 = queryString.parse(props.location.search)
+      let searchObjectInString = atob(searchObjectBase64.search)
+      let searchObject = JSON.parse(searchObjectInString)
+      setInitialValues({ ...initialValues, searchValue: searchObject.text, searchType: searchObject.type, searchCode: searchObject.code })
+    }
   }, []);
 
 
