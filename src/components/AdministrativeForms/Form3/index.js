@@ -47,7 +47,7 @@ export const Form3 = ({values, errors, touched, handleBlur, handleChange, handle
                                   value={administrativeProfile.sameAddress}
                                   onBlur={handleBlur}
                                   onChange={handleChange}
-                                  error={!!touched.sameAddress && !!errors.sameAddress}
+                                  error={!!getIn(touched, 'administrativeProfile.sameAddress') && !!getIn(errors, 'administrativeProfile.sameAddress')}
                     />
                     <Typography variant={'body1'}>L'adresse de facturation est identique à celle du siège
                         social</Typography>
@@ -61,7 +61,7 @@ export const Form3 = ({values, errors, touched, handleBlur, handleChange, handle
                                      value={administrativeProfile.billing.address}
                                      onBlur={handleBlur}
                                      onChange={handleChange}
-                                     error={!!touched.address && !!errors.address}
+                                     error={!!getIn(touched, 'administrativeProfile.billing.address') && !!getIn(errors,'administrativeProfile.billing.address')}
                     />
                     < Grid item container direction={'row'}>
                         <CustomTextField className={classes.zipCode}
@@ -71,7 +71,7 @@ export const Form3 = ({values, errors, touched, handleBlur, handleChange, handle
                                          value={administrativeProfile.billing.zipCode}
                                          onBlur={handleBlur}
                                          onChange={handleChange}
-                                         error={!!touched.zipCode && !!errors.zipCode}
+                                         error={!!getIn(touched,'administrativeProfile.billing.zipCode') && !!getIn(errors,'administrativeProfile.billing.zipCode')}
                         />
                         <CustomTextField className={classes.city}
                                          label={'Ville*'}

@@ -10,6 +10,8 @@ import charte from "../../../assets/icons/charte.svg";
 import CustomCheckBox from "../../CheckBox";
 // import CustomCheckbox from "../../Forms/SignUpForm";
 import { checkMissingInfosForm5 } from '../../../pages/AdministrativePage/reducer';
+import {getIn} from "formik";
+import CustomTextField from "../Form4";
 
 export const Form5 = ({ values, errors, touched, handleBlur, handleChange, handleSubmit }) => {
   const { t } = useTranslation();
@@ -42,7 +44,7 @@ export const Form5 = ({ values, errors, touched, handleBlur, handleChange, handl
             setChecked={setSwitchOrders}
             onBlur={handleBlur}
             onChange={handleChange}
-            error={!!touched.purchaseOrder && !!errors.purchaseOrder}
+            error={!!getIn(touched, 'administrativeProfile.purchaseOrder') && !!getIn(errors, 'administrativeProfile.purchaseOrder')}
           />
           <Typography variant={'body1'}>Des bons de commande sont nécessaires pour la facturation</Typography>
         </Grid>
