@@ -29,26 +29,11 @@ const SignUpPage = (props) => {
     confirmPassword: '',
     phonePrefix: 'Fr : +33',
     searchValue: '',
-    searchType: 'DELIVERABLE',
-    searchCode: 'BB-8',
+    searchType: '',
+    searchCode: '',
     conditions: false
   });
-  // Form data
-  // const initialValues = {
-  //   companyName: '',
-  //   firstName: '',
-  //   lastName: '',
-  //   role: '',
-  //   phoneNumber: '',
-  //   email: '',
-  //   password: '',
-  //   confirmPassword: '',
-  //   phonePrefix: 'Fr : +33',
-  //   searchValue: '',
-  //   searchType: 'DELIVERABLE',
-  //   searchCode: 'BB-8',
-  //   conditions: false
-  // };
+
 
   // example of base 64 parameter: eyJzZWFyY2h2YWx1ZSI6ImNvdWNvdSIsInNlYXJjaFR5cGUiOiJERUxJVkVSQUJMRSIsInNlYXJjaENvZGUiOiJiYi04In0=
   useEffect(() => {
@@ -92,6 +77,7 @@ const SignUpPage = (props) => {
       <Grid container className={classes.container}>
         <Main>
           <Formik
+            enableReinitialize
             render={props => <SignUpForm {...props} />}
             initialValues={initialValues}
             validationSchema={ValidationSchema}
