@@ -11,6 +11,7 @@ import CustomSwitch from "../../Switch";
 import countries from "../../../utils/countries.json";
 import {checkMissingInfosForm3} from '../../../pages/AdministrativePage/reducer';
 import {isNullOrEmpty} from "../isNullOrEmpty";
+import {getIn} from "formik";
 
 export const Form3 = ({values, errors, touched, handleBlur, handleChange, handleSubmit}) => {
     const {t} = useTranslation();
@@ -79,7 +80,7 @@ export const Form3 = ({values, errors, touched, handleBlur, handleChange, handle
                                          value={administrativeProfile.billing.city}
                                          onBlur={handleBlur}
                                          onChange={handleChange}
-                                         error={!!touched.city && !!errors.city}
+                                         error={!!getIn(touched, 'administrativeProfile.billing.city') && !!getIn(errors, 'administrativeProfile.billing.city')}
                         />
                     </Grid>
                     <CustomSelect className={classes.select}
@@ -90,7 +91,7 @@ export const Form3 = ({values, errors, touched, handleBlur, handleChange, handle
                                   value={administrativeProfile.billing.country}
                                   onBlur={handleBlur}
                                   onChange={handleChange}
-                                  error={!!touched.country && !!errors.country}
+                                  error={!!getIn(touched, 'administrativeProfile.billing.country') && !!getIn(errors, 'administrativeProfile.billing.country')}
                     />
                 </Grid>
                 }

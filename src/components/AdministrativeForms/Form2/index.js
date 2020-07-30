@@ -61,7 +61,7 @@ export const Form2 = ({ values, errors, touched, handleBlur, handleChange, handl
             value={administrativeProfile.headOffice.city}
             onBlur={handleBlur}
             onChange={handleChange}
-            error={!!touched.city && !!errors.city}
+            error={!!getIn(touched, 'administrativeProfile.headOffice.city') && !! getIn(errors, 'administrativeProfile.headOffice.city')}
           />
         </Grid>
         <CustomSelect className={classes.select}
@@ -72,7 +72,7 @@ export const Form2 = ({ values, errors, touched, handleBlur, handleChange, handl
           value={administrativeProfile.headOffice.country}
           onBlur={handleBlur}
           onChange={handleChange}
-          error={!!touched.country && !!errors.country}
+          error={!!getIn(touched, 'administrativeProfile.headOffice.country') && !!getIn(errors, 'administrativeProfile.headOffice.country')}
         />
         <CustomButton title={'Sauvegarder'} theme={'filledButton'} className={classes.saveButton}
           disabled={isNullOrEmpty(administrativeProfile.headOffice.address) || isNullOrEmpty(administrativeProfile.headOffice.zipCode) || isNullOrEmpty(administrativeProfile.headOffice.city) || isNullOrEmpty(administrativeProfile.headOffice.country)}
