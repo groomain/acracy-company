@@ -150,8 +150,10 @@ export const AdministrativePage = (props) => {
         firstName: companyData?.administrativeProfile?.billing?.firstName || null,
         lastName: companyData?.administrativeProfile?.billing?.lastName || null,
         email: companyData?.administrativeProfile?.billing?.email || null,
-        phonePrefix: companyData?.administrativeProfile?.billing?.phone?.code ? getAreaCodeFromNumber(companyData?.administrativeProfile?.billing?.phone?.code) : null,
-        phoneNumber: companyData?.administrativeProfile?.billing?.phone?.number || null
+        phone: {
+          code: companyData?.administrativeProfile?.billing?.phone?.code ? getAreaCodeFromNumber(companyData?.administrativeProfile?.billing?.phone?.code) : null,
+          number: companyData?.administrativeProfile?.billing?.phone?.number || null
+        }
       }}
   };
 
@@ -161,8 +163,11 @@ export const AdministrativePage = (props) => {
         firstName: Yup.string().required(),
         lastName: Yup.string().required(),
         email: Yup.string().required(),
-        phonePrefix: Yup.string().required(),
-        phoneNumber: Yup.number().required()
+        phone: {
+          code: Yup.string().required(),
+          number: Yup.number().required()
+        }
+
       }}
   });
 

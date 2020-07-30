@@ -20,7 +20,7 @@ export const Form4 = ({ values, errors, touched, handleBlur, handleChange, handl
   const { administrativeProfile } = values;
 
   useEffect(() => {
-    if (!isNullOrEmpty(administrativeProfile?.billing?.lastName?.trim()) && !isNullOrEmpty(administrativeProfile?.billing?.email) && !isNullOrEmpty(administrativeProfile?.billing?.phonePrefix) && administrativeProfile?.billing?.phoneNumber > 0) {
+    if (!isNullOrEmpty(administrativeProfile?.billing?.lastName?.trim()) && !isNullOrEmpty(administrativeProfile?.billing?.email) && !isNullOrEmpty(administrativeProfile?.billing?.phone?.code) && administrativeProfile?.billing?.phone?.number > 0) {
       dispatch(checkMissingInfosForm4(true))
     } else {
       dispatch(checkMissingInfosForm4(false))
@@ -56,8 +56,8 @@ export const Form4 = ({ values, errors, touched, handleBlur, handleChange, handl
             error={!!touched.email && !!errors.email}
           />
           <CustomButton title={'Sauvegarder'} theme={'filledButton'} className={classes.saveButton}
-            disabled={isNullOrEmpty(administrativeProfile.billing.firstName) || isNullOrEmpty(administrativeProfile.billing.lastName) || isNullOrEmpty(administrativeProfile.billing.email) || isNullOrEmpty(administrativeProfile.billing.phonePrefix) || isNullOrEmpty(administrativeProfile.billing.phoneNumber)}
-            handleClick={() => handleSubmit({ firstName: administrativeProfile.billing.firstName, lastName: administrativeProfile.billing.lastName, email: administrativeProfile.billing.email, phonePrefix: getPhonePrefixCode(administrativeProfile.billing.phonePrefix), phoneNumber: administrativeProfile.billing.phoneNumber })}
+            disabled={isNullOrEmpty(administrativeProfile.billing.firstName) || isNullOrEmpty(administrativeProfile.billing.lastName) || isNullOrEmpty(administrativeProfile.billing.email) || isNullOrEmpty(administrativeProfile.billing.phone.code) || isNullOrEmpty(administrativeProfile.billing.phone.number)}
+            handleClick={() => handleSubmit({ firstName: administrativeProfile.billing.firstName, lastName: administrativeProfile.billing.lastName, email: administrativeProfile.billing.email, code: getPhonePrefixCode(administrativeProfile.billing.phone.code), number: administrativeProfile.billing.phone.number })}
                         loading={companyUpdateLoading}
           />
         </Grid>
@@ -77,23 +77,23 @@ export const Form4 = ({ values, errors, touched, handleBlur, handleChange, handl
               <Grid container spacing={2}>
                 <Grid item xs={5}>
                   <CustomSelect
-                    name='administrativeProfile.billing.phonePrefix'
+                    name='administrativeProfile.billing.phone.code'
                     optionsValues={areaCodes}
-                    value={administrativeProfile.billing.phonePrefix}
+                    value={administrativeProfile.billing.phone.code}
                     onBlur={handleBlur}
                     onChange={handleChange}
-                    error={!!touched.phonePrefix && !!errors.phonePrefix}
+                    error={!!touched.code && !!errors.code}
                   />
                 </Grid>
                 <Grid item xs={7}>
                   <CustomTextField
-                    name="administrativeProfile.billing.phoneNumber"
+                    name="administrativeProfile.billing.phone.number"
                     type="text"
-                    value={administrativeProfile.billing.phoneNumber}
+                    value={administrativeProfile.billing.phone.number}
                     onBlur={handleBlur}
                     onChange={handleChange}
                     placeholder={t('signup.phoneNumberPlaceholder')}
-                    error={!!touched.phoneNumber && !!errors.phoneNumber}
+                    error={!!touched.number && !!errors.number}
                   />
                 </Grid>
               </Grid>
