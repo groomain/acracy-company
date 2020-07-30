@@ -89,7 +89,7 @@ export const AdministrativePage = (props) => {
   };
 
   const ValidationSchemaForm1 = Yup.object().shape({
-    administrativeProfile:{
+    administrativeProfile: Yup.object().shape({
       legalForm: Yup.string().required(),
       socialReason: Yup.string().required(),
       siret: Yup.number().required(),
@@ -97,7 +97,7 @@ export const AdministrativePage = (props) => {
       cityOfRcsRegistration: Yup.string(),
       intraCommunityVAT: Yup.bool(),
       vatNumber: Yup.number(),
-    },
+    }),
     webSite: Yup.string(),
   });
 
@@ -112,13 +112,13 @@ export const AdministrativePage = (props) => {
   };
 
   const ValidationSchemaForm2 = Yup.object().shape({
-    administrativeProfile: {
-      headOffice: {
+    administrativeProfile: Yup.object().shape({
+      headOffice: Yup.object().shape({
         address: Yup.string().required(),
         zipCode: Yup.number().required(),
         city: Yup.string().required(),
         country: Yup.string().required(),
-      }}
+      })})
   });
 
   const initialValuesForm3 = {
@@ -133,15 +133,15 @@ export const AdministrativePage = (props) => {
   };
 
   const ValidationSchemaForm3 = Yup.object().shape({
-    administrativeProfile: {
+    administrativeProfile: Yup.object().shape({
       sameAddress: Yup.bool(),
-      billing: {
+      billing: Yup.object().shape({
         address: Yup.string().required(),
         zipCode: Yup.number().required(),
         city: Yup.string().required(),
         country: Yup.string().required()
-      }
-    }
+      })
+    })
   });
 
   const initialValuesForm4 = {
@@ -158,16 +158,16 @@ export const AdministrativePage = (props) => {
   };
 
   const ValidationSchemaForm4 = Yup.object().shape({
-    administrativeProfile: {
-      billing: {
+    administrativeProfile: Yup.object().shape({
+      billing: Yup.object().shape({
         firstName: Yup.string().required(),
         lastName: Yup.string().required(),
         email: Yup.string().required(),
-        phone: {
+        phone: Yup.object().shape({
           code: Yup.string().required(),
           number: Yup.number().required()
-        }
-      }}
+        })
+      })})
   });
 
   const initialValuesForm5 = {
@@ -178,10 +178,10 @@ export const AdministrativePage = (props) => {
   };
 
   const ValidationSchemaForm5 = Yup.object().shape({
-    administrativeProfile: {
+    administrativeProfile: Yup.object().shape({
       purchaseOrder: Yup.bool().required(),
       cguCheck: Yup.bool().required(),
-    },
+    }),
   });
 
   const handleSubmit = (payload) => {
