@@ -166,7 +166,7 @@ function* doSignIn(action) {
     console.log(err)
     if (err.code === 'UserNotConfirmedException') {
       yield Auth.resendSignUp(email)
-      yield put(push('/confirm-signup', { email: email }));
+      yield put(push('/confirmAccount', { email: email }));
       yield put(loginFailure(translateSignInError(err.code)));
       yield put(openSnackBar({ message: translateSignInError(err.code), error: true }));
     }
