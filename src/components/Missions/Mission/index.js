@@ -43,11 +43,13 @@ import {
   PAID
 } from '../constants';
 import QuoteSignatureValidationModal from "../../../pages/HomePage/Modals/QuoteSignatureValidationModal";
+import {useTranslation} from "react-i18next";
 moment.locale('fr');
 
 export const Mission = ({ mission, matching, today, ...props }) => {
   const dispatch = useDispatch();
   const classes = styles();
+  const { t } = useTranslation();
 
   const { quotes, quotesLoading, companiesData, companiesLoading, companiesDataFetched, updateMissionSent, companyId } = useSelector(state => ({
     companyId: state.getIn(['app', 'userDynamo', 'companyId']),
@@ -355,7 +357,7 @@ export const Mission = ({ mission, matching, today, ...props }) => {
                 <Grid item xs={4}>
                   <Grid item className={classes.blocTypoUp}>
                     <Typography variant={"h4"} className={classes.typo}>Taux journalier</Typography>
-                    <Typography variant={"body1"} className={classes.typo}>{mission?.brief?.missionContext?.estimatedAverageDailyRate || matching?.missionContext?.estimatedAverageDailyRate} €/j</Typography>
+                    <Typography variant={"body1"} className={classes.typo}>{Math.round((mission?.brief?.missionContext?.estimatedAverageDailyRate || matching?.missionContext?.estimatedAverageDailyRate)*100)/100} €/j</Typography>
                   </Grid>
                 </Grid>
               </Grid>
@@ -387,7 +389,7 @@ export const Mission = ({ mission, matching, today, ...props }) => {
                   <Grid item className={classes.blocTypoDown}>
                     <Typography variant={"h4"} className={classes.typo}>Durée</Typography>
                     <Typography variant={"body1"} className={classes.typo}>
-                      {durationNb}{' '}{durationUnit?.toLowerCase()}{durationNb > 1 && 's'} à partir du {formatDate(startDate)}
+                      {durationNb}{' '}{t(`dashboard.missions.${durationUnit?.toLowerCase()}`)}{durationNb > 1 && 's'} à partir du {formatDate(startDate)}
                     </Typography>
                   </Grid>
                 </Grid>

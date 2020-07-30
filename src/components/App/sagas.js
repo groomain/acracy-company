@@ -114,7 +114,7 @@ function* doSignIn(action) {
                   'firstName': userInfo?.attributes['custom:firstName'],
                   'lastName': userInfo?.attributes['custom:lastName'],
                   'role': userInfo?.attributes['custom:role'],
-                  'phoneNumber': {
+                  'phone': {
                     'code': userInfo?.attributes['custom:phoneNumberCode'],
                     'number': userInfo?.attributes['custom:phoneNumberNumber']
                   }
