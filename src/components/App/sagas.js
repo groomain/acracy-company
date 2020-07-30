@@ -115,8 +115,8 @@ function* doSignIn(action) {
                   'lastName': userInfo?.attributes['custom:lastName'],
                   'role': userInfo?.attributes['custom:role'],
                   'phoneNumber': {
-                    'code': userInfo?.attributes['custom:phoneNumberCode'],
-                    'number': userInfo?.attributes['custom:phoneNumberNumber']
+                    'code': userInfo?.attributes['custom:phoneCode'],
+                    'number': userInfo?.attributes['custom:phoneNumber']
                   }
                 }
               });
