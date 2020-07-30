@@ -140,7 +140,7 @@ export const AdministrativePage = (props) => {
     lastName: Yup.string().required(),
     email: Yup.string().required(),
     phonePrefix: Yup.string().required(),
-    phoneNumber: Yup.number().required(),
+    phoneNumber: Yup.string().required(),
   });
 
   const initialValuesForm5 = {
