@@ -200,8 +200,8 @@ function* doSignUp(action) {
         'custom:lastName': lastName,
         'custom:role': role,
         email,
-        'custom:phoneNumberCode': prefixCode,
-        'custom:phoneNumberNumber': phoneNumber,
+        'custom:phoneCode': prefixCode,
+        'custom:phoneNumber': phoneNumber,
         'custom:searchType': searchType,
         'custom:searchText': searchValue,
         'custom:searchCode': searchCode
