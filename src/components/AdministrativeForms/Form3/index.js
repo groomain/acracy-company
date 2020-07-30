@@ -95,7 +95,7 @@ export const Form3 = ({values, errors, touched, handleBlur, handleChange, handle
                 </Grid>
                 }
                 <CustomButton title={'Sauvegarder'} theme={'filledButton'} className={classes.saveButton}
-                              disabled={isNullOrEmpty(administrativeProfile.billing.address) || isNullOrEmpty(administrativeProfile.billing.zipCode) || isNullOrEmpty(administrativeProfile.billing.city) || isNullOrEmpty(administrativeProfile.billing.country) && switchAddress === false}
+                              disabled={(isNullOrEmpty(administrativeProfile.billing.address) || isNullOrEmpty(administrativeProfile.billing.zipCode) || isNullOrEmpty(administrativeProfile.billing.city) || isNullOrEmpty(administrativeProfile.billing.country)) && switchAddress === false}
                               handleClick={() => switchAddress ? handleSubmit({sameAddress: true}) : handleSubmit({
                                   sameAddress: false,
                                   address: administrativeProfile.billing.address,
