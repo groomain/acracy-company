@@ -64,7 +64,7 @@ export const AdministrativePage = (props) => {
   }, [dispatch]);
 
   useEffect(() => {
-    if (companyData?.administrativeProfile?.legalDocuments?.filter((file) => file.name === companyData.externalId + '-kbis' || file.name === companyData.externalId + '-cin1' || file.name === companyData.externalId + '-status').length === 3) {
+    if (companyData?.administrativeProfile?.legalDocuments?.filter((file) => file.name === companyData.externalId + '-kbis' || file.name === companyData.externalId + '-cin1' || file.name === companyData.externalId + '-status').length > 2) {
       dispatch(checkMissingFilesForm(true))
     } else {
       dispatch(checkMissingFilesForm(false))
@@ -167,7 +167,6 @@ export const AdministrativePage = (props) => {
           code: Yup.string().required(),
           number: Yup.number().required()
         }
-
       }}
   });
 

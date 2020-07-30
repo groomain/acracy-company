@@ -21,7 +21,7 @@ export const Form5 = ({ values, errors, touched, handleBlur, handleChange, handl
   const { administrativeProfile } = values;
 
   useEffect(() => {
-    if (administrativeProfile.cguCheck === true && administrativeProfile.purchaseOrder === true) {
+    if (administrativeProfile.cguCheck === true) {
       dispatch(checkMissingInfosForm5(true))
     } else {
       dispatch(checkMissingInfosForm5(false))
