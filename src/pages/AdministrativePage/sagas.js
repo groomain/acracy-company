@@ -43,7 +43,7 @@ function* doUpdateCompany(action) {
     const { companyId, ...rest } = action.payload;
     // let companyData = companyMock;
     const companyData = yield API.put(config.apiGateway.NAME, `/companies/${companyId}`, {
-      header: {
+      headers: {
         'x-api-key': config.apiKey
       },
       body: rest

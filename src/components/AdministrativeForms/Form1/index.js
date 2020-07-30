@@ -1,116 +1,185 @@
 import React, { useState, useEffect } from 'react';
-import { useDispatch } from "react-redux";
-import { useTranslation } from "react-i18next";
-import styles from "../styles";
-import CustomTextField from "../../Inputs/CustomTextField";
-import CustomButton from "../../Button";
-import Typography from "@material-ui/core/Typography";
-import CustomSwitch from "../../Switch";
-import CustomSelect from "../../Inputs/CustomSelect";
-import Grid from "@material-ui/core/Grid";
+import {useDispatch, useSelector} from 'react-redux';
+import { useTranslation } from 'react-i18next';
+import Typography from '@material-ui/core/Typography';
+import Grid from '@material-ui/core/Grid';
+import styles from '../styles';
+import CustomTextField from '../../Inputs/CustomTextField';
+import CustomButton from '../../Button';
+import CustomSwitch from '../../Switch';
+import CustomSelect from '../../Inputs/CustomSelectAdministrative';
 import { checkMissingInfosForm1 } from '../../../pages/AdministrativePage/reducer';
+import {isNullOrEmpty} from "../isNullOrEmpty";
+import {getIn} from "formik";
 
-export const Form1 = ({ values, errors, touched, handleBlur, handleChange, handleSubmit }) => {
+export const Form1 = ({
+  values, errors, touched, handleBlur, handleChange, handleSubmit
+}) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const classes = styles();
 
-  const { legalForm, socialReason, siret, shareCapital, webSite, cityOfRcsRegistration, intraCommunityVAT, vatNumber } = values;
-  const [switchTVA, setSwitchTVA] = useState(vatNumber != "" ? true : false);
+  const { administrativeProfile, webSite } = values;
+  const [switchTVA, setSwitchTVA] = useState(administrativeProfile.vatNumber !== '' && administrativeProfile.vatNumber !== null);
 
   useEffect(() => {
-    if (legalForm.trim() != "" && socialReason.trim() != "" && siret > 0 && shareCapital > 0) {
-      dispatch(checkMissingInfosForm1(true))
+    if (!isNullOrEmpty(administrativeProfile.legalForm?.trim()) && !isNullOrEmpty(administrativeProfile.socialReason?.trim()) && administrativeProfile.siret > 0 && administrativeProfile.shareCapital > 0) {
+      dispatch(checkMissingInfosForm1(true));
+    } else {
+        dispatch(checkMissingInfosForm1(false));
     }
-  }, [legalForm, socialReason, siret, shareCapital]);
+  }, [administrativeProfile.legalForm, administrativeProfile.socialReason, administrativeProfile.siret, administrativeProfile.shareCapital]);
+
+    const { companyUpdateLoading } = useSelector(state => ({
+        companyUpdateLoading: state.getIn(['Administrative', 'companyUpdateLoading']),
+    }));
 
   return (
-    <Grid item container direction={'column'} className={classes.card}>
-      <Typography variant={'h2'} className={classes.cardTitle}>Informations générales</Typography>
-      <Grid item container direction={'row'}>
-        <Grid item container direction={'column'} xs={6} className={classes.columnContainer}>
-          <CustomSelect className={classes.textfield}
-            label={'Forme juridique*'}
-            optionsValues={['SA Société Anonyme', 'SAS Société par Actions Simplifiées', 'EURL Entreprise Unipersonnelle à Responsabilité Limitée', 'EIRL Entrepreneur Individuel à Responsabilité Limitée', 'EI Entreprise Individuelle', 'AE Auto-Entrepreneur', 'SASU Société par Actions Simplifiée Unipersonnelle', 'SAU Société Anonyme Unipersonnelle', 'GIE Groupement d’Intérêt Économique', 'SARL Société Anonyme à Responsabilité Limitée']}
-            placeholder={'Forme juridique'}
-            name={'legalForm'}
-            value={legalForm}
+    <Grid item container direction="column" className={classes.card}>
+      <Typography variant="h2" className={classes.cardTitle}>Informations générales</Typography>
+      <Grid item container direction="row">
+        <Grid item container direction="column" xs={6} className={classes.columnContainer}>
+          <CustomSelect
+            className={classes.textfield}
+            label="Forme juridique*"
+            optionsValues={[
+              {
+                value: 'SA',
+                label: 'SA Société Anonyme'
+              },
+              {
+                value: 'SAS',
+                label: 'SAS Société par Actions Simplifiées'
+              },
+              {
+                value: 'EURL',
+                label: 'EURL Entreprise Unipersonnelle à Responsabilité Limitée'
+              },
+              {
+                value: 'EIRL',
+                label: 'EIRL Entrepreneur Individuel à Responsabilité Limitée'
+              },
+              {
+                value: 'EI',
+                label: 'EI Entreprise Individuelle'
+              },
+              {
+                value: 'AE',
+                label: 'AE Auto-Entrepreneur'
+              },
+              {
+                value: 'SASU',
+                label: 'SASU Société par Actions Simplifiée Unipersonnelle'
+              },
+              {
+                value: 'SAU',
+                label: 'SAU Société Anonyme Unipersonnelle'
+              },
+              {
+                value: 'GIE',
+                label: 'GIE Groupement d’Intérêt Économique'
+              },
+              {
+                value: 'SARL',
+                label: 'SARL Société Anonyme à Responsabilité Limitée'
+              },
+            ]}
+            placeholder="Forme juridique"
+            name="administrativeProfile.legalForm"
+            value={administrativeProfile.legalForm}
             onBlur={handleBlur}
             onChange={handleChange}
-            error={!!touched.legalForm && !!errors.legalForm}
+            error={!!getIn(touched,'administrativeProfile.legalForm') && !!getIn(errors, 'administrativeProfile.legalForm')}
           />
-          <CustomTextField className={classes.textfield}
-            label={'SIRET*'}
-            placeholder={'SIRET'}
-            value={siret}
-            name={'siret'}
+          <CustomTextField
+            className={classes.textfield}
+            label="SIRET*"
+            placeholder="SIRET"
+            value={administrativeProfile.siret}
+            name="administrativeProfile.siret"
             onBlur={handleBlur}
             onChange={handleChange}
-            error={!!touched.siret && !!errors.siret}
+            error={!!getIn(touched,'administrativeProfile.siret') && !!getIn(errors, 'administrativeProfile.siret')}
           />
-          <CustomTextField className={classes.textfield}
-            label={'Site web'}
-            placeholder={'Site web'}
-            name={'webSite'}
+          <CustomTextField
+            className={classes.textfield}
+            label="Site web"
+            placeholder="Site web"
+            name="webSite"
             value={webSite}
             onBlur={handleBlur}
             onChange={handleChange}
             error={!!touched.webSite && !!errors.webSite}
           />
-          <Grid item container direction={'row'} className={classes.switch}>
-            <CustomSwitch switchSize={'small'} checked={switchTVA} setChecked={setSwitchTVA}
-              name={'intraCommunityVAT'}
-              value={intraCommunityVAT}
+          <Grid item container direction="row" className={classes.switch}>
+            <CustomSwitch
+              switchSize="small"
+              checked={switchTVA}
+              setChecked={setSwitchTVA}
+              name="administrativeProfile.intraCommunityVAT"
+              value={administrativeProfile.intraCommunityVAT}
               onBlur={handleBlur}
               onChange={handleChange}
-              error={!!touched.intraCommunityVAT && !!errors.intraCommunityVAT} />
-            <Typography variant={'body1'} className={classes.tva}>Je suis soumis à la TVA
-                            intracommunautaire</Typography>
-          </Grid>
-          {switchTVA &&
-            <CustomTextField className={classes.textfield}
-              label={'Numéro de TVA'}
-              placeholder={'Numéro de TVA'}
-              name={'vatNumber'}
-              value={vatNumber}
-              onBlur={handleBlur}
-              onChange={handleChange}
-              error={!!touched.vatNumber && !!errors.vatNumber}
+              error={!!getIn(touched,'administrativeProfile.intraCommunityVAT') && !!getIn(errors, 'administrativeProfile.intraCommunityVAT')}
             />
+            <Typography variant="body1" className={classes.tva}>
+Je suis soumis à la TVA
+                            intracommunautaire
+            </Typography>
+          </Grid>
+          {switchTVA
+            && (
+            <CustomTextField
+              className={classes.textfield}
+              label="Numéro de TVA"
+              placeholder="Numéro de TVA"
+              name="administrativeProfile.vatNumber"
+              value={administrativeProfile.vatNumber}
+              onBlur={handleBlur}
+              onChange={handleChange}
+              error={!!getIn(touched,'administrativeProfile.vatNumber') && !!getIn(errors, 'administrativeProfile.vatNumber')}
+            />
+            )
           }
-          <CustomButton title={'Sauvegarder'} theme={'filledButton'}
+          <CustomButton
+            title="Sauvegarder"
+            theme="filledButton"
             className={classes.saveButton}
-            disabled={legalForm === "" || socialReason === "" || siret === "" || shareCapital === ""}
-            handleClick={() => handleSubmit({ legalForm, socialReason, siret, shareCapital, webSite, cityOfRcsRegistration, intraCommunityVAT, vatNumber })}
+            disabled={isNullOrEmpty(administrativeProfile.legalForm) || isNullOrEmpty(administrativeProfile.socialReason) || isNullOrEmpty(administrativeProfile.siret) || isNullOrEmpty(administrativeProfile.shareCapital)}
+            handleClick={() => handleSubmit({ administrativeProfile, webSite })}
+            loading={companyUpdateLoading}
           />
         </Grid>
-        <Grid item container direction={'column'} xs={6} className={classes.columnContainer}>
-          <CustomTextField className={classes.textfield}
-            label={'Raison sociale*'}
-            placeholder={'Raison sociale'}
-            name={'socialReason'}
-            value={socialReason}
+        <Grid item container direction="column" xs={6} className={classes.columnContainer}>
+          <CustomTextField
+            className={classes.textfield}
+            label="Raison sociale*"
+            placeholder="Raison sociale"
+            name="administrativeProfile.socialReason"
+            value={administrativeProfile.socialReason}
             onBlur={handleBlur}
             onChange={handleChange}
-            error={!!touched.socialReason && !!errors.socialReason}
+            error={!!getIn(touched,'administrativeProfile.socialReason') && !!getIn(errors, 'administrativeProfile.socialReason')}
           />
-          <CustomTextField className={classes.textfield}
-            label={'Capital social (€)*'}
-            placeholder={'Capital social (€)'}
-            name={'shareCapital'}
-            value={shareCapital}
+          <CustomTextField
+            className={classes.textfield}
+            label="Capital social (€)*"
+            placeholder="Capital social (€)"
+            name="administrativeProfile.shareCapital"
+            value={administrativeProfile.shareCapital}
             onBlur={handleBlur}
             onChange={handleChange}
-            error={!!touched.shareCapital && !!errors.shareCapital}
+            error={!!getIn(touched,'administrativeProfile.shareCapital') && !!getIn(errors, 'administrativeProfile.shareCapital')}
           />
-          <CustomTextField className={classes.textfield}
+          <CustomTextField
+            className={classes.textfield}
             label={'Ville d\'immatriculation au RCS'}
             placeholder={'Ville d\'immatriculation au RCS'}
-            name={'cityOfRcsRegistration'}
-            value={cityOfRcsRegistration}
+            name="administrativeProfile.cityOfRcsRegistration"
+            value={administrativeProfile.cityOfRcsRegistration}
             onBlur={handleBlur}
             onChange={handleChange}
-            error={!!touched.cityOfRcsRegistration && !!errors.cityOfRcsRegistration}
+            error={!!getIn(touched,'administrativeProfile.cityOfRcsRegistration') && !!getIn(errors, 'administrativeProfile.cityOfRcsRegistration')}
           />
         </Grid>
       </Grid>

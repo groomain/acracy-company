@@ -56,7 +56,7 @@ export const Upload = (props) => {
         companyData: state.getIn(['Administrative', 'companyData']),
     }));
 
-    const [uploadedFiles, setUploadedFiles] = useState(props.name && companyData?.administrativeProfile?.legalDocuments?.filter((file) => file.name === companyData.externalId + '-' + props.name).length !== 0
+    const [uploadedFiles, setUploadedFiles] = useState(props.name && companyData?.administrativeProfile?.legalDocuments && companyData?.administrativeProfile?.legalDocuments?.filter((file) => file.name === companyData.externalId + '-' + props.name).length !== 0
         ? [{file: companyData?.administrativeProfile?.legalDocuments?.filter((file) => file.name === companyData.externalId + '-' + props.name)[0]}] : []);
     const [fileSizeError, setFileSizeError] = useState(false);
     const [hoveredClose, setHoveredClose] = React.useState(false);

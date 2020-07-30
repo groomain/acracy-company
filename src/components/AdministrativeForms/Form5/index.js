@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import styles from "../styles";
 import CustomButton from "../../Button";
 import Typography from "@material-ui/core/Typography";
@@ -10,6 +10,8 @@ import charte from "../../../assets/icons/charte.svg";
 import CustomCheckBox from "../../CheckBox";
 // import CustomCheckbox from "../../Forms/SignUpForm";
 import { checkMissingInfosForm5 } from '../../../pages/AdministrativePage/reducer';
+import {getIn} from "formik";
+import CustomTextField from "../Form4";
 
 export const Form5 = ({ values, errors, touched, handleBlur, handleChange, handleSubmit }) => {
   const { t } = useTranslation();
@@ -18,22 +20,19 @@ export const Form5 = ({ values, errors, touched, handleBlur, handleChange, handl
   const [switchOrders, setSwitchOrders] = useState(false);
   const [checked, setChecked] = useState(false);
 
-  const { purchaseOrder, chart } = values;
-
-  const handleCheck = () => {
-    if (checked === true) {
-      setChecked(false)
-    } else {
-      setChecked(true)
-    }
-    return checked
-  }
+  const { administrativeProfile } = values;
 
   useEffect(() => {
-    if (checked === true) {
+    if (administrativeProfile.cguCheck === true) {
       dispatch(checkMissingInfosForm5(true))
+    } else {
+      dispatch(checkMissingInfosForm5(false))
     }
   }, [checked]);
+
+  const { companyUpdateLoading } = useSelector(state => ({
+    companyUpdateLoading: state.getIn(['Administrative', 'companyUpdateLoading']),
+  }));
 
   return (
     <Grid item container direction={'column'} className={classes.card}>
@@ -41,26 +40,27 @@ export const Form5 = ({ values, errors, touched, handleBlur, handleChange, handl
       <Grid item container direction={'column'} className={classes.container}>
         <Grid item container direction={'row'} alignItems={'center'} className={classes.switch}>
           <CustomSwitch switchSize={'small'}
-            name={'purchaseOrder'}
+            name={'administrativeProfile.purchaseOrder'}
             setChecked={setSwitchOrders}
             onBlur={handleBlur}
             onChange={handleChange}
-            error={!!touched.purchaseOrder && !!errors.purchaseOrder}
+            error={!!getIn(touched, 'administrativeProfile.purchaseOrder') && !!getIn(errors, 'administrativeProfile.purchaseOrder')}
           />
           <Typography variant={'body1'}>Des bons de commande sont nécessaires pour la facturation</Typography>
         </Grid>
         <Grid item container direction={'row'} alignItems={'center'} className={classes.charteContainer}>
           <CustomCheckBox style={{ position: 'relative', left: -10 }}
-            name={'chart'}
+            name={'administrativeProfile.cguCheck'}
             onChange={handleChange}
-          // checked={handleCheck}
           />
           <Typography variant={'body1'}>J’ai lu et j’accepte la charte acracy</Typography>
           <img src={charte} alt={'charte'} className={classes.chart} />
         </Grid>
         <CustomButton title={'Sauvegarder'} theme={'filledButton'} className={classes.saveButton}
-          disabled={chart === false}
-          handleClick={() => handleSubmit({ purchaseOrder, chart })} />
+          disabled={administrativeProfile.cguCheck === false}
+          handleClick={() => handleSubmit({ purchaseOrder: administrativeProfile.purchaseOrder, cguCheck: administrativeProfile.cguCheck })}
+                      loading={companyUpdateLoading}
+        />
       </Grid>
     </Grid>
   );
