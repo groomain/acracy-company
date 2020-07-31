@@ -59,7 +59,7 @@ const { actions, reducer } = createSlice({
       .set('leadSaveErrorMessage', null),
     leadSaveSuccess: (state, action) => state
       .set('leadSaveLoading', false)
-      .set('leadDraftId', action.payload) // leadId
+      .set('leadDraftId', action.payload.leadId) // leadId
       .set('leadSaveErrorMessage', null)
       .set('leadCreationStep', 1),
     leadSaveFailure: (state, action) => state

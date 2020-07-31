@@ -46,7 +46,7 @@ const SignUpPage = () => {
     firstName: Yup.string().required(),
     lastName: Yup.string().required(),
     role: Yup.string().required(),
-    phoneNumber: Yup.number().required(),
+    phoneNumber: Yup.string().required(),
     phonePrefix: Yup.string().required(),
     password: Yup.string().required(),
     confirmPassword: Yup.string().test('password-match', t('passwordMismatch'), function (confPass) {
