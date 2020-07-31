@@ -105,8 +105,8 @@ function* doSignIn(action) {
                 body: {
                   'companyId': userDynamo?.companyId,
                   'email': userInfo?.attributes.email,
-                  'firstname': userInfo?.attributes['custom:firstName'],
-                  'lastname': userInfo?.attributes['custom:lastName'],
+                  'firstName': userInfo?.attributes['custom:firstName'],
+                  'lastName': userInfo?.attributes['custom:lastName'],
                   'role': userInfo?.attributes['custom:role'],
                   'phone': {
                     'code': userInfo?.attributes['custom:phoneCode'],
