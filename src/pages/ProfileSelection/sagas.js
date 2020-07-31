@@ -1,60 +1,63 @@
 import { all, put, takeLatest, delay } from 'redux-saga/effects';
-import {API} from 'aws-amplify';
+import { API } from 'aws-amplify';
 import {
   getBriefSuccess, getBriefFailure,
   validateProfilesSuccess, validateProfilesFailure, contactAcracySuccess, contactAcracyFailure
 } from './reducer';
-import {config} from "../../conf/amplify";
-import {openSnackBar} from "../../components/App/reducer";
+import { config } from "../../conf/amplify";
+import { openSnackBar } from "../../components/App/reducer";
+import { push } from 'connected-react-router';
+
 
 function* getBrief(action) {
   try {
-    const {companyId, briefId} = action.payload;
+    const { companyId, briefId } = action.payload;
 
+    // Ne focntionne pas pour le moment. A vérifier et corriger
     // CHECK COMPANY INFORMATIONS
-    const company = yield API.get(config.apiGateway.NAME, `/company/${companyId}`, {
-      headers: {
-        'x-api-key': config.apiKey
-      }
-    });
-    if (!company.siret || !company.socialReason || !company.legalForm || !company.shareCapital) {
-      yield put(getBriefFailure({message: "MissingInfos", code: 409}));
-    }
+    // const company = yield API.get(config.apiGateway.NAME, `/company/${companyId}`, {
+    //   headers: {
+    //     'x-api-key': config.apiKey
+    //   }
+    // });
+    // if (!company.administrativeProfile.siret || !company.administrativeProfile.socialReason || !company.administrativeProfile.legalForm || !company.administrativeProfile.shareCapital) {
+    //   yield put(getBriefFailure({ message: "MissingInfos", code: 409 }));
+    // }
 
     // GET BRIEF INFORMATIONS
-    const briefData = yield API.get(config.apiGateway.NAME, `/briefs/${briefId}`, {
+    const briefData = yield API.get(config.apiGateway.NAME, `/briefs/${briefId.id}`, {
       headers: {
         'x-api-key': config.apiKey
       }
     });
 
     // GET QUOTES DATA
-    const quotesData = yield API.get(config.apiGateway.NAME, `/quotes?briefId=${briefId}`, {
+    const quotesData = yield API.get(config.apiGateway.NAME, `/quotes?briefId=${briefId.id}`, {
       headers: {
         'x-api-key': config.apiKey
       }
     });
 
-    yield put(getBriefSuccess({briefData: briefData, quotesData: quotesData}));
+    yield put(getBriefSuccess({ briefData: briefData, quotesData: quotesData }));
   } catch (err) {
     yield put(getBriefFailure(err));
-    yield put(openSnackBar({message: "Une erreur est survenue", error: true}));
+    yield put(openSnackBar({ message: "Une erreur est survenue", error: true }));
   }
 }
 
 function* validateProfiles(action) {
   try {
-    const {type, listId, text, reason, quoteId} = action.payload;
+    const { type, listId, text, reason, quoteId } = action.payload;
     const body = {};
-    if (type === 'ACCEPTE_QUOTES') {
+    if (type === 'ACCEPT_QUOTES') {
       body.type = type;
-      body.payload.basket = listId
+      body.payload = { basket: listId };
     } else if (type === 'REFUSE_ALL_QUOTES') {
       body.type = type;
       body.text = text;
       body.reason = reason;
     }
-    const validateProfiles = yield API.post(config.apiGateway.NAME, `/quotes/${quoteId}/actions`, {
+    const validateProfiles = yield API.post(config.apiGateway.NAME, `/briefs/${quoteId}/actions`, {
       headers: {
         'x-api-key': config.apiKey
       },
@@ -62,16 +65,18 @@ function* validateProfiles(action) {
     });
 
     yield put(validateProfilesSuccess(validateProfiles));
+    yield put(push('/home'));
+
   } catch (err) {
     console.log(err);
     yield put(validateProfilesFailure(err));
-    yield put(openSnackBar({message: "Une erreur est survenue", error: true}));
+    yield put(openSnackBar({ message: "Une erreur est survenue", error: true }));
   }
 }
 
 function* contactAcracy(action) {
   try {
-    const {message, reason, interview} = action.payload;
+    const { message, reason, interview } = action.payload;
     const validateProfiles = yield API.post(config.apiGateway.NAME, `/messages`, {
       headers: {
         'x-api-key': config.apiKey
@@ -87,14 +92,14 @@ function* contactAcracy(action) {
 
     yield put(contactAcracySuccess(validateProfiles));
     if (interview) {
-      yield put(openSnackBar({message: "👉 N’oubliez pas de mettre à jour votre sélection de profils une fois les entretiens passés"}));
+      yield put(openSnackBar({ message: "👉 N’oubliez pas de mettre à jour votre sélection de profils une fois les entretiens passés" }));
     } else {
-      yield put(openSnackBar({message: "Votre message a été envoyé avec succès"}));
+      yield put(openSnackBar({ message: "Votre message a été envoyé avec succès" }));
     }
   } catch (err) {
     console.log(err);
     yield put(contactAcracyFailure(err));
-    yield put(openSnackBar({message: "Erreur lors de l'envoi de votre message", error: true}));
+    yield put(openSnackBar({ message: "Erreur lors de l'envoi de votre message", error: true }));
   }
 }
 

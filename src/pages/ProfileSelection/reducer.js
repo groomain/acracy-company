@@ -43,8 +43,8 @@ const { actions, reducer } = createSlice({
       .set('validateLoading', true)
       .set('validateResponse', null),
     validateProfilesSuccess: (state, action) => state
-      .set('validateLoading', true)
-      .set('validateResponse', action.payload),
+      .set('validateLoading', false)
+      .set('validateResponse', ''),
     validateProfilesFailure: (state, action) => state
       .set('validateResponse', null)
       .set('validateLoading', false)
