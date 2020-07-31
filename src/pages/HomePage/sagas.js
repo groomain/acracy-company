@@ -77,7 +77,7 @@ function* doGetMissions(action) {
     };
 
     const missions = yield API.get(config.apiGateway.NAME, apiURL, params);
-    yield put(getMissionsSuccess(missions));
+    yield put(getMissionsSuccess(missions.missions));
   } catch (err) {
     console.log('function*doGetMissions -> err', err)
     yield put(getMissionsFailure());
@@ -95,7 +95,7 @@ function* doGetBriefs(action) {
     };
 
     const briefs = yield API.get(config.apiGateway.NAME, apiURL, params);
-    yield put(getBriefsSuccess(briefs));
+    yield put(getBriefsSuccess(briefs.briefs));
   } catch (err) {
     console.log('function*doGetBriefs -> err', err)
     yield put(getBriefsFailure());

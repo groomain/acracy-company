@@ -43,7 +43,7 @@ import {
   PAID
 } from '../constants';
 import QuoteSignatureValidationModal from "../../../pages/HomePage/Modals/QuoteSignatureValidationModal";
-import {useTranslation} from "react-i18next";
+import { useTranslation } from "react-i18next";
 moment.locale('fr');
 
 export const Mission = ({ mission, matching, today, ...props }) => {
@@ -251,7 +251,7 @@ export const Mission = ({ mission, matching, today, ...props }) => {
   // 
   useEffect(() => {
     if (companiesDataFetched && loadingButton) {
-      if (!companiesData || getPath(companiesData, 'companiesData').length !== 0) {
+      if (!companiesData || !companiesData.administrativeProfile || !companiesData.administrativeProfile.legalDocuments || !companiesData.administrativeProfile.headOffice) {
         setRedirectionPopupOpen(true);
         dispatch(setComingFromDashboard(true)); // Initialize the redirection from the administrative page -> true ? push('/reveal')
         // dispatch(openSnackBar({ message: "Pour accéder à la sélection, il suffit de remplir vos informations administratives", error: false })) //////////////
@@ -357,7 +357,7 @@ export const Mission = ({ mission, matching, today, ...props }) => {
                 <Grid item xs={4}>
                   <Grid item className={classes.blocTypoUp}>
                     <Typography variant={"h4"} className={classes.typo}>Taux journalier</Typography>
-                    <Typography variant={"body1"} className={classes.typo}>{Math.round((mission?.brief?.missionContext?.estimatedAverageDailyRate || matching?.missionContext?.estimatedAverageDailyRate)*100)/100} €/j</Typography>
+                    <Typography variant={"body1"} className={classes.typo}>{Math.round((mission?.brief?.missionContext?.estimatedAverageDailyRate || matching?.missionContext?.estimatedAverageDailyRate) * 100) / 100} €/j</Typography>
                   </Grid>
                 </Grid>
               </Grid>
