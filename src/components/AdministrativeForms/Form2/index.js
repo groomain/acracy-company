@@ -10,6 +10,7 @@ import Grid from "@material-ui/core/Grid";
 import countries from "../../../utils/countries.json";
 import { checkMissingInfosForm2 } from '../../../pages/AdministrativePage/reducer';
 import {isNullOrEmpty} from "../isNullOrEmpty";
+import {getIn} from "formik";
 
 export const Form2 = ({ values, errors, touched, handleBlur, handleChange, handleSubmit }) => {
   const { t } = useTranslation();
@@ -41,7 +42,7 @@ export const Form2 = ({ values, errors, touched, handleBlur, handleChange, handl
           value={administrativeProfile.headOffice.address}
           onBlur={handleBlur}
           onChange={handleChange}
-          error={!!touched.address && !!errors.address}
+          error={!!getIn(touched, 'administrativeProfile.headOffice.address') && !!getIn(errors, 'administrativeProfile.headOffice.address')}
         />
         <Grid item container direction={'row'}>
           <CustomTextField className={classes.zipCode}
@@ -51,7 +52,7 @@ export const Form2 = ({ values, errors, touched, handleBlur, handleChange, handl
             value={administrativeProfile.headOffice.zipCode}
             onBlur={handleBlur}
             onChange={handleChange}
-            error={!!touched.zipCode && !!errors.zipCode}
+            error={!!getIn(touched, 'administrativeProfile.headOffice.zipCode') && !!getIn(errors, 'administrativeProfile.headOffice.zipCode')}
           />
           <CustomTextField className={classes.city}
             label={'Ville*'}
@@ -60,7 +61,7 @@ export const Form2 = ({ values, errors, touched, handleBlur, handleChange, handl
             value={administrativeProfile.headOffice.city}
             onBlur={handleBlur}
             onChange={handleChange}
-            error={!!touched.city && !!errors.city}
+            error={!!getIn(touched, 'administrativeProfile.headOffice.city') && !! getIn(errors, 'administrativeProfile.headOffice.city')}
           />
         </Grid>
         <CustomSelect className={classes.select}
@@ -71,7 +72,7 @@ export const Form2 = ({ values, errors, touched, handleBlur, handleChange, handl
           value={administrativeProfile.headOffice.country}
           onBlur={handleBlur}
           onChange={handleChange}
-          error={!!touched.country && !!errors.country}
+          error={!!getIn(touched, 'administrativeProfile.headOffice.country') && !!getIn(errors, 'administrativeProfile.headOffice.country')}
         />
         <CustomButton title={'Sauvegarder'} theme={'filledButton'} className={classes.saveButton}
           disabled={isNullOrEmpty(administrativeProfile.headOffice.address) || isNullOrEmpty(administrativeProfile.headOffice.zipCode) || isNullOrEmpty(administrativeProfile.headOffice.city) || isNullOrEmpty(administrativeProfile.headOffice.country)}

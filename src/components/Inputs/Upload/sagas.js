@@ -54,9 +54,8 @@ function* doUploadFile(action) {
 }
 
 function* doDeleteAttachment(action) {
-  const attachmentId = action.payload;
   try {
-    yield API.del(config.apiGateway.NAME, encodeURI(`/attachments/${attachmentId}`),
+    yield API.del(config.apiGateway.NAME, encodeURI(`/attachments/${action.payload.attachmentId}`),
       {
         headers: {
           'x-api-key': config.apiKey
@@ -72,7 +71,7 @@ function* doDeleteAttachment(action) {
 
 function* doGetAttachments(action) {
   try {
-    const attachments = yield API.get(config.apiGateway.NAME, `/attachments/${action.payload}`, {
+    const attachments = yield API.get(config.apiGateway.NAME, `/attachments/${action.payload.attachmentId}`, {
       headers: {
         'x-api-key': config.apiKey
       },

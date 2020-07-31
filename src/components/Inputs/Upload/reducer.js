@@ -20,7 +20,7 @@ const { actions, reducer } = createSlice({
       .set('uploadFileLoading', true),
     uploadFileSuccess: (state, action) => state
       .set('uploadFileLoading', false)
-      .set('leadAttachmentId', action.payload),
+      .set('leadAttachmentId', action.payload.attachmentId),
     uploadFileFailure: (state, action) => state
       .set('uploadFileLoading', false)
       .set('leadAttachmentId', null),

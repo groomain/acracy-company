@@ -15,7 +15,7 @@ export const formatWithLineBreak = text => {
   return newText;
 };
 
-/** 
+/**
  * Capitalizes a given string
 * @param {string} text - A string to be capitalized
 * @returns {string} - The new capitalized text
@@ -27,7 +27,7 @@ export const capitalize = text => {
 /**
  * Shortens a too long text, keeping the first 4 and the last 4 characters to display the file extension
  * @param {string} text - A string too long to be fully displayed in its container
- * @returns  {string} - The shortened text, with the middle part replaced with '(...)' 
+ * @returns  {string} - The shortened text, with the middle part replaced with '(...)'
  */
 export const formatLongText = text => {
   const cutout = text.slice(4, -4);
@@ -51,7 +51,7 @@ export const getPhonePrefixCode = prefix => {
  */
 export const getAreaCodeFromNumber = (number) => {
   for (let i = 0; i < areaCodes.length; i++) {
-    if (number === getPhonePrefixCode(areaCodes[i])) {
+    if (number == getPhonePrefixCode(areaCodes[i])) {
       return areaCodes[i];
     }
   }

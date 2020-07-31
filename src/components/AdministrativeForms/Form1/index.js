@@ -10,6 +10,7 @@ import CustomSwitch from '../../Switch';
 import CustomSelect from '../../Inputs/CustomSelectAdministrative';
 import { checkMissingInfosForm1 } from '../../../pages/AdministrativePage/reducer';
 import {isNullOrEmpty} from "../isNullOrEmpty";
+import {getIn} from "formik";
 
 export const Form1 = ({
   values, errors, touched, handleBlur, handleChange, handleSubmit
@@ -88,7 +89,7 @@ export const Form1 = ({
             value={administrativeProfile.legalForm}
             onBlur={handleBlur}
             onChange={handleChange}
-            error={!!touched.legalForm && !!errors.legalForm}
+            error={!!getIn(touched,'administrativeProfile.legalForm') && !!getIn(errors, 'administrativeProfile.legalForm')}
           />
           <CustomTextField
             className={classes.textfield}
@@ -98,7 +99,7 @@ export const Form1 = ({
             name="administrativeProfile.siret"
             onBlur={handleBlur}
             onChange={handleChange}
-            error={!!touched.siret && !!errors.siret}
+            error={!!getIn(touched,'administrativeProfile.siret') && !!getIn(errors, 'administrativeProfile.siret')}
           />
           <CustomTextField
             className={classes.textfield}
@@ -119,7 +120,7 @@ export const Form1 = ({
               value={administrativeProfile.intraCommunityVAT}
               onBlur={handleBlur}
               onChange={handleChange}
-              error={!!touched.intraCommunityVAT && !!errors.intraCommunityVAT}
+              error={!!getIn(touched,'administrativeProfile.intraCommunityVAT') && !!getIn(errors, 'administrativeProfile.intraCommunityVAT')}
             />
             <Typography variant="body1" className={classes.tva}>
 Je suis soumis à la TVA
@@ -136,7 +137,7 @@ Je suis soumis à la TVA
               value={administrativeProfile.vatNumber}
               onBlur={handleBlur}
               onChange={handleChange}
-              error={!!touched.vatNumber && !!errors.vatNumber}
+              error={!!getIn(touched,'administrativeProfile.vatNumber') && !!getIn(errors, 'administrativeProfile.vatNumber')}
             />
             )
           }
@@ -158,7 +159,7 @@ Je suis soumis à la TVA
             value={administrativeProfile.socialReason}
             onBlur={handleBlur}
             onChange={handleChange}
-            error={!!touched.socialReason && !!errors.socialReason}
+            error={!!getIn(touched,'administrativeProfile.socialReason') && !!getIn(errors, 'administrativeProfile.socialReason')}
           />
           <CustomTextField
             className={classes.textfield}
@@ -168,7 +169,7 @@ Je suis soumis à la TVA
             value={administrativeProfile.shareCapital}
             onBlur={handleBlur}
             onChange={handleChange}
-            error={!!touched.shareCapital && !!errors.shareCapital}
+            error={!!getIn(touched,'administrativeProfile.shareCapital') && !!getIn(errors, 'administrativeProfile.shareCapital')}
           />
           <CustomTextField
             className={classes.textfield}
@@ -178,7 +179,7 @@ Je suis soumis à la TVA
             value={administrativeProfile.cityOfRcsRegistration}
             onBlur={handleBlur}
             onChange={handleChange}
-            error={!!touched.cityOfRcsRegistration && !!errors.cityOfRcsRegistration}
+            error={!!getIn(touched,'administrativeProfile.cityOfRcsRegistration') && !!getIn(errors, 'administrativeProfile.cityOfRcsRegistration')}
           />
         </Grid>
       </Grid>

@@ -11,6 +11,7 @@ import areaCodes from "../../../utils/areaCodes.json";
 import { checkMissingInfosForm4 } from '../../../pages/AdministrativePage/reducer';
 import { getPhonePrefixCode } from "../../../utils/services/format.js";
 import {isNullOrEmpty} from "../isNullOrEmpty";
+import {getIn} from "formik";
 
 export const Form4 = ({ values, errors, touched, handleBlur, handleChange, handleSubmit }) => {
   const { t } = useTranslation();
@@ -44,7 +45,7 @@ export const Form4 = ({ values, errors, touched, handleBlur, handleChange, handl
             value={administrativeProfile.billing.firstName}
             onBlur={handleBlur}
             onChange={handleChange}
-            error={!!touched.firstName && !!errors.firstName}
+            error={!!getIn(touched, 'administrativeProfile.billing.firstName') && !!getIn(errors, 'administrativeProfile.billing.firstName')}
           />
           <CustomTextField className={classes.textfield}
             label={'Email*'}
@@ -53,7 +54,7 @@ export const Form4 = ({ values, errors, touched, handleBlur, handleChange, handl
             value={administrativeProfile.billing.email}
             onBlur={handleBlur}
             onChange={handleChange}
-            error={!!touched.email && !!errors.email}
+            error={!!getIn(touched, 'administrativeProfile.billing.email') && !!getIn(errors, 'administrativeProfile.billing.email')}
           />
           <CustomButton title={'Sauvegarder'} theme={'filledButton'} className={classes.saveButton}
             disabled={isNullOrEmpty(administrativeProfile.billing.firstName) || isNullOrEmpty(administrativeProfile.billing.lastName) || isNullOrEmpty(administrativeProfile.billing.email) || isNullOrEmpty(administrativeProfile.billing.phone.code) || isNullOrEmpty(administrativeProfile.billing.phone.number)}
@@ -69,7 +70,7 @@ export const Form4 = ({ values, errors, touched, handleBlur, handleChange, handl
             value={administrativeProfile.billing.lastName}
             onBlur={handleBlur}
             onChange={handleChange}
-            error={!!touched.lastName && !!errors.lastName}
+            error={!!getIn(touched, 'administrativeProfile.billing.lastName') && !!getIn(errors, 'administrativeProfile.billing.lastName')}
           />
           <Grid item container direction={'row'}>
             <Grid container item direction='column' className={classes.phoneMargin}>
@@ -82,7 +83,7 @@ export const Form4 = ({ values, errors, touched, handleBlur, handleChange, handl
                     value={administrativeProfile.billing.phone.code}
                     onBlur={handleBlur}
                     onChange={handleChange}
-                    error={!!touched.code && !!errors.code}
+                    error={!!getIn(touched, 'administrativeProfile.billing.phone.code') && !!getIn(errors, 'administrativeProfile.billing.phone.code')}
                   />
                 </Grid>
                 <Grid item xs={7}>
@@ -93,7 +94,7 @@ export const Form4 = ({ values, errors, touched, handleBlur, handleChange, handl
                     onBlur={handleBlur}
                     onChange={handleChange}
                     placeholder={t('signup.phoneNumberPlaceholder')}
-                    error={!!touched.number && !!errors.number}
+                    error={!!getIn(touched, 'administrativeProfile.billing.phone.number') && !!getIn(errors, 'administrativeProfile.billing.phone.number')}
                   />
                 </Grid>
               </Grid>
