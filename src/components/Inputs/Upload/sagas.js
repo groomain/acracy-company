@@ -23,7 +23,7 @@ function* doUploadFile(action) {
   if (payload.file.size < 1.5e+7) {
     try {
       const storedKey = yield s3Upload(`${action.payload.companyData.externalId}-${action.payload.name}`, payload.file);
-      const externalId = yield API.post(config.apiGateway.NAME, encodeURI('/attachments'),
+      const tempExternalId = yield API.post(config.apiGateway.NAME, encodeURI('/attachments'),
         {
           headers: {
             'x-api-key': config.apiKey
@@ -37,8 +37,9 @@ function* doUploadFile(action) {
             }
           }
         });
+      const { attachmentId } = tempExternalId;
       if (action.payload.companyData) {
-        const newCompanyData = {...action.payload.companyData, administrativeProfile: {...action.payload.companyData.administrativeProfile, legalDocuments: [...action.payload.companyData.administrativeProfile.legalDocuments, {externalId: externalId, name: `${action.payload.companyData.externalId}-${action.payload.name}`}]}};
+        const newCompanyData = {...action.payload.companyData, administrativeProfile: {...action.payload.companyData.administrativeProfile, legalDocuments: [...action.payload.companyData.administrativeProfile.legalDocuments, {externalId: attachmentId, name: `${action.payload.companyData.externalId}-${action.payload.name}`}]}};
         yield put(changeAttachmentFromData(newCompanyData));
       }
       yield put(uploadFileSuccess());
@@ -55,7 +56,7 @@ function* doUploadFile(action) {
 
 function* doDeleteAttachment(action) {
   try {
-    yield API.del(config.apiGateway.NAME, encodeURI(`/attachments/${action.payload.attachmentId}`),
+    yield API.del(config.apiGateway.NAME, encodeURI(`/attachments/${action.payload}`),
       {
         headers: {
           'x-api-key': config.apiKey
@@ -71,7 +72,7 @@ function* doDeleteAttachment(action) {
 
 function* doGetAttachments(action) {
   try {
-    const attachments = yield API.get(config.apiGateway.NAME, `/attachments/${action.payload.attachmentId}`, {
+    const attachments = yield API.get(config.apiGateway.NAME, `/attachments/${action.payload}`, {
       headers: {
         'x-api-key': config.apiKey
       },
