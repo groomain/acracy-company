@@ -153,7 +153,7 @@ function* doUploadFile(action) {
   if (payload.file.size < 1.5e+7)
     try {
       const storedKey = yield s3Upload(`${payload.leadId}-${payload.file.name}`, payload.file);
-      const leadAttachmentId = yield API.post(config.apiGateway.NAME, encodeURI('/attachments'),
+      const tempLeadAttachmentId = yield API.post(config.apiGateway.NAME, encodeURI('/attachments'),
         {
           headers: {
             'x-api-key': config.apiKey
@@ -167,7 +167,8 @@ function* doUploadFile(action) {
             }
           }
         });
-      yield put(uploadFileSuccess(leadAttachmentId));
+      const { attachmentId } = tempLeadAttachmentId;
+      yield put(uploadFileSuccess(attachmentId));
     } catch (error) {
       yield put(uploadFileFailure());
       yield put(openSnackBar({ message: "Erreur pendant l'envoi du fichier", error: true }));
