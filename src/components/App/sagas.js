@@ -47,9 +47,6 @@ function* getCurrentSession(action) {
     const userDynamo = yield API.post(config.apiGateway.NAME, '/sessions', {
       headers: {
         'x-api-key': config.apiKey
-      },
-      body: {
-        email: userInfo.attributes.email
       }
     });
 
@@ -74,9 +71,6 @@ function* doSignIn(action) {
       let userDynamo = yield API.post(config.apiGateway.NAME, '/sessions', {
         headers: {
           'x-api-key': config.apiKey
-        },
-        body: {
-          email: userInfo.attributes.email
         }
       });
       if (userDynamo) {
@@ -111,12 +105,12 @@ function* doSignIn(action) {
                 body: {
                   'companyId': userDynamo?.companyId,
                   'email': userInfo?.attributes.email,
-                  'firstName': userInfo?.attributes['custom:firstName'],
-                  'lastName': userInfo?.attributes['custom:lastName'],
+                  'firstname': userInfo?.attributes['custom:firstName'],
+                  'lastname': userInfo?.attributes['custom:lastName'],
                   'role': userInfo?.attributes['custom:role'],
                   'phone': {
-                    'code': userInfo?.attributes['custom:phoneNumberCode'],
-                    'number': userInfo?.attributes['custom:phoneNumberNumber']
+                    'code': userInfo?.attributes['custom:phoneCode'],
+                    'number': userInfo?.attributes['custom:phoneNumber']
                   }
                 }
               });
@@ -200,8 +194,8 @@ function* doSignUp(action) {
         'custom:lastName': lastName,
         'custom:role': role,
         email,
-        'custom:phoneNumberCode': prefixCode,
-        'custom:phoneNumberNumber': phoneNumber,
+        'custom:phoneCode': prefixCode,
+        'custom:phoneNumber': phoneNumber,
         'custom:searchType': searchType,
         'custom:searchText': searchValue,
         'custom:searchCode': searchCode

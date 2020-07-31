@@ -158,6 +158,7 @@ export const AdministrativePage = (props) => {
   };
 
   const ValidationSchemaForm4 = Yup.object().shape({
+
     administrativeProfile: Yup.object().shape({
       billing: Yup.object().shape({
         firstName: Yup.string().required(),
@@ -165,7 +166,7 @@ export const AdministrativePage = (props) => {
         email: Yup.string().required(),
         phone: Yup.object().shape({
           code: Yup.string().required(),
-          number: Yup.number().required()
+          number: Yup.string().required()
         })
       })})
   });
