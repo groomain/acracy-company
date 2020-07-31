@@ -20,7 +20,7 @@ export const Dashboard = () => {
   const sharedClasses = sharedStyles();
 
   const { userName, leadCreationPageWithSearchResult } = useSelector(state => ({
-    userName: state.getIn(['app', 'userDynamo', 'firstname']),
+    userName: state.getIn(['app', 'userDynamo', 'firstName']),
     leadCreationPageWithSearchResult: state.getIn(['dashboard', 'leadCreationPageWithSearchResult']),
   }))
 

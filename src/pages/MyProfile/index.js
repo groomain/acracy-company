@@ -39,8 +39,8 @@ export const MyProfilePage = (props) => {
 
   // Form Validation Schema
   const personalInformationsValidationSchema = Yup.object().shape({
-    firstname: Yup.string().required(),
-    lastname: Yup.string().required(),
+    firstName: Yup.string().required(),
+    lastName: Yup.string().required(),
     email: Yup.string().email().required(),
     phoneCode: Yup.string().required(),
     phoneNumber: Yup.string().required(),
@@ -62,8 +62,8 @@ export const MyProfilePage = (props) => {
   // Form data
   const personalInformationsInitialValues = {
     employeeId: employeeId,
-    firstname: myProfileData?.firstname,
-    lastname: myProfileData?.lastname,
+    firstName: myProfileData?.firstName,
+    lastName: myProfileData?.lastName,
     email: myProfileData?.email,
     phoneCode: myProfileData?.phone?.code ? getAreaCodeFromNumber(myProfileData?.phone?.code) : null,
     phoneNumber: myProfileData?.phone?.number,
