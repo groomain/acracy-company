@@ -81,7 +81,7 @@ function* doSignIn(action) {
           // Create the company
           if (!userDynamo?.companyId) {
             try {
-              userDynamo.companyId = yield API.post(config.apiGateway.NAME, '/companies', {
+              const tempCompanyId = yield API.post(config.apiGateway.NAME, '/companies', {
                 headers: {
                   'x-api-key': config.apiKey
                 },
@@ -89,6 +89,7 @@ function* doSignIn(action) {
                   'name': userInfo?.attributes['custom:companyName']
                 }
               })
+              userDynamo.companyId = tempCompanyId.companyId;
             } catch (error) {
               console.log(error);
               yield put(loginFailure(translateSignInError(error.code)));
@@ -98,7 +99,7 @@ function* doSignIn(action) {
           // Create the related employee
           if (userDynamo.companyId && !userDynamo?.employeeId) {
             try {
-              userDynamo.employeeId = yield API.post(config.apiGateway.NAME, '/employees', {
+              const tempEmployeeId = yield API.post(config.apiGateway.NAME, '/employees', {
                 headers: {
                   'x-api-key': config.apiKey
                 },
@@ -114,6 +115,7 @@ function* doSignIn(action) {
                   }
                 }
               });
+              userDynamo.employeeId = tempEmployeeId.employeeId;
             } catch (error) {
               console.log(error);
               yield put(loginFailure(translateSignInError(error.code)));
@@ -121,7 +123,7 @@ function* doSignIn(action) {
             }
           }
           // Start the lead creation if the 2 previous steps are ok & search content is present
-          if (userDynamo?.companyId && userDynamo?.employeeId) {
+          if (userDynamo.companyId && userDynamo.employeeId) {
             const userAttributes = userInfo?.attributes;
             let errorLeadMessage;
             if (userAttributes['custom:searchCode'] && userAttributes['custom:searchType'] && userAttributes['custom:searchText']) {

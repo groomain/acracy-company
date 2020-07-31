@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { Formik } from 'formik';
@@ -12,13 +12,13 @@ import SearchResultPannel from '../../components/SearchResultPannel';
 import PartnersList from '../../components/PartnersList';
 import styles from '../../utils/styles';
 
-const SignUpPage = () => {
+const SignUpPage = (props) => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const classes = styles();
+  const queryString = require('query-string');
 
-  // Form data
-  const initialValues = {
+  const [initialValues, setInitialValues] = useState({
     companyName: '',
     firstName: '',
     lastName: '',
@@ -28,11 +28,27 @@ const SignUpPage = () => {
     password: '',
     confirmPassword: '',
     phonePrefix: 'Fr : +33',
-    searchValue: 'Social Media Strategist',
-    searchType: 'DELIVERABLE',
-    searchCode: 'BB-8',
+    searchValue: '',
+    searchType: '',
+    searchCode: '',
     conditions: false
-  };
+  });
+
+
+  // example of base 64 parameter: eyJzZWFyY2h2YWx1ZSI6ImNvdWNvdSIsInNlYXJjaFR5cGUiOiJERUxJVkVSQUJMRSIsInNlYXJjaENvZGUiOiJiYi04In0=
+  useEffect(() => {
+    if (props.location.search) {
+      let searchObjectBase64 = queryString.parse(props.location.search)
+      if (searchObjectBase64?.search) {
+        let searchObjectInString = atob(searchObjectBase64.search)
+        if (searchObjectInString) {
+          let searchObject = JSON.parse(searchObjectInString)
+          setInitialValues({ ...initialValues, searchValue: searchObject.text, searchType: searchObject.type, searchCode: searchObject.code })
+        }
+      }
+    }
+  }, []);
+
 
   // Form Submitting Function
   const signup = (credentials) => {
@@ -65,6 +81,7 @@ const SignUpPage = () => {
       <Grid container className={classes.container}>
         <Main>
           <Formik
+            enableReinitialize
             render={props => <SignUpForm {...props} />}
             initialValues={initialValues}
             validationSchema={ValidationSchema}
