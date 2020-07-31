@@ -39,9 +39,13 @@ const SignUpPage = (props) => {
   useEffect(() => {
     if (props.location.search) {
       let searchObjectBase64 = queryString.parse(props.location.search)
-      let searchObjectInString = atob(searchObjectBase64.search)
-      let searchObject = JSON.parse(searchObjectInString)
-      setInitialValues({ ...initialValues, searchValue: searchObject.text, searchType: searchObject.type, searchCode: searchObject.code })
+      if (searchObjectBase64?.search) {
+        let searchObjectInString = atob(searchObjectBase64.search)
+        if (searchObjectInString) {
+          let searchObject = JSON.parse(searchObjectInString)
+          setInitialValues({ ...initialValues, searchValue: searchObject.text, searchType: searchObject.type, searchCode: searchObject.code })
+        }
+      }
     }
   }, []);
 
