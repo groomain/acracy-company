@@ -26,14 +26,14 @@ export const PersonalInformationsForm = ({ values, errors, touched, handleBlur, 
     putMyProfileErrorMessage: state.getIn(['MyProfile', 'putMyProfileErrorMessage'])
   }));
 
-  const { firstname, lastname, email, phoneCode, phoneNumber, role, employeeId } = values;
+  const { firstName, lastName, email, phoneCode, phoneNumber, role, employeeId } = values;
 
   const [disabledPersonalInformations, setDisabledPersonalInformations] = useState(true);
 
   useEffect(() => {
     if (
-      checkLength(firstname?.trim(), 0) &&
-      checkLength(lastname?.trim(), 0) &&
+      checkLength(firstName?.trim(), 0) &&
+      checkLength(lastName?.trim(), 0) &&
       checkLength(email?.trim(), 0) &&
       checkLength(phoneCode?.trim(), 0) &&
       checkLength(phoneNumber?.trim(), 9) &&
@@ -43,7 +43,7 @@ export const PersonalInformationsForm = ({ values, errors, touched, handleBlur, 
     } else {
       setDisabledPersonalInformations(true);
     }
-  }, [employeeId, firstname, lastname, email, phoneCode, phoneNumber, role]);
+  }, [employeeId, firstName, lastName, email, phoneCode, phoneNumber, role]);
 
   return (
     <Grid item container className={classes.container}>
@@ -55,22 +55,22 @@ export const PersonalInformationsForm = ({ values, errors, touched, handleBlur, 
               <Grid item xs={6}>
                 <CustomTextField
                   label={t('myProfile.firstName') + '*'}
-                  placeholder={t('myProfile.firstname')}
-                  value={firstname}
-                  name="firstname"
+                  placeholder={t('myProfile.firstName')}
+                  value={firstName}
+                  name="firstName"
                   onBlur={handleBlur}
                   onChange={handleChange}
-                  error={!!touched.firstname && !!errors.firstname} />
+                  error={!!touched.firstName && !!errors.firstName} />
               </Grid>
               <Grid item xs={6}>
                 <CustomTextField
                   label={t('myProfile.lastName') + '*'}
-                  placeholder={t('myProfile.lastname')}
-                  value={lastname}
-                  name="lastname"
+                  placeholder={t('myProfile.lastName')}
+                  value={lastName}
+                  name="lastName"
                   onBlur={handleBlur}
                   onChange={handleChange}
-                  error={!!touched.lastname && !!errors.lastname} />
+                  error={!!touched.lastName && !!errors.lastName} />
               </Grid>
             </Grid>
             <Grid item container spacing={2}>
@@ -126,7 +126,7 @@ export const PersonalInformationsForm = ({ values, errors, touched, handleBlur, 
                 <CustomButton
                   type='submit'
                   theme={disabledPersonalInformations ? "disabledFilled" : "filledButton"}
-                  handleClick={() => handleSubmit({ employeeId, firstname, lastname, email, phoneCode, phoneNumber, role })}
+                  handleClick={() => handleSubmit({ employeeId, firstName, lastName, email, phoneCode, phoneNumber, role })}
                   loading={putMyProfileLoading}
                   title={t('myProfile.save')} />
               </Grid>
