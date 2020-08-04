@@ -55,8 +55,6 @@ export const AdministrativePage = (props) => {
     adminSnackBarError: state.getIn(['Administrative', 'adminSnackBarError']),
   }));
 
-  console.log("companyData", companyData);
-
   useEffect(() => {
     dispatch(handleCurrentStep(0))
     dispatch(getCompanyLaunched(userDynamo.companyId));
@@ -77,15 +75,15 @@ export const AdministrativePage = (props) => {
 
   const initialValuesForm1 = {
     administrativeProfile:{
-      legalForm: companyData?.administrativeProfile?.legalForm || null,
-      socialReason: companyData?.administrativeProfile?.socialReason || null,
-      siret: companyData?.administrativeProfile?.siret || null,
-      shareCapital: companyData?.administrativeProfile?.shareCapital || null,
-      cityOfRcsRegistration: companyData?.administrativeProfile?.cityOfRcsRegistration || null,
+      legalForm: companyData?.administrativeProfile?.legalForm || '',
+      socialReason: companyData?.administrativeProfile?.socialReason || '',
+      siret: companyData?.administrativeProfile?.siret || '',
+      shareCapital: companyData?.administrativeProfile?.shareCapital || '',
+      cityOfRcsRegistration: companyData?.administrativeProfile?.cityOfRcsRegistration || '',
       intraCommunityVAT: companyData?.administrativeProfile?.intraCommunityVAT || false,
-      vatNumber: companyData?.administrativeProfile?.vatNumber || null,
+      vatNumber: companyData?.administrativeProfile?.vatNumber || '',
     },
-    webSite: companyData?.webSite || null,
+    webSite: companyData?.webSite || '',
   };
 
   const ValidationSchemaForm1 = Yup.object().shape({
@@ -96,7 +94,7 @@ export const AdministrativePage = (props) => {
       shareCapital: Yup.number().required(),
       cityOfRcsRegistration: Yup.string(),
       intraCommunityVAT: Yup.bool(),
-      vatNumber: Yup.number(),
+      vatNumber: Yup.string(),
     }),
     webSite: Yup.string(),
   });
