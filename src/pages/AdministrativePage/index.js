@@ -106,7 +106,8 @@ export const AdministrativePage = (props) => {
         zipCode: companyData?.administrativeProfile?.headOffice?.zipCode || null,
         city: companyData?.administrativeProfile?.headOffice?.city || null,
         country: companyData?.administrativeProfile?.headOffice?.country || null
-      }}
+      }
+    }
   };
 
   const ValidationSchemaForm2 = Yup.object().shape({
@@ -116,7 +117,8 @@ export const AdministrativePage = (props) => {
         zipCode: Yup.number().required(),
         city: Yup.string().required(),
         country: Yup.string().required(),
-      })})
+      })
+    })
   });
 
   const initialValuesForm3 = {
@@ -127,7 +129,8 @@ export const AdministrativePage = (props) => {
         zipCode: companyData?.administrativeProfile?.billing?.zipCode || null,
         city: companyData?.administrativeProfile?.billing?.city || null,
         country: companyData?.administrativeProfile?.billing?.country || null
-      }}
+      }
+    }
   };
 
   const ValidationSchemaForm3 = Yup.object().shape({
@@ -152,7 +155,8 @@ export const AdministrativePage = (props) => {
           code: companyData?.administrativeProfile?.billing?.phone?.code ? getAreaCodeFromNumber(companyData?.administrativeProfile?.billing?.phone?.code) : null,
           number: companyData?.administrativeProfile?.billing?.phone?.number || null
         }
-      }}
+      }
+    }
   };
 
   const ValidationSchemaForm4 = Yup.object().shape({
@@ -166,7 +170,8 @@ export const AdministrativePage = (props) => {
           code: Yup.string().required(),
           number: Yup.string().required()
         })
-      })})
+      })
+    })
   });
 
   const initialValuesForm5 = {
