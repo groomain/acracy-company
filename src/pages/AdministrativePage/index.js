@@ -8,7 +8,7 @@ import * as Scroll from "react-scroll/modules";
 import * as Yup from "yup";
 import { Formik } from "formik";
 import { useTranslation } from "react-i18next";
-import { getAreaCodeFromNumber } from "../../utils/services/format";
+import {getAreaCodeFromNumber, getPhonePrefixCode} from "../../utils/services/format";
 import Form1 from "../../components/AdministrativeForms/Form1";
 import Form2 from "../../components/AdministrativeForms/Form2";
 import Form3 from "../../components/AdministrativeForms/Form3";
@@ -55,7 +55,6 @@ export const AdministrativePage = (props) => {
     adminSnackBarError: state.getIn(['Administrative', 'adminSnackBarError']),
   }));
 
-
   useEffect(() => {
     dispatch(handleCurrentStep(0))
     dispatch(getCompanyLaunched(userDynamo.companyId));
@@ -75,16 +74,16 @@ export const AdministrativePage = (props) => {
   };
 
   const initialValuesForm1 = {
-    administrativeProfile: {
-      legalForm: companyData?.administrativeProfile?.legalForm || null,
-      socialReason: companyData?.administrativeProfile?.socialReason || null,
-      siret: companyData?.administrativeProfile?.siret || null,
-      shareCapital: companyData?.administrativeProfile?.shareCapital || null,
-      cityOfRcsRegistration: companyData?.administrativeProfile?.cityOfRcsRegistration || null,
+    administrativeProfile:{
+      legalForm: companyData?.administrativeProfile?.legalForm || '',
+      socialReason: companyData?.administrativeProfile?.socialReason || '',
+      siret: companyData?.administrativeProfile?.siret || '',
+      shareCapital: companyData?.administrativeProfile?.shareCapital || '',
+      cityOfRcsRegistration: companyData?.administrativeProfile?.cityOfRcsRegistration || '',
       intraCommunityVAT: companyData?.administrativeProfile?.intraCommunityVAT || false,
-      vatNumber: companyData?.administrativeProfile?.vatNumber || null,
+      vatNumber: companyData?.administrativeProfile?.vatNumber || '',
     },
-    webSite: companyData?.webSite || null,
+    webSite: companyData?.webSite || '',
   };
 
   const ValidationSchemaForm1 = Yup.object().shape({
@@ -95,7 +94,7 @@ export const AdministrativePage = (props) => {
       shareCapital: Yup.number().required(),
       cityOfRcsRegistration: Yup.string(),
       intraCommunityVAT: Yup.bool(),
-      vatNumber: Yup.number(),
+      vatNumber: Yup.string(),
     }),
     webSite: Yup.string(),
   });
@@ -267,7 +266,10 @@ export const AdministrativePage = (props) => {
               render={props => <Form4 {...props} />}
               initialValues={initialValuesForm4}
               validationSchema={ValidationSchemaForm4}
-              onSubmit={handleSubmit}
+              onSubmit={(form) => {
+                  form.administrativeProfile.billing.phone.code = getPhonePrefixCode(form.administrativeProfile.billing.phone.code);
+                  handleSubmit(form)
+              }}
             />
           </Element>
 
