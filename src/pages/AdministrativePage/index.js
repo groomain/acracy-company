@@ -8,7 +8,7 @@ import * as Scroll from "react-scroll/modules";
 import * as Yup from "yup";
 import { Formik } from "formik";
 import { useTranslation } from "react-i18next";
-import { getAreaCodeFromNumber } from "../../utils/services/format";
+import {getAreaCodeFromNumber, getPhonePrefixCode} from "../../utils/services/format";
 import Form1 from "../../components/AdministrativeForms/Form1";
 import Form2 from "../../components/AdministrativeForms/Form2";
 import Form3 from "../../components/AdministrativeForms/Form3";
@@ -261,7 +261,10 @@ export const AdministrativePage = (props) => {
               render={props => <Form4 {...props} />}
               initialValues={initialValuesForm4}
               validationSchema={ValidationSchemaForm4}
-              onSubmit={handleSubmit}
+              onSubmit={(form) => {
+                  form.administrativeProfile.billing.phone.code = getPhonePrefixCode(form.administrativeProfile.billing.phone.code);
+                  handleSubmit(form)
+              }}
             />
           </Element>
 
