@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import { useLocation } from 'react-router';
-import { Formik } from 'formik';
+import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
 import { Grid, Typography } from '@material-ui/core';
 import Toolbar from "@material-ui/core/Toolbar";
@@ -85,20 +85,20 @@ const LeadCreationPage = (props) => {
     }
   }, [dispatch, location.search, location.pathname, leadDraftId, leadId]);
 
-  useEffect(() => {
-    if (leadId) {
-      dispatch(getLeadDraftLaunched(leadId));
-    }
-  }, [dispatch, leadId])
+  // useEffect(() => {
+  //   if (leadId) {
+  //     dispatch(getLeadDraftLaunched(leadId));
+  //   }
+  // }, [dispatch, leadId])
 
-  // Handle the 'save & close' and the 'call me' buttons' disabled state
-  useEffect(() => {
-    if (activeStep === 0 && ((!leadDraftSearchData?.search && !leadDraftData?.search) || missionTitle.trim().length < 1)) {
-      setDisableAppbarSaveBtn(true)
-    } else {
-      setDisableAppbarSaveBtn(false)
-    }
-  }, [leadDraftSearchData, activeStep, missionTitle]);
+  // // Handle the 'save & close' and the 'call me' buttons' disabled state
+  // useEffect(() => {
+  //   if (activeStep === 0 && ((!leadDraftSearchData?.search && !leadDraftData?.search) || missionTitle.trim().length < 1)) {
+  //     setDisableAppbarSaveBtn(true)
+  //   } else {
+  //     setDisableAppbarSaveBtn(false)
+  //   }
+  // }, [leadDraftSearchData, activeStep, missionTitle]);
 
   const setDesireds = (leads, values, deliverables) => {
     let leadType = leads.search?.TYPE;
@@ -284,23 +284,52 @@ const LeadCreationPage = (props) => {
   const isItADeliverable = (leadDraftData?.search?.type === "DELIVERABLE") ? leadDraftData?.search : leadDraftData?.desireds;
 
   const initialValues = {
-    deliverable: isItADeliverable || '',
-    researchValue: leadDraftData?.search || {},
-    customDeliverable: '',
-    profile: leadDraftData?.profileNumber || 'Recevoir une recommandation acracy',
-    missionTitle: leadDraftData?.missionContext?.title || '',
-    missionStartDate: leadDraftData?.missionContext?.startDate || '',
-    workspace: formatType(leadDraftData?.missionContext?.format) || 'Peu importe',
-    companyAddress: leadDraftData?.missionContext?.address || '',
-    frequency: formatFrequencyType(leadDraftData?.missionContext?.weeklyRythm) || 'Plein temps (5 jours)',
-    duration: leadDraftData?.missionContext?.duration?.nb || '',
-    durationType: formatDurationType(leadDraftData?.missionContext?.duration?.unit) || 'Jours',
-    budget: leadDraftData?.missionContext?.budget?.value || '',
-    budgetType: formatBudgetType(leadDraftData?.missionContext?.budget?.type) || '',
-    profilesNumber: leadDraftData?.profileNumber || 1,
-    seniority: formatSeniorityType(leadDraftData?.missionRequirements?.seniority) || "Sélectionnez le niveau d'expérience minimum",
-    contextAndTasks: leadDraftData?.missionDetail?.contextAndTasks || '',
-    detailsOfDeliverables: leadDraftData?.missionDetail?.detailsOfDeliverables || '',
+    "externalId": '',
+    "status": '',
+    "search": {
+      "type": '',
+      "code": '',
+      "text": ''
+    },
+    "desireds": [
+    ],
+    "missionContext": {
+      "title": '',
+      "startDate": 1599381085983,
+      "format": '',
+      "address": '',
+      "weeklyRythm": '',
+      "duration": {
+        "nb": '',
+        "unit": ''
+      },
+      "budget": {
+        "value": '',
+        "type": ''
+      },
+      "estimatedAverageDailyRate": 0,
+      "profilNumber": 1
+    },
+    "missionDetail": {
+      "contextAndTasks": '',
+      "detailsOfDeliverables": '',
+      "sharedDocuments": [
+      ]
+    },
+    "missionRequirements": {
+      "expertises": [
+      ],
+      "sensitivity": {
+        "sensitivity": {
+          "code": '',
+          "text": ''
+        },
+        "essential": true
+      },
+      "languages": [
+      ],
+      "seniority": ''
+    }
   };
 
   // Form Validation Schema
@@ -323,6 +352,8 @@ const LeadCreationPage = (props) => {
     contextAndTasks: Yup.string().required(),
     detailsOfDeliverables: Yup.string().required(),
   });
+  const handleSubmit = (values) => { console.log(values) }
+  const values = {}
 
   return (
     <Grid
@@ -359,16 +390,23 @@ const LeadCreationPage = (props) => {
         : <>
           <Main>
             <Formik
-              render={props => <LeadCreationForm
-                leadId={leadId}
-                onUpdateMissionTitle={e => setMissionTitle(e)}
-                {...props} />}
+              render={props =>
+                <Form>
+                  <LeadCreationForm
+                    leadId={leadId}
+                    onUpdateMissionTitle={e => setMissionTitle(e)}
+                    {...props}
+                  />
+                </Form>
+              }
+
               initialValues={initialValues}
-              validationSchema={ValidationSchema}
-              onSubmit={leadSave}
+              // validationSchema={ValidationSchema}
+              onSubmit={handleSubmit}
               enableReinitialize
-              ref={ref}
+            // ref={ref}
             />
+
           </Main>
           <Sidebar>
             <Grid container style={{ position: 'sticky', top: '10rem' }}>

@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import moment from 'moment';
 import MomentUtils from '@date-io/moment';
 
-import { Typography, Grid } from '@material-ui/core';
+import { Typography, Grid, TextField } from '@material-ui/core';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 import { Agenda } from '../../../assets/icons/Agenda';
 import { setDateFromCalendar } from '../../../pages/LeadCreationPage/reducer';
@@ -21,28 +21,30 @@ class LocalizedUtils extends MomentUtils {
   }
 }
 
-export const Calendar = ({ error, label, minDate, startDate }) => {
+export const Calendar = ({ error, label, minDate, startDate, onChange, handleChange, value }) => {
   const classes = styles();
   const dispatch = useDispatch();
 
   const [selectedDate, setSelectedDate] = useState();
 
-  useEffect(() => {
-    if (!selectedDate) {
-      if (startDate) {
-        setSelectedDate(startDate)
-      } else {
-        setSelectedDate(minDate)
-      }
-    }
-  }, [startDate, minDate])
+
+
+  // useEffect(() => {
+  //   console.log("startDate " + startDate)
+  //   console.log("minDate " + minDate)
+  // }, [startDate, minDate])
+
+  const change = (name, e) => {
+    console.log("change function", e)
+    // handleChange(name);
+    // setFieldTouched(name, true, false);
+  };
 
   const setDate = (e) => {
-    setSelectedDate(e);
+    // setSelectedDate(e)
     const timestamp = e._d.getTime() + 86400000; // Add 1 day to send the right date
-    dispatch(setDateFromCalendar(timestamp));
+    // handleChange(e)
   }
-
   return (
     <MuiPickersUtilsProvider utils={LocalizedUtils} locale={'fr'}>
       <Typography variant="h4">{label}</Typography>
@@ -54,9 +56,11 @@ export const Calendar = ({ error, label, minDate, startDate }) => {
           InputProps={{ className: `${classes.root} ${error ? classes.error : null}` }}
           orientation="landscape"
           margin="normal"
-          id="date-picker-inline"
-          value={selectedDate}
-          onChange={setDate}
+          name='missionContext.startDate'
+          id='missionContext.startDate'
+          value={value}
+          onChange={(e) => handleChange(e)}
+          // handleChange={(e) => handleChange(e)}
           KeyboardButtonProps={{
             'aria-label': 'change date',
           }}
@@ -66,6 +70,7 @@ export const Calendar = ({ error, label, minDate, startDate }) => {
           style={{ width: '100%' }}
           invalidDateMessage=""
           minDateMessage={null} // Disable the error message when startDate is inferior to minDate, but keep anterior dates disabled
+          autoOk
         />
       </Grid>
     </MuiPickersUtilsProvider>
