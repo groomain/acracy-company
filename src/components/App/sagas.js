@@ -206,7 +206,7 @@ function* doSignUp(action) {
     // yield call(doSignIn, { payload: { email, password } });
     yield put(handleCurrentStep(3));
     yield put(signupSuccess());
-    yield put(push('/confirmAccount', { email: email }));
+    yield put(push('/confirmAccount', { email: email, searchValue: searchValue }));
     yield put(handleCurrentStep(0));
   } catch (error) {
     console.log(error);

@@ -20,22 +20,22 @@ const ConfirmSignUpPage = () => {
   const classes = styles();
   const sharedClasses = sharedStyles();
 
-  const { email, resendCodeSuccessMessage } = useSelector(state => ({
+  const { email, resendCodeSuccessMessage, searchValue } = useSelector(state => ({
     email: state.getIn(['router', 'location', 'state', 'email']),
-    resendCodeSuccessMessage: state.getIn(['app', 'resendCodeSuccessMessage'])
+    resendCodeSuccessMessage: state.getIn(['app', 'resendCodeSuccessMessage']),
+    searchValue: state.getIn(['router', 'location', 'state', 'searchValue']),
   }))
 
   // Form data
   const initialValues = {
     code: '',
-    username: email
+    username: email,
+    searchValue: searchValue || ''
   };
 
   useEffect(() => {
     dispatch(handleCurrentStep(0))
   }, [dispatch])
-
-  const [searchValue] = useState('Social Media Strategist');
 
   // Form Submitting Function
   const confirmSignup = (credentials) => {
@@ -80,7 +80,7 @@ const ConfirmSignUpPage = () => {
         </Main>
         <Sidebar>
           <Grid className={sharedClasses.pannelLayout}>
-            {searchValue && <SearchResultPannel searchValue={searchValue} />}
+            {initialValues.searchValue && <SearchResultPannel searchValue={initialValues.searchValue} />}
           </Grid>
         </Sidebar>
       </Grid>
