@@ -64,6 +64,7 @@ export const CustomSelect = ({ label, value, placeholder, type, error, isMulti, 
           value={option}
           disabled={withDisabledValue && option === optionsValues[0]}
           classes={{ root: `${classes.menuItem} ${classes.menutItemWithFocus}` }}
+          placeholder={placeholder}
         >
           {option}
         </MenuItem>

@@ -30,7 +30,7 @@ import UploadInput from '../Inputs/LeadUpload';
 
 import { checkLength } from '../../utils/services/validationChecks';
 import { formatLanguagesValues } from '../../utils/services/format';
-import { valueFocusAriaMessage } from 'react-select/src/accessibility';
+// import { valueFocusAriaMessage } from 'react-select/src/accessibility';
 
 const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, handleChange, leadId, onUpdateMissionTitle, handleSubmit, props }) => {
   const { t } = useTranslation();
@@ -38,9 +38,16 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
   const classes = styles();
 
   const { frequency, workspace, duration, durationType, budget, budgetType, profile, profilesNumber,
-    missionContext
+    missionContext, missionRequirements, missionDetail, expertises, customDeliverable
   } = values;
-  useEffect(() => console.log(missionContext.startDate, " startDate"), [missionContext.startDate])
+
+
+  const { listOfExpertises, expansionPanelOpen, sensitivities } = useSelector(state => ({
+    listOfExpertises: state.getIn(['leadCreation', 'expertises']),
+    expansionPanelOpen: state.getIn(['leadCreation', 'expansionPanelOpen']),
+    sensitivities: state.getIn(['leadCreation', 'sensitivities']),
+
+  }))
 
   const [searchedCategory, setSearchedCategory] = useState();
   const [deliverables, setDeliverables] = useState([]);
@@ -51,7 +58,6 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
   const [disableGoToFinalizationBtn, setDisableGoToFinalizationBtn] = useState(true);
 
   useEffect(() => {
-    console.log("cahngement")
     if (values?.missionContext.budget.value &&
       values?.missionContext.budget.type &&
       values?.missionContext.duration.nb &&
@@ -61,25 +67,13 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
       let preciseRate
 
       let daysNb = getFrequency(values?.missionContext.weeklyRythm)
-      console.log("daysnb", daysNb)
-      console.log("values?.missionContext.budget.type", values?.missionContext.budget.type)
-      console.log("values?.missionContext.duration.unit ", values?.missionContext.duration.unit)
       if (values?.missionContext.budget.type === 'Taux journalier') {  // DAILY_RATE
         // montant global = budget x durée x nbprofils x 1.15
-        console.log("jour1")
-        console.log(values?.missionContext.budget.value)
-        console.log(values?.missionContext.duration.unit)
-        console.log(values?.missionContext.profilNumber)
         if (values?.missionContext.duration.unit === 'Mois') {
-          console.log("mois")
           preciseRate = parseInt(values?.missionContext.budget.value, 10) * daysNb * parseInt(values?.missionContext.duration.nb, 10) * 4 * parseInt(values?.missionContext.profilNumber, 10) * 1.15;
         } else if (values?.missionContext.duration.unit === 'Semaines') {
-          console.log("semaine")
-
           preciseRate = parseInt(values?.missionContext.budget.value, 10) * daysNb * parseInt(values?.missionContext.duration.nb, 10) * parseInt(values?.missionContext.profilNumber, 10) * 1.15;
         } else if (values?.missionContext.duration.unit === 'Jours') {
-          console.log("jour")
-
           preciseRate = parseInt(values?.missionContext.budget.value, 10) * parseInt(values?.missionContext.duration.nb, 10) * parseInt(values?.missionContext.profilNumber, 10) * 1.15;
         }
         // let budget = values.budget;
@@ -97,14 +91,12 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
       }
       setWithCommission(Math.ceil(preciseRate));
 
-      console.log("preciserate", preciseRate)
-
-      const changeValue = {
+      const newValue = {
         target: { name: 'missionContext.estimatedAverageDailyRate', value: preciseRate }
       }
-      handleChange(changeValue);
+      handleChange(newValue);
     }
-  }, [values.missionContext.budget, values.missionContext.duration, values.missionContext.profilNumber])
+  }, [values?.missionContext.budget, values?.missionContext.duration, values?.missionContext.profilNumber])
 
   //   eturn [t('leadCreation.synthesis'), t('leadCreation.details')];
   // };r
@@ -213,7 +205,7 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
                 label={t('leadCreation.customDeliverableLabel')}
                 placeholder={t('leadCreation.customDeliverablePlaceholder')}
                 name='customDeliverable'
-                values={values.missionTitle}
+                values={values?.missionTitle}
                 onChange={handleChange}
               >
               </CustomTextField>
@@ -265,24 +257,25 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
   // let startDate = missionContext.startDate
   // const [startDate, setStartDate] = useState(missionContext.startDate)
 
-  useEffect(() => console.log(values), [values])
-  useEffect(() => { console.log(minDate, "mindate"); console.log(missionContext.startDate, "startDate") }, [minDate])
-
-
-  const changeDate = (e) => {
-    const timestamp = e._d.getTime();
-    const changeValue = {
-      target: { name: 'missionContext.startDate', value: parseInt(timestamp) }
+  const changeValue = (champs, e) => {
+    console.log("changeValue -> e", e)
+    let newValue = e
+    if (champs === 'missionContext.startDate') {
+      newValue = parseInt(e._d.getTime())
     }
-    handleChange(changeValue);
+    else if (champs === 'missionRequirements.expertises') {
+      newValue = e
+    }
+    else if (champs === 'missionRequirements.languages') {
+      newValue = e
+    }
+
+    const updatedValue = {
+      target: { name: champs, value: newValue }
+    }
+    handleChange(updatedValue);
     // setFieldTouched(name, true, false);
   };
-
-  // useEffect(() => {
-  //   console.log(values, " values")
-  //   console.log("startDate " + missionContext.startDate)
-  //   console.log("minDate " + minDate)
-  // }, [missionContext.startDate, values])
 
   // render complet de la page 0
   const setLeadSynthesis = () => {
@@ -292,11 +285,11 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
         <Grid container>
 
           <Grid item xs={12} className={classes.fieldRows}>
-            <SearchBar
+            {/* <SearchBar
               name='researchValue'
               context='leadCreation'
               onUpdateChosenCategory={handleUpdateResearch}
-            />
+            /> */}
           </Grid>
 
           {searchedCategory ? renderSearchedTypeSettings(searchedCategory) : null}
@@ -321,10 +314,9 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
               name='missionContext.startDate'
               id='missionContext.startDate'
               label={t('leadCreation.calendarLabel')}
-              minDate={missionContext.startDate}
-              // handleChange={(e) => change('missionContext.startDate', e)}
-              handleChange={(e) => { changeDate(e) }}
-              value={missionContext.startDate}
+              minDate={minDate}
+              handleChange={(e) => { changeValue('missionContext.startDate', e) }}
+              value={missionContext.startDate || minDate}
               // defaultValue={missionContext.startDate || minDate}
               {...props}
             />
@@ -470,6 +462,34 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
   }
 
   ///////////////////step2////////////////
+
+  useEffect(() => {
+    // if (activeStep === 1) {
+    // dispatch(handleCurrentStep(2))
+    dispatch(getExpertisesLaunched());
+    dispatch(getSensitivitiesLaunched());
+    // } else if (activeStep === 0) {
+    //   dispatch(handleCurrentStep(1))
+    // }
+  }, [dispatch])
+
+  const handlePriorityCheck = (index) => {
+    let updateValues = missionRequirements.expertises
+    updateValues[index].priority = !missionRequirements.expertises[index].priority
+    changeValue(`missionRequirements.expertises`, updateValues)
+  }
+
+  const handleSensitivityCheck = () => {
+    let updateValues = missionRequirements.sensitivity
+    updateValues.essential = !missionRequirements.sensitivity.essential
+    changeValue(`missionRequirements.sensitivity`, updateValues)
+  }
+  const deliverablesTags = deliverables?.map(x => ({ value: x, isCustom: false }));
+  const customDeliverableIndex = deliverables.indexOf('Ne figure pas dans la liste');
+
+  if (~customDeliverableIndex && customDeliverable) {
+    deliverablesTags[customDeliverableIndex] = { value: customDeliverable, isCustom: true }
+  }
   const setLeadDetails = () => {
     return (
       <Box className={classes.stepContent}>
@@ -478,35 +498,42 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
 
         <Grid container>
           {/* Expertises */}
-          {expertises?.length > 0 && <Grid item xs={12} className={classes.fieldRows}>
+          {listOfExpertises.length > 0 && <Grid item xs={12} className={classes.fieldRows}>
             <Grid container justify="space-between">
               <Typography variant="h4">{t('tagsList.expertise.label') + '*'}</Typography>
               <Typography variant="h2">{t('tagsList.expertise.minMaxInfo')}</Typography>
             </Grid>
             <TagsList
-              tags={expertises}
+              tags={listOfExpertises}
               panelTitle={t('leadCreation.profileExpertises')}
               type='expertise'
               maxSelection={5}
-              selectedExpertiseArray={expertisePriorityList?.map(x => x.expertise?.text || x.text)}
+              handleChange={(e) => { changeValue('missionRequirements.expertises', e) }}
+              name={'missionRequirements.expertises'}
+              id={'missionRequirements.expertises'}
+              selectedExpertiseArray={missionRequirements.expertises}
+              value={missionRequirements.expertises}
             />
             {expansionPanelOpen !== 'expertise' &&
-              <Grid item container direction='row'>
-                {expertisePriorityList?.length > 0 && expertisePriorityList?.map((tag, key) => (
+              < Grid item container direction='row'>
+                {missionRequirements.expertises?.length > 0 && missionRequirements.expertises?.map((tag, key) => (
                   <Tag key={key}
                     title={tag.text || tag?.expertise?.text}
                     isPrimaryColor
                     tagType="Prioritaire"
                     isWithCheckbox
+                    // handleChange={(e) => console.log(e, 'handlechange composant tag')}
+                    expertises
                     onCheckChange={() => handlePriorityCheck(key)}
-                    checkedArray={expertisePriorities}
+                    checkedArray={tag.priority}
                   />
                 ))}
-              </Grid>}
+              </Grid>
+            }
           </Grid>}
 
           {/* Sensitivities */}
-          {values.missionRequirements.sensitivity.sensitivity.text &&
+          {sensitivities?.length > 0 &&
             <Grid item xs={12} className={classes.fieldRows}>
               <Box my={2.5}>
                 <Grid container justify="space-between">
@@ -514,23 +541,26 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
                   <Typography variant="h2">{t('tagsList.sensitivity.minMaxInfo')}</Typography>
                 </Grid>
                 <TagsList
-                  tags={values.missionRequirements.sensitivity.sensitivity.text}
+                  tags={sensitivities}
+                  name={'missionRequirements.sensitivity'}
+                  id={'missionRequirements.sensitivity'}
                   panelTitle={t('leadCreation.profileSensitivity')}
                   type='sensitivity'
                   maxSelection={1}
-                  selectedSensitivityArray={sensitivityPriorityList?.map(x => x.sensitivity?.text || x.text)}
+                  handleChange={(e) => { changeValue('missionRequirements.sensitivity', e) }}
+                  selectedSensitivityArray={[missionRequirements?.sensitivity]}
                 />
                 {expansionPanelOpen !== 'sensitivity' &&
                   <Grid item container direction='row'>
-                    {sensitivityPriorityList?.length > 0 && sensitivityPriorityList?.map((tag, key) => (
-                      <Tag key={key}
-                        title={tag.text || tag?.sensitivity?.text}
+                    {missionRequirements?.sensitivity?.sensitivity?.text &&
+                      <Tag
+                        title={missionRequirements?.sensitivity?.sensitivity?.text}
                         isPrimaryColor
                         tagType="Critère indispensable"
                         isWithCheckbox
-                        onCheckChange={() => handleSensitivityCheck(key)}
-                        checkedArray={sensitivityPriority}
-                      />))}
+                        checkedArray={missionRequirements?.sensitivity?.essential}
+                        onCheckChange={() => handleSensitivityCheck()}
+                      />}
                   </Grid>}
               </Box>
             </Grid>}
@@ -546,21 +576,23 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
                   tags={languages}
                   panelTitle={t('leadCreation.profileLanguages')}
                   type='languages'
+                  handleChange={(e) => { changeValue('missionRequirements.languages', e) }}
                   maxSelection={1}
-                  selectedLanguagesArray={languagePriorityList?.map(x => formatLanguagesValues(x.language) || x.text)}
+                  selectedLanguagesArray={missionRequirements?.languages?.map(x => formatLanguagesValues(x.language) || x.text)}
                 />
                 {expansionPanelOpen !== 'languages' &&
                   <Grid item container direction='row'>
-                    {languagePriorityList?.length > 0 && languagePriorityList?.map((tag, key) => (
+                    {missionRequirements?.languages?.length > 0 && missionRequirements?.languages?.map((tag, key) => (
                       <Tag key={key}
                         title={tag.text || formatLanguagesValues(tag?.language)}
                         isPrimaryColor
                         tagType="Critère indispensable"
                         isWithCheckbox
-                        onCheckChange={() => handleLanguageCheck(key)}
-                        checkedArray={languagePriority}
+                        onCheckChange={() => changeValue(`missionRequirements.languages[${key}].essential`, !missionRequirements.languages[key].essential)}
+                        checkedArray={tag.essential}
                       />))}
-                  </Grid>}
+                  </Grid>
+                }
               </Box>
             </Grid>}
 
@@ -572,9 +604,11 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
               optionsValues={seniorityValues}
               onBlur={handleBlur('phonePrefix')}
               onChange={handleChange}
-              value={seniority}
+              value={missionRequirements?.seniority}
               error={!!touched.seniority && !!errors.seniority}
               withDisabledValue
+              name='missionRequirements.seniority'
+              id='missionRequirements.seniority'
             />
           </Grid>
 
@@ -595,11 +629,13 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
             label={t('leadCreation.textarea.missionContext.label')}
             placeholder={t('leadCreation.textarea.missionContext.placeholder')}
             name='contextAndTasks'
-            value={contextAndTasks}
+            value={missionDetail.contextAndTasks}
             onBlur={handleBlur}
             onChange={handleChange}
             error={!!touched.contextAndTasks && !!errors.contextAndTasks}
             size='large'
+            name='missionDetail.contextAndTasks'
+            id='missionDetail.contextAndTasks'
           />
         </Box>
 
@@ -609,11 +645,13 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
             label={t('leadCreation.textarea.deliverablesDetails.label')}
             placeholder={t('leadCreation.textarea.deliverablesDetails.placeholder')}
             name='detailsOfDeliverables'
-            value={detailsOfDeliverables}
+            value={missionDetail.detailsOfDeliverables}
             onBlur={handleBlur}
             onChange={handleChange}
             error={!!touched.detailsOfDeliverables && !!errors.detailsOfDeliverables}
             size='large'
+            name='missionDetail.detailsOfDeliverables'
+            id='missionDetail.detailsOfDeliverables'
           />
         </Box>
 
@@ -633,12 +671,16 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
           </Grid>
           <Grid item style={{ paddingLeft: '1.2rem' }}>
             <CustomButton
-              type="button"
-              theme={disableSendBrief ? 'disabledFilled' : 'filledButton'}
-              handleClick={handleSendData}
+              // type="button"
+              // theme={disableSendBrief ? 'disabledFilled' : 'filledButton'}
+              // handleClick={handleSendData}
               title={t('leadCreation.sendBriefButton')}
-              loading={leadSaveLoading || updateLeadDraftLoading}
-              disabled={disableSendBrief}
+              // loading={leadSaveLoading || updateLeadDraftLoading}
+              // disabled={disableSendBrief}
+              type="submit"
+              //theme={disableGoToFinalizationBtn ? 'disabledFilled' : 'filledButton'}
+              theme='filledButton'
+              handeclick={handleSubmit}
             >
             </CustomButton>
           </Grid>

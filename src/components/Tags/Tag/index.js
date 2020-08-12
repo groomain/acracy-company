@@ -45,7 +45,7 @@ const Tag = ({ title, isPrimaryColor, isWithInput, placeholder, isWithCheckbox, 
             onChange={onCheckChange}
             className={classes.checkbox}
             disabled={disabled}
-            checked={checkedArray?.indexOf(title) === undefined ? null : checkedArray?.indexOf(title) !== -1}
+            checked={checkedArray}
           />
         </span>
       </div>

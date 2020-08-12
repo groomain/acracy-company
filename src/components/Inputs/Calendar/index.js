@@ -23,28 +23,8 @@ class LocalizedUtils extends MomentUtils {
 
 export const Calendar = ({ error, label, minDate, startDate, onChange, handleChange, value }) => {
   const classes = styles();
-  const dispatch = useDispatch();
-
-  const [selectedDate, setSelectedDate] = useState();
 
 
-
-  // useEffect(() => {
-  //   console.log("startDate " + startDate)
-  //   console.log("minDate " + minDate)
-  // }, [startDate, minDate])
-
-  const change = (name, e) => {
-    console.log("change function", e)
-    // handleChange(name);
-    // setFieldTouched(name, true, false);
-  };
-
-  const setDate = (e) => {
-    // setSelectedDate(e)
-    const timestamp = e._d.getTime() + 86400000; // Add 1 day to send the right date
-    // handleChange(e)
-  }
   return (
     <MuiPickersUtilsProvider utils={LocalizedUtils} locale={'fr'}>
       <Typography variant="h4">{label}</Typography>
@@ -60,7 +40,6 @@ export const Calendar = ({ error, label, minDate, startDate, onChange, handleCha
           id='missionContext.startDate'
           value={value}
           onChange={(e) => handleChange(e)}
-          // handleChange={(e) => handleChange(e)}
           KeyboardButtonProps={{
             'aria-label': 'change date',
           }}

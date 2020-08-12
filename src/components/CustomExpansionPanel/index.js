@@ -26,9 +26,13 @@ const CustomExpansionPanel = ({ children, isTag, panelTitle, id, ...props }) => 
   }, [expansionPanelOpen]);
 
   const handleChange = (id) => (expanded) => {
+    console.log("expansion")
     if (open === id) {
+      console.log("handleChange expeansionpanel -> id", id)
       setOpen(false)
     } else {
+      console.log("handleChange expeansionpanel -> id", id)
+      console.log("handleChange expeansionpanel -> expanded", expanded)
       setOpen(expanded ? id : open)
       dispatch(setExpansionPanelOpen(expanded ? id : false));
     }

@@ -318,15 +318,21 @@ const LeadCreationPage = (props) => {
     },
     "missionRequirements": {
       "expertises": [
+        {
+          'expertise': {
+            'code': 'recbDpORQTeXfigoD', 'text': "Accompagnement de l'innovation"
+          },
+          'priority': true
+        }
       ],
       "sensitivity": {
         "sensitivity": {
-          "code": '',
-          "text": ''
+          "code": 'recTlNn2tYMPyrYYG',
+          "text": 'data'
         },
-        "essential": true
+        "essential": false
       },
-      "languages": [
+      "languages": [{ "language": "NATIVE_GERMAN", "essential": true }
       ],
       "seniority": ''
     }
