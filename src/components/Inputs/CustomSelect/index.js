@@ -26,6 +26,13 @@ export const CustomSelect = ({ label, value, placeholder, type, error, isMulti, 
     )
   }
 
+  if (!value) {
+    value = []
+  }
+  if (!options) {
+    setOptions([])
+  }
+
   return (
     <Box style={{ height: '140px' }} className={className}>
       <Typography variant='h4'>{label}</Typography >
@@ -45,7 +52,7 @@ export const CustomSelect = ({ label, value, placeholder, type, error, isMulti, 
         classes={{ root: open ? `${classes.root} ${classes.open}` : classes.root }}
         disableUnderline
         IconComponent={KeyboardArrowDownRoundedIcon}
-        inputProps={{ placeholder: placeholder, classes: { root: `${classes.input} ${error ? classes.error : null}`, icon: open ? `${classes.icon} ${classes.iconClosed}` : classes.icon } }}
+        inputProps={{ classes: { root: `${classes.input} ${error ? classes.error : null}`, icon: open ? `${classes.icon} ${classes.iconClosed}` : classes.icon } }}
         MenuProps={{
           classes: { paper: classes.dropdownStyle },
           anchorOrigin: {
