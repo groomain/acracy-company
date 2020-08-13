@@ -43,15 +43,8 @@ const Searchbar = ({ onUpdateChosenCategory, value }) => {
 const SearchResults = ({ searchResults, onUpdateChosenCategory, value }) => {
   const classes = styles();
   const { t } = useTranslation();
-  const dispatch = useDispatch();
-
-  const { leadCreationPageWithSearchResult, leadDraftData } = useSelector(state => ({
-    leadCreationPageWithSearchResult: state.getIn(['dashboard', 'leadCreationPageWithSearchResult']),
-    leadDraftData: state.getIn(['leadCreation', 'leadDraftData']),
-  }));
 
   const [resultsList, setResultsList] = useState([]);
-  const [fullValue, setFullValue] = useState();
   const [loading, setIsLoading] = useState(true);
   const [searchValue, setSearchValue] = useState();
   const [newOption, setNewOption] = useState({ title: t('leadCreation.reseachLabel') });
@@ -71,10 +64,8 @@ const SearchResults = ({ searchResults, onUpdateChosenCategory, value }) => {
       setSearchValue(algoliaFullDeliverableResult)
       onUpdateChosenCategory(algoliaFullDeliverableResult);
     }
-    //else {
-    //   setSearchValue(leadCreationPageWithSearchResult)
-    // }
   }, [value, resultsList]);
+
   useEffect(() => {
     if (searchResults) {
       const { hits } = searchResults;
