@@ -101,7 +101,7 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
   //   eturn [t('leadCreation.synthesis'), t('leadCreation.details')];
   // };r
   const getStepContent = step => {
-    return setLeadDetails()
+    return setLeadSynthesis()
     //return setLeadSynthesis();
   }
 
@@ -164,8 +164,12 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
 
 
   const handleUpdateResearch = (e) => {
+    console.log("handleUpdateResearch", e)
+    changeValue('search', { type: e?.TYPE || '', code: e?.KEY || '', text: e?.TEXT || '' })
+    changeValue('desireds', [])
+    setDeliverables([]);
     setSearchedCategory(e);  // type, text and objectID
-    dispatch(setLeadDraftSearchData({ search: e }))
+    // dispatch(setLeadDraftSearchData({ search: e }))
   }
 
 
@@ -174,12 +178,13 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
     const selectableDeliverables = searchedCategory?.DELIVERABLES || searchedCategory?.links
     // || leadCreationPageWithSearchResult?.DELIVERABLES;
     let deliverablesList = [];
-    if (selectableDeliverables) {
+    if (selectableDeliverables?.length > 0) {
       deliverablesList = selectableDeliverables?.map((item) => {
         return item.TEXT;
       });
     }
     deliverablesList.push('Ne figure pas dans la liste');
+    console.log("deliverables", deliverables)
     return (
       <>
         <Grid item xs={12} className={classes.fieldRows}>
@@ -192,7 +197,7 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
             optionsValues={deliverablesList}
             onBlur={handleBlur}
             checkedArray={searchedCategory === values?.search ? values?.desireds : []}
-          // onChange={handleChange} //// nope, isMulti
+            test={(e) => console.log("ici", e)} //// nope, isMulti
           />
           <Grid item container direction='row'>
             {deliverables?.map((deliverable, i) =>
@@ -285,11 +290,11 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
         <Grid container>
 
           <Grid item xs={12} className={classes.fieldRows}>
-            {/* <SearchBar
+            <SearchBar
               name='researchValue'
               context='leadCreation'
               onUpdateChosenCategory={handleUpdateResearch}
-            /> */}
+            />
           </Grid>
 
           {searchedCategory ? renderSearchedTypeSettings(searchedCategory) : null}
