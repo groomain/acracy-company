@@ -164,10 +164,12 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
 
 
   const handleUpdateResearch = (e) => {
-    console.log("handleUpdateResearch", e)
     changeValue('search', { type: e?.TYPE || '', code: e?.KEY || '', text: e?.TEXT || '' })
-    changeValue('desireds', [])
-    setDeliverables([]);
+    if (!e) {
+      changeValue('desireds', []);
+      setDeliverables([]);
+    }
+
     setSearchedCategory(e);  // type, text and objectID
     // dispatch(setLeadDraftSearchData({ search: e }))
   }
@@ -321,7 +323,7 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
               label={t('leadCreation.calendarLabel')}
               minDate={minDate}
               handleChange={(e) => { changeValue('missionContext.startDate', e) }}
-              value={missionContext.startDate || minDate}
+              value={(missionContext?.startDate && (missionContext.startDate > minDate)) ? missionContext.startDate : minDate}
               // defaultValue={missionContext.startDate || minDate}
               {...props}
             />
