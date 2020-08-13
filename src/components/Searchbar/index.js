@@ -23,8 +23,7 @@ import livrableYellow from '../../assets/icons/livrable-yellow.svg';
 
 import { pushToLeadCreationPageWithSearchResult } from '../../pages/HomePage/reducer';
 
-const Searchbar = ({ onUpdateChosenCategory }) => {
-
+const Searchbar = ({ onUpdateChosenCategory, value }) => {
   const searchClient = useMemo(() => algoliasearch(
     process.env.REACT_APP_ALGOLIA,
     process.env.REACT_APP_ALGOLIA_KEY
@@ -36,12 +35,12 @@ const Searchbar = ({ onUpdateChosenCategory }) => {
       indexName={process.env.REACT_APP_ALGOLIA_INDEX_NAME}
     >
       <Configure />
-      <CustomSearchbar onUpdateChosenCategory={onUpdateChosenCategory} />
+      <CustomSearchbar onUpdateChosenCategory={onUpdateChosenCategory} value={value} />
     </InstantSearch>
   );
 };
 
-const SearchResults = ({ searchResults, onUpdateChosenCategory }) => {
+const SearchResults = ({ searchResults, onUpdateChosenCategory, value }) => {
   const classes = styles();
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -52,18 +51,30 @@ const SearchResults = ({ searchResults, onUpdateChosenCategory }) => {
   }));
 
   const [resultsList, setResultsList] = useState([]);
+  const [fullValue, setFullValue] = useState();
   const [loading, setIsLoading] = useState(true);
   const [searchValue, setSearchValue] = useState();
   const [newOption, setNewOption] = useState({ title: t('leadCreation.reseachLabel') });
 
   useEffect(() => {
-    if (leadDraftData) {
-      setSearchValue(leadDraftData?.search)
-    } else {
-      setSearchValue(leadCreationPageWithSearchResult)
+    console.log("value", value)
+    console.log("resultsList", resultsList)
+    if (value?.type === "PROFILE" && resultsList.length > 0 && !searchValue) {
+      let profileResults = resultsList.find(result => result.label === "Profil recherché")
+      let algoliaFullProfileResult = profileResults.options.find(result => result.TEXT === value.text)
+      setSearchValue(algoliaFullProfileResult)
+      onUpdateChosenCategory(algoliaFullProfileResult);
     }
-  }, [leadDraftData]);
-
+    else if (value?.type === "DELIVERABLE" && resultsList.length > 0 && !searchValue) {
+      let deliverableResults = resultsList.find(result => result.label === "Livrable recherché")
+      let algoliaFullDeliverableResult = deliverableResults.options.find(result => result.TEXT === value.text)
+      setSearchValue(algoliaFullDeliverableResult)
+      onUpdateChosenCategory(algoliaFullDeliverableResult);
+    }
+    //else {
+    //   setSearchValue(leadCreationPageWithSearchResult)
+    // }
+  }, [value, resultsList]);
   useEffect(() => {
     if (searchResults) {
       const { hits } = searchResults;
@@ -142,9 +153,12 @@ const SearchResults = ({ searchResults, onUpdateChosenCategory }) => {
   };
 
   const handleOnChange = (newValue, actionMeta) => {
+    console.log("handleOnChange -> newValue", newValue)
+    console.log("resultsList", resultsList)
+
     // dispatch(pushToLeadCreationPageWithSearchResult([])); // Find another place to empty the search result
     // Store the search value if it doesn't exist
-    if (actionMeta.action === "create-option") {
+    if (actionMeta?.action === "create-option") {
       setNewOption({ title: "Vous avez recherché", value: newValue.value })
     }
     if (actionMeta.action === 'clear') {

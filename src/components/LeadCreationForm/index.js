@@ -38,7 +38,7 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
   const classes = styles();
 
   const { frequency, workspace, duration, durationType, budget, budgetType, profile, profilesNumber,
-    missionContext, missionRequirements, missionDetail, expertises, customDeliverable
+    missionContext, missionRequirements, missionDetail, expertises, customDeliverable, search
   } = values;
 
 
@@ -159,6 +159,7 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
 
 
   const handleDeliverablesChange = e => {
+    console.log("handleDeliverablesChange e", e)
     setDeliverables(e);
   }
 
@@ -170,10 +171,12 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
       setDeliverables([]);
     }
 
-    setSearchedCategory(e);  // type, text and objectID
+    setSearchedCategory(e);
+    // type, text and objectID
     // dispatch(setLeadDraftSearchData({ search: e }))
   }
 
+  useEffect(() => setSearchedCategory(search), [])
 
   //C'est le select avec la la liste des déliverables si on a choisit un profile en recherche
   const showDeliverablesSettings = () => {
@@ -186,7 +189,6 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
       });
     }
     deliverablesList.push('Ne figure pas dans la liste');
-    console.log("deliverables", deliverables)
     return (
       <>
         <Grid item xs={12} className={classes.fieldRows}>
@@ -199,7 +201,7 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
             optionsValues={deliverablesList}
             onBlur={handleBlur}
             checkedArray={searchedCategory === values?.search ? values?.desireds : []}
-            test={(e) => console.log("ici", e)} //// nope, isMulti
+          //// nope, isMulti
           />
           <Grid item container direction='row'>
             {deliverables?.map((deliverable, i) =>
@@ -228,25 +230,27 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
   const showProfilesSettings = () => {
     let selectableProfiles = searchedCategory?.PROFILES || searchedCategory?.links
     //  || leadCreationPageWithSearchResult?.PROFILES;
-    let selectableProfilesCopy = [...selectableProfiles];
-    let enhancedList = selectableProfilesCopy.concat({ "TEXT": "Recevoir une recommandation acracy" })
-    const profilesList = enhancedList.map((item) => {
-      return item.TEXT;
-    });
-    return (
-      <>
-        <Grid item xs={12} className={classes.fieldRows}>
-          <CustomSelect
-            label={t('leadCreation.selectProfile')}
-            optionsValues={profilesList}
-            onChange={handleChange}
-            value={profile}
-            context='profileType'
-            name='profile'
-          />
-        </Grid>
-      </>
-    )
+    if (selectableProfiles) {
+      let selectableProfilesCopy = [...selectableProfiles];
+      let enhancedList = selectableProfilesCopy.concat({ "TEXT": "Recevoir une recommandation acracy" })
+      const profilesList = enhancedList.map((item) => {
+        return item.TEXT;
+      });
+      return (
+        <>
+          <Grid item xs={12} className={classes.fieldRows}>
+            <CustomSelect
+              label={t('leadCreation.selectProfile')}
+              optionsValues={profilesList}
+              onChange={handleChange}
+              value={profile}
+              context='profileType'
+              name='profile'
+            />
+          </Grid>
+        </>
+      )
+    }
   }
 
   // OK a garder
@@ -265,7 +269,6 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
   // const [startDate, setStartDate] = useState(missionContext.startDate)
 
   const changeValue = (champs, e) => {
-    console.log("changeValue -> e", e)
     let newValue = e
     if (champs === 'missionContext.startDate') {
       newValue = parseInt(e._d.getTime())
@@ -284,6 +287,7 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
     // setFieldTouched(name, true, false);
   };
 
+
   // render complet de la page 0
   const setLeadSynthesis = () => {
     return (
@@ -296,6 +300,7 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
               name='researchValue'
               context='leadCreation'
               onUpdateChosenCategory={handleUpdateResearch}
+              value={search}
             />
           </Grid>
 
