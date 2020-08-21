@@ -14,9 +14,7 @@ import CustomModal from '../Modal';
 import EuroSymbolIcon from '@material-ui/icons/EuroSymbol';
 import { Typography, Grid, Stepper, Step, StepLabel, StepButton, Box, InputAdornment, StepConnector } from "@material-ui/core";
 import {
-  setLeadDraftSearchData, setDeliverablesArray, setDailyRate,
-  changeLeadStatusLaunched, getExpertisesLaunched, setExpertisePriorities,
-  getSensitivitiesLaunched, setSensitivityPriority, setLanguagePriority, setSelectedExpertise, setSelectedSensitivity, setSelectedLanguage
+  changeLeadStatusLaunched, getExpertisesLaunched, getSensitivitiesLaunched
 } from '../../pages/LeadCreationPage/reducer';
 import { setLeadCreationStep } from '../../pages/HomePage/reducer';
 import { handleCurrentStep } from "../App/reducer";
@@ -24,28 +22,31 @@ import { handleCurrentStep } from "../App/reducer";
 import { leadSave } from '../../pages/LeadCreationPage/index';
 import clsx from 'clsx';
 import styles from './styles';
+import moment from 'moment';
 
-import { languages, seniorityValues } from './options';
+import { languages } from './options';
 import UploadInput from '../Inputs/LeadUpload';
 
 import { checkLength } from '../../utils/services/validationChecks';
 import { formatLanguagesValues } from '../../utils/services/format';
 // import { valueFocusAriaMessage } from 'react-select/src/accessibility';
 
-const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, handleChange, leadId, onUpdateMissionTitle, handleSubmit, props }) => {
+const LeadCreationForm = ({ sendValues, onSubmit, values, errors, touched, handleBlur, handleChange, leadId, onUpdateMissionTitle, handleSubmit, props }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const classes = styles();
 
-  const { frequency, workspace, duration, durationType, budget, budgetType, profile, profilesNumber,
-    missionContext, missionRequirements, missionDetail, expertises, customDeliverable, search
+  const { missionContext, missionRequirements, missionDetail, expertises, customDeliverable, search, desireds
   } = values;
 
-
-  const { listOfExpertises, expansionPanelOpen, sensitivities } = useSelector(state => ({
+  const { listOfExpertises, expansionPanelOpen, sensitivities, leadCreationStep, updateLeadDraftLoading, leadSaveLoading } = useSelector(state => ({
     listOfExpertises: state.getIn(['leadCreation', 'expertises']),
     expansionPanelOpen: state.getIn(['leadCreation', 'expansionPanelOpen']),
     sensitivities: state.getIn(['leadCreation', 'sensitivities']),
+    updateLeadDraftLoading: state.getIn(['leadCreation', 'updateLeadDraftLoading']),
+    uploadedFileName: state.getIn(['leadCreation', 'uploadedFileName']),
+    leadCreationStep: state.getIn(['dashboard', 'leadCreationStep']),
+    leadSaveLoading: state.getIn(['leadCreation', 'leadSaveLoading']),
 
   }))
 
@@ -56,62 +57,99 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
   const [openCallMeModal, setOpenCallMeModal] = useState(false);
   const [disableCallMeBtn, setDisableCallMeBtn] = useState(true);
   const [disableGoToFinalizationBtn, setDisableGoToFinalizationBtn] = useState(true);
+  const [disableSendBrief, setDisableSendBrief] = useState(true);
+  const [activeStep, setActiveStep] = useState(leadCreationStep);
 
   useEffect(() => {
-    if (values?.missionContext.budget.value &&
-      values?.missionContext.budget.type &&
-      values?.missionContext.duration.nb &&
-      values?.missionContext.duration.unit &&
-      values?.missionContext.weeklyRythm &&
-      values?.missionContext.profilNumber) {
+    if (values?.missionContext?.budget?.value &&
+      values?.missionContext?.budget?.type &&
+      values?.missionContext?.duration?.nb &&
+      values?.missionContext?.duration?.unit &&
+      values?.missionContext?.weeklyRythm &&
+      values?.missionContext?.profilNumber) {
       let preciseRate
 
-      let daysNb = getFrequency(values?.missionContext.weeklyRythm)
-      if (values?.missionContext.budget.type === 'Taux journalier') {  // DAILY_RATE
+      let daysNb = values?.missionContext?.weeklyRythm
+      if (values?.missionContext?.budget?.type === 'DAILY_RATE') {  // DAILY_RATE
         // montant global = budget x durée x nbprofils x 1.15
-        if (values?.missionContext.duration.unit === 'Mois') {
-          preciseRate = parseInt(values?.missionContext.budget.value, 10) * daysNb * parseInt(values?.missionContext.duration.nb, 10) * 4 * parseInt(values?.missionContext.profilNumber, 10) * 1.15;
-        } else if (values?.missionContext.duration.unit === 'Semaines') {
-          preciseRate = parseInt(values?.missionContext.budget.value, 10) * daysNb * parseInt(values?.missionContext.duration.nb, 10) * parseInt(values?.missionContext.profilNumber, 10) * 1.15;
-        } else if (values?.missionContext.duration.unit === 'Jours') {
-          preciseRate = parseInt(values?.missionContext.budget.value, 10) * parseInt(values?.missionContext.duration.nb, 10) * parseInt(values?.missionContext.profilNumber, 10) * 1.15;
+        if (values?.missionContext?.duration?.unit === 'MONTH') {
+          preciseRate = parseInt(values?.missionContext?.budget?.value, 10) * daysNb * parseInt(values?.missionContext?.duration?.nb, 10) * 4 * parseInt(values?.missionContext?.profilNumber, 10) * 1.15;
+        } else if (values?.missionContext?.duration?.unit === 'WEEK') {
+          preciseRate = parseInt(values?.missionContext?.budget?.value, 10) * daysNb * parseInt(values?.missionContext?.duration?.nb, 10) * parseInt(values?.missionContext?.profilNumber, 10) * 1.15;
+        } else if (values?.missionContext?.duration?.unit === 'DAY') {
+          preciseRate = parseInt(values?.missionContext?.budget?.value, 10) * parseInt(values?.missionContext?.duration?.nb, 10) * parseInt(values?.missionContext?.profilNumber, 10) * 1.15;
         }
-        // let budget = values.budget;
-        // setDailyCost(budget);
         setWithCommission(Math.ceil(preciseRate));
-      } else if (values?.missionContext.budget.type === 'Budget total') { // TOTAL
+      } else if (values?.missionContext?.budget?.type === 'TOTAL') { // TOTAL
         // TMJ = (budgetx0.85) / nb jours / nb profils
-        if (values?.missionContext.duration.unit === 'Mois') {
-          preciseRate = (parseInt(values?.missionContext.budget.value, 10) * 0.85) / (daysNb * parseInt(values?.missionContext.duration.nb, 10) * 4) / parseInt(values?.missionContext.profilNumber, 10);
-        } else if (values?.missionContext.duration.unit === 'Semaines') {
-          preciseRate = (parseInt(values?.missionContext.budget.value, 10) * 0.85) / (daysNb * parseInt(values?.missionContext.duration.nb, 10)) / parseInt(values?.missionContext.profilNumber, 10);
-        } else if (values?.missionContext.duration.unit === 'Jours') {
-          preciseRate = (parseInt(values?.missionContext.budget.value, 10) * 0.85) / parseInt(values?.missionContext.duration.nb, 10) / parseInt(values?.missionContext.profilNumber, 10);
+        if (values?.missionContext?.duration?.unit === 'MONTH') {
+          preciseRate = (parseInt(values?.missionContext?.budget?.value, 10) * 0.85) / (daysNb * parseInt(values?.missionContext?.duration?.nb, 10) * 4) / parseInt(values?.missionContext?.profilNumber, 10);
+        } else if (values?.missionContext?.duration?.unit === 'WEEK') {
+          preciseRate = (parseInt(values?.missionContext?.budget?.value, 10) * 0.85) / (daysNb * parseInt(values?.missionContext?.duration?.nb, 10)) / parseInt(values?.missionContext?.profilNumber, 10);
+        } else if (values?.missionContext?.duration?.unit === 'DAY') {
+          preciseRate = (parseInt(values?.missionContext?.budget?.value, 10) * 0.85) / parseInt(values?.missionContext?.duration?.nb, 10) / parseInt(values?.missionContext?.profilNumber, 10);
         }
       }
       setWithCommission(Math.ceil(preciseRate));
-
-      const newValue = {
-        target: { name: 'missionContext.estimatedAverageDailyRate', value: preciseRate }
-      }
-      handleChange(newValue);
+      changeValue('missionContext.estimatedAverageDailyRate', preciseRate);
     }
-  }, [values?.missionContext.budget, values?.missionContext.duration, values?.missionContext.profilNumber])
+  }, [values?.missionContext?.budget, values?.missionContext?.duration, values?.missionContext?.profilNumber, values?.missionContext?.weeklyRythm])
 
-  //   eturn [t('leadCreation.synthesis'), t('leadCreation.details')];
-  // };r
+  useEffect(() => {
+    if (
+      (missionRequirements?.expertises?.length > 0)
+      && (missionRequirements?.sensitivity?.sensitivity)
+      && (missionRequirements?.languages?.length > 0)
+      && missionRequirements?.seniority !== "Sélectionnez le niveau d'expérience minimum"
+      && checkLength(missionDetail?.contextAndTasks, 0)
+      && checkLength(missionDetail?.detailsOfDeliverables, 0)
+    ) {
+      setDisableSendBrief(false);
+    } else {
+      setDisableSendBrief(true);
+    }
+  }, [missionRequirements, missionDetail]);
+
+  useEffect(() => {
+    if (
+      search?.text
+      && checkLength(missionContext?.title, 0)
+      && missionContext?.format
+      && missionContext?.weeklyRythm
+      && missionContext?.duration?.nb
+      && missionContext?.duration?.unit
+      && missionContext?.budget?.type
+      && missionContext?.budget?.value
+      && missionContext?.profilNumber
+    ) {
+      setDisableGoToFinalizationBtn(false)
+    } else {
+      setDisableGoToFinalizationBtn(true)
+    }
+  }, [search, missionContext])
+
+  useEffect(() => { // Disable the "être rappelé" button
+    if (search?.text?.length > 1) {
+      setDisableCallMeBtn(false)
+    } else {
+      setDisableCallMeBtn(true)
+    }
+  }, [search]);
+
   const getStepContent = step => {
-    return setLeadSynthesis()
-    //return setLeadSynthesis();
+    switch (step) {
+      case 0:
+        return setLeadSynthesis();
+      case 1:
+        return setLeadDetails();
+      default:
+        return setLeadSynthesis(); // step 0 is diplayed by default
+    }
   }
-
-
 
   const handleCallMe = () => {
     setOpenCallMeModal(true)
   }
-
-
 
   const getFrequency = (frequency) => {
     switch (frequency) {
@@ -129,112 +167,142 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
     }
   }
 
-
-
   const setOptionsValues = (fieldName) => {
     switch (fieldName) {
       case 'workspace':
         return (
-          ['Peu importe', 'En remote uniquement', 'Sur place uniquement', 'En remote et sur place']
+          [{ code: 'WHATEVER', TEXT: 'Peu importe' },
+          { code: 'REMOTE_ONLY', TEXT: 'En remote uniquement' },
+          { code: 'INPLACE_ONLY', TEXT: 'Sur place uniquement' },
+          { code: 'BOTH', TEXT: 'En remote et sur place' }]
         )
       case 'frequency':
         return (
-          ['Temps partiel (1 jour)', 'Temps partiel (2 jours)', 'Temps partiel (3 jours)', 'Temps partiel (4 jours)', 'Plein temps (5 jours)']
+          [{ code: 1, TEXT: 'Temps partiel (1 jour)' },
+          { code: 2, TEXT: 'Temps partiel (2 jours)' },
+          { code: 3, TEXT: 'Temps partiel (3 jours)' },
+          { code: 4, TEXT: 'Temps partiel (4 jours)' },
+          { code: 5, TEXT: 'Plein temps (5 jours)' }]
         )
       case 'duration':
         return (
-          ['Jours', 'Semaines', 'Mois']
+          [{ code: 'DAY', TEXT: 'Jours' },
+          { code: 'WEEK', TEXT: 'Semaines' },
+          { code: 'MONTH', TEXT: 'Mois' }]
         )
       case 'budgetType':
         return (
-          ['Taux journalier', 'Budget total']
+          [{ code: 'DAILY_RATE', TEXT: 'Taux journalier' },
+          { code: 'TOTAL', TEXT: 'Budget total' }]
         )
       case 'profilesNumber':
         return (
           [1, 2, 3, 4]
         )
+      case 'seniority':
+        return (
+          [{ code: '', TEXT: "Sélectionnez le niveau d'expertise minimum" },
+          { code: 'JUNIOR', TEXT: 'Junior (1 à 3 ans)' },
+          { code: 'MIDDLE', TEXT: 'Middle (3 à 5 ans)' },
+          { code: 'SENIOR', TEXT: 'Senior (5 à 7 ans' },
+          { code: 'EXPERT', TEXT: 'Expert (7 à 10 ans)' },
+          { code: 'GURU', TEXT: 'Guru (10 ans et plus)' },
+          { code: 'WHATEVER', TEXT: 'Peu importe' },])
+
       default:
     }
   }
 
-
-  const handleDeliverablesChange = e => {
-    console.log("handleDeliverablesChange e", e)
-    setDeliverables(e);
-  }
-
-
   const handleUpdateResearch = (e) => {
-    changeValue('search', { type: e?.TYPE || '', code: e?.KEY || '', text: e?.TEXT || '' })
+    if (e?.__isNew__) {
+      changeValue('search', { type: 'OTHER', code: '', text: e.label })
+      changeValue('desireds', [])
+      setDeliverables([]);
+
+    } else if (e?.TEXT) {
+      changeValue('search', { type: e?.TYPE || '', code: e?.KEY || '', text: e?.TEXT || '' })
+    }
     if (!e) {
       changeValue('desireds', []);
       setDeliverables([]);
     }
 
     setSearchedCategory(e);
-    // type, text and objectID
-    // dispatch(setLeadDraftSearchData({ search: e }))
   }
 
   useEffect(() => setSearchedCategory(search), [])
 
-  //C'est le select avec la la liste des déliverables si on a choisit un profile en recherche
   const showDeliverablesSettings = () => {
     const selectableDeliverables = searchedCategory?.DELIVERABLES || searchedCategory?.links
-    // || leadCreationPageWithSearchResult?.DELIVERABLES;
     let deliverablesList = [];
     if (selectableDeliverables?.length > 0) {
       deliverablesList = selectableDeliverables?.map((item) => {
-        return item.TEXT;
+        return item;
       });
     }
-    deliverablesList.push('Ne figure pas dans la liste');
+    deliverablesList.push({ TEXT: 'Ne figure pas dans la liste', KEY: '' });
     return (
       <>
         <Grid item xs={12} className={classes.fieldRows}>
           <CustomSelect
-            onUpdateSelection={handleDeliverablesChange}
-            label={(deliverables.length !== 0) ? t('leadCreation.modifyDeliverables') : t('leadCreation.selectDeliverables')}
+            onUpdateSelection={(e) => changeValue("desireds.deliverable", e)}
+            label={(deliverables?.length !== 0) ? t('leadCreation.modifyDeliverables') : t('leadCreation.selectDeliverables')}
             isMulti
             context='deliverables'
             name='deliverable'
             optionsValues={deliverablesList}
             onBlur={handleBlur}
-            checkedArray={searchedCategory === values?.search ? values?.desireds : []}
-          //// nope, isMulti
+            checkedArray={searchedCategory?.TEXT === values?.search.text ? desireds?.map(desired => {
+              return ({ 'TEXT': desired?.text, 'KEY': desired?.code })
+            }) : []}
           />
           <Grid item container direction='row'>
-            {deliverables?.map((deliverable, i) =>
-              <Tag title={deliverable} key={i} />
+            {desireds?.map((deliverable, i) => {
+              if (deliverable.type === 'OTHER') {
+                return (
+                  <Tag title={'Ne figure pas dans la liste'} key={i} />)
+              }
+              else {
+                return (
+                  <Tag title={deliverable.text} key={i} />)
+              }
+            }
             )}
           </Grid>
-          {deliverables?.includes('Ne figure pas dans la liste') ?
-            <Grid item xs={12} className={classes.fieldRows}>
-              <CustomTextField
-                label={t('leadCreation.customDeliverableLabel')}
-                placeholder={t('leadCreation.customDeliverablePlaceholder')}
-                name='customDeliverable'
-                values={values?.missionTitle}
-                onChange={handleChange}
-              >
-              </CustomTextField>
-            </Grid>
-            : null
+          {desireds?.map(deliverable => {
+            if (deliverable.type === "OTHER") {
+              let titleValue
+              if (deliverable.text != 'Ne figure pas dans la liste') {
+                titleValue = deliverable.text
+              }
+              else (titleValue = '')
+              return (
+                <Grid item xs={12} className={classes.fieldRows}>
+                  <CustomTextField
+                    label={t('leadCreation.customDeliverableLabel')}
+                    placeholder={t('leadCreation.customDeliverablePlaceholder')}
+                    name='customDeliverable'
+                    id='customDeliverable'
+                    value={titleValue}
+                    onChange={(e) => changeValue('customDeliverable', e)}
+                  >
+                  </CustomTextField>
+                </Grid>)
+            }
           }
+          )}
         </Grid>
       </>
     )
   }
 
-  //C'est le select avec la la liste des profils si on a choisit un deliverable en recherche
   const showProfilesSettings = () => {
     let selectableProfiles = searchedCategory?.PROFILES || searchedCategory?.links
-    //  || leadCreationPageWithSearchResult?.PROFILES;
     if (selectableProfiles) {
       let selectableProfilesCopy = [...selectableProfiles];
       let enhancedList = selectableProfilesCopy.concat({ "TEXT": "Recevoir une recommandation acracy" })
       const profilesList = enhancedList.map((item) => {
-        return item.TEXT;
+        return item;
       });
       return (
         <>
@@ -242,10 +310,11 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
             <CustomSelect
               label={t('leadCreation.selectProfile')}
               optionsValues={profilesList}
-              onChange={handleChange}
-              value={profile}
+              onChange={(e) => changeValue("desireds.profile", e.target.value)}
+              value={desireds?.length > 0 ? desireds[0].code : null}
               context='profileType'
-              name='profile'
+              name='desireds'
+              id='desireds'
             />
           </Grid>
         </>
@@ -256,36 +325,85 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
   // OK a garder
   const renderSearchedTypeSettings = (searchedCategory) => {
     if (searchedCategory?.TYPE === 'PROFILE' || searchedCategory?.type === 'PROFILE') {
-      // || leadCreationPageWithSearchResult?.DELIVERABLES) {
 
       return showDeliverablesSettings()
     } else if (searchedCategory?.TYPE === 'DELIVERABLE' || searchedCategory?.type === 'DELIVERABLES') { }
-    // || leadCreationPageWithSearchResult?.PROFILES) {
     return showProfilesSettings()
   }
 
   const minDate = new Date().setDate(new Date().getDate() + 30);
-  // let startDate = missionContext.startDate
-  // const [startDate, setStartDate] = useState(missionContext.startDate)
+
+  useEffect(() => {
+    if (missionContext?.startDate) {
+      return
+    } else {
+      changeValue('missionContext.startDate', minDate)
+    }
+  }, [missionContext])
 
   const changeValue = (champs, e) => {
-    let newValue = e
+    let newValue
     if (champs === 'missionContext.startDate') {
-      newValue = parseInt(e._d.getTime())
+      if (typeof e === 'number') {
+        newValue = new moment(e).format()
+      }
+      else {
+        newValue = parseInt(e._d.getTime())
+        newValue = new moment(newValue).format()
+      }
     }
-    else if (champs === 'missionRequirements.expertises') {
+    else if (champs === 'desireds.profile') {
+      let selectableProfiles = searchedCategory?.PROFILES || searchedCategory?.links
+      newValue = selectableProfiles.filter(delList => {
+        return e.includes(delList.KEY)
+      });
+      champs = 'desireds'
+      newValue = [{ 'text': newValue[0].TEXT, 'code': newValue[0].KEY, 'type': 'PROFILE' }]
+    }
+    else if (champs === 'customDeliverable') {
+      champs = 'desireds'
+      newValue = desireds.map(desired => {
+        if (desired.type === 'OTHER') {
+          return ({ ...desired, text: e.target.value })
+        }
+        return desired
+      })
+    }
+    else if (champs === 'desireds.deliverable') {
+      champs = 'desireds'
+      const tempTab = searchedCategory?.DELIVERABLES.filter(delList => {
+        return e.includes(delList.KEY)
+      });
+      newValue = tempTab.map(deliverable => {
+        return ({ 'text': deliverable?.TEXT, 'code': deliverable?.KEY, 'type': 'DELIVERABLE' })
+      })
+      if (e.includes("")) {
+        let customTextValue = desireds?.filter(desired => desired.type === 'OTHER')
+        let newTextValue = (customTextValue[0]?.text || 'Ne figure pas dans la liste')
+        newValue.push({ 'text': newTextValue, 'code': '', 'type': 'OTHER' })
+      }
+    }
+    else {
       newValue = e
     }
-    else if (champs === 'missionRequirements.languages') {
-      newValue = e
-    }
-
     const updatedValue = {
       target: { name: champs, value: newValue }
     }
     handleChange(updatedValue);
-    // setFieldTouched(name, true, false);
   };
+
+  const handleSendData = () => {
+    if (leadCreationStep === 0) {
+      onSubmit(values)
+      setActiveStep(1)
+    } else {
+      let redirectToMission = true;
+      dispatch(handleCurrentStep(2));
+      backToTop();
+      let redirect = false
+      onSubmit(values, redirect, redirectToMission)
+    }
+  }
 
 
   // render complet de la page 0
@@ -304,158 +422,160 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
             />
           </Grid>
 
-          {searchedCategory ? renderSearchedTypeSettings(searchedCategory) : null}
+          {searchedCategory && renderSearchedTypeSettings(searchedCategory)}
 
           {/* Titre de la mission */}
-          < Grid item xs={12} className={classes.fieldRows}>
-            <CustomTextArea
-              label={t('leadCreation.missionLabel')}
-              placeholder={t('leadCreation.missionPlaceholder')}
-              name='missionContext.title'
-              id='missionContext.title'
+          {searchedCategory &&
 
-              // values={missionTitle}
-              maxLength={140}
-              valueOut={missionContext.title}
-              onChange={handleChange}
-            ></CustomTextArea>
-          </Grid>
+            <>
+              < Grid item xs={12} className={classes.fieldRows}>
+                <CustomTextArea
+                  label={t('leadCreation.missionLabel')}
+                  placeholder={t('leadCreation.missionPlaceholder')}
+                  name='missionContext.title'
+                  id='missionContext.title'
 
-          <Grid item xs={12} className={classes.fieldRows}>
-            <Calendar
-              name='missionContext.startDate'
-              id='missionContext.startDate'
-              label={t('leadCreation.calendarLabel')}
-              minDate={minDate}
-              handleChange={(e) => { changeValue('missionContext.startDate', e) }}
-              value={(missionContext?.startDate && (missionContext.startDate > minDate)) ? missionContext.startDate : minDate}
-              // defaultValue={missionContext.startDate || minDate}
-              {...props}
-            />
-          </Grid>
+                  // values={missionTitle}
+                  maxLength={140}
+                  valueOut={missionContext?.title || null}
+                  onChange={handleChange}
+                ></CustomTextArea>
+              </Grid>
 
-          <Grid item xs={12} className={classes.fieldRows}>
-            <CustomSelect
-              label={t('leadCreation.workspaceLabel')}
-              optionsValues={setOptionsValues('workspace')}
-              value={missionContext.format}
-              name='missionContext.format'
-              onChange={handleChange}
+              <Grid item xs={12} className={classes.fieldRows}>
+                <Calendar
+                  name='missionContext.startDate'
+                  id='missionContext.startDate'
+                  label={t('leadCreation.calendarLabel')}
+                  minDate={minDate}
+                  handleChange={(e) => { changeValue('missionContext.startDate', e) }}
+                  value={(missionContext?.startDate && (moment(missionContext?.startDate).valueOf() > minDate)) ? moment(missionContext.startDate).valueOf() : minDate}
+                  {...props}
+                />
+              </Grid>
 
-            ></CustomSelect>
-          </Grid>
-          {(missionContext.format === 'Sur place uniquement' || missionContext.format === 'En remote et sur place') ?
-            <Grid item xs={12} className={classes.fieldRows}>
-              <CustomTextField
-                label={t('leadCreation.locationLabel')}
-                placeholder={t('leadCreation.locationPlaceholder')}
-                name='missionContext.address'
-                value={missionContext.address}
-                onChange={handleChange}
-              ></CustomTextField>
-            </Grid> : null
+              <Grid item xs={12} className={classes.fieldRows}>
+                <CustomSelect
+                  label={t('leadCreation.workspaceLabel')}
+                  optionsValues={setOptionsValues('workspace')}
+                  value={missionContext?.format || null}
+                  name='missionContext.format'
+                  onChange={handleChange}
+
+                ></CustomSelect>
+              </Grid>
+              {(missionContext?.format === 'INPLACE_ONLY' || missionContext?.format === 'BOTH') ?
+                <Grid item xs={12} className={classes.fieldRows}>
+                  <CustomTextField
+                    label={t('leadCreation.locationLabel')}
+                    placeholder={t('leadCreation.locationPlaceholder')}
+                    name='missionContext.address'
+                    value={missionContext?.address || null}
+                    onChange={handleChange}
+                  ></CustomTextField>
+                </Grid> : null
+              }
+
+              <Grid item xs={12} className={classes.fieldRows}>
+                <CustomSelect
+                  label={t('leadCreation.frequencyLabel')}
+                  optionsValues={setOptionsValues('frequency')}
+                  onChange={handleChange}
+                  value={missionContext?.weeklyRythm}
+                  name='missionContext.weeklyRythm'
+                ></CustomSelect>
+              </Grid>
+
+              <Grid item container xs={12} className={classes.fieldRows}>
+                <Box>
+                  <Typography variant={'body1'} >{t('leadCreation.durationLabel') + '*'}</Typography>
+                </Box>
+                <Grid container spacing={2}>
+                  <Grid item xs={7}>
+                    <CustomTextField
+                      placeholder={t('leadCreation.durationPlaceholder')}
+                      onChange={handleChange}
+                      value={missionContext?.duration?.nb || null}
+                      name='missionContext.duration.nb'
+                      error={(parseInt(missionContext?.duration?.nb) != missionContext?.duration?.nb) && missionContext?.duration?.nb}
+                    ></CustomTextField>
+                  </Grid>
+                  <Grid item xs={5}>
+                    <CustomSelect
+                      optionsValues={setOptionsValues('duration')}
+                      onChange={handleChange}
+                      value={missionContext?.duration?.unit || null}
+                      name='missionContext.duration.unit'
+                    ></CustomSelect>
+                  </Grid>
+                </Grid>
+              </Grid>
+
+              <Grid item container xs={12} className={classes.fieldRows}>
+                <Box>
+                  <Typography variant='body1'>{t('leadCreation.budgetLabel') + '*'}</Typography>
+                </Box>
+                <Grid container spacing={2}>
+                  <Grid item xs={7}>
+                    <CustomTextField
+                      endAdornment={<InputAdornment position="end"><EuroSymbolIcon /></InputAdornment>}
+                      onChange={handleChange}
+                      value={missionContext?.budget?.value || null}
+                      name='missionContext.budget.value'
+                      placeholder={t('leadCreation.budgetPlaceholder')}
+                      error={(parseInt(missionContext?.budget?.value) != missionContext?.budget?.value) && missionContext?.budget?.value}
+                      onBlur={handleBlur}
+                    ></CustomTextField>
+                  </Grid>
+                  <Grid item xs={5}>
+                    <CustomSelect
+                      optionsValues={setOptionsValues('budgetType')}
+                      onChange={handleChange}
+                      value={missionContext?.budget?.type || null}
+                      name='missionContext.budget.type'
+                    ></CustomSelect>
+                  </Grid>
+                  {(values?.missionContext?.budget?.value && values?.missionContext?.budget?.type && values?.missionContext?.duration?.nb && values?.missionContext?.duration?.unit && values?.missionContext?.weeklyRythm && values?.missionContext?.profilNumber) || values?.missionContext?.estimatedAverageDailyRate
+                    ? <Typography variant='h2' style={{ marginTop: '-2rem', marginBottom: '1rem', paddingLeft: '0.45rem' }}>
+                      {(values?.missionContext.budget.type === 'Taux journalier' || values?.missionContext?.budget?.type === 'TOTAL'
+                        ? `Soit un taux journalier de ${withCommission || Math.ceil(values?.missionContext?.estimatedAverageDailyRate)}€, une fois la commission acracy déduite.`
+                        : `Soit un montant global de ${withCommission || Math.ceil(values?.missionContext?.estimatedAverageDailyRate)}€, une fois déduits les frais d’affacturage et la commission acracy.`)}
+                    </Typography>
+                    : null}
+                </Grid>
+              </Grid>
+
+              <Grid item xs={12} className={classes.fieldRows}>
+                <CustomSelect
+                  label={t('leadCreation.profilesLabel')}
+                  optionsValues={setOptionsValues('profilesNumber')}
+                  onChange={handleChange}
+                  value={missionContext?.profilNumber}
+                  name='missionContext.profilNumber'
+                  id='missionContext.profilNumber'
+                ></CustomSelect>
+              </Grid>
+            </>
           }
-
-          <Grid item xs={12} className={classes.fieldRows}>
-            <CustomSelect
-              label={t('leadCreation.frequencyLabel')}
-              optionsValues={setOptionsValues('frequency')}
-              onChange={handleChange}
-              value={missionContext.weeklyRythm}
-              name='missionContext.weeklyRythm'
-            ></CustomSelect>
-          </Grid>
-
-          <Grid item container xs={12} className={classes.fieldRows}>
-            <Box>
-              <Typography variant={'body1'} >{t('leadCreation.durationLabel') + '*'}</Typography>
-            </Box>
-            <Grid container spacing={2}>
-              <Grid item xs={7}>
-                <CustomTextField
-                  placeholder={t('leadCreation.durationPlaceholder')}
-                  onChange={handleChange}
-                  value={missionContext.duration.nb}
-                  name='missionContext.duration.nb'
-                ></CustomTextField>
-              </Grid>
-              <Grid item xs={5}>
-                <CustomSelect
-                  optionsValues={setOptionsValues('duration')}
-                  onChange={handleChange}
-                  value={missionContext.duration.unit}
-                  name='missionContext.duration.unit'
-                ></CustomSelect>
-              </Grid>
-            </Grid>
-          </Grid>
-
-          <Grid item container xs={12} className={classes.fieldRows}>
-            <Box>
-              <Typography variant='body1'>{t('leadCreation.budgetLabel') + '*'}</Typography>
-            </Box>
-            <Grid container spacing={2}>
-              <Grid item xs={7}>
-                <CustomTextField
-                  endAdornment={<InputAdornment position="end"><EuroSymbolIcon /></InputAdornment>}
-                  onChange={handleChange}
-                  value={missionContext.budget.value}
-                  name='missionContext.budget.value'
-                  placeholder={t('leadCreation.budgetPlaceholder')}
-                  // error={!!touched.budget && !!errors.budget}
-                  onBlur={handleBlur}
-                ></CustomTextField>
-              </Grid>
-              <Grid item xs={5}>
-                <CustomSelect
-                  optionsValues={setOptionsValues('budgetType')}
-                  onChange={handleChange}
-                  value={missionContext.budget.type}
-                  name='missionContext.budget.type'
-                ></CustomSelect>
-                {(values?.missionContext.budget.value && values?.missionContext.budget.type && values?.missionContext.duration.nb && values?.missionContext.duration.unit && values?.missionContext.weeklyRythm && values?.missionContext.profilNumber) || values?.missionContext?.estimatedAverageDailyRate
-                  ? <Typography variant='h2' style={{ marginTop: '-2rem', marginBottom: '1rem', paddingLeft: '0.45rem' }}>
-                    {(values?.missionContext.budget.type === 'Taux journalier' || values?.missionContext?.budget?.type === 'TOTAL'
-                      ? `Soit un montant global de ${withCommission || Math.ceil(values?.missionContext?.estimatedAverageDailyRate)}€, commission acracy incluse.`
-                      : `Soit un taux journalier de ${withCommission || Math.ceil(values?.missionContext?.estimatedAverageDailyRate)}€, une fois la commission acracy déduite.`)}
-                  </Typography>
-                  : null}
-              </Grid>
-            </Grid>
-          </Grid>
-
-          <Grid item xs={12} className={classes.fieldRows}>
-            <CustomSelect
-              label={t('leadCreation.profilesLabel')}
-              optionsValues={setOptionsValues('profilesNumber')}
-              onChange={handleChange}
-              value={missionContext.profilNumber}
-              name='missionContext.profilNumber'
-              id='missionContext.profilNumber'
-            ></CustomSelect>
-          </Grid>
-
           <Grid container justify='flex-end' className={classes.marginTop}>
             <Grid item>
               <CustomButton
                 type="button"
                 theme={disableCallMeBtn ? 'disabledOutlined' : 'primaryButton'}
                 disabled={disableCallMeBtn}
-                // handleClick={handleCallMe}
+                handleClick={handleCallMe}
                 title={t('leadCreation.callMe')}
               >
               </CustomButton>
             </Grid>
             <Grid item style={{ paddingLeft: '1.2rem' }}>
               <CustomButton
-                type="submit"
-                //theme={disableGoToFinalizationBtn ? 'disabledFilled' : 'filledButton'}
-                theme='filledButton'
-                handeclick={handleSubmit}
-                // handleClick={handleSendData}
+                // type="submit"
+                theme={disableGoToFinalizationBtn ? 'disabledFilled' : 'filledButton'}
+                onClick={() => handleSendData()}
                 title={t('leadCreation.finishBrief')}
-              // loading={leadSaveLoading || updateLeadDraftLoading}
-              // disabled={disableGoToFinalizationBtn}
+                loading={leadSaveLoading || updateLeadDraftLoading}
+                disabled={disableGoToFinalizationBtn}
               >
               </CustomButton>
             </Grid>
@@ -476,14 +596,16 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
   ///////////////////step2////////////////
 
   useEffect(() => {
-    // if (activeStep === 1) {
-    // dispatch(handleCurrentStep(2))
-    dispatch(getExpertisesLaunched());
-    dispatch(getSensitivitiesLaunched());
-    // } else if (activeStep === 0) {
-    //   dispatch(handleCurrentStep(1))
-    // }
-  }, [dispatch])
+    if (activeStep === 1) {
+      dispatch(handleCurrentStep(2))
+      dispatch(getExpertisesLaunched());
+      dispatch(getSensitivitiesLaunched());
+      backToTop();
+    } else if (activeStep === 0) {
+      dispatch(handleCurrentStep(1))
+      backToTop();
+    }
+  }, [dispatch, activeStep])
 
   const handlePriorityCheck = (index) => {
     let updateValues = missionRequirements.expertises
@@ -492,8 +614,8 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
   }
 
   const handleSensitivityCheck = () => {
-    let updateValues = missionRequirements.sensitivity
-    updateValues.essential = !missionRequirements.sensitivity.essential
+    let updateValues = missionRequirements?.sensitivity
+    updateValues.essential = !missionRequirements?.sensitivity?.essential
     changeValue(`missionRequirements.sensitivity`, updateValues)
   }
   const deliverablesTags = deliverables?.map(x => ({ value: x, isCustom: false }));
@@ -510,39 +632,40 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
 
         <Grid container>
           {/* Expertises */}
-          {listOfExpertises.length > 0 && <Grid item xs={12} className={classes.fieldRows}>
-            <Grid container justify="space-between">
-              <Typography variant="h4">{t('tagsList.expertise.label') + '*'}</Typography>
-              <Typography variant="h2">{t('tagsList.expertise.minMaxInfo')}</Typography>
-            </Grid>
-            <TagsList
-              tags={listOfExpertises}
-              panelTitle={t('leadCreation.profileExpertises')}
-              type='expertise'
-              maxSelection={5}
-              handleChange={(e) => { changeValue('missionRequirements.expertises', e) }}
-              name={'missionRequirements.expertises'}
-              id={'missionRequirements.expertises'}
-              selectedExpertiseArray={missionRequirements.expertises}
-              value={missionRequirements.expertises}
-            />
-            {expansionPanelOpen !== 'expertise' &&
-              < Grid item container direction='row'>
-                {missionRequirements.expertises?.length > 0 && missionRequirements.expertises?.map((tag, key) => (
-                  <Tag key={key}
-                    title={tag.text || tag?.expertise?.text}
-                    isPrimaryColor
-                    tagType="Prioritaire"
-                    isWithCheckbox
-                    // handleChange={(e) => console.log(e, 'handlechange composant tag')}
-                    expertises
-                    onCheckChange={() => handlePriorityCheck(key)}
-                    checkedArray={tag.priority}
-                  />
-                ))}
+          {listOfExpertises.length > 0 &&
+            <Grid item xs={12} className={classes.fieldRows}>
+              <Grid container justify="space-between">
+                <Typography variant="h4">{t('tagsList.expertise.label') + '*'}</Typography>
+                <Typography variant="h2">{t('tagsList.expertise.minMaxInfo')}</Typography>
               </Grid>
-            }
-          </Grid>}
+              <TagsList
+                tags={listOfExpertises}
+                panelTitle={t('leadCreation.profileExpertises')}
+                type='expertise'
+                maxSelection={5}
+                handleChange={(e) => { changeValue('missionRequirements.expertises', e) }}
+                name={'missionRequirements.expertises'}
+                id={'missionRequirements.expertises'}
+                selectedExpertiseArray={missionRequirements?.expertises}
+                value={missionRequirements?.expertises}
+              />
+              {expansionPanelOpen !== 'expertise' &&
+                < Grid item container direction='row'>
+                  {missionRequirements?.expertises?.length > 0 && missionRequirements?.expertises?.map((tag, key) => (
+                    <Tag key={key}
+                      title={tag.text || tag?.expertise?.text}
+                      isPrimaryColor
+                      tagType="Prioritaire"
+                      multipleChoice
+                      expertises
+                      onCheckChange={() => handlePriorityCheck(key)}
+                      checkedArray={missionRequirements?.expertises.map(priority => { if (priority.priority === true) { return (priority.expertise.text) } }).filter(expertise => expertise)}
+                    />
+                  ))}
+                </Grid>
+              }
+            </Grid>
+          }
 
           {/* Sensitivities */}
           {sensitivities?.length > 0 &&
@@ -584,14 +707,17 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
                 <Grid container justify="space-between">
                   <Typography variant="h4">{t('leadCreation.profileLanguages')}</Typography>
                 </Grid>
-                <TagsList
-                  tags={languages}
-                  panelTitle={t('leadCreation.profileLanguages')}
-                  type='languages'
-                  handleChange={(e) => { changeValue('missionRequirements.languages', e) }}
-                  maxSelection={1}
-                  selectedLanguagesArray={missionRequirements?.languages?.map(x => formatLanguagesValues(x.language) || x.text)}
+                <CustomSelect
+                  label='languages'
+                  optionsValues={languages}
+                  // onBlur={handleBlur('phonePrefix')}
+                  onChange={(e) => { changeValue('missionRequirements.languages', [{ language: e.target.value }]) }}
+                  value={missionRequirements?.languages?.length > 0 ? { type: missionRequirements?.languages[0]?.language || null, text: missionRequirements?.languages[0]?.text || null } : { type: null, text: null }}
+                  error={!!touched.languages && !!errors.languages}
+                  name='missionRequirements.languages'
+                  id='missionRequirements.languages'
                 />
+
                 {expansionPanelOpen !== 'languages' &&
                   <Grid item container direction='row'>
                     {missionRequirements?.languages?.length > 0 && missionRequirements?.languages?.map((tag, key) => (
@@ -613,7 +739,7 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
             <Typography variant={'h4'}>{t('leadCreation.profileSeniority') + '*'}</Typography>
             <CustomSelect
               name="seniority"
-              optionsValues={seniorityValues}
+              optionsValues={setOptionsValues('seniority')}
               onBlur={handleBlur('phonePrefix')}
               onChange={handleChange}
               value={missionRequirements?.seniority}
@@ -629,7 +755,10 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
             <Typography variant='h1'>{t('leadCreation.deliverablesDetails')}</Typography>
             <Box my={1}>
               <Grid item container direction='row'>
-                {deliverablesTags?.map((x, key) => <Tag key={key} title={x.value} isGrey={x.isCustom} />)}
+                {search?.type === 'PROFILE' && desireds?.map((x, key) => <Tag key={x.code} title={x.text} isGrey={x?.type === 'OTHER'} />)}
+                {search?.type === 'DELIVERABLE' && <Tag key={search.code} title={search.text} isGrey={search?.type === 'OTHER'} />}
+                {search?.type === 'OTHER' && <Tag key={search.code} title={search.text} isGrey={true} />}
+
               </Grid>
             </Box>
           </Grid>
@@ -641,7 +770,7 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
             label={t('leadCreation.textarea.missionContext.label')}
             placeholder={t('leadCreation.textarea.missionContext.placeholder')}
             name='contextAndTasks'
-            value={missionDetail.contextAndTasks}
+            value={missionDetail?.contextAndTasks}
             onBlur={handleBlur}
             onChange={handleChange}
             error={!!touched.contextAndTasks && !!errors.contextAndTasks}
@@ -657,7 +786,7 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
             label={t('leadCreation.textarea.deliverablesDetails.label')}
             placeholder={t('leadCreation.textarea.deliverablesDetails.placeholder')}
             name='detailsOfDeliverables'
-            value={missionDetail.detailsOfDeliverables}
+            value={missionDetail?.detailsOfDeliverables}
             onBlur={handleBlur}
             onChange={handleChange}
             error={!!touched.detailsOfDeliverables && !!errors.detailsOfDeliverables}
@@ -683,16 +812,14 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
           </Grid>
           <Grid item style={{ paddingLeft: '1.2rem' }}>
             <CustomButton
-              // type="button"
-              // theme={disableSendBrief ? 'disabledFilled' : 'filledButton'}
-              // handleClick={handleSendData}
+              type="button"
+              theme={disableSendBrief ? 'disabledFilled' : 'filledButton'}
+              handleClick={handleSendData}
               title={t('leadCreation.sendBriefButton')}
-              // loading={leadSaveLoading || updateLeadDraftLoading}
-              // disabled={disableSendBrief}
+              loading={leadSaveLoading || updateLeadDraftLoading}
+              disabled={disableSendBrief}
               type="submit"
-              //theme={disableGoToFinalizationBtn ? 'disabledFilled' : 'filledButton'}
               theme='filledButton'
-              handeclick={handleSubmit}
             >
             </CustomButton>
           </Grid>
@@ -700,10 +827,75 @@ const LeadCreationForm = ({ sendValues, values, errors, touched, handleBlur, han
       </Box >
     )
   }
-  return (getStepContent())
 
-
-
+  const handleDispatchHelp = () => {
+    let redirect = true;
+    leadSave(values, redirect)
+    dispatch(changeLeadStatusLaunched({ leadId, status: 'NEED_HELP' }));
+    setOpenCallMeModal(false)
+  }
+  const getSteps = () => {
+    return [t('leadCreation.synthesis'), t('leadCreation.details')];
+  };
+  const steps = getSteps();
+  const CustomIcon = (props) => {
+    const { active, completed } = props;
+    return (
+      <div
+        className={clsx(
+          classes.icon, {
+          [classes.completed]: completed,
+          [classes.active]: active
+        })}
+      >
+        {props.icon}
+      </div>
+    )
+  };
+  return (
+    <Grid item className={classes.formGridItem}>
+      <Stepper nonLinear={false} activeStep={leadCreationStep} className={classes.stepper} connector={<StepConnector style={{ display: 'none' }} />}>
+        {steps.map((label, index) => {
+          return (
+            <Step key={label} className={classes.step}>
+              <StepButton
+                onClick={() => dispatch(setLeadCreationStep(index))}
+                className={classes.stepButton}>
+                <StepLabel
+                  style={{ textAlign: "left" }}
+                  StepIconComponent={CustomIcon}
+                  className={leadCreationStep === index ? null : classes.inactiveLabel}
+                >
+                  <Typography variant={"h4"}>
+                    {label}
+                  </Typography>
+                </StepLabel>
+              </StepButton>
+            </Step>
+          );
+        })}
+      </Stepper>
+      {getStepContent(leadCreationStep)}
+      {openCallMeModal && <CustomModal
+        title="Au clic sur “Confirmer”, le remplissage de brief se mettra en pause, et vous serez rappelé par l’un des account managers d’acracy qui le finalisera au téléphone avec vous"
+        open={openCallMeModal}
+        handleClose={() =>
+          setOpenCallMeModal(false)}
+      >
+        <Grid container className={classes.marginTop}>
+          <Grid item>
+            <CustomButton
+              type="button"
+              theme='primaryButton'
+              title={'Confirmer'}
+              handleClick={handleDispatchHelp}
+            >
+            </CustomButton>
+          </Grid>
+        </Grid>
+      </CustomModal>}
+    </Grid >
+  )
 };
 
 export default LeadCreationForm;

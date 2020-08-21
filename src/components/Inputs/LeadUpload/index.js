@@ -44,7 +44,7 @@ export const LeadUpload = () => {
   const [hoveredClose, setHoveredClose] = React.useState(false);
 
   useEffect(() => {
-    if (leadDraftData?.missionDetail?.sharedDocuments[0]?.externalId) {
+    if (leadDraftData?.missionDetail?.sharedDocuments?.length > 0 && leadDraftData?.missionDetail?.sharedDocuments[0]?.externalId) {
       setUploadedFiles(leadDraftData?.missionDetail?.sharedDocuments);
     }
   }, [leadDraftData])

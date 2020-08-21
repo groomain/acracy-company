@@ -23,7 +23,7 @@ class LocalizedUtils extends MomentUtils {
 
 export const Calendar = ({ error, label, minDate, startDate, onChange, handleChange, value }) => {
   const classes = styles();
-
+  const [calendarOpen, setCalendarOpen] = useState(false)
 
   return (
     <MuiPickersUtilsProvider utils={LocalizedUtils} locale={'fr'}>
@@ -31,6 +31,9 @@ export const Calendar = ({ error, label, minDate, startDate, onChange, handleCha
       <Grid container justify="space-around">
         <KeyboardDatePicker
           // disableToolbar
+          onClick={() => setCalendarOpen(true)}
+          onClose={() => setCalendarOpen(false)}
+          open={calendarOpen}
           variant="inline"
           format="DD/MM/yyyy"
           InputProps={{ className: `${classes.root} ${error ? classes.error : null}` }}

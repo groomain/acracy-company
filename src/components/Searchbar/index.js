@@ -21,8 +21,6 @@ import projectIcon from '../../assets/icons/livrable-black.svg';
 import profilIconYellow from '../../assets/icons/profil-roll-out-yellow.svg';
 import livrableYellow from '../../assets/icons/livrable-yellow.svg';
 
-import { pushToLeadCreationPageWithSearchResult } from '../../pages/HomePage/reducer';
-
 const Searchbar = ({ onUpdateChosenCategory, value }) => {
   const searchClient = useMemo(() => algoliasearch(
     process.env.REACT_APP_ALGOLIA,
@@ -50,8 +48,6 @@ const SearchResults = ({ searchResults, onUpdateChosenCategory, value }) => {
   const [newOption, setNewOption] = useState({ title: t('leadCreation.reseachLabel') });
 
   useEffect(() => {
-    console.log("value", value)
-    console.log("resultsList", resultsList)
     if (value?.type === "PROFILE" && resultsList.length > 0 && !searchValue) {
       let profileResults = resultsList.find(result => result.label === "Profil recherché")
       let algoliaFullProfileResult = profileResults.options.find(result => result.TEXT === value.text)
@@ -62,6 +58,12 @@ const SearchResults = ({ searchResults, onUpdateChosenCategory, value }) => {
       let deliverableResults = resultsList.find(result => result.label === "Livrable recherché")
       let algoliaFullDeliverableResult = deliverableResults.options.find(result => result.TEXT === value.text)
       setSearchValue(algoliaFullDeliverableResult)
+      onUpdateChosenCategory(algoliaFullDeliverableResult);
+    }
+    else if (value?.type === "OTHER") {
+      let newValue = { KEY: '', TEXT: value.text, TYPE: 'OTHER' }
+      let algoliaFullDeliverableResult = value.text
+      setSearchValue(newValue)
       onUpdateChosenCategory(algoliaFullDeliverableResult);
     }
   }, [value, resultsList]);
@@ -144,11 +146,6 @@ const SearchResults = ({ searchResults, onUpdateChosenCategory, value }) => {
   };
 
   const handleOnChange = (newValue, actionMeta) => {
-    console.log("handleOnChange -> newValue", newValue)
-    console.log("resultsList", resultsList)
-
-    // dispatch(pushToLeadCreationPageWithSearchResult([])); // Find another place to empty the search result
-    // Store the search value if it doesn't exist
     if (actionMeta?.action === "create-option") {
       setNewOption({ title: "Vous avez recherché", value: newValue.value })
     }
