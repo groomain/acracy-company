@@ -17,36 +17,38 @@ import { s3Upload } from "../../utils/services/awsLib";
 // import sensitivity from '../../mock/sensitivities.json';
 
 function* doLeadSave(action) { // create a new lead
-  // console.log('action: ', action.payload)
-  const { lead, redirect, redirectToMission } = action.payload;
+  const { values, redirect, redirectToMission } = action.payload;
   try {
     const leadId = yield API.post(config.apiGateway.NAME, '/leads', {
       headers: {
         'x-api-key': config.apiKey
       },
-      body: lead
+      body: { desireds: values.desireds, missionContext: values.missionContext, search: values.search }
     });
 
     yield put(leadSaveSuccess(leadId));
-    yield put(setLeadCreationStep(1));
     if (redirect) {
       yield put(push('/home'));
+      yield put(handleCurrentStep(0));
     }
-    if (redirectToMission) {
+    else if (redirectToMission) {
       yield put(changeLeadStatusLaunched({ leadId, status: 'FINALIZE' }))
       yield put(push('/home')); // Will be changed to /brief/:id
       yield put(handleCurrentStep(0));
       yield put(openSnackBar({ message: "👏 Brief déposé ! Retrouvez ici l’état d’avancement de votre mission.", error: false }));
     }
+    else {
+      yield put(handleCurrentStep(1));
+      yield put(setLeadCreationStep(1))
+      yield put(push(`/lead/${leadId.leadId}`))
+    }
   } catch (error) {
-    console.log(error);
     yield put(leadSaveFailure());
     yield put(openSnackBar({ message: "Oups, une erreur est survenue, merci de réessayer plus tard", error: true }));
   }
 }
 
 function* doGetLeadDraft(action) { // get a lead's data
-  // console.log('function*doGetLeadDraft -> action', action)
   const id = action.payload;
   try {
     const draft = yield API.get(config.apiGateway.NAME, encodeURI(`/leads/${id}`),
@@ -58,37 +60,46 @@ function* doGetLeadDraft(action) { // get a lead's data
 
     yield put(getLeadDraftSuccess(draft));
   } catch (error) {
-    console.log(error);
     yield put(getLeadDraftFailure());
   }
 }
 
 function* doUpdateLeadDraft(action) { // update an existing lead
-  // console.log('function*doUpdateLeadDraft -> action', action)
-  const { leadId, lead, redirect, redirectToMission } = action.payload;
+
+  const { leadId, values, redirect, redirectToMission } = action.payload;
+
+  let valuesToSend = {
+    search: values.search,
+    desireds: values.desireds,
+    missionContext: values.missionContext,
+    missionDetail: values.missionDetail,
+    missionRequirements: values.missionRequirements
+  }
+
+  delete valuesToSend?.missionDetail?.sharedDocuments
   try {
     const draft = yield API.put(config.apiGateway.NAME, encodeURI(`/leads/${leadId}`),
       {
         headers: {
           'x-api-key': config.apiKey
         },
-        body: lead
+        body: valuesToSend
 
       });
 
     yield put(putLeadDraftSuccess(draft));
-    yield put(setLeadCreationStep(1));
     if (redirect) {
       yield put(push('/home'));
+      yield put(setLeadCreationStep(0));
     }
-    if (redirectToMission) {
+    else if (redirectToMission) {
       yield put(changeLeadStatusLaunched({ leadId, status: 'FINALIZE' }))
       yield put(push('/home')); // Will be changed to /brief/:id
       yield put(handleCurrentStep(0));
       yield put(openSnackBar({ message: "👏 Brief déposé ! Retrouvez ici l’état d’avancement de votre mission.", error: false }));
     }
+    else { yield put(setLeadCreationStep(1)) };
   } catch (error) {
-    console.log(error);
     yield put(putLeadDraftFailure());
     yield put(openSnackBar({ message: "Oups, une erreur est survenue, merci de réessayer plus tard", error: true }));
   }
@@ -108,7 +119,6 @@ function* doChangeLeadStatus(action) {  // modify the status of a lead
     yield put(push('/home'));
     yield put(handleCurrentStep(0));
   } catch (error) {
-    console.log(error);
     yield put(changeLeadStatusFailure());
   }
 }
@@ -125,7 +135,6 @@ function* doGetExpertises(action) {
     // To use the mock, switch with the line below
     // yield put(getExpertisesSuccess(expertise));
   } catch (error) {
-    console.log(error);
     yield put(getExpertisesFailure());
   }
 }
@@ -142,7 +151,6 @@ function* doGetSensitivities(action) {
     // To use the mock, switch with the line below
     // yield put(getSensitivitiesSuccess(sensitivity));
   } catch (error) {
-    console.log(error);
     yield put(getSensitivitiesFailure());
   }
 }
