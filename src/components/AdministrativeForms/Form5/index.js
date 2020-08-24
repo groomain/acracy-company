@@ -25,7 +25,7 @@ export const Form5 = ({ values, errors, touched, handleBlur, handleChange, handl
   const { administrativeProfile } = values;
 
   const [switchOrders, setSwitchOrders] = useState(false);
-  const [checked, setChecked] = useState(administrativeProfileFromDB.cguCheck);
+  const [checked, setChecked] = useState(administrativeProfileFromDB?.cguCheck);
 
   useEffect(() => {
     if (administrativeProfile.cguCheck === true) {
@@ -36,7 +36,7 @@ export const Form5 = ({ values, errors, touched, handleBlur, handleChange, handl
   }, []);
 
   useEffect(() => {
-    setSwitchOrders(administrativeProfileFromDB.purchaseOrder);
+    setSwitchOrders(administrativeProfileFromDB?.purchaseOrder);
   }, [])
 
   useEffect(() => {
