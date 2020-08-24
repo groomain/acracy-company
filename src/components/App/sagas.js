@@ -169,7 +169,6 @@ function* doSignIn(action) {
     yield put(loginFailure(translateSignInError(err.code)));
     yield put(openSnackBar({ message: translateSignInError(err.code), error: true }));
   }
-  yield put(getCurrentSessionLaunched({ fromPath: from || '/home' }));
 }
 
 function* doSignOut() {
