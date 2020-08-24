@@ -1,5 +1,6 @@
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import { fade } from "@material-ui/core";
+import smallIcon from '../../assets/icons/checkbox-checked-black.svg';
 
 export default makeStyles(theme => ({
   root: {
@@ -96,6 +97,10 @@ export default makeStyles(theme => ({
   selected: {
     '& div span': {
       color: `white`,
+    },
+    '&:hover span span span:before': {
+      backgroundImage:
+        `url(${smallIcon})`
     }
   }
 }));
