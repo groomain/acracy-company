@@ -38,7 +38,6 @@ function* doLeadSave(action) { // create a new lead
       yield put(openSnackBar({ message: "👏 Brief déposé ! Retrouvez ici l’état d’avancement de votre mission.", error: false }));
     }
     else {
-      yield put(handleCurrentStep(1));
       yield put(setLeadCreationStep(1))
       yield put(push(`/lead/${leadId.leadId}`))
     }
