@@ -31,7 +31,7 @@ import { checkLength } from '../../utils/services/validationChecks';
 import { formatLanguagesValues } from '../../utils/services/format';
 // import { valueFocusAriaMessage } from 'react-select/src/accessibility';
 
-const LeadCreationForm = ({ sendValues, onSubmit, values, errors, touched, handleBlur, handleChange, leadId, onUpdateMissionTitle, handleSubmit, props }) => {
+const LeadCreationForm = ({ values, errors, touched, handleBlur, handleChange, leadId, onUpdateMissionTitle, handleSubmit, props }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const classes = styles();
@@ -394,14 +394,13 @@ const LeadCreationForm = ({ sendValues, onSubmit, values, errors, touched, handl
 
   const handleSendData = () => {
     if (leadCreationStep === 0) {
-      onSubmit(values)
+      leadSave(values)
       setActiveStep(1)
     } else {
       let redirectToMission = true;
-      dispatch(handleCurrentStep(2));
-      backToTop();
       let redirect = false
-      onSubmit(values, redirect, redirectToMission)
+      leadSave(values, redirect, redirectToMission)
+      dispatch(handleCurrentStep(2));
     }
   }
 
