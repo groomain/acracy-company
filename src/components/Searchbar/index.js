@@ -21,6 +21,10 @@ import projectIcon from '../../assets/icons/livrable-black.svg';
 import profilIconYellow from '../../assets/icons/profil-roll-out-yellow.svg';
 import livrableYellow from '../../assets/icons/livrable-yellow.svg';
 
+const CustomConfigure = connectStateResults(({ searchResults }) =>
+  <Configure hitsPerPage={searchResults?.nbHits} />
+);
+
 const Searchbar = ({ onUpdateChosenCategory, value }) => {
   const searchClient = useMemo(() => algoliasearch(
     process.env.REACT_APP_ALGOLIA,
@@ -32,7 +36,7 @@ const Searchbar = ({ onUpdateChosenCategory, value }) => {
       searchClient={searchClient}
       indexName={process.env.REACT_APP_ALGOLIA_INDEX_NAME}
     >
-      <Configure />
+      <CustomConfigure />
       <CustomSearchbar onUpdateChosenCategory={onUpdateChosenCategory} value={value} />
     </InstantSearch>
   );
