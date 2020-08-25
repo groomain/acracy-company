@@ -54,7 +54,7 @@ export default makeStyles(theme => ({
     overflowStyle: 'none', // IE scrollbar
     scrollbarWidth: 'none', // Firefox scrollbar
     scrollbarColor: 'transparent transparent', // Firefox scrollbar
-    '& ::-webkit-scrollbar': {
+    '&::-webkit-scrollbar': {
       width: 0,
     },
     background: theme.palette.secondary.dark,
