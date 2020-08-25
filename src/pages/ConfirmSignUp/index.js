@@ -72,7 +72,7 @@ const ConfirmSignUpPage = () => {
               validationSchema={ValidationSchema}
               onSubmit={confirmSignup}
             />
-            <Divider className={sharedClasses.divider} />
+            <div className={sharedClasses.hrdivider} />
             <Typography variant={'body1'} className={classes.typo} >{t('confirmSignupPage.resendCodeMessage')}</Typography>
             <CustomButton theme="asLinkPrimary" title={t('confirmSignupPage.resendCodeButton')} rippleDisabled onClick={email => resendCode(email)} />
             {resendCodeSuccessMessage && <Typography variant="body1">{resendCodeSuccessMessage}</Typography>}
