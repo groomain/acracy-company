@@ -2,6 +2,7 @@ import { all, put, takeLatest, call, delay } from 'redux-saga/effects';
 import { API } from 'aws-amplify';
 import { config } from "../../conf/amplify";
 import {
+  getLeadsLaunched,
   getLeadsSuccess,
   getLeadsFailure,
   deleteLeadSuccess,
@@ -59,7 +60,7 @@ function* doDeleteLead(action) {
 
     yield API.post(config.apiGateway.NAME, apiURL, params);
     yield put(deleteLeadSuccess(action.payload));
-    yield call(doGetLeads());
+    yield put(getLeadsLaunched());
   } catch (err) {
     console.log('function*doDeleteLead -> err', err)
     yield put(deleteLeadFailure());

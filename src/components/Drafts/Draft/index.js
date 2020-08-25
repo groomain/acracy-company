@@ -31,7 +31,7 @@ const Draft = ({ draft }) => {
   const GET_CALLED = t('draft.getCalled');
 
   const { deletingLeadLoading } = useSelector(state => ({
-    deletingLeadLoading: state.getIn(['leads', 'deletingLeadLoading']),
+    deletingLeadLoading: state.getIn(['dashboard', 'deletingLeadLoading']),
   }));
   const [open, setOpen] = useState(false);
   const [getStatusResult, setGetStatusResult] = useState();
