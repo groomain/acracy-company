@@ -47,7 +47,7 @@ const ContactModale = ({
         <div style={{ marginTop: 24 }} />
         <CustomSelect placeholder="Sélectionner raison" label="Raison*" optionsValues={reasons} value={contactSelect} handleChangeOut={setContactSelect} withDisabledValue />
         <CustomTextArea placeholder={placeHolder} valueOut={contactMessage} handleChangeOut={setContactMessage} />
-        <CustomButton theme="filledButton" style={{ width: 254 }} title="Envoyer"
+        <CustomButton theme="filledButton" style={{ width: 122 }} title="Envoyer"
                       disabled={contactSelect === reasons[0]}
                       handleClick={() => contactAcracy(contactMessage, contactSelect, interview)} loading={contactLoading} />
       </Grid>
