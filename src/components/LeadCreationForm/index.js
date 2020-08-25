@@ -39,7 +39,7 @@ const LeadCreationForm = ({ values, errors, touched, handleBlur, handleChange, l
   const { missionContext, missionRequirements, missionDetail, expertises, customDeliverable, search, desireds
   } = values;
 
-  const { listOfExpertises, expansionPanelOpen, sensitivities, leadCreationStep, updateLeadDraftLoading, leadSaveLoading } = useSelector(state => ({
+  const { listOfExpertises, expansionPanelOpen, sensitivities, leadCreationStep, updateLeadDraftLoading, leadSaveLoading, leadDraftId } = useSelector(state => ({
     listOfExpertises: state.getIn(['leadCreation', 'expertises']),
     expansionPanelOpen: state.getIn(['leadCreation', 'expansionPanelOpen']),
     sensitivities: state.getIn(['leadCreation', 'sensitivities']),
@@ -47,8 +47,16 @@ const LeadCreationForm = ({ values, errors, touched, handleBlur, handleChange, l
     uploadedFileName: state.getIn(['leadCreation', 'uploadedFileName']),
     leadCreationStep: state.getIn(['dashboard', 'leadCreationStep']),
     leadSaveLoading: state.getIn(['leadCreation', 'leadSaveLoading']),
-
+    leadDraftId: state.getIn(['leadCreation', 'leadDraftId'])
   }))
+
+
+    useEffect(() => {
+        if (hasToWaitBeforeCallHelp) {
+            dispatch(changeLeadStatusLaunched({leadId: leadDraftId, status: 'NEED_HELP'}));
+            setOpenCallMeModal(false)
+        }
+    }, [leadDraftId]);
 
   const [searchedCategory, setSearchedCategory] = useState();
   const [deliverables, setDeliverables] = useState([]);
@@ -59,6 +67,7 @@ const LeadCreationForm = ({ values, errors, touched, handleBlur, handleChange, l
   const [disableGoToFinalizationBtn, setDisableGoToFinalizationBtn] = useState(true);
   const [disableSendBrief, setDisableSendBrief] = useState(true);
   const [activeStep, setActiveStep] = useState(leadCreationStep);
+  const [hasToWaitBeforeCallHelp, setHasToWaitBeforeCallHelp] = useState(false);
 
   useEffect(() => {
     if (values?.missionContext?.budget?.value &&
@@ -828,10 +837,14 @@ const LeadCreationForm = ({ values, errors, touched, handleBlur, handleChange, l
   }
 
   const handleDispatchHelp = () => {
-    let redirect = true;
-    leadSave(values, redirect)
-    dispatch(changeLeadStatusLaunched({ leadId, status: 'NEED_HELP' }));
-    setOpenCallMeModal(false)
+    let redirect = leadId !== undefined;
+    leadSave(values, redirect);
+    if (leadId !== undefined) {
+        dispatch(changeLeadStatusLaunched({leadId, status: 'NEED_HELP'}));
+        setOpenCallMeModal(false);
+    } else {
+        setHasToWaitBeforeCallHelp(true);
+    }
   }
   const getSteps = () => {
     return [t('leadCreation.synthesis'), t('leadCreation.details')];
@@ -887,6 +900,7 @@ const LeadCreationForm = ({ values, errors, touched, handleBlur, handleChange, l
               type="button"
               theme='primaryButton'
               title={'Confirmer'}
+              loading={leadSaveLoading}
               handleClick={handleDispatchHelp}
             >
             </CustomButton>
