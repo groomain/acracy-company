@@ -279,6 +279,14 @@ export const Mission = ({ mission, matching, today, ...props }) => {
           </Grid>
         </Grid >
       )
+    } else {
+      return (
+        <Grid container className={classes.gridRight}> {/* Add an empty navlink to fill the button space */}
+          <NavLink to={mission ? `/mission/${mission?.externalId}` : `/brief/${matching?.externalId}`}
+            className={clsx(classes.gridCenter)}
+          />
+        </Grid>
+      )
     }
   };
 
@@ -333,69 +341,69 @@ export const Mission = ({ mission, matching, today, ...props }) => {
               {open && <LeftOverlay setOpen={setOpen} matching={matching} mission={mission} />}
             </Grid>
 
-            {/* <NavLink
+            <NavLink
               to={mission ? `/mission/${mission?.externalId}` : `/brief/${matching?.externalId}`}
-              className={clsx(classes.gridCenter, missionDone ? classes.gridCenterFinished : null)}> */}
-            <Grid container className={clsx(classes.gridCenter, missionDone ? classes.gridCenterFinished : null)}>  {/* RIGHT PART*/}
-              <Grid item container xs={12} direction='row'>
-                {/* 1st column */}
-                <Grid item xs={4}>
-                  <Grid item className={classes.blocAvatar}>
-                    <CircleImage theme={'avatarLarge'} src={mission?.serviceProviderProfile?.linkedinAvatar || matchingValues?.avatar} icon={matchingValues?.avatar} />
+              className={clsx(classes.gridCenter, missionDone ? classes.gridCenterFinished : null)}>
+              <Grid container>  {/*RIGHT PART*/}
+                <Grid item container xs={12} direction='row'>
+                  {/* 1st column */}
+                  <Grid item xs={4}>
+                    <Grid item className={classes.blocAvatar}>
+                      <CircleImage theme={'avatarLarge'} src={mission?.serviceProviderProfile?.linkedinAvatar || matchingValues?.avatar} icon={matchingValues?.avatar} />
+                    </Grid>
                   </Grid>
-                </Grid>
 
-                {/* 2nd column */}
-                <Grid item xs={4}>
-                  <Grid item className={classes.blocTypoUp}>
-                    <Typography variant={"h4"} className={classes.typo}>Format</Typography>
-                    <Typography variant={"body1"} className={classes.typo}>{mission?.brief?.missionContext?.format || matching?.missionContext?.format}</Typography>
+                  {/* 2nd column */}
+                  <Grid item xs={4}>
+                    <Grid item className={classes.blocTypoUp}>
+                      <Typography variant={"h4"} className={classes.typo}>Format</Typography>
+                      <Typography variant={"body1"} className={classes.typo}>{mission?.brief?.missionContext?.format || matching?.missionContext?.format}</Typography>
+                    </Grid>
                   </Grid>
-                </Grid>
 
-                {/* 3rd column */}
-                <Grid item xs={4}>
-                  <Grid item className={classes.blocTypoUp}>
-                    <Typography variant={"h4"} className={classes.typo}>Taux journalier</Typography>
-                    <Typography variant={"body1"} className={classes.typo}>{Math.round((mission?.brief?.missionContext?.estimatedAverageDailyRate || matching?.missionContext?.estimatedAverageDailyRate) * 100) / 100} €/j</Typography>
+                  {/* 3rd column */}
+                  <Grid item xs={4}>
+                    <Grid item className={classes.blocTypoUp}>
+                      <Typography variant={"h4"} className={classes.typo}>Taux journalier</Typography>
+                      <Typography variant={"body1"} className={classes.typo}>{Math.round((mission?.brief?.missionContext?.estimatedAverageDailyRate || matching?.missionContext?.estimatedAverageDailyRate) * 100) / 100} €/j</Typography>
+                    </Grid>
                   </Grid>
                 </Grid>
-              </Grid>
-              <Grid item container xs={12} direction='row'>
-                {/* 1st column */}
-                <Grid item xs={4}>
-                  <Grid item className={classes.blocTypoDownAvatar}>
-                    <Typography variant={"h4"} className={classes.typo}>
-                      {mission?.serviceProviderProfile?.firstName || matching?.serviceProviderProfile?.firstName || matchingValues?.title}
-                      {mission?.serviceProviderProfile?.lastName || matching?.serviceProviderProfile?.lastName}
-                    </Typography>
-                    <Typography variant={"body1"} className={classes.typo}>{mission?.brief?.profile?.text}</Typography>
-                    <Typography variant={"body1"} className={classes.typo}>{matchingValues?.subtext}</Typography>
+                <Grid item container xs={12} direction='row'>
+                  {/* 1st column */}
+                  <Grid item xs={4}>
+                    <Grid item className={classes.blocTypoDownAvatar}>
+                      <Typography variant={"h4"} className={classes.typo}>
+                        {mission?.serviceProviderProfile?.firstName || matching?.serviceProviderProfile?.firstName || matchingValues?.title}
+                        {mission?.serviceProviderProfile?.lastName || matching?.serviceProviderProfile?.lastName}
+                      </Typography>
+                      <Typography variant={"body1"} className={classes.typo}>{mission?.brief?.profile?.text}</Typography>
+                      <Typography variant={"body1"} className={classes.typo}>{matchingValues?.subtext}</Typography>
+                    </Grid>
                   </Grid>
-                </Grid>
 
-                {/* 2nd column */}
-                <Grid item xs={4}>
-                  <Grid item className={classes.blocTypoDown}>
-                    <Typography variant={"h4"} className={classes.typo}>Rythme</Typography>
-                    <Typography variant={"body1"} className={classes.typo}>
-                      {weekly === 5 ? 'Plein temps' : 'Temps partiel'} ({weekly} jours)
+                  {/* 2nd column */}
+                  <Grid item xs={4}>
+                    <Grid item className={classes.blocTypoDown}>
+                      <Typography variant={"h4"} className={classes.typo}>Rythme</Typography>
+                      <Typography variant={"body1"} className={classes.typo}>
+                        {weekly === 5 ? 'Plein temps' : 'Temps partiel'} ({weekly} jours)
                   </Typography>
+                    </Grid>
                   </Grid>
-                </Grid>
 
-                {/* 3rd column */}
-                <Grid item xs={4}>
-                  <Grid item className={classes.blocTypoDown}>
-                    <Typography variant={"h4"} className={classes.typo}>Durée</Typography>
-                    <Typography variant={"body1"} className={classes.typo}>
-                      {durationNb}{' '}{t(`dashboard.missions.${durationUnit?.toLowerCase()}`)}{durationNb > 1 && 's'} à partir du {formatDate(startDate)}
-                    </Typography>
+                  {/* 3rd column */}
+                  <Grid item xs={4}>
+                    <Grid item className={classes.blocTypoDown}>
+                      <Typography variant={"h4"} className={classes.typo}>Durée</Typography>
+                      <Typography variant={"body1"} className={classes.typo}>
+                        {durationNb}{' '}{t(`dashboard.missions.${durationUnit?.toLowerCase()}`)}{durationNb > 1 && 's'} à partir du {formatDate(startDate)}
+                      </Typography>
+                    </Grid>
                   </Grid>
                 </Grid>
               </Grid>
-            </Grid>
-            {/* </NavLink> */}
+            </NavLink>
             {renderMissionButton(matching?.status || mission)}
           </Grid>
           :
