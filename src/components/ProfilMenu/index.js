@@ -103,7 +103,7 @@ export const ProfilMenu = () => {
         onClick={handleProfileMenuOpen}
       />
       {anchorEl && renderMenu}
-      <ContactModale open={contactOpen} setOpen={setContactModaleOpen} interview={false} title={'Faire une demande à acracy'} placeHolder={'Dites nous comment on peut vous aider'} />
+      <ContactModale open={contactOpen} setOpen={setContactModaleOpen} interview={false} title="Contacter acracy" placeHolder="Donnez nous plus de détails" subtitle="Afin de pouvoir au mieux vous répondre, merci de préciser la raison de votre prise de contact." />
     </div>
   )
 };
