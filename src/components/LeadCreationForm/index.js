@@ -394,11 +394,13 @@ const LeadCreationForm = ({ values, errors, touched, handleBlur, handleChange, l
 
   const handleSendData = () => {
     if (leadCreationStep === 0) {
+      values.missionContext.duration.nb = parseInt(values.missionContext.duration.nb);
+      values.missionContext.budget.value = parseInt(values.missionContext.budget.value);
       leadSave(values)
       setActiveStep(1)
     } else {
       let redirectToMission = true;
-      let redirect = false
+      let redirect = false;
       leadSave(values, redirect, redirectToMission)
       dispatch(handleCurrentStep(2));
     }
