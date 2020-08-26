@@ -18,6 +18,34 @@ import { getBriefLaunched, getMissionLaunched } from "./reducer";
 import { handleCurrentStep } from '../../components/App/reducer';
 import CustomLoader from "../../components/Loader";
 import { useLocation } from "react-router";
+import * as moment from "moment";
+
+const format =
+  [{ code: 'WHATEVER', TEXT: 'Peu importe' },
+  { code: 'REMOTE_ONLY', TEXT: 'En remote uniquement' },
+  { code: 'INPLACE_ONLY', TEXT: 'Sur place uniquement' },
+  { code: 'BOTH', TEXT: 'En remote et sur place' }];
+
+const seniority =
+  [{ code: '', TEXT: "Sélectionnez le niveau d'expertise minimum" },
+  { code: 'JUNIOR', TEXT: 'Junior (1 à 3 ans)' },
+  { code: 'MIDDLE', TEXT: 'Middle (3 à 5 ans)' },
+  { code: 'SENIOR', TEXT: 'Senior (5 à 7 ans' },
+  { code: 'EXPERT', TEXT: 'Expert (7 à 10 ans)' },
+  { code: 'GURU', TEXT: 'Guru (10 ans et plus)' },
+  { code: 'WHATEVER', TEXT: 'Peu importe' }];
+
+const durationUnit =
+  [{ code: 'DAY', TEXT: 'Jours' },
+  { code: 'WEEK', TEXT: 'Semaines' },
+  { code: 'MONTH', TEXT: 'Mois' }];
+
+const weeklyRythm =
+  [{ code: 1, TEXT: 'Temps partiel (1 jour)' },
+  { code: 2, TEXT: 'Temps partiel (2 jours)' },
+  { code: 3, TEXT: 'Temps partiel (3 jours)' },
+  { code: 4, TEXT: 'Temps partiel (4 jours)' },
+  { code: 5, TEXT: 'Plein temps (5 jours)' }];
 
 const MissionFollowUp = (props) => {
   const classes = styles();
@@ -124,24 +152,25 @@ const MissionFollowUp = (props) => {
                 <Grid item className={classes.blocTypoUp}>
                   <Typography variant={"h4"} className={classes.typo}>Format</Typography>
                   <Typography variant={"body1"}
-                    className={classes.typo}>{data.brief.missionContext.format}</Typography>
+                    className={classes.typo}>{format.map((value) => value.code === data.brief.missionContext.format && value.TEXT)}</Typography>
                 </Grid>
                 <Grid item className={classes.blocTypoDown}>
                   <Typography variant={"h4"} className={classes.typo}>Rythme</Typography>
                   <Typography variant={"body1"}
-                    className={classes.typo}>{data.brief.missionContext.weeklyRythm}</Typography>
+                    className={classes.typo}>{weeklyRythm.map((value) => value.code === data.brief.missionContext.weeklyRythm && value.TEXT)}</Typography>
                 </Grid>
               </Grid>
               <Grid container item xs={5} direction={'column'} spacing={2}>
                 <Grid item className={classes.blocTypoUp}>
                   <Typography variant={"h4"} className={classes.typo}>Durée</Typography>
                   <Typography variant={"body1"}
-                    className={classes.typo}>{data.brief.missionContext.duration.nb}
-                    {data.brief.missionContext.duration.nb} à partir
-                                        du {data.brief.missionContext.startDate}</Typography>
+                    className={classes.typo}>
+                    {data.brief.missionContext.duration.nb} {durationUnit.map((value) => value.code === data.brief.missionContext.duration.unit && value.TEXT)} à partir du {moment(data.brief.missionContext.startDate).format('DD/MM/YYYY')}</Typography>
                 </Grid>
                 <Grid item className={classes.blocTypoDown}>
+                  {data.brief.missionContext.address &&
                   <Typography variant={"h4"} className={classes.typo}>Adresse</Typography>
+                  }
                   <Typography variant={"body1"}
                     className={classes.typo}>{data.brief.missionContext.address}</Typography>
                 </Grid>
@@ -166,17 +195,18 @@ const MissionFollowUp = (props) => {
               </div>
               <div className={classes.bloc}>
                 <CustomExpansionPanel isTag={false}
-                  panelTitle="Contexte de la mission et tâches à réaliser">
-                  <Typography>
-                    {data.brief.missionDetail.contextAndTasks}
-                  </Typography>
-                </CustomExpansionPanel>
+                  panelTitle="Contexte de la mission et tâches à réaliser"
+                  children={
+                    <Typography>
+                      {data.brief.missionDetail.contextAndTasks}
+                    </Typography>
+                  }/>
               </div>
               <div className={classes.bloc}>
 
                 <CustomExpansionPanel isTag={false} panelTitle="Détails des livrables">
                   <Typography>
-                    {data.brief.missionDetail.DetailsOfDeliverables}
+                    {data.brief.missionDetail.detailsOfDeliverables}
                   </Typography>
                 </CustomExpansionPanel>
               </div>
@@ -227,7 +257,7 @@ const MissionFollowUp = (props) => {
                     padding: 30,
                     backgroundColor: "#283028",
                     borderRadius: 15
-                  }}>{data.brief.missionRequirements.seniority}</Typography>
+                  }}>{seniority.map((value) => value.code === data.brief.missionRequirements.seniority && value.TEXT)}</Typography>
               </div>
             </Grid>
             {renderContent(data.status)}
