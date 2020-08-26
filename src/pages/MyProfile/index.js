@@ -17,7 +17,7 @@ import {
   putMyProfilePersonalInformationsLaunched,
   changePasswordLaunched
 } from './reducer';
-import {getAreaCodeFromNumber, getPhonePrefixCode} from '../../utils/services/format';
+import { getAreaCodeFromNumber, getPhonePrefixCode } from '../../utils/services/format';
 
 export const MyProfilePage = (props) => {
   const classes = styles();
@@ -87,7 +87,7 @@ export const MyProfilePage = (props) => {
   };
 
   return (
-    <Grid item xs={12} container className={classes.container}>
+    <Grid item xs={12} container>
       <CustomAppbar path='/home' />
       <Grid item xs={3} container justify={'center'} className={classes.leftContainer}>
         <MyProfileMenu />
