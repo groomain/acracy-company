@@ -165,7 +165,7 @@ const MissionFollowUp = (props) => {
                   <Typography variant={"h4"} className={classes.typo}>Durée</Typography>
                   <Typography variant={"body1"}
                     className={classes.typo}>
-                    {data.brief.missionContext.duration.nb} {durationUnit.map((value) => value.code === data.brief.missionContext.duration.unit && value.TEXT)} à partir du {moment(data.brief.missionContext.startDate).format('DD/MM/YYYY')}</Typography>
+                    {data.brief.missionContext.duration.nbDay} {durationUnit.map((value) => value.code === data.brief.missionContext.duration.unit && value.TEXT)} à partir du {moment(data.brief.missionContext.startDate).format('DD/MM/YYYY')}</Typography>
                 </Grid>
                 <Grid item className={classes.blocTypoDown}>
                   {data.brief.missionContext.address &&
