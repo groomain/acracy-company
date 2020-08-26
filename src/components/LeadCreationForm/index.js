@@ -39,7 +39,7 @@ const LeadCreationForm = ({ values, errors, touched, handleBlur, handleChange, l
   const { missionContext, missionRequirements, missionDetail, expertises, customDeliverable, search, desireds
   } = values;
 
-  const { listOfExpertises, expansionPanelOpen, sensitivities, leadCreationStep, updateLeadDraftLoading, leadSaveLoading, leadDraftId } = useSelector(state => ({
+  const { listOfExpertises, expansionPanelOpen, sensitivities, leadCreationStep, updateLeadDraftLoading, leadSaveLoading, leadDraftId, changeLeadStatusLoading } = useSelector(state => ({
     listOfExpertises: state.getIn(['leadCreation', 'expertises']),
     expansionPanelOpen: state.getIn(['leadCreation', 'expansionPanelOpen']),
     sensitivities: state.getIn(['leadCreation', 'sensitivities']),
@@ -47,14 +47,14 @@ const LeadCreationForm = ({ values, errors, touched, handleBlur, handleChange, l
     uploadedFileName: state.getIn(['leadCreation', 'uploadedFileName']),
     leadCreationStep: state.getIn(['dashboard', 'leadCreationStep']),
     leadSaveLoading: state.getIn(['leadCreation', 'leadSaveLoading']),
-    leadDraftId: state.getIn(['leadCreation', 'leadDraftId'])
+    leadDraftId: state.getIn(['leadCreation', 'leadDraftId']),
+      changeLeadStatusLoading: state.getIn(['leadCreation', 'changeLeadStatusLoading'])
   }))
 
 
     useEffect(() => {
         if (hasToWaitBeforeCallHelp) {
             dispatch(changeLeadStatusLaunched({leadId: leadDraftId, status: 'NEED_HELP'}));
-            setOpenCallMeModal(false)
         }
     }, [leadDraftId]);
 
@@ -837,8 +837,7 @@ const LeadCreationForm = ({ values, errors, touched, handleBlur, handleChange, l
   }
 
   const handleDispatchHelp = () => {
-    let redirect = leadId !== undefined;
-    leadSave(values, redirect);
+    leadSave(values, "HELP_NEEDED");
     if (leadId !== undefined) {
         dispatch(changeLeadStatusLaunched({leadId, status: 'NEED_HELP'}));
         setOpenCallMeModal(false);
@@ -900,7 +899,7 @@ const LeadCreationForm = ({ values, errors, touched, handleBlur, handleChange, l
               type="button"
               theme='primaryButton'
               title={'Confirmer'}
-              loading={leadSaveLoading}
+              loading={leadSaveLoading || changeLeadStatusLoading}
               handleClick={handleDispatchHelp}
             >
             </CustomButton>
