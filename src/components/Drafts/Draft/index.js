@@ -112,7 +112,7 @@ const Draft = ({ draft }) => {
           {
             getStatusResult?.title !== GET_CALLED &&
             <IconButton aria-label="close" size="small" onClick={() => setOpen(!open)}>
-              <ClearIcon color="secondary"/>
+              <ClearIcon color="secondary" />
             </IconButton>
           }
         </Grid>
@@ -139,24 +139,23 @@ const Draft = ({ draft }) => {
         <Grid
           container
           direction='column'
-          className={classes.overlay}>
-          <Grid item>
-            <CustomButton
-              type="button"
-              handleClick={deleteLead}
-              loading={deletingLeadLoading}
-              title={t('draft.confirmDelete')}
-              theme="filledButton"
-            />
-          </Grid>
-          <Grid item>
-            <CustomButton
-              type="button"
-              handleClick={() => setOpen(!open)}
-              title={t('draft.cancel')}
-              theme="primaryButton"
-            />
-          </Grid>
+          className={classes.overlay}
+        >
+          <CustomButton
+            type="button"
+            handleClick={deleteLead}
+            loading={deletingLeadLoading}
+            title={t('draft.confirmDelete')}
+            theme="filledButton"
+            className={classes.buttonGroup}
+          />
+          <CustomButton
+            type="button"
+            handleClick={() => setOpen(!open)}
+            title={t('draft.cancel')}
+            theme="primaryButton"
+            className={classes.buttonGroup}
+          />
         </Grid>
       }
     </DraftWrapper >
