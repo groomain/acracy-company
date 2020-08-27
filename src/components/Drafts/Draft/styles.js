@@ -54,6 +54,9 @@ export default makeStyles(theme => ({
       opacity: '.85'
     }
   },
+  buttonGroup: {
+    width: 213
+  },
   statusLine: {
     minHeight: (draftHeight - 30) / 12 * 3
   },

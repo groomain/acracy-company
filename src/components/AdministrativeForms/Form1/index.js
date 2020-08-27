@@ -23,7 +23,7 @@ export const Form1 = ({
   const [switchTVA, setSwitchTVA] = useState(administrativeProfile.vatNumber !== '' && administrativeProfile.vatNumber !== null);
 
   useEffect(() => {
-    if (!isNullOrEmpty(administrativeProfile.legalForm?.trim()) && !isNullOrEmpty(administrativeProfile.socialReason?.trim()) && administrativeProfile.siret > 0 && administrativeProfile.shareCapital > 0) {
+    if (!isNullOrEmpty(administrativeProfile.legalForm?.trim()) && !isNullOrEmpty(administrativeProfile.socialReason?.trim()) && !isNullOrEmpty(administrativeProfile.siret?.trim()) && administrativeProfile.shareCapital > 0) {
       dispatch(checkMissingInfosForm1(true));
     } else {
         dispatch(checkMissingInfosForm1(false));
@@ -145,7 +145,7 @@ Je suis soumis à la TVA
             title="Sauvegarder"
             theme="filledButton"
             className={classes.saveButton}
-            disabled={isNullOrEmpty(administrativeProfile.legalForm) || isNullOrEmpty(administrativeProfile.socialReason) || isNullOrEmpty(administrativeProfile.siret) || isNullOrEmpty(administrativeProfile.shareCapital)}
+            disabled={isNullOrEmpty(administrativeProfile.legalForm) || isNullOrEmpty(administrativeProfile.socialReason) || isNullOrEmpty(administrativeProfile.siret) || isNullOrEmpty(administrativeProfile.shareCapital) || !/\d/.test(administrativeProfile.shareCapital) || (isNullOrEmpty(administrativeProfile.vatNumber) && administrativeProfile.intraCommunityVAT === true) }
             handleClick={() => handleSubmit({ administrativeProfile, webSite })}
             loading={companyUpdateLoading}
           />
@@ -169,6 +169,7 @@ Je suis soumis à la TVA
             value={administrativeProfile.shareCapital}
             onBlur={handleBlur}
             onChange={handleChange}
+            type={"number"}
             error={!!getIn(touched,'administrativeProfile.shareCapital') && !!getIn(errors, 'administrativeProfile.shareCapital')}
           />
           <CustomTextField

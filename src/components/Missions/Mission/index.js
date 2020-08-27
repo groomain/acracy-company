@@ -44,6 +44,7 @@ import {
 } from '../constants';
 import QuoteSignatureValidationModal from "../../../pages/HomePage/Modals/QuoteSignatureValidationModal";
 import { useTranslation } from "react-i18next";
+import { formatType } from '../../../utils/services/format';
 moment.locale('fr');
 
 export const Mission = ({ mission, matching, today, ...props }) => {
@@ -126,7 +127,7 @@ export const Mission = ({ mission, matching, today, ...props }) => {
           return {
             status: 'Validation du brief en cours',
             avatar: match,
-            title: ''
+            title: 'En attente de validation du brief'
           };
         case WAITING_FOR_MATCHING:
         case WAITING_FOR_QUOTES:
@@ -357,7 +358,7 @@ export const Mission = ({ mission, matching, today, ...props }) => {
                   <Grid item xs={4}>
                     <Grid item className={classes.blocTypoUp}>
                       <Typography variant={"h4"} className={classes.typo}>Format</Typography>
-                      <Typography variant={"body1"} className={classes.typo}>{mission?.brief?.missionContext?.format || matching?.missionContext?.format}</Typography>
+                      <Typography variant={"body1"} className={classes.typo}>{formatType(mission?.brief?.missionContext?.format || matching?.missionContext?.format)}</Typography>
                     </Grid>
                   </Grid>
 
@@ -365,7 +366,7 @@ export const Mission = ({ mission, matching, today, ...props }) => {
                   <Grid item xs={4}>
                     <Grid item className={classes.blocTypoUp}>
                       <Typography variant={"h4"} className={classes.typo}>Taux journalier</Typography>
-                      <Typography variant={"body1"} className={classes.typo}>{Math.round((mission?.brief?.missionContext?.estimatedAverageDailyRate || matching?.missionContext?.estimatedAverageDailyRate) * 100) / 100} €/j</Typography>
+                      <Typography variant={"body1"} className={classes.typo}>{mission?.missionContext?.budget?.dailyRate || matching?.missionContext?.budget?.dailyRate} €/j</Typography>
                     </Grid>
                   </Grid>
                 </Grid>

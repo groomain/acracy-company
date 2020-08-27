@@ -90,7 +90,7 @@ export const AdministrativePage = (props) => {
     administrativeProfile: Yup.object().shape({
       legalForm: Yup.string().required(),
       socialReason: Yup.string().required(),
-      siret: Yup.number().required(),
+      siret: Yup.string().required(),
       shareCapital: Yup.number().required(),
       cityOfRcsRegistration: Yup.string(),
       intraCommunityVAT: Yup.bool(),
@@ -114,7 +114,7 @@ export const AdministrativePage = (props) => {
     administrativeProfile: Yup.object().shape({
       headOffice: Yup.object().shape({
         address: Yup.string().required(),
-        zipCode: Yup.number().required(),
+        zipCode: Yup.string().required(),
         city: Yup.string().required(),
         country: Yup.string().required(),
       })
@@ -135,12 +135,12 @@ export const AdministrativePage = (props) => {
 
   const ValidationSchemaForm3 = Yup.object().shape({
     administrativeProfile: Yup.object().shape({
-      sameAddress: Yup.bool(),
+      sameAddress: Yup.bool().required(),
       billing: Yup.object().shape({
-        address: Yup.string().required(),
-        zipCode: Yup.number().required(),
-        city: Yup.string().required(),
-        country: Yup.string().required()
+        address: Yup.string().nullable().when('sameAddress', {is: true, then: Yup.string().required()}),
+        zipCode: Yup.string().nullable().when('sameAddress', {is: true, then: Yup.string().required()}),
+        city: Yup.string().nullable().when('sameAddress', {is: true, then: Yup.string().required()}),
+        country: Yup.string().nullable().when('sameAddress', {is: true, then: Yup.string().required()})
       })
     })
   });
