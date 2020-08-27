@@ -1,5 +1,6 @@
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import { fade } from "@material-ui/core";
+import smallIcon from '../../assets/icons/checkbox-checked-black.svg';
 
 export default makeStyles(theme => ({
   root: {
@@ -50,6 +51,12 @@ export default makeStyles(theme => ({
     transform: 'translate(-30px, 7px) scale(1.5) rotate(180deg)'
   },
   dropdownStyle: {
+    overflowStyle: 'none', // IE scrollbar
+    scrollbarWidth: 'none', // Firefox scrollbar
+    scrollbarColor: 'transparent transparent', // Firefox scrollbar
+    '&::-webkit-scrollbar': {
+      width: 0,
+    },
     background: theme.palette.secondary.dark,
     color: theme.palette.secondary.main,
     borderRadius: 15,
@@ -58,6 +65,7 @@ export default makeStyles(theme => ({
     margin: '.5rem 0',
     '& .MuiList-root': {
       padding: 0,
+
     }
   },
   menuItem: {
@@ -89,6 +97,10 @@ export default makeStyles(theme => ({
   selected: {
     '& div span': {
       color: `white`,
+    },
+    '&:hover span span span:before': {
+      backgroundImage:
+        `url(${smallIcon})`
     }
   }
 }));

@@ -25,7 +25,7 @@ export const CustomTextField = ({ label, placeholder, type, onUpdateFieldValue, 
         disableUnderline
         {...props}
       />
-      <Typography style={{ marginTop: '0.8rem' }}>{helperText}</Typography>
+      <Typography >{helperText}</Typography>
     </Box >
   );
 };

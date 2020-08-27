@@ -1,9 +1,6 @@
 import makeStyles from '@material-ui/core/styles/makeStyles';
 
 export default makeStyles(theme => ({
-  container: {
-    marginTop: 100
-  },
   leftContainer: {
     backgroundColor: theme.palette.secondary.dark,
     top: 0,
@@ -16,7 +13,6 @@ export default makeStyles(theme => ({
   },
   element: {
     width: '80%',
-    paddingTop: 100,
   },
   cardTitle: {
     padding: 20,

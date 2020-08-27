@@ -15,7 +15,7 @@ export const formatWithLineBreak = text => {
   return newText;
 };
 
-/** 
+/**
  * Capitalizes a given string
 * @param {string} text - A string to be capitalized
 * @returns {string} - The new capitalized text
@@ -27,7 +27,7 @@ export const capitalize = text => {
 /**
  * Shortens a too long text, keeping the first 4 and the last 4 characters to display the file extension
  * @param {string} text - A string too long to be fully displayed in its container
- * @returns  {string} - The shortened text, with the middle part replaced with '(...)' 
+ * @returns  {string} - The shortened text, with the middle part replaced with '(...)'
  */
 export const formatLongText = text => {
   const cutout = text.slice(4, -4);
@@ -51,7 +51,7 @@ export const getPhonePrefixCode = prefix => {
  */
 export const getAreaCodeFromNumber = (number) => {
   for (let i = 0; i < areaCodes.length; i++) {
-    if (number === getPhonePrefixCode(areaCodes[i])) {
+    if (number == getPhonePrefixCode(areaCodes[i])) {
       return areaCodes[i];
     }
   }
@@ -109,7 +109,7 @@ export const formatType = (val) => {
     case 'WHATEVER':
       return 'Peu importe'
     case 'REMOTE_ONLY':
-      return 'en remote uniquement'
+      return 'En remote uniquement'
     case 'INPLACE_ONLY':
       return 'Sur place uniquement'
     case 'BOTH':
@@ -155,9 +155,9 @@ export const formatDurationType = val => {
 export const formatBudgetType = val => {
   switch (val) {
     case 'TOTAL':
-      return 'Budget Total'
+      return 'Budget total'
     case 'DAILY_RATE':
-      return 'Taux Journalier'
+      return 'Taux journalier'
     default:
   }
 }
@@ -186,6 +186,32 @@ export const formatSeniorityType = seniority => {
       return 'Expert (7 à 10 ans)'
     case 'GURU':
       return 'Guru (10 ans et plus)'
+    default:
+  }
+}
+
+export const formatLanguagesValues = val => {
+  switch (val) {
+    case 'FLUENT_ENGLISH':
+      return 'Anglais courant'
+    case 'FLUENT_FRENCH':
+      return 'Français courant'
+    case 'FLUENT_GERMAN':
+      return 'Allemand courant'
+    case 'FLUENT_SPANISH':
+      return 'Espagnol courant'
+    case 'FLUENT_ITALIAN':
+      return 'Italien courant'
+    case 'NATIVE_ENGLISH':
+      return 'Anglais natif'
+    case 'NATIVE_FRENCH':
+      return 'Français natif'
+    case 'NATIVE_GERMAN':
+      return 'Allemand natif'
+    case 'NATIVE_SPANISH':
+      return 'Espagnol natif'
+    case 'NATIVE_ITALIAN':
+      return 'Italien natif'
     default:
   }
 }

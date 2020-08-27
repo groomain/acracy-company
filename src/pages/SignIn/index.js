@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 
-import { Grid, Typography, Divider } from '@material-ui/core';
+import { Grid, Typography } from '@material-ui/core';
 import LoginForm from '../../components/Forms/LoginForm';
 import { loginLaunched, handleCurrentStep } from '../../components/App/reducer';
 import styles from '../../utils/styles';
@@ -59,7 +59,7 @@ const SignInPage = () => {
               validationSchema={ValidationSchema}
               onSubmit={login}
             />
-            <Divider className={classes.divider} />
+            <div className={classes.hrdivider} />
             <Typography variant={'body1'} className={classes.typo} >{t('haveAccount')}</Typography>
             <NavLink to={'/createAccount'} className={classes.navLink}>{t('signUpButton')}</NavLink>
           </Grid>

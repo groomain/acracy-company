@@ -1,4 +1,4 @@
-import { all, put, takeLatest } from 'redux-saga/effects';
+import { all, put, takeLatest, delay } from 'redux-saga/effects';
 import { API } from 'aws-amplify';
 import { push } from 'connected-react-router';
 import { config } from '../../conf/amplify';
@@ -7,43 +7,48 @@ import {
   putLeadDraftSuccess, putLeadDraftFailure, changeLeadStatusLaunched, changeLeadStatusSuccess, changeLeadStatusFailure, getExpertisesSuccess,
   getExpertisesFailure, getSensitivitiesSuccess, getSensitivitiesFailure, uploadFileSuccess, uploadFileFailure, deleteAttachmentSuccess, deleteAttachmentFailure
 } from "./reducer";
+import { setLeadCreationStep } from '../HomePage/reducer';
 
 import { openSnackBar, handleCurrentStep } from "../../components/App/reducer";
+import { s3Upload } from "../../utils/services/awsLib";
 
 // mocks
 // import expertise from '../../mock/expertises.json';
 // import sensitivity from '../../mock/sensitivities.json';
 
 function* doLeadSave(action) { // create a new lead
-  // console.log('action: ', action.payload)
-  const { lead, redirect, redirectToMission } = action.payload;
+  const { values, redirect, redirectToMission } = action.payload;
   try {
     const leadId = yield API.post(config.apiGateway.NAME, '/leads', {
       headers: {
         'x-api-key': config.apiKey
       },
-      body: lead
+      body: { desireds: values.desireds, missionContext: values.missionContext, search: values.search }
     });
 
     yield put(leadSaveSuccess(leadId));
-    if (redirect) {
+    if (redirect === "HELP_NEEDED") {
+    } else if (redirect) {
       yield put(push('/home'));
+      yield put(handleCurrentStep(0));
     }
-    if (redirectToMission) {
+    else if (redirectToMission) {
       yield put(changeLeadStatusLaunched({ leadId, status: 'FINALIZE' }))
       yield put(push('/home')); // Will be changed to /brief/:id
       yield put(handleCurrentStep(0));
       yield put(openSnackBar({ message: "👏 Brief déposé ! Retrouvez ici l’état d’avancement de votre mission.", error: false }));
     }
+    else {
+      yield put(setLeadCreationStep(1))
+      yield put(push(`/lead/${leadId.leadId}`))
+    }
   } catch (error) {
-    console.log(error);
     yield put(leadSaveFailure());
     yield put(openSnackBar({ message: "Oups, une erreur est survenue, merci de réessayer plus tard", error: true }));
   }
 }
 
 function* doGetLeadDraft(action) { // get a lead's data
-  // console.log('action: ', action.payload)
   const id = action.payload;
   try {
     const draft = yield API.get(config.apiGateway.NAME, encodeURI(`/leads/${id}`),
@@ -55,43 +60,52 @@ function* doGetLeadDraft(action) { // get a lead's data
 
     yield put(getLeadDraftSuccess(draft));
   } catch (error) {
-    console.log(error);
     yield put(getLeadDraftFailure());
   }
 }
 
 function* doUpdateLeadDraft(action) { // update an existing lead
-  // console.log('action: ', action.payload)
-  const { id, form, redirect, redirectToMission } = action.payload;
+
+  const { leadId, values, redirect, redirectToMission } = action.payload;
+
+  let valuesToSend = {
+    search: values.search,
+    desireds: values.desireds,
+    missionContext: values.missionContext,
+    missionDetail: values.missionDetail,
+    missionRequirements: values.missionRequirements
+  }
+
+  delete valuesToSend?.missionDetail?.sharedDocuments
   try {
-    const draft = yield API.put(config.apiGateway.NAME, encodeURI(`/leads/${id}`),
+    const draft = yield API.put(config.apiGateway.NAME, encodeURI(`/leads/${leadId}`),
       {
         headers: {
           'x-api-key': config.apiKey
         },
-        body: form
+        body: valuesToSend
 
       });
 
     yield put(putLeadDraftSuccess(draft));
     if (redirect) {
       yield put(push('/home'));
+      yield put(setLeadCreationStep(0));
     }
-    if (redirectToMission) {
-      yield put(changeLeadStatusLaunched({ leadId: id, status: 'FINALIZE' }))
+    else if (redirectToMission) {
+      yield put(changeLeadStatusLaunched({ leadId, status: 'FINALIZE' }))
       yield put(push('/home')); // Will be changed to /brief/:id
       yield put(handleCurrentStep(0));
       yield put(openSnackBar({ message: "👏 Brief déposé ! Retrouvez ici l’état d’avancement de votre mission.", error: false }));
     }
+    else { yield put(setLeadCreationStep(1)) };
   } catch (error) {
-    console.log(error);
     yield put(putLeadDraftFailure());
     yield put(openSnackBar({ message: "Oups, une erreur est survenue, merci de réessayer plus tard", error: true }));
   }
 }
 
 function* doChangeLeadStatus(action) {  // modify the status of a lead
-  // console.log('function*doChangeLeadStatus -> action', action)
   const { leadId, status } = action.payload;
   try {
     const update = yield API.post(config.apiGateway.NAME, encodeURI(`/leads/${leadId}/actions/`),
@@ -101,11 +115,11 @@ function* doChangeLeadStatus(action) {  // modify the status of a lead
         },
         body: { 'type': status }
       });
+    yield delay(500);
     yield put(changeLeadStatusSuccess(update));
     yield put(push('/home'));
     yield put(handleCurrentStep(0));
   } catch (error) {
-    console.log(error);
     yield put(changeLeadStatusFailure());
   }
 }
@@ -122,7 +136,6 @@ function* doGetExpertises(action) {
     // To use the mock, switch with the line below
     // yield put(getExpertisesSuccess(expertise));
   } catch (error) {
-    console.log(error);
     yield put(getExpertisesFailure());
   }
 }
@@ -139,7 +152,6 @@ function* doGetSensitivities(action) {
     // To use the mock, switch with the line below
     // yield put(getSensitivitiesSuccess(sensitivity));
   } catch (error) {
-    console.log(error);
     yield put(getSensitivitiesFailure());
   }
 }
@@ -149,7 +161,8 @@ function* doUploadFile(action) {
 
   if (payload.file.size < 1.5e+7)
     try {
-      const leadAttachmentId = yield API.post(config.apiGateway.NAME, encodeURI('/attachments'),
+      const storedKey = yield s3Upload(`${payload.leadId}-${payload.file.name}`, payload.file);
+      const tempLeadAttachmentId = yield API.post(config.apiGateway.NAME, encodeURI('/attachments'),
         {
           headers: {
             'x-api-key': config.apiKey
@@ -157,13 +170,14 @@ function* doUploadFile(action) {
           body: {
             type: 'MISSION_SHARED_DOCUMENT',
             name: payload.file.name,
-            filename: payload.src,
+            filename: storedKey,
             payload: {
               leadId: payload.leadId
             }
           }
         });
-      yield put(uploadFileSuccess(leadAttachmentId));
+      const { attachmentId } = tempLeadAttachmentId;
+      yield put(uploadFileSuccess(attachmentId));
     } catch (error) {
       yield put(uploadFileFailure());
       yield put(openSnackBar({ message: "Erreur pendant l'envoi du fichier", error: true }));

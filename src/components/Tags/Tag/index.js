@@ -5,7 +5,7 @@ import clsx from "clsx";
 import styles from './styles';
 import CustomCheckbox from '../../CheckBox';
 
-const Tag = ({ title, isPrimaryColor, isWithInput, placeholder, isWithCheckbox, tagType, onCheckChange, checkedArray, isGrey, ...props }) => {
+const Tag = ({ title, isPrimaryColor, multipleChoice, isWithInput, placeholder, isWithCheckbox, tagType, onCheckChange, checkedArray, isGrey, ...props }) => {
   const classes = styles();
 
   const [value, setValue] = useState();
@@ -31,8 +31,7 @@ const Tag = ({ title, isPrimaryColor, isWithInput, placeholder, isWithCheckbox, 
       </div>
     );
   };
-
-  const disabled = checkedArray?.length > 2 && checkedArray?.indexOf(title) === -1
+  let disabled = checkedArray?.length > 2 && checkedArray?.indexOf(title) === -1
 
   if (isWithCheckbox) {
     content = (
@@ -45,7 +44,29 @@ const Tag = ({ title, isPrimaryColor, isWithInput, placeholder, isWithCheckbox, 
             onChange={onCheckChange}
             className={classes.checkbox}
             disabled={disabled}
-            checked={checkedArray?.indexOf(title) === undefined ? null : checkedArray?.indexOf(title) !== -1}
+            checked={checkedArray}
+          />
+        </span>
+      </div>
+    )
+  };
+
+
+  if (multipleChoice) {
+    let checked = checkedArray?.indexOf(title)
+    content = (
+      <div className={classes.checkboxTagContainer}>
+        <span>{title}</span>
+        <span className={clsx(classes.tag, classes.checkboxTagContent)}
+          onClick={!disabled && onCheckChange}
+          style={{ 'cursor': 'pointer' }}
+        >
+          {tagType}
+          <CustomCheckbox
+            shape="rounded"
+            className={classes.checkbox}
+            disabled={disabled}
+            checked={checked > -1}
           />
         </span>
       </div>

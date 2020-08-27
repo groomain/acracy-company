@@ -75,7 +75,7 @@ function App() {
       {/* </div> */}
       {/* /!* __NavbarEnd__ *!/ */}
       {
-        (!isAuthenticated && location.pathname !== '/lead') && <CustomAppBar />
+        (location.pathname !== '/lead' && location.pathname !== '/login') && <CustomAppBar />
       }
       <ProgressBar />
       {

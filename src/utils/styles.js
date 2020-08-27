@@ -51,6 +51,13 @@ export default makeStyles(theme => ({
     marginBottom: 40,
     backgroundColor: `${theme.palette.secondary.medium}`,
   },
+  hrdivider: {
+    height: "1px",
+    backgroundColor: `${theme.palette.secondary.medium}`,
+    marginTop: 40,
+    marginBottom: 40,
+
+  },
   container: {
     paddingTop: 30
   },

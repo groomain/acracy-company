@@ -10,7 +10,7 @@ const MyProfileInformation = ({ ...props }) => {
   const [value, setValue] = React.useState(1);
 
   return (
-    <Grid container className={classes.container} justify={'center'} {...props}>
+    <Grid className={classes.container} {...props}>
       <Typography variant="body2" className={classes.title}>
         Mon profil
       </Typography>
@@ -22,8 +22,8 @@ const MyProfileInformation = ({ ...props }) => {
         classes={{ indicator: classes.indicator }}
       >
         <div className={classes.indicatorShadow} />
-        <CustomTab label={'Informations personnelles'} to={1} setActive={setValue} />
-        <CustomTab label={'Mot de passe'} to={2} setActive={setValue} />
+        <CustomTab label={'Informations personnelles'} to={1} setActive={setValue} selected={value === 1} />
+        <CustomTab label={'Mot de passe'} to={2} setActive={setValue} selected={value === 2} />
       </Tabs>
     </Grid>
   );

@@ -21,10 +21,11 @@ import projectIcon from '../../assets/icons/livrable-black.svg';
 import profilIconYellow from '../../assets/icons/profil-roll-out-yellow.svg';
 import livrableYellow from '../../assets/icons/livrable-yellow.svg';
 
-import { pushToLeadCreationPageWithSearchResult } from '../../pages/HomePage/reducer';
+const CustomConfigure = connectStateResults(({ searchResults }) =>
+  <Configure hitsPerPage={searchResults?.nbHits} />
+);
 
-const Searchbar = ({ onUpdateChosenCategory }) => {
-
+const Searchbar = ({ onUpdateChosenCategory, value }) => {
   const searchClient = useMemo(() => algoliasearch(
     process.env.REACT_APP_ALGOLIA,
     process.env.REACT_APP_ALGOLIA_KEY
@@ -35,21 +36,15 @@ const Searchbar = ({ onUpdateChosenCategory }) => {
       searchClient={searchClient}
       indexName={process.env.REACT_APP_ALGOLIA_INDEX_NAME}
     >
-      <Configure />
-      <CustomSearchbar onUpdateChosenCategory={onUpdateChosenCategory} />
+      <CustomConfigure />
+      <CustomSearchbar onUpdateChosenCategory={onUpdateChosenCategory} value={value} />
     </InstantSearch>
   );
 };
 
-const SearchResults = ({ searchResults, onUpdateChosenCategory }) => {
+const SearchResults = ({ searchResults, onUpdateChosenCategory, value }) => {
   const classes = styles();
   const { t } = useTranslation();
-  const dispatch = useDispatch();
-
-  const { leadCreationPageWithSearchResult, leadDraftData } = useSelector(state => ({
-    leadCreationPageWithSearchResult: state.getIn(['dashboard', 'leadCreationPageWithSearchResult']),
-    leadDraftData: state.getIn(['leadCreation', 'leadDraftData']),
-  }));
 
   const [resultsList, setResultsList] = useState([]);
   const [loading, setIsLoading] = useState(true);
@@ -57,12 +52,25 @@ const SearchResults = ({ searchResults, onUpdateChosenCategory }) => {
   const [newOption, setNewOption] = useState({ title: t('leadCreation.reseachLabel') });
 
   useEffect(() => {
-    if (leadDraftData) {
-      setSearchValue(leadDraftData?.search)
-    } else {
-      setSearchValue(leadCreationPageWithSearchResult)
+    if (value?.type === "PROFILE" && resultsList.length > 0 && !searchValue) {
+      let profileResults = resultsList.find(result => result.label === "Profil recherché")
+      let algoliaFullProfileResult = profileResults.options.find(result => result.TEXT === value.text)
+      setSearchValue(algoliaFullProfileResult)
+      onUpdateChosenCategory(algoliaFullProfileResult);
     }
-  }, [leadDraftData]);
+    else if (value?.type === "DELIVERABLE" && resultsList.length > 0 && !searchValue) {
+      let deliverableResults = resultsList.find(result => result.label === "Livrable recherché")
+      let algoliaFullDeliverableResult = deliverableResults.options.find(result => result.TEXT === value.text)
+      setSearchValue(algoliaFullDeliverableResult)
+      onUpdateChosenCategory(algoliaFullDeliverableResult);
+    }
+    else if (value?.type === "OTHER") {
+      let newValue = { KEY: '', TEXT: value.text, TYPE: 'OTHER' }
+      let algoliaFullDeliverableResult = value.text
+      setSearchValue(newValue)
+      onUpdateChosenCategory(algoliaFullDeliverableResult);
+    }
+  }, [value, resultsList]);
 
   useEffect(() => {
     if (searchResults) {
@@ -142,9 +150,7 @@ const SearchResults = ({ searchResults, onUpdateChosenCategory }) => {
   };
 
   const handleOnChange = (newValue, actionMeta) => {
-    // dispatch(pushToLeadCreationPageWithSearchResult([])); // Find another place to empty the search result
-    // Store the search value if it doesn't exist
-    if (actionMeta.action === "create-option") {
+    if (actionMeta?.action === "create-option") {
       setNewOption({ title: "Vous avez recherché", value: newValue.value })
     }
     if (actionMeta.action === 'clear') {

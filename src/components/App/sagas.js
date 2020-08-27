@@ -47,9 +47,6 @@ function* getCurrentSession(action) {
     const userDynamo = yield API.post(config.apiGateway.NAME, '/sessions', {
       headers: {
         'x-api-key': config.apiKey
-      },
-      body: {
-        email: userInfo.attributes.email
       }
     });
 
@@ -74,9 +71,6 @@ function* doSignIn(action) {
       let userDynamo = yield API.post(config.apiGateway.NAME, '/sessions', {
         headers: {
           'x-api-key': config.apiKey
-        },
-        body: {
-          email: userInfo.attributes.email
         }
       });
       if (userDynamo) {
@@ -87,7 +81,7 @@ function* doSignIn(action) {
           // Create the company
           if (!userDynamo?.companyId) {
             try {
-              userDynamo.companyId = yield API.post(config.apiGateway.NAME, '/companies', {
+              const tempCompanyId = yield API.post(config.apiGateway.NAME, '/companies', {
                 headers: {
                   'x-api-key': config.apiKey
                 },
@@ -95,6 +89,7 @@ function* doSignIn(action) {
                   'name': userInfo?.attributes['custom:companyName']
                 }
               })
+              userDynamo.companyId = tempCompanyId.companyId;
             } catch (error) {
               console.log(error);
               yield put(loginFailure(translateSignInError(error.code)));
@@ -104,7 +99,7 @@ function* doSignIn(action) {
           // Create the related employee
           if (userDynamo.companyId && !userDynamo?.employeeId) {
             try {
-              userDynamo.employeeId = yield API.post(config.apiGateway.NAME, '/employees', {
+              const tempEmployeeId = yield API.post(config.apiGateway.NAME, '/employees', {
                 headers: {
                   'x-api-key': config.apiKey
                 },
@@ -114,12 +109,13 @@ function* doSignIn(action) {
                   'firstName': userInfo?.attributes['custom:firstName'],
                   'lastName': userInfo?.attributes['custom:lastName'],
                   'role': userInfo?.attributes['custom:role'],
-                  'phoneNumber': {
-                    'code': userInfo?.attributes['custom:phoneNumberCode'],
-                    'number': userInfo?.attributes['custom:phoneNumberNumber']
+                  'phone': {
+                    'code': userInfo?.attributes['custom:phoneCode'],
+                    'number': userInfo?.attributes['custom:phoneNumber']
                   }
                 }
               });
+              userDynamo.employeeId = tempEmployeeId.employeeId;
             } catch (error) {
               console.log(error);
               yield put(loginFailure(translateSignInError(error.code)));
@@ -127,7 +123,7 @@ function* doSignIn(action) {
             }
           }
           // Start the lead creation if the 2 previous steps are ok & search content is present
-          if (userDynamo?.companyId && userDynamo?.employeeId) {
+          if (userDynamo.companyId && userDynamo.employeeId) {
             const userAttributes = userInfo?.attributes;
             let errorLeadMessage;
             if (userAttributes['custom:searchCode'] && userAttributes['custom:searchType'] && userAttributes['custom:searchText']) {
@@ -166,14 +162,13 @@ function* doSignIn(action) {
     console.log(err)
     if (err.code === 'UserNotConfirmedException') {
       yield Auth.resendSignUp(email)
-      yield put(push('/confirm-signup', { email: email }));
+      yield put(push('/confirmAccount', { email: email }));
       yield put(loginFailure(translateSignInError(err.code)));
       yield put(openSnackBar({ message: translateSignInError(err.code), error: true }));
     }
     yield put(loginFailure(translateSignInError(err.code)));
     yield put(openSnackBar({ message: translateSignInError(err.code), error: true }));
   }
-  yield put(getCurrentSessionLaunched({ fromPath: from || '/home' }));
 }
 
 function* doSignOut() {
@@ -200,8 +195,8 @@ function* doSignUp(action) {
         'custom:lastName': lastName,
         'custom:role': role,
         email,
-        'custom:phoneNumberCode': prefixCode,
-        'custom:phoneNumberNumber': phoneNumber,
+        'custom:phoneCode': prefixCode,
+        'custom:phoneNumber': phoneNumber,
         'custom:searchType': searchType,
         'custom:searchText': searchValue,
         'custom:searchCode': searchCode
@@ -210,7 +205,7 @@ function* doSignUp(action) {
     // yield call(doSignIn, { payload: { email, password } });
     yield put(handleCurrentStep(3));
     yield put(signupSuccess());
-    yield put(push('/confirmAccount', { email: email }));
+    yield put(push('/confirmAccount', { email: email, searchValue: searchValue }));
     yield put(handleCurrentStep(0));
   } catch (error) {
     console.log(error);

@@ -4,13 +4,12 @@ export default makeStyles(theme => ({
   container: {
     position: 'sticky',
     top: 105,
-    background: theme.palette.secondary.dark,
     height: 600,
     alignItems: 'center',
-    width: 600
   },
   title: {
     fontSize: 35,
+    padding: '40px 0 50px 48px'
   },
   secondaryTitle: {
     backgroundColor: theme.palette.secondary.dark,

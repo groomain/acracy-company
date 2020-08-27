@@ -3,6 +3,8 @@ import { useTranslation } from "react-i18next";
 import { useLocation, withRouter } from "react-router";
 import clsx from "clsx";
 import { Link as RouterLink } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+
 import { AppBar, Toolbar } from '@material-ui/core';
 import styles from "./styles";
 import CustomButton from "../Button";
@@ -13,11 +15,14 @@ import acracyLogo from "../../assets/icons/logo-acracy.svg";
 import { NavLink } from "react-router-dom";
 import useScrollTrigger from "@material-ui/core/useScrollTrigger";
 import ContactModale from "../ContactModale";
-import Grid from "../../pages/ProfileSelection";
+
+import { dispatchLeadId } from '../../pages/LeadCreationPage/reducer';
 
 export const CustomAppBar = (props) => {
   let location = useLocation();
   const { t } = useTranslation();
+  const dispatch = useDispatch();
+
   const classes = styles();
   const [contactOpen, setContactModaleOpen] = useState(false);
 
@@ -26,7 +31,6 @@ export const CustomAppBar = (props) => {
     disableHysteresis: true,
     threshold: 0,
   });
-  console.log('CustomAppBar -> scroll', scroll)
 
   const renderButtons = () => {
     switch (props.path || location.pathname) {
@@ -48,7 +52,8 @@ export const CustomAppBar = (props) => {
       case '/home':
         return (
           <div className={clsx(classes.div, classes.home)}>
-            <CustomButton theme={"filledButton"} title={t('header.newBrief')} component={RouterLink} to="/newbrief" />
+            <CustomButton theme={"filledButton"} title={t('header.newBrief')} component={RouterLink} to="/lead"
+              onClick={() => dispatch(dispatchLeadId(null))} />
             <ProfilMenu />
           </div>
         );
@@ -79,7 +84,7 @@ export const CustomAppBar = (props) => {
         <div className={classes.grow} />
         {renderButtons()}
       </Toolbar>
-      <ContactModale open={contactOpen} setOpen={setContactModaleOpen} interview={false} title={'Faire une demande à acracy'} placeHolder={'Dites nous comment on peut vous aider'} />
+      <ContactModale open={contactOpen} setOpen={setContactModaleOpen} interview={false} title="Contacter acracy" placeHolder="Donnez nous plus de détails" subtitle="Afin de pouvoir au mieux vous répondre, merci de préciser la raison de votre prise de contact." />
     </AppBar>
   );
 };

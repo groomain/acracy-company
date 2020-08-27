@@ -89,13 +89,13 @@ const ProfileSelection = (props) => {
   const validateProfiles = () => {
     let validateProfiles = [];
     for (let i = 0; i < checkedProfiles.length; i++) {
-      validateProfiles.push(quotesData[checkedProfiles[i]])
+      validateProfiles.push(quotesData[checkedProfiles[i]].externalId)
     }
-    dispatch(validateProfilesLaunched({ type: 'ACCEPTE_QUOTES', listId: validateProfiles, quoteId: quoteId }));
+    dispatch(validateProfilesLaunched({ type: 'ACCEPT_QUOTES', listId: validateProfiles, quoteId: briefData.externalId }));
   };
 
   const refuseAllProfiles = () => {
-    dispatch(validateProfilesLaunched({ type: 'REFUSE_ALL_QUOTES', text: noProfilMotif, reason: noProfilSelect, quoteId: quoteId }));
+    dispatch(validateProfilesLaunched({ type: 'REFUSE_ALL_QUOTES', text: noProfilMotif, reason: noProfilSelect, quoteId: briefData.externalId }));
     handleNoProfileModaleOpen()
   };
 
@@ -196,7 +196,7 @@ const ProfileSelection = (props) => {
                     }
                   }} />
               </ListItem>
-              {quotesData.map((profil, index) => {
+              {quotesData.map((profile, index) => {
                 const isActive = elementPosition.y < margin - (index * heightProfilesContainer) && elementPosition.y > margin - ((index + 1) * heightProfilesContainer);
                 return (<Link to={index} smooth={true}>
                   <ListItem className={classes.listItem}>
@@ -207,9 +207,10 @@ const ProfileSelection = (props) => {
                       }
                       <Avatar
                         className={clsx(classes.avatar, { [classes.avatarActive]: isActive })}
-                        src={profil.serviceProviderProfile.linkedinAvatar} />
+                        src={profile?.serviceProviderProfile?.linkedinAvatar} />
                     </ListItemAvatar>
                     {small ? null : <ListItemText primary={`${profil.serviceProviderProfile.firstName} ${profil.serviceProviderProfile.lastName}`}
+                    <ListItemText primary={`${profile?.serviceProviderProfile?.firstName} ${profile?.serviceProviderProfile?.lastName}`}
                       primaryTypographyProps={{
                         className: {
                           [classes.listItemText]: !isActive,
@@ -258,7 +259,7 @@ const ProfileSelection = (props) => {
             </Grid>
             <div ref={elementsRef}>
               <div ref={heightRef}>
-                {quotesData.map((profil, i) =>
+                {quotesData.map((profile, i) =>
                   <Element name={i}>
                     <Grid item container direction={'column'}
                       className={classes.firstGridElement}>
@@ -281,7 +282,7 @@ const ProfileSelection = (props) => {
                                                         meilleurs freelances.</Typography>
                           </Grid>
                         }
-                        <Typography className={classes.tjm}>{profil.averageDeliverated} €/j</Typography>
+                        <Typography className={classes.tjm}>{profile?.averageDeliverated} €/j</Typography>
                         <Grid item container direction={'row'} justify={'center'}
                           alignItems={'center'}>
                           <Typography className={classes.tjmText}>Soit </Typography>
@@ -297,7 +298,7 @@ const ProfileSelection = (props) => {
                             style={{ color: 'yellow' }}>les CGV</span> du profil</Typography>
                       </Grid>
                     </Grid>
-                    <RevealProfil profil={profil.serviceProviderProfile} className={classes.revealProfil} index={i}
+                    <RevealProfil profil={profile?.serviceProviderProfile} className={classes.revealProfil} index={i}
                       setCheckedProfiles={handleCheckedProfiles} />
                   </Element>
                 )}
@@ -308,7 +309,7 @@ const ProfileSelection = (props) => {
               <Element name="lastContainer">
                 <div className={classes.bloc}>
                   <Typography variant={'h2'}>Détails du profil recherché</Typography>
-                  <Typography variant={'h1'}>{briefData.profile.text}</Typography>
+                  <Typography variant={'h1'}>{briefData?.profile?.text || null}</Typography>
                 </div>
               </Element>
               <div className={classes.bloc}>
@@ -399,7 +400,7 @@ const ProfileSelection = (props) => {
               <div className={classes.bloc}>
                 <Typography variant={'h2'}>Livrable.s</Typography>
                 <Grid container direction={'row'} className={classes.tagContainer} spacing={1}>
-                  {briefData.deliverables.map((tag, key) =>
+                  {briefData?.deliverables?.map((tag, key) =>
                     <Grid item>
                       <Tag key={key} title={tag.text} isPrimaryColor={false} />
                     </Grid>)}

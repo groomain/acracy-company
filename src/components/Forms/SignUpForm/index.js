@@ -278,9 +278,11 @@ const SignUpForm = ({ values, errors, touched, handleBlur, handleChange, handleS
             <Grid item xs={10}>
               <Typography variant={"h4"}>
                 {t('signup.conditions1')}
-                <span>
-                  <CustomNavLink to="/conditions" text={t('signup.termsAndConditions')} theme='yellowLink'></CustomNavLink>
-                </span>
+                <a href={'https://www.notion.so/La-charte-du-freelance-acracy-006d33f66b5041418ac22c4e54403eba'}
+                  target="_blank"
+                  className={classes.link}>
+                  {t('signup.termsAndConditions')}
+                </a>
                 {t('signup.conditions2')}
               </Typography>
             </Grid>

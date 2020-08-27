@@ -29,7 +29,7 @@ function* downloadFile(action) {
         'x-api-key': config.apiKey
       }
     });
-    window.open(file);
+    window.open(file.url);
     yield put(downloadFileSuccess());
   } catch (error) {
     console.log(error);

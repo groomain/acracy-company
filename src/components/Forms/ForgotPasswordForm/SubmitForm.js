@@ -98,7 +98,7 @@ const SubmitForm = (props) => {
               disabled={disabled}
             />
           </Grid>
-          <Divider className={sharedClasses.divider} />
+          <div className={sharedClasses.hrdivider} />
           <Typography variant={'body1'}>{t('confirmSignupPage.resendCodeMessage')}</Typography>
           <CustomButton theme="asLinkPrimary" title={t('forgotPassword.resendVerificationCodeButton')} rippleDisabled onClick={requestCode} />
           {resendCodeSuccessMessage &&

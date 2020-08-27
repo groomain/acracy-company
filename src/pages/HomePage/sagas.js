@@ -2,6 +2,7 @@ import { all, put, takeLatest, call, delay } from 'redux-saga/effects';
 import { API } from 'aws-amplify';
 import { config } from "../../conf/amplify";
 import {
+  getLeadsLaunched,
   getLeadsSuccess,
   getLeadsFailure,
   deleteLeadSuccess,
@@ -57,9 +58,9 @@ function* doDeleteLead(action) {
       }
     };
 
-    yield API.put(config.apiGateway.NAME, apiURL, params);
+    yield API.post(config.apiGateway.NAME, apiURL, params);
     yield put(deleteLeadSuccess(action.payload));
-    yield call(doGetLeads());
+    yield put(getLeadsLaunched());
   } catch (err) {
     console.log('function*doDeleteLead -> err', err)
     yield put(deleteLeadFailure());
@@ -77,7 +78,7 @@ function* doGetMissions(action) {
     };
 
     const missions = yield API.get(config.apiGateway.NAME, apiURL, params);
-    yield put(getMissionsSuccess(missions));
+    yield put(getMissionsSuccess(missions.missions));
   } catch (err) {
     console.log('function*doGetMissions -> err', err)
     yield put(getMissionsFailure());
@@ -95,7 +96,7 @@ function* doGetBriefs(action) {
     };
 
     const briefs = yield API.get(config.apiGateway.NAME, apiURL, params);
-    yield put(getBriefsSuccess(briefs));
+    yield put(getBriefsSuccess(briefs.briefs));
   } catch (err) {
     console.log('function*doGetBriefs -> err', err)
     yield put(getBriefsFailure());

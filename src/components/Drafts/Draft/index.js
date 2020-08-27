@@ -31,35 +31,32 @@ const Draft = ({ draft }) => {
   const GET_CALLED = t('draft.getCalled');
 
   const { deletingLeadLoading } = useSelector(state => ({
-    deletingLeadLoading: state.getIn(['leads', 'deletingLeadLoading']),
+    deletingLeadLoading: state.getIn(['dashboard', 'deletingLeadLoading']),
   }));
   const [open, setOpen] = useState(false);
   const [getStatusResult, setGetStatusResult] = useState();
 
-  const startDate = draft?.missionContext.startDate;
-  const date = moment(startDate).format("MM.DD à hh:mm");
-
-  const missionContextLength = getPath(draft?.missionContext, 'missionContext').length;
+  const creationDate = draft?.createdDate;
+  const date = moment(creationDate).format("DD.MM à HH:mm");
 
   useEffect(() => {
     const getStatus = (draftStatus) => {
       let status;
       if (draftStatus === 'DRAFT') {
-        if (missionContextLength !== 0) {
+        if (draft?.missionDetail) {
+          return status = {
+            title: FINALIZE_BRIEF,
+            progress: 80
+          }
+        } else {
           return status = {
             title: START_LEAD,
             progress: 10,
             status: 'lead'
           }
         }
-        else {
-          return status = {
-            title: FINALIZE_BRIEF,
-            progress: 80
-          }
-        }
       } else if (draftStatus === 'HELP_NEEDED') {
-        if (missionContextLength !== 0) {
+        if (!draft?.missionDetail) {
           return status = {
             title: GET_CALLED,
             progress: 40,
@@ -75,7 +72,7 @@ const Draft = ({ draft }) => {
     }
     const result = getStatus(draft?.status);
     setGetStatusResult(result);
-  }, [FINALIZE_BRIEF, GET_CALLED, START_LEAD, draft, draft.status, missionContextLength]);
+  }, [FINALIZE_BRIEF, GET_CALLED, START_LEAD, draft, draft.status, draft.missionDetail]);
 
   const renderIcon = (getStatusResult) => {
     if (getStatusResult?.title === GET_CALLED) {
@@ -112,9 +109,12 @@ const Draft = ({ draft }) => {
           </Grid>
         </Grid>
         <Grid item>
-          <IconButton aria-label="close" size="small" onClick={() => setOpen(!open)}>
-            <ClearIcon color="secondary" />
-          </IconButton>
+          {
+            getStatusResult?.title !== GET_CALLED &&
+            <IconButton aria-label="close" size="small" onClick={() => setOpen(!open)}>
+              <ClearIcon color="secondary"/>
+            </IconButton>
+          }
         </Grid>
       </Grid>
       <NavLink

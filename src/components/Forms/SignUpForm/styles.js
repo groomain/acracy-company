@@ -61,4 +61,12 @@ export default makeStyles(theme => ({
   inactiveLabel: {
     color: theme.palette.secondary.medium
   },
+  link: {
+    fontsize: 17,
+    color: theme.palette.primary.main,
+    textDecoration: 'underline',
+    '&:hover': {
+      color: theme.palette.primary.bright
+    }
+  }
 }));
