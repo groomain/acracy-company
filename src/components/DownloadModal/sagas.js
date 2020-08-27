@@ -5,6 +5,7 @@ import {
 import { config } from '../../conf/amplify';
 import { downloadFileFailure } from "./reducer";
 import { downloadFileSuccess } from "./reducer";
+import { openSnackBar } from '../App/reducer';
 
 function* downloadFile(action) {
   try {
@@ -34,6 +35,7 @@ function* downloadFile(action) {
   } catch (error) {
     console.log(error);
     yield put(downloadFileFailure());
+    yield put(openSnackBar({ message: "Oups, une erreur est survenue", error: true }));
   }
 }
 
