@@ -97,69 +97,68 @@ const Draft = ({ draft }) => {
   };
 
   return (
-    <DraftWrapper>
-      <Grid container justify='space-between' alignItems="center">
-        <Grid item>
-          <Grid container alignItems="center">
-            <Box className={classes.iconBox}>{renderIcon(getStatusResult)}</Box>
-            <Grid>
-              <Typography variant='h2' className={classes.toUppercase}>{getStatusResult?.title} ({getStatusResult?.progress} %)</Typography>
-              <Typography variant='body2'>Créé le : {date}</Typography>
+    <NavLink
+      to={`/lead/${draft?.externalId}`}
+      className={classes.draftLink}
+      onClick={setLeadStep}
+    >
+      <DraftWrapper>
+        <Grid container justify='space-between' alignItems="center">
+          <Grid item>
+            <Grid container alignItems="center">
+              <Box className={classes.iconBox}>{renderIcon(getStatusResult)}</Box>
+              <Grid>
+                <Typography variant='h2' className={classes.toUppercase}>{getStatusResult?.title} ({getStatusResult?.progress} %)</Typography>
+                <Typography variant='body2'>Créé le : {date}</Typography>
+              </Grid>
             </Grid>
           </Grid>
+          <Grid item>
+            {
+              getStatusResult?.title !== GET_CALLED &&
+              <IconButton aria-label="close" size="small" onClick={() => setOpen(!open)}>
+                <ClearIcon color="secondary" />
+              </IconButton>
+            }
+          </Grid>
         </Grid>
-        <Grid item>
-          {
-            getStatusResult?.title !== GET_CALLED &&
-            <IconButton aria-label="close" size="small" onClick={() => setOpen(!open)}>
-              <ClearIcon color="secondary"/>
-            </IconButton>
-          }
-        </Grid>
-      </Grid>
-      <NavLink
-        to={`/lead/${draft?.externalId}`}
-        className={classes.draftLink}
-        onClick={setLeadStep}
-      >
         <Box className={classes.titleBox}>
           <Typography variant='h3' className={draft?.missionContext.title ? null : classes.newDraft}>
             {draft?.missionContext.title ? shortenLongText(draft?.missionContext.title, 42) : t('draft.newBriefTitle')}
           </Typography>
         </Box>
-      </NavLink>
-      <Grid container>
-        <SearchIcon color='#fff' size="small" />
-        <Box mx={1.5}>
-          <Typography variant='body2'>{shortenLongText(draft?.search.text, 30)}</Typography>
-        </Box>
-      </Grid>
-
-      {open &&
-        <Grid
-          container
-          direction='column'
-          className={classes.overlay}>
-          <Grid item>
-            <CustomButton
-              type="button"
-              handleClick={deleteLead}
-              loading={deletingLeadLoading}
-              title={t('draft.confirmDelete')}
-              theme="filledButton"
-            />
-          </Grid>
-          <Grid item>
-            <CustomButton
-              type="button"
-              handleClick={() => setOpen(!open)}
-              title={t('draft.cancel')}
-              theme="primaryButton"
-            />
-          </Grid>
+        <Grid container>
+          <SearchIcon color='#fff' size="small" />
+          <Box mx={1.5}>
+            <Typography variant='body2'>{shortenLongText(draft?.search.text, 30)}</Typography>
+          </Box>
         </Grid>
-      }
-    </DraftWrapper >
+        {open &&
+          <Grid
+            container
+            direction='column'
+            className={classes.overlay}>
+            <Grid item>
+              <CustomButton
+                type="button"
+                handleClick={deleteLead}
+                loading={deletingLeadLoading}
+                title={t('draft.confirmDelete')}
+                theme="filledButton"
+              />
+            </Grid>
+            <Grid item>
+              <CustomButton
+                type="button"
+                handleClick={() => setOpen(!open)}
+                title={t('draft.cancel')}
+                theme="primaryButton"
+              />
+            </Grid>
+          </Grid>
+        }
+      </DraftWrapper >
+    </NavLink>
   )
 };
 
