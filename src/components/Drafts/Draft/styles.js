@@ -51,5 +51,8 @@ export default makeStyles(theme => ({
       transition: '.3s',
       opacity: '.85'
     }
+  },
+  buttonGroup: {
+    width: 213
   }
 }));
