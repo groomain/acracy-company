@@ -120,7 +120,6 @@ const LeadCreationPage = (props) => {
   leadSave = async (values, redirect, redirectToMission) => {
     if (leadId) {
       const validationSchema = Yup.object().shape({
-        desireds: Yup.array().required(),
         search: Yup.object().required(),
         missionContext: Yup.object().shape({
           title: Yup.string().required(),
@@ -136,7 +135,6 @@ const LeadCreationPage = (props) => {
       }
     } else {
       const validationSchema = Yup.object().shape({
-        desireds: Yup.array().required(),
         search: Yup.object().required(),
         missionContext: Yup.object().shape({
           title: Yup.string().required(),

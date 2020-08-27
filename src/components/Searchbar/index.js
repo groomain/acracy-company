@@ -176,6 +176,12 @@ const SearchResults = ({ searchResults, onUpdateChosenCategory, value }) => {
             <Typography variant="h2">&nbsp;{t('searchbar.briefsLabel')}</Typography>
           </Grid>
         )
+      case "OTHER":
+        return (
+          <Grid container alignItems='center'>
+            <Typography variant="h2">Vous avez recherché</Typography>
+          </Grid>
+        )
       default:
         break;
     }
@@ -214,10 +220,9 @@ const SearchResults = ({ searchResults, onUpdateChosenCategory, value }) => {
       {newOption && (
         <Box my={2}>
           <Typography variant="h2">
-            {newOption.title !== (t('leadCreation.reseachLabel')) ?
-              ('« ' + newOption.value + ' » ' + t('searchbar.newOption'))
-              :
-              ''}
+            {searchValue?.TYPE === "OTHER" &&
+              ('« ' + searchValue?.TEXT + ' » ' + t('searchbar.newOption'))
+              }
           </Typography>
         </Box>
       )}
