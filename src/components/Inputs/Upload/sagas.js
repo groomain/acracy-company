@@ -39,7 +39,7 @@ function* doUploadFile(action) {
         });
       const { attachmentId } = tempExternalId;
       if (action.payload.companyData) {
-        const newCompanyData = {...action.payload.companyData, administrativeProfile: {...action.payload.companyData.administrativeProfile, legalDocuments: [...action.payload.companyData.administrativeProfile.legalDocuments, {externalId: attachmentId, name: `${action.payload.companyData.externalId}-${action.payload.name}`}]}};
+        const newCompanyData = {...action.payload.companyData, administrativeProfile: {...action.payload.companyData.administrativeProfile, legalDocuments: [...action.payload.companyData.administrativeProfile.legalDocuments, {externalId: attachmentId, name: `${action.payload.name}`}]}};
         yield put(changeAttachmentFromData(newCompanyData));
       }
       yield put(uploadFileSuccess());
