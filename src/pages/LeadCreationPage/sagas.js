@@ -1,4 +1,4 @@
-import { all, put, takeLatest } from 'redux-saga/effects';
+import { all, put, takeLatest, delay } from 'redux-saga/effects';
 import { API } from 'aws-amplify';
 import { push } from 'connected-react-router';
 import { config } from '../../conf/amplify';
@@ -27,7 +27,8 @@ function* doLeadSave(action) { // create a new lead
     });
 
     yield put(leadSaveSuccess(leadId));
-    if (redirect) {
+    if (redirect === "HELP_NEEDED") {
+    } else if (redirect) {
       yield put(push('/home'));
       yield put(handleCurrentStep(0));
     }
@@ -114,6 +115,7 @@ function* doChangeLeadStatus(action) {  // modify the status of a lead
         },
         body: { 'type': status }
       });
+    yield delay(500);
     yield put(changeLeadStatusSuccess(update));
     yield put(push('/home'));
     yield put(handleCurrentStep(0));

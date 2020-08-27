@@ -25,7 +25,7 @@ export default makeStyles(theme => ({
   },
   typo:{
     padding: 3,
-    width: '100%',
+    width: '80%',
     textAlign: 'left'
   },
   blocTypoUp: {

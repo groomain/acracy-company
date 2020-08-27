@@ -109,9 +109,12 @@ const Draft = ({ draft }) => {
           </Grid>
         </Grid>
         <Grid item>
-          <IconButton aria-label="close" size="small" onClick={() => setOpen(!open)}>
-            <ClearIcon color="secondary" />
-          </IconButton>
+          {
+            getStatusResult?.title !== GET_CALLED &&
+            <IconButton aria-label="close" size="small" onClick={() => setOpen(!open)}>
+              <ClearIcon color="secondary"/>
+            </IconButton>
+          }
         </Grid>
       </Grid>
       <NavLink

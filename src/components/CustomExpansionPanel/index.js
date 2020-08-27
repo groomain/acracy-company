@@ -38,8 +38,8 @@ const CustomExpansionPanel = ({ children, isTag, panelTitle, id, ...props }) => 
   return (
     <div className={classes.root}>
       <ExpansionPanel
-        expanded={open ? true : false}
-        onChange={handleChange(id)}
+        expanded={!!open}
+        onChange={isTag ? handleChange(id) : () => setOpen(!open)}
         TransitionProps={{ unmountOnExit: true }}
         className={classes.panel} {...props}>
         <ExpansionPanelSummary
