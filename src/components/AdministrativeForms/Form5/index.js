@@ -33,7 +33,7 @@ export const Form5 = ({ values, errors, touched, handleBlur, handleChange, handl
     } else {
       dispatch(checkMissingInfosForm5(false))
     }
-  }, []);
+  }, [administrativeProfile.cguCheck]);
 
   useEffect(() => {
     setSwitchOrders(administrativeProfileFromDB?.purchaseOrder);

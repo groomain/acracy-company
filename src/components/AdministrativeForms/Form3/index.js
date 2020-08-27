@@ -97,13 +97,7 @@ export const Form3 = ({values, errors, touched, handleBlur, handleChange, handle
                 }
                 <CustomButton title={'Sauvegarder'} theme={'filledButton'} className={classes.saveButton}
                               disabled={(isNullOrEmpty(administrativeProfile.billing.address) || isNullOrEmpty(administrativeProfile.billing.zipCode) || isNullOrEmpty(administrativeProfile.billing.city) || isNullOrEmpty(administrativeProfile.billing.country)) && switchAddress === false}
-                              handleClick={() => switchAddress ? handleSubmit({sameAddress: true}) : handleSubmit({
-                                  sameAddress: false,
-                                  address: administrativeProfile.billing.address,
-                                  zipCode: administrativeProfile.billing.zipCode,
-                                  city: administrativeProfile.billing.city,
-                                  country: administrativeProfile.billing.country
-                              })}
+                              handleClick={handleSubmit}
                               loading={companyUpdateLoading}
                 />
             </Grid>
