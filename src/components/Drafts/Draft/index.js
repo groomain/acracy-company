@@ -98,17 +98,50 @@ const Draft = ({ draft }) => {
 
   return (
     <DraftWrapper>
-      <Grid container justify='space-between' alignItems="center">
-        <Grid item>
-          <Grid container alignItems="center">
-            <Box className={classes.iconBox}>{renderIcon(getStatusResult)}</Box>
-            <Grid>
-              <Typography variant='h2' className={classes.toUppercase}>{getStatusResult?.title} ({getStatusResult?.progress} %)</Typography>
-              <Typography variant='body2'>Créé le : {date}</Typography>
-            </Grid>
-          </Grid>
+      <Grid container direction='row' justify='space-between'>
+        <Grid item container direction='column' xs={11}>
+          <NavLink
+            to={`/lead/${draft?.externalId}`}
+            className={classes.draftLink}
+            onClick={setLeadStep}
+          >
+            <Box className={classes.statusLine}>
+              <Grid container >
+                <Grid item>
+                  <Grid container alignItems="center">
+                    <Box className={classes.iconBox}>{renderIcon(getStatusResult)}</Box>
+                    <Grid>
+                      <Typography variant='h2' className={classes.toUppercase}>{getStatusResult?.title} ({getStatusResult?.progress} %)</Typography>
+                      <Typography variant='body2'>Créé le : {date}</Typography>
+                    </Grid>
+                  </Grid>
+                </Grid>
+              </Grid>
+            </Box>
+            <Box className={classes.titleLine}>
+              <Grid container wrap="nowrap">
+                <Grid item>
+                  <Box className={classes.titleBox}>
+                    <Typography variant='h3' className={draft?.missionContext.title ? null : classes.newDraft}>
+                      {draft?.missionContext.title ? shortenLongText(draft?.missionContext.title, 42) : t('draft.newBriefTitle')}
+                    </Typography>
+                  </Box>
+                </Grid>
+              </Grid>
+            </Box>
+            <Box className={classes.searchLine}>
+              <Grid container alignItems='center'>
+                <Grid item container>
+                  <SearchIcon color='#fff' size="small" />
+                  <Box mx={1.5}>
+                    <Typography variant='body2'>{shortenLongText(draft?.search.text, 30)}</Typography>
+                  </Box>
+                </Grid>
+              </Grid>
+            </Box>
+          </NavLink>
         </Grid>
-        <Grid item>
+        <Grid item xs={1}>
           {
             getStatusResult?.title !== GET_CALLED &&
             <IconButton aria-label="close" size="small" onClick={() => setOpen(!open)}>
@@ -117,24 +150,6 @@ const Draft = ({ draft }) => {
           }
         </Grid>
       </Grid>
-      <NavLink
-        to={`/lead/${draft?.externalId}`}
-        className={classes.draftLink}
-        onClick={setLeadStep}
-      >
-        <Box className={classes.titleBox}>
-          <Typography variant='h3' className={draft?.missionContext.title ? null : classes.newDraft}>
-            {draft?.missionContext.title ? shortenLongText(draft?.missionContext.title, 42) : t('draft.newBriefTitle')}
-          </Typography>
-        </Box>
-      </NavLink>
-      <Grid container>
-        <SearchIcon color='#fff' size="small" />
-        <Box mx={1.5}>
-          <Typography variant='body2'>{shortenLongText(draft?.search.text, 30)}</Typography>
-        </Box>
-      </Grid>
-
       {open &&
         <Grid
           container

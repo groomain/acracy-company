@@ -1,12 +1,14 @@
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import { fade } from "@material-ui/core";
 
+const draftHeight = 200;
+
 export default makeStyles(theme => ({
   draft: {
     background: theme.palette.secondary.mid,
     borderRadius: 15,
     width: 339,
-    height: 200,
+    height: draftHeight,
     padding: '10px 20px',
     position: 'relative',
     margin: 15,
@@ -54,5 +56,14 @@ export default makeStyles(theme => ({
   },
   buttonGroup: {
     width: 213
+  },
+  statusLine: {
+    minHeight: (draftHeight - 30) / 12 * 3
+  },
+  titleLine: {
+    minHeight: (draftHeight - 30) / 12 * 8
+  },
+  searchLine: {
+    minHeight: (draftHeight - 30) / 12 * 1
   }
 }));
