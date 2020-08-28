@@ -169,7 +169,7 @@ const MissionFollowUp = (props) => {
                 </Grid>
                 <Grid item className={classes.blocTypoDown}>
                   {data.brief.missionContext.address &&
-                  <Typography variant={"h4"} className={classes.typo}>Adresse</Typography>
+                    <Typography variant={"h4"} className={classes.typo}>Adresse</Typography>
                   }
                   <Typography variant={"body1"}
                     className={classes.typo}>{data.brief.missionContext.address}</Typography>
@@ -187,7 +187,7 @@ const MissionFollowUp = (props) => {
               <div className={classes.bloc}>
                 <Typography variant={'h2'}>Livrable.s</Typography>
                 <Grid container direction={'row'} className={classes.deliverablesContainer} spacing={1}>
-                  {data.brief.deliverables.map((tag, key) =>
+                  {data.brief.deliverables?.map((tag, key) =>
                     <Grid item>
                       <Tag key={key} title={tag.text} isPrimaryColor={false} />
                     </Grid>)}
@@ -200,7 +200,7 @@ const MissionFollowUp = (props) => {
                     <Typography>
                       {data.brief.missionDetail.contextAndTasks}
                     </Typography>
-                  }/>
+                  } />
               </div>
               <div className={classes.bloc}>
 
@@ -212,7 +212,7 @@ const MissionFollowUp = (props) => {
               </div>
               <div className={classes.bloc}>
                 <Typography variant={'h2'}>Détails du profil recherché</Typography>
-                <Typography variant={'h1'}>{data.brief.profile.text}</Typography>
+                <Typography variant={'h1'}>{data.brief.profile?.text}</Typography>
               </div>
               <div className={classes.bloc}>
                 <Typography variant={'h4'} className={classes.title}>Expertises clés du

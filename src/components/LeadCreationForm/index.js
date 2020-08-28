@@ -48,15 +48,15 @@ const LeadCreationForm = ({ values, errors, touched, handleBlur, handleChange, l
     leadCreationStep: state.getIn(['dashboard', 'leadCreationStep']),
     leadSaveLoading: state.getIn(['leadCreation', 'leadSaveLoading']),
     leadDraftId: state.getIn(['leadCreation', 'leadDraftId']),
-      changeLeadStatusLoading: state.getIn(['leadCreation', 'changeLeadStatusLoading'])
+    changeLeadStatusLoading: state.getIn(['leadCreation', 'changeLeadStatusLoading'])
   }))
 
 
-    useEffect(() => {
-        if (hasToWaitBeforeCallHelp) {
-            dispatch(changeLeadStatusLaunched({leadId: leadDraftId, status: 'NEED_HELP'}));
-        }
-    }, [leadDraftId]);
+  useEffect(() => {
+    if (hasToWaitBeforeCallHelp) {
+      dispatch(changeLeadStatusLaunched({ leadId: leadDraftId, status: 'NEED_HELP' }));
+    }
+  }, [leadDraftId]);
 
   const [searchedCategory, setSearchedCategory] = useState();
   const [deliverables, setDeliverables] = useState([]);
@@ -309,7 +309,7 @@ const LeadCreationForm = ({ values, errors, touched, handleBlur, handleChange, l
     let selectableProfiles = searchedCategory?.PROFILES || searchedCategory?.links
     if (selectableProfiles) {
       let selectableProfilesCopy = [...selectableProfiles];
-      let enhancedList = selectableProfilesCopy.concat({ "TEXT": "Recevoir une recommandation acracy" })
+      let enhancedList = selectableProfilesCopy.concat({ "TEXT": "Recevoir une recommandation acracy", "KEY": "", "type": "OTHER" })
       const profilesList = enhancedList.map((item) => {
         return item;
       });
@@ -320,7 +320,7 @@ const LeadCreationForm = ({ values, errors, touched, handleBlur, handleChange, l
               label={t('leadCreation.selectProfile')}
               optionsValues={profilesList}
               onChange={(e) => changeValue("desireds.profile", e.target.value)}
-              value={desireds?.length > 0 ? desireds[0].code : null}
+              value={desireds?.length > 0 ? (desireds[0].code || desireds[0].type) : null}
               context='profileType'
               name='desireds'
               id='desireds'
@@ -362,12 +362,17 @@ const LeadCreationForm = ({ values, errors, touched, handleBlur, handleChange, l
       }
     }
     else if (champs === 'desireds.profile') {
-      let selectableProfiles = searchedCategory?.PROFILES || searchedCategory?.links
-      newValue = selectableProfiles.filter(delList => {
-        return e.includes(delList.KEY)
-      });
-      champs = 'desireds'
-      newValue = [{ 'text': newValue[0].TEXT, 'code': newValue[0].KEY, 'type': 'PROFILE' }]
+      if (e?.includes("OTHER")) {
+        champs = 'desireds'
+        newValue = [{ 'text': "Recevoir une recommandation acracy", 'code': "", 'type': 'OTHER' }]
+      } else {
+        let selectableProfiles = searchedCategory?.PROFILES || searchedCategory?.links
+        newValue = selectableProfiles.filter(delList => {
+          return e.includes(delList.KEY)
+        });
+        champs = 'desireds'
+        newValue = [{ 'text': newValue[0].TEXT, 'code': newValue[0].KEY, 'type': 'PROFILE' }]
+      }
     }
     else if (champs === 'customDeliverable') {
       champs = 'desireds'
@@ -388,7 +393,7 @@ const LeadCreationForm = ({ values, errors, touched, handleBlur, handleChange, l
       })
       if (e.includes("")) {
         let customTextValue = desireds?.filter(desired => desired.type === 'OTHER')
-        let newTextValue = (customTextValue[0]?.text || 'Ne figure pas dans la liste')
+        let newTextValue = ((customTextValue !== undefined && customTextValue[0]?.text) || 'Ne figure pas dans la liste')
         newValue.push({ 'text': newTextValue, 'code': '', 'type': 'OTHER' })
       }
     }
@@ -841,10 +846,10 @@ const LeadCreationForm = ({ values, errors, touched, handleBlur, handleChange, l
   const handleDispatchHelp = () => {
     leadSave(values, "HELP_NEEDED");
     if (leadId !== undefined) {
-        dispatch(changeLeadStatusLaunched({leadId, status: 'NEED_HELP'}));
-        setOpenCallMeModal(false);
+      dispatch(changeLeadStatusLaunched({ leadId, status: 'NEED_HELP' }));
+      setOpenCallMeModal(false);
     } else {
-        setHasToWaitBeforeCallHelp(true);
+      setHasToWaitBeforeCallHelp(true);
     }
   }
   const getSteps = () => {
