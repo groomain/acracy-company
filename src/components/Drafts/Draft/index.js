@@ -43,7 +43,7 @@ const Draft = ({ draft }) => {
     const getStatus = (draftStatus) => {
       let status;
       if (draftStatus === 'DRAFT') {
-        if (draft?.missionDetail) {
+        if (draft?.missionDetail || draft?.missionRequirements) {
           return status = {
             title: FINALIZE_BRIEF,
             progress: 80
@@ -56,7 +56,7 @@ const Draft = ({ draft }) => {
           }
         }
       } else if (draftStatus === 'HELP_NEEDED') {
-        if (!draft?.missionDetail) {
+        if (!draft?.missionDetail || draft?.missionRequirements) {
           return status = {
             title: GET_CALLED,
             progress: 40,
