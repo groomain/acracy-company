@@ -34,12 +34,12 @@ export default makeStyles(theme => ({
     border: `1px solid ${theme.palette.primary.main}`,
     color: '#fff',
     '&:hover': {
-      background: `${theme.palette.primary.main}`,
+      background: `${theme.palette.primary.bright}`,
       border: '1px solid transparent',
       color: `${theme.palette.secondary.black}`
     },
     '&:active': {
-      background: `${theme.palette.primary.bright}`,
+      background: `${theme.palette.primary.main}`,
       border: `1px solid transparent`
     },
   },
