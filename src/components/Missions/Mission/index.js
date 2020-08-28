@@ -366,7 +366,7 @@ export const Mission = ({ mission, matching, today, ...props }) => {
                   <Grid item xs={4}>
                     <Grid item className={classes.blocTypoUp}>
                       <Typography variant={"h4"} className={classes.typo}>Taux journalier</Typography>
-                      <Typography variant={"body1"} className={classes.typo}>{mission?.missionContext?.budget?.dailyRate || matching?.missionContext?.budget?.dailyRate} €/j</Typography>
+                      <Typography variant={"body1"} className={classes.typo}>{Math.ceil(mission?.missionContext?.budget?.dailyRate || matching?.missionContext?.budget?.dailyRate)} €/j</Typography>
                     </Grid>
                   </Grid>
                 </Grid>
@@ -398,7 +398,7 @@ export const Mission = ({ mission, matching, today, ...props }) => {
                     <Grid item className={classes.blocTypoDown}>
                       <Typography variant={"h4"} className={classes.typo}>Durée</Typography>
                       <Typography variant={"body1"} className={classes.typo}>
-                        {durationNb}{' '}{t(`dashboard.missions.${durationUnit?.toLowerCase()}`)}{durationNb > 1 && 's'} à partir du {formatDate(startDate)}
+                        {durationNb}{' '}{t(`dashboard.missions.${durationUnit?.toLowerCase()}`)}{(durationNb > 1 && durationUnit !== 'MONTH') && 's'} à partir du {formatDate(startDate)}
                       </Typography>
                     </Grid>
                   </Grid>
