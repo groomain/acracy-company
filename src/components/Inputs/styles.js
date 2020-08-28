@@ -29,8 +29,7 @@ export default makeStyles(theme => ({
   },
   focused: {},
   input: {
-    padding: '0 0 0 30px',
-    display: 'flex',
+    padding: '30px 50px 0 30px !important',
     alignItems: 'center',
     fontFamily: "Basier Medium",
     '&:hover, &:focus': {
