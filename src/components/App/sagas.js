@@ -146,7 +146,9 @@ function* doSignIn(action) {
               }
             }
             yield put(loginSuccess(errorLeadMessage));
-            yield put(openSnackBar({ message: errorLeadMessage, error: false }));
+            if (errorLeadMessage) {
+              yield put(openSnackBar({ message: errorLeadMessage, error: false }));
+            }
             yield put(getCurrentSessionLaunched({ fromPath: from || '/home' })); // Redirection with or without lead creation error message
           } else {
             yield put(loginFailure(translateSignInError("")));
