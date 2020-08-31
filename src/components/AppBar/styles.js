@@ -71,5 +71,12 @@ export default makeStyles(theme => ({
   newbrief: {
     position: 'absolute',
     left: '35%'
+  },
+  backToDashboardButton: {
+    marginLeft: '7%',
+    cursor: 'pointer'
+  },
+  backToDashboardImage: {
+    transform: 'rotate(180deg)'
   }
 }));
