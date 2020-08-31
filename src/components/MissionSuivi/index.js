@@ -38,8 +38,6 @@ export const MissionSuivi = ({data, pathname, ...props}) => {
     };
     const step = data.status ? existingSteps[data.status] : 0;
 
-    console.log("'data?.brief", data);
-
     return (
         <Grid container direction={'column'} className={classes.root} {...props}>
             <Typography variant={"h1"} className={classes.title}>Suivi</Typography>
