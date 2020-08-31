@@ -29,7 +29,6 @@ import UploadInput from '../Inputs/LeadUpload';
 
 import { checkLength } from '../../utils/services/validationChecks';
 import { formatLanguagesValues } from '../../utils/services/format';
-// import { valueFocusAriaMessage } from 'react-select/src/accessibility';
 
 const LeadCreationForm = ({ values, errors, touched, handleBlur, handleChange, leadId, onUpdateMissionTitle, handleSubmit, props }) => {
   const { t } = useTranslation();
@@ -420,6 +419,18 @@ const LeadCreationForm = ({ values, errors, touched, handleBlur, handleChange, l
     }
   }
 
+  const getWorkedDaysResult = (workDurationNb, workDurationUnit, weeklyRythm, profilNumber) => {
+    switch (workDurationUnit) {
+      case 'MONTH':
+        return Math.ceil(weeklyRythm * (4 * workDurationNb) * profilNumber);
+      case 'WEEK':
+        return Math.ceil(weeklyRythm * workDurationNb * profilNumber);
+      default:
+        break;
+    }
+  }
+
+
 
   // render complet de la page 0
   const setLeadSynthesis = () => {
@@ -441,7 +452,6 @@ const LeadCreationForm = ({ values, errors, touched, handleBlur, handleChange, l
 
           {/* Titre de la mission */}
           {searchedCategory &&
-
             <>
               < Grid item xs={12} className={classes.fieldRows}>
                 <CustomTextArea
@@ -493,7 +503,7 @@ const LeadCreationForm = ({ values, errors, touched, handleBlur, handleChange, l
 
               <Grid item xs={12} className={classes.fieldRows}>
                 <CustomSelect
-                  label={t('leadCreation.frequencyLabel')}
+                  label={t('leadCreation.frequencyLabel') + '*'}
                   optionsValues={setOptionsValues('frequency')}
                   onChange={handleChange}
                   value={missionContext?.weeklyRythm}
@@ -503,7 +513,7 @@ const LeadCreationForm = ({ values, errors, touched, handleBlur, handleChange, l
 
               <Grid item container xs={12} className={classes.fieldRows}>
                 <Box>
-                  <Typography variant={'body1'} >{t('leadCreation.durationLabel') + '*'}</Typography>
+                  <Typography variant={'h4'} >{t('leadCreation.durationLabel') + '*'}</Typography>
                 </Box>
                 <Grid container spacing={2}>
                   <Grid item xs={7}>
@@ -523,12 +533,20 @@ const LeadCreationForm = ({ values, errors, touched, handleBlur, handleChange, l
                       name='missionContext.duration.unit'
                     ></CustomSelect>
                   </Grid>
+                  <Box mx={1} style={{ marginTop: '-2rem' }}>
+                    {(values?.missionContext?.duration?.nb && values?.missionContext?.duration?.unit !== 'DAY') &&
+                      <Typography variant="h2">Soit {' '}
+                        {getWorkedDaysResult(values?.missionContext?.duration?.nb,
+                          values?.missionContext?.duration?.unit,
+                          values?.missionContext?.weeklyRythm,
+                          values?.missionContext?.profilNumber)} jours travaillés environ</Typography>}
+                  </Box>
                 </Grid>
               </Grid>
 
               <Grid item container xs={12} className={classes.fieldRows}>
                 <Box>
-                  <Typography variant='body1'>{t('leadCreation.budgetLabel') + '*'}</Typography>
+                  <Typography variant='h4'>{t('leadCreation.budgetLabel') + '*'}</Typography>
                 </Box>
                 <Grid container spacing={2}>
                   <Grid item xs={7}>
