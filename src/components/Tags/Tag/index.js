@@ -5,7 +5,7 @@ import clsx from "clsx";
 import styles from './styles';
 import CustomCheckbox from '../../CheckBox';
 
-const Tag = ({ title, isPrimaryColor, multipleChoice, isWithInput, placeholder, isWithCheckbox, tagType, onCheckChange, checkedArray, isGrey, ...props }) => {
+const Tag = ({ title, isPrimaryColor, multipleChoice, isWithInput, placeholder, isWithCheckbox, tagType, onCheckChange, checkedArray, isGrey, isDisabled, ...props }) => {
   const classes = styles();
 
   const [value, setValue] = useState();
@@ -43,7 +43,7 @@ const Tag = ({ title, isPrimaryColor, multipleChoice, isWithInput, placeholder, 
             shape="rounded"
             onChange={onCheckChange}
             className={classes.checkbox}
-            disabled={disabled}
+            disabled={isDisabled || disabled}
             checked={checkedArray}
           />
         </span>
