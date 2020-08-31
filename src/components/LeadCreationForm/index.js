@@ -419,12 +419,12 @@ const LeadCreationForm = ({ values, errors, touched, handleBlur, handleChange, l
     }
   }
 
-  const getWorkedDaysResult = (workDurationNb, workDurationUnit) => {
+  const getWorkedDaysResult = (workDurationNb, workDurationUnit, weeklyRythm, profilNumber) => {
     switch (workDurationUnit) {
       case 'MONTH':
-        return Math.floor(workDurationNb * 20);
+        return Math.ceil(weeklyRythm * (4 * workDurationNb) * profilNumber);
       case 'WEEK':
-        return Math.floor(workDurationNb * 5);
+        return Math.ceil(weeklyRythm * workDurationNb * profilNumber);
       default:
         break;
     }
@@ -534,7 +534,12 @@ const LeadCreationForm = ({ values, errors, touched, handleBlur, handleChange, l
                     ></CustomSelect>
                   </Grid>
                   <Box mx={1} style={{ marginTop: '-2rem' }}>
-                    {(values?.missionContext?.duration?.nb && values?.missionContext?.duration?.unit !== 'DAY') && <Typography variant="h2">Soit {getWorkedDaysResult(values?.missionContext?.duration?.nb, values?.missionContext?.duration?.unit)} jours travaillés environ</Typography>}
+                    {(values?.missionContext?.duration?.nb && values?.missionContext?.duration?.unit !== 'DAY') &&
+                      <Typography variant="h2">Soit {' '}
+                        {getWorkedDaysResult(values?.missionContext?.duration?.nb,
+                          values?.missionContext?.duration?.unit,
+                          values?.missionContext?.weeklyRythm,
+                          values?.missionContext?.profilNumber)} jours travaillés environ</Typography>}
                   </Box>
                 </Grid>
               </Grid>
