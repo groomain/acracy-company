@@ -723,7 +723,6 @@ const LeadCreationForm = ({ values, errors, touched, handleBlur, handleChange, l
                   <Typography variant="h4">{t('leadCreation.profileLanguages')}</Typography>
                 </Grid>
                 <CustomSelect
-                  label='languages'
                   optionsValues={languages}
                   // onBlur={handleBlur('phonePrefix')}
                   onChange={(e) => { changeValue('missionRequirements.languages', [{ language: e.target.value }]) }}
