@@ -4,8 +4,9 @@ import { useLocation, withRouter } from "react-router";
 import clsx from "clsx";
 import { Link as RouterLink } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import { push } from "connected-react-router";
 
-import { AppBar, Toolbar } from '@material-ui/core';
+import { AppBar, Toolbar, Grid, Typography, Box } from '@material-ui/core';
 import styles from "./styles";
 import CustomButton from "../Button";
 import CustomNavLink from "../CustomNavLink";
@@ -15,6 +16,7 @@ import acracyLogo from "../../assets/icons/logo-acracy.svg";
 import { NavLink } from "react-router-dom";
 import useScrollTrigger from "@material-ui/core/useScrollTrigger";
 import ContactModale from "../ContactModale";
+import arrow from '../../assets/icons/arrow.svg';
 
 import { dispatchLeadId } from '../../pages/LeadCreationPage/reducer';
 
@@ -65,6 +67,17 @@ export const CustomAppBar = (props) => {
             <CustomButton title={t('header.contactUs')} onClick={() => setContactModaleOpen(!contactOpen)} />
           </div>
         );
+      case '/brief':
+        return (
+          <Grid className={classes.backToDashboardButton}>
+            <Grid container alignItems="center" onClick={() => dispatch(push('/home'))}>
+              <img src={arrow} alt="retour" className={classes.briefToDashboardImage} className={classes.backToDashboardImage} />
+              <Box mx={2}>
+                <Typography variant="h2" color="secondary">Retour dashboard</Typography>
+              </Box>
+            </Grid>
+          </Grid>
+        )
       default:
         break;
     }
@@ -81,7 +94,7 @@ export const CustomAppBar = (props) => {
         <NavLink to={'/'} className={classes.logo}>
           <img src={acracyLogo} alt="acracyLogo" />
         </NavLink>
-        <div className={classes.grow} />
+        {((props.path || location.path) !== '/brief') && <div className={classes.grow} />}
         {renderButtons()}
       </Toolbar>
       <ContactModale open={contactOpen} setOpen={setContactModaleOpen} interview={false} title="Contacter acracy" placeHolder="Donnez nous plus de détails" subtitle="Afin de pouvoir au mieux vous répondre, merci de préciser la raison de votre prise de contact." />

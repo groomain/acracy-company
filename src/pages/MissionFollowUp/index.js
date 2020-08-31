@@ -11,8 +11,9 @@ import CustomExpansionPanel from "../../components/CustomExpansionPanel";
 import Tag from "../../components/Tags/Tag";
 import CircleImage from "../../components/CircleImage";
 import RevealProfil from "../../components/RevealProfil";
-import infosIcon from '../../assets/icons/infos.svg'
-import matchIcon from '../../assets/icons/match.svg'
+import CustomAppBar from '../../components/AppBar';
+import infosIcon from '../../assets/icons/infos.svg';
+import matchIcon from '../../assets/icons/match.svg';
 import IconButton from "@material-ui/core/IconButton";
 import { getBriefLaunched, getMissionLaunched } from "./reducer";
 import { handleCurrentStep } from '../../components/App/reducer';
@@ -136,6 +137,7 @@ const MissionFollowUp = (props) => {
       direction="row"
       className={classes.container}
     >
+      <CustomAppBar path='/brief' />
       <Main>
         {data ?
           <Grid>
