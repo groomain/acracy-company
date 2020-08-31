@@ -53,7 +53,7 @@ export const MissionSuivi = ({data, pathname, ...props}) => {
                         secondaryTypographyProps={{className: clsx(classes.secondaryText, {[classes.textDone]: step >= 0})}}
                         primary="Brief"
                         secondary={step >= 0 && "Validation en cours"}/>
-                    {step >= 0 && <BriefIcon number={data?.brief?.missionDetail?.sharedDocuments?.length || 0} onClick={() => setBriefOpen(true)} className={classes.downloadIcon}/>}
+                    {(step >= 0 && data?.briefSummary) && <BriefIcon number={data?.briefSummary.length || 0} onClick={() => setBriefOpen(true)} className={classes.downloadIcon}/>}
                 </ListItem>
                 <ListItem className={classes.listItem}>
                     <ListItemAvatar className={classes.avatar}>
@@ -122,9 +122,9 @@ export const MissionSuivi = ({data, pathname, ...props}) => {
                            type={"facture"}
                            setOpen={setfactureOpen}
             />}
-            { data?.brief?.missionDetail?.sharedDocuments &&
+            { data?.briefSummary &&
                 <DownloadModal open={briefOpen}
-                               files={data.brief.missionDetail.sharedDocuments}
+                               files={[{externalId: data.briefSummary.externalId, name: "Détails Brief"}]}
                                type={"brief"}
                                setOpen={setBriefOpen}
                 />
