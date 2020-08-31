@@ -32,7 +32,7 @@ const seniority =
   [{ code: '', TEXT: "Sélectionnez le niveau d'expertise minimum" },
   { code: 'JUNIOR', TEXT: 'Junior (1 à 3 ans)' },
   { code: 'MIDDLE', TEXT: 'Middle (3 à 5 ans)' },
-  { code: 'SENIOR', TEXT: 'Senior (5 à 7 ans' },
+  { code: 'SENIOR', TEXT: 'Senior (5 à 7 ans)' },
   { code: 'EXPERT', TEXT: 'Expert (7 à 10 ans)' },
   { code: 'GURU', TEXT: 'Guru (10 ans et plus)' },
   { code: 'WHATEVER', TEXT: 'Peu importe' }];
