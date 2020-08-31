@@ -253,7 +253,7 @@ i18n
             profileDetails: "Détails du profil recherché",
             profileexpertises: "Expertises clés du profil*",
             profileSensitivity: 'Sensibilité clé du profil',
-            profileLanguages: 'Langue principale',
+            profileLanguages: 'Langue Principale*',
             profileSeniority: "Séniorité souhaitée",
             deliverablesDetails: "Détails des livrables",
             textarea: {
