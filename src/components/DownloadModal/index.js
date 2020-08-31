@@ -50,7 +50,7 @@ export const DownloadModal = ({ open, setOpen, handleClose, files, type, ...prop
           {type === "facture" && "Choisir ma facture à télécharger"}
           {type === "brief" && "Choisir mon brief à télécharger"}
         </Typography>
-        <CustomSelect label={""} optionsValues={filesName} onChange={(event) => handleSetFile(event.target.value)} />
+        <CustomSelect label={""} optionsValues={filesName} onChange={(event) => handleSetFile(event.target.value)} value={file?.name} />
         <Grid item container directtion={"row"}>
           <CustomButton title={"Télécharger"} theme={"filledButton"} style={{ position: "relative", bottom: 40 }} handleClick={() => downloadFile({ type: type, attachmentId: file.externalId })} />
           <Typography onClick={() => downloadFile({ type: type, attachmentId: filesId })} className={classes.navLink}>
