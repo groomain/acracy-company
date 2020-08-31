@@ -8,7 +8,7 @@ import * as Scroll from "react-scroll/modules";
 import * as Yup from "yup";
 import { Formik } from "formik";
 import { useTranslation } from "react-i18next";
-import {getAreaCodeFromNumber, getPhonePrefixCode} from "../../utils/services/format";
+import { getAreaCodeFromNumber, getPhonePrefixCode } from "../../utils/services/format";
 import Form1 from "../../components/AdministrativeForms/Form1";
 import Form2 from "../../components/AdministrativeForms/Form2";
 import Form3 from "../../components/AdministrativeForms/Form3";
@@ -62,7 +62,7 @@ export const AdministrativePage = (props) => {
   }, [dispatch]);
 
   useEffect(() => {
-    if (companyData?.administrativeProfile?.legalDocuments?.filter((file) => file.name === companyData.externalId + '-kbis' || file.name === companyData.externalId + '-cin1' || file.name === companyData.externalId + '-status').length > 2) {
+    if (companyData?.administrativeProfile?.legalDocuments?.filter((file) => file?.name?.includes('kbis') || file?.name?.includes('cin1') || file?.name?.includes('status')).length >= 3) {
       dispatch(checkMissingFilesForm(true))
     } else {
       dispatch(checkMissingFilesForm(false))
@@ -74,7 +74,7 @@ export const AdministrativePage = (props) => {
   };
 
   const initialValuesForm1 = {
-    administrativeProfile:{
+    administrativeProfile: {
       legalForm: companyData?.administrativeProfile?.legalForm || '',
       socialReason: companyData?.administrativeProfile?.socialReason || '',
       siret: companyData?.administrativeProfile?.siret || '',
@@ -137,10 +137,10 @@ export const AdministrativePage = (props) => {
     administrativeProfile: Yup.object().shape({
       sameAddress: Yup.bool().required(),
       billing: Yup.object().shape({
-        address: Yup.string().nullable().when('sameAddress', {is: true, then: Yup.string().required()}),
-        zipCode: Yup.string().nullable().when('sameAddress', {is: true, then: Yup.string().required()}),
-        city: Yup.string().nullable().when('sameAddress', {is: true, then: Yup.string().required()}),
-        country: Yup.string().nullable().when('sameAddress', {is: true, then: Yup.string().required()})
+        address: Yup.string().nullable().when('sameAddress', { is: true, then: Yup.string().required() }),
+        zipCode: Yup.string().nullable().when('sameAddress', { is: true, then: Yup.string().required() }),
+        city: Yup.string().nullable().when('sameAddress', { is: true, then: Yup.string().required() }),
+        country: Yup.string().nullable().when('sameAddress', { is: true, then: Yup.string().required() })
       })
     })
   });
@@ -267,8 +267,8 @@ export const AdministrativePage = (props) => {
               initialValues={initialValuesForm4}
               validationSchema={ValidationSchemaForm4}
               onSubmit={(form) => {
-                  form.administrativeProfile.billing.phone.code = getPhonePrefixCode(form.administrativeProfile.billing.phone.code);
-                  handleSubmit(form)
+                form.administrativeProfile.billing.phone.code = getPhonePrefixCode(form.administrativeProfile.billing.phone.code);
+                handleSubmit(form)
               }}
             />
           </Element>
