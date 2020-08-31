@@ -65,7 +65,10 @@ export const Form5 = ({ values, errors, touched, handleBlur, handleChange, handl
             checked={checked}
           />
           <Typography variant={'body1'}>J’ai lu et j’accepte la charte acracy</Typography>
-          <img src={charte} alt={'charte'} className={classes.chart} />
+          <a href={'https://www.notion.so/La-charte-du-freelance-acracy-006d33f66b5041418ac22c4e54403eba'}
+            target="_blank">
+            <img src={charte} alt={'charte'} className={classes.chart} />
+          </a>
         </Grid>
         <CustomButton title={'Sauvegarder'} theme={'filledButton'} className={classes.saveButton}
           disabled={administrativeProfile.cguCheck === false}
