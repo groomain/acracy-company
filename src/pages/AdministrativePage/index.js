@@ -62,7 +62,7 @@ export const AdministrativePage = (props) => {
   }, [dispatch]);
 
   useEffect(() => {
-    if (companyData?.administrativeProfile?.legalDocuments?.filter((file) => file.name === 'kbis' || file.name === 'cin1' || file.name === 'status').length === 3) {
+    if (companyData?.administrativeProfile?.legalDocuments?.filter((file) => file?.name?.includes('kbis') || file?.name?.includes('cin1') || file?.name?.includes('status')).length >= 3) {
       dispatch(checkMissingFilesForm(true))
     } else {
       dispatch(checkMissingFilesForm(false))
