@@ -70,7 +70,7 @@ const MissionFollowUp = (props) => {
       missionDetail: briefData.missionDetail,
       missionRequirements: briefData.missionRequirements
     },
-    customerProfile: briefData.customerProfile
+    briefSummary: briefData.briefSummary
   });
 
   useEffect(() => {

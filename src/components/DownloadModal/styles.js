@@ -10,6 +10,12 @@ export default makeStyles(theme => ({
     padding: 30,
     borderRadius: 15,
     backgroundColor: theme.palette.secondary.modalGreen,
+    overflowStyle: 'none', // IE scrollbar
+    scrollbarWidth: 'none', // Firefox scrollbar
+    scrollbarColor: 'transparent transparent', // Firefox scrollbar
+    '& ::-webkit-scrollbar': {
+      width: 0,
+    }
   },
   iconButton: {
     position: 'absolute',

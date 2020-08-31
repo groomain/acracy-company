@@ -34,7 +34,6 @@ function* getBrief(action) {
         'x-api-key': config.apiKey
       }
     });
-
     yield put(getBriefSuccess(briefData));
   } catch (error) {
     console.log(error);
