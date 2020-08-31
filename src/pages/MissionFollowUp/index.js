@@ -19,6 +19,7 @@ import { handleCurrentStep } from '../../components/App/reducer';
 import CustomLoader from "../../components/Loader";
 import { useLocation } from "react-router";
 import * as moment from "moment";
+import { formatLanguagesValues } from '../../utils/services/format';
 
 const format =
   [{ code: 'WHATEVER', TEXT: 'Peu importe' },
@@ -147,8 +148,8 @@ const MissionFollowUp = (props) => {
                 <Typography variant={'h1'}>{data.brief.missionContext.title}</Typography>
               </div>
             </Grid>
-            <Grid container direction={'row'} className={classes.card}>
-              <Grid container item xs={5} direction={'column'} spacing={2}>
+            <Grid container direction={'row'} className={classes.card} spacing={2}>
+              <Grid container item xs={5} direction={'column'}>
                 <Grid item className={classes.blocTypoUp}>
                   <Typography variant={"h4"} className={classes.typo}>Format</Typography>
                   <Typography variant={"body1"}
@@ -160,7 +161,7 @@ const MissionFollowUp = (props) => {
                     className={classes.typo}>{weeklyRythm.map((value) => value.code === data.brief.missionContext.weeklyRythm && value.TEXT)}</Typography>
                 </Grid>
               </Grid>
-              <Grid container item xs={5} direction={'column'} spacing={2}>
+              <Grid container item xs={5} direction={'column'}>
                 <Grid item className={classes.blocTypoUp}>
                   <Typography variant={"h4"} className={classes.typo}>Durée</Typography>
                   <Typography variant={"body1"}
@@ -175,7 +176,7 @@ const MissionFollowUp = (props) => {
                     className={classes.typo}>{data.brief.missionContext.address}</Typography>
                 </Grid>
               </Grid>
-              <Grid container item xs={2} direction={'column'} spacing={2}>
+              <Grid container item xs={2} direction={'column'}>
                 <Grid item container className={classes.blocTypoUp}>
                   <Typography variant={"h4"} className={classes.typo}>TJM</Typography>
                   <Typography variant={"body1"}
@@ -218,21 +219,32 @@ const MissionFollowUp = (props) => {
                 <Typography variant={'h4'} className={classes.title}>Expertises clés du
                                     profil</Typography>
                 <Grid item container direction={"row"} spacing={1}>
-                  {data.brief.missionRequirements.expertises.map((tag, key) => <Grid item><Tag
-                    key={key} title={tag.expertise.text} isPrimaryColor
-                    tagType="Prioritaire" isWithCheckbox checked={tag.priority} /></Grid>)}
+                  {data.brief.missionRequirements.expertises.map((tag, key) => <Grid item>
+                    <Tag
+                      key={key} title={tag.expertise.text}
+                      isPrimaryColor
+                      tagType="Prioritaire"
+                      isWithCheckbox
+                      checkedArray={tag.priority}
+                      isDisabled
+                    />
+                  </Grid>
+                  )}
                 </Grid>
               </div>
               <div className={classes.bloc}>
                 <Typography variant={'h4'} className={classes.title}>Langue souhaitée</Typography>
                 <Grid style={{ width: '80%' }} item container direction={"row"} spacing={1}>
                   <Grid item>
-                    <Tag title={data.brief.missionRequirements.languages.language}
-                      isPrimaryColor
-                      tagType="Critère indispensable"
-                      isWithCheckbox
-                      checked={data.brief.missionRequirements.languages.essential}
-                    />
+                    {data.brief.missionRequirements.languages?.map(language =>
+                      <Tag title={formatLanguagesValues(language.language)}
+                        isPrimaryColor
+                        tagType="Critère indispensable"
+                        isWithCheckbox
+                        checkedArray={language.essential}
+                        isDisabled
+                      />
+                    )}
                   </Grid>
                 </Grid>
               </div>
@@ -244,7 +256,8 @@ const MissionFollowUp = (props) => {
                       isPrimaryColor
                       tagType="Critère indispensable"
                       isWithCheckbox
-                      checked={data.brief.missionRequirements.sensitivity.essential}
+                      checkedArray={data.brief.missionRequirements.sensitivity.essential}
+                      isDisabled
                     />
                   </Grid>
                 </Grid>
