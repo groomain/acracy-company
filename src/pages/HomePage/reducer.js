@@ -92,7 +92,7 @@ const { actions, reducer } = createSlice({
       .set('companiesData', null)
       .set('companiesLoading', true),
     getCompaniesSuccess: (state, action) => state
-      .set('companiesData', action.payload.companies)
+      .set('companiesData', action.payload)
       .set('companiesDataFetched', true)
       .set('companiesLoading', false),
     getCompaniesFailure: (state, action) => state

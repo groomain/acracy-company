@@ -321,11 +321,11 @@ const ProfileSelection = (props) => {
                 <Typography variant={'h4'} className={classes.title}>Langue souhaitée</Typography>
                 <Grid style={{ width: '80%' }} item container direction={"row"} spacing={1}>
                   <Grid item>
-                    <Tag title={briefData.missionRequirements.languages.language}
+                    <Tag title={briefData.missionRequirements.languages[0].language}
                       isPrimaryColor
                       tagType="Critère indispensable"
                       isWithCheckbox
-                      checked={briefData.missionRequirements.languages.essential}
+                      checked={briefData.missionRequirements.languages[0].essential}
                     />
                   </Grid>
                 </Grid>
