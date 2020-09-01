@@ -12,6 +12,7 @@ import star from "../../assets/icons/expertises.svg";
 import checkStatus from "../../assets/icons/check-statut.svg";
 import clsx from "clsx";
 import CustomLoader from "../Loader";
+import CustomAppBar from '../AppBar';
 
 const RevealProfil = ({ setCheckedProfiles, index, modeMission, profil, ...props }) => {
   const classes = styles();
@@ -19,6 +20,7 @@ const RevealProfil = ({ setCheckedProfiles, index, modeMission, profil, ...props
 
   return (
     <div className={clsx(classes.root, { [classes.rootModeMission]: modeMission })}>
+      <CustomAppBar path='/home' />
       {profil ?
         <Grid container direction={"column"} justify={'center'}>
           <Grid container direction={"column"} justify={'center'} alignItems={'center'}
@@ -113,8 +115,8 @@ const RevealProfil = ({ setCheckedProfiles, index, modeMission, profil, ...props
                 className={clsx(classes.profilElementItem, { [classes.profilElementItemModeMission]: modeMission })}>
                 <ProfileElement
                   category='Sensibilité'
-                  item1={profil?.sensitivity[0]?.text}
-                  item2={profil?.sensitivity[1] ? profil?.sensitivity[1].text : undefined}
+                  item1={profil?.sensitivities[0]?.text}
+                  item2={profil?.sensitivities[1] ? profil?.sensitivities[1].text : undefined}
                   modeMission={modeMission}
                 />
               </Grid>
