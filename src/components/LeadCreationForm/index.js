@@ -523,6 +523,7 @@ const LeadCreationForm = ({ values, errors, touched, handleBlur, handleChange, l
                       value={missionContext?.duration?.nb || null}
                       name='missionContext.duration.nb'
                       error={(parseInt(missionContext?.duration?.nb) != missionContext?.duration?.nb) && missionContext?.duration?.nb}
+                    // helperText={(missionContext?.duration?.nb && missionContext?.duration?.nb < 1) && "1 jour minimum"}
                     ></CustomTextField>
                   </Grid>
                   <Grid item xs={5}>
@@ -534,7 +535,7 @@ const LeadCreationForm = ({ values, errors, touched, handleBlur, handleChange, l
                     ></CustomSelect>
                   </Grid>
                   <Box mx={1} style={{ marginTop: '-2rem' }}>
-                    {(values?.missionContext?.duration?.nb && values?.missionContext?.duration?.unit !== 'DAY') &&
+                    {(values?.missionContext?.duration?.nb && values?.missionContext?.weeklyRythm && values?.missionContext?.profilNumber && values?.missionContext?.duration?.unit !== 'DAY') &&
                       <Typography variant="h2">Soit {' '}
                         {getWorkedDaysResult(values?.missionContext?.duration?.nb,
                           values?.missionContext?.duration?.unit,
