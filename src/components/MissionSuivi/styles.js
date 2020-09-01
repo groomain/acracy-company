@@ -41,6 +41,7 @@ export default makeStyles(theme => ({
     color: `${theme.palette.primary.main}`
   },
   downloadIcon: {
+    minWidth: 50,
     '&:hover': {
       border: '1px solid transparent',
       cursor: 'pointer'
