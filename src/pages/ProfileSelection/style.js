@@ -22,8 +22,9 @@ export const styles = makeStyles(theme => ({
 
   },
   firstMiddleContainer: {
-    height: '100vh',
-    minHeight: 900
+    // height: '100vh',
+    // minHeight: 900
+    padding: '2rem 0'
   },
   middleContainer: {
     paddingLeft: '6%',
@@ -62,8 +63,8 @@ export const styles = makeStyles(theme => ({
     maxWidth: "70%"
   },
   authorContainer: {
-    marginTop: 8,
-    marginBottom: 35
+    marginTop: '1rem',
+    marginBottom: 35,
   },
   authorTypo: {
     marginLeft: 10
@@ -337,4 +338,12 @@ export const styles = makeStyles(theme => ({
   cartButton4: {
     width: 219, marginRight: 15
   },
+  selectedProfilesContainer: {
+    display: 'flex',
+    alignItems: 'center'
+  },
+  selectedProfileInfos: {
+    color: theme.palette.secondary.black,
+    margin: '0 1rem'
+  }
 }));

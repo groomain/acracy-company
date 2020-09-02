@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Typography from '@material-ui/core/Typography';
 import Avatar from '@material-ui/core/Avatar';
-import Grid from '@material-ui/core/Grid';
+import { Grid, Box } from '@material-ui/core';
 import { styles } from './style';
 import CircleImage from "../../components/CircleImage";
 import RevealProfil from "../../components/RevealProfil";
@@ -22,9 +22,6 @@ import Tag from "../../components/Tags/Tag";
 import CustomLoader from "../../components/Loader";
 import { Link, Element, animateScroll as scroll } from 'react-scroll'
 import * as Scroll from 'react-scroll';
-import checkStatus from "../../assets/icons/small-check.svg";
-import infosSmall from "../../assets/icons/infos-small-copy.svg";
-import miniSwitch from "../../assets/icons/mini-switch.svg";
 import CustomButton from "../../components/Button";
 import CustomSelect from "../../components/Inputs/CustomSelect";
 import CustomTextArea from "../../components/Inputs/CustomTextArea";
@@ -32,6 +29,16 @@ import Dialog from '@material-ui/core/Dialog';
 import Popover from "@material-ui/core/Popover";
 import CloseIcon from '@material-ui/icons/Close';
 import IconButton from "@material-ui/core/IconButton";
+import ContactModale from '../../components/ContactModale';
+// Pics
+import severine from '../../assets/pics/severine/severine-small.png';
+import avatarPlaceholder from '../../assets/icons/profil-roll-out-black.svg';
+import checkStatus from "../../assets/icons/small-check.svg";
+import infosSmall from "../../assets/icons/infos-small-copy.svg";
+import miniSwitch from "../../assets/icons/mini-switch.svg";
+// Services
+import { formatLanguagesValues, formatType, formatFrequencyType, formatDate, formatDurationType, formatSeniorityType } from '../../utils/services/format';
+import { getMyProfilePersonalInformationsLaunched } from '../MyProfile/reducer';
 
 const ProfileSelection = (props) => {
   const quoteId = props?.match?.params;
@@ -40,15 +47,24 @@ const ProfileSelection = (props) => {
 
   const classes = styles();
   const dispatch = useDispatch();
-  const { briefData, quotesData, validateCodeError, validateLoading, userDynamo, checkedProfilesStore, contactLoading } = useSelector(state => ({
+  const { briefData, quotesData, validateCodeError, validateLoading, userDynamo, checkedProfilesStore, contactLoading, employeeId, myProfileData } = useSelector(state => ({
     briefData: state.getIn(['SelectionProfil', 'briefData']),
     quotesData: state.getIn(['SelectionProfil', 'quotesData']),
     validateCodeError: state.getIn(['SelectionProfil', 'validateCodeError']),
     validateLoading: state.getIn(['SelectionProfil', 'validateLoading']),
     userDynamo: state.getIn(['app', 'userDynamo']),
     checkedProfilesStore: state.getIn(['SelectionProfil', 'checkedProfilesStore']),
-    contactLoading: state.getIn(['SelectionProfil', 'contactLoading'])
+    contactLoading: state.getIn(['SelectionProfil', 'contactLoading']),
+    employeeId: state.getIn(['app', 'userDynamo', 'employeeId']),
+    myProfileData: state.getIn(['MyProfile', 'myProfileData']),
   }));
+
+  useEffect(() => {
+    dispatch(getMyProfilePersonalInformationsLaunched(employeeId));
+  }, [dispatch]);
+
+  // console.log('ProfileSelection -> briefData', briefData)
+  // console.log('ProfileSelection -> quotesData', quotesData)
 
   // Scroll
   let [checkedProfiles, setCheckedProfiles] = React.useState(checkedProfilesStore);
@@ -243,90 +259,109 @@ const ProfileSelection = (props) => {
         {briefData ?
           <Grid item container xs={6} className={classes.middleContainer} direction="column">
             <Grid item container direction="column" className={classes.firstMiddleContainer}>
-              <Typography className={classes.mainTitle}>Il est temps de faire votre sélection
-                                !</Typography>
+              <Typography className={classes.mainTitle}>Il est temps de faire votre sélection !</Typography>
               <Typography variant={'h2'}>Le mot d'acracy</Typography>
               <Typography className={classes.word}>{briefData.acracyRecommandation}</Typography>
               <Grid container direction={'row'} alignItems={'center'} className={classes.authorContainer}>
-                <CircleImage />
-                <Typography variant="body2" className={classes.authorTypo}>Séverine, Chief
-                                    TalentOfficier</Typography>
+                <CircleImage src={severine} />
+                <Typography variant="body2" className={classes.authorTypo}>
+                  Séverine, Chief Talent Officier
+                </Typography>
               </Grid>
             </Grid>
+
+            {/* Available profiles */}
             <div ref={elementsRef}>
               <div ref={heightRef}>
-                {quotesData.map((profile, i) =>
-                  <Element name={i}>
-                    <Grid item container direction={'column'}
-                      className={classes.firstGridElement}>
-                      <Grid item container justify={'center'} alignItems={'center'} className={classes.tjmContainer} spacing={0}>
-                        <img src={infosSmall} alt={'infoSmall'}
-                          className={classes.infoTjm}
-                          aria-owns={open ? 'mouse-over-popover' : undefined}
-                          aria-haspopup="true" onMouseEnter={handlePopoverOpen}
-                          onMouseLeave={handlePopoverClose} />
-                        {open &&
-                          <Grid item container direction={'column'}
-                            className={classes.paper}>
-                            <Typography className={classes.popoverTypoTitle}>Pourquoi ce TJM
+                {quotesData.map((profile, i) => {
+                  // console.log('profile', profile)
+                  return (
+                    <Element name={i} >
+                      <Grid item container direction={'column'}
+                        className={classes.firstGridElement}>
+                        <Grid item container justify={'center'} alignItems={'center'} className={classes.tjmContainer} spacing={0}>
+                          <img src={infosSmall} alt={'infoSmall'}
+                            className={classes.infoTjm}
+                            aria-owns={open ? 'mouse-over-popover' : undefined}
+                            aria-haspopup="true" onMouseEnter={handlePopoverOpen}
+                            onMouseLeave={handlePopoverClose} />
+                          {open &&
+                            <Grid item container direction={'column'}
+                              className={classes.paper}>
+                              <Typography className={classes.popoverTypoTitle}>Pourquoi ce TJM
                                                         étrange ?</Typography>
-                            <Typography className={classes.popoverTypo}>
-                              Nous incluons dans le TJM des freelances les frais de X%
-                              liés à l’affacturage.
-                              C’est un système qui leur permet d’être protégés avec un
-                              paiement rapide, et qui nous permet de fidéliser les
+                              <Typography className={classes.popoverTypo}>
+                                Nous incluons dans le TJM des freelances les frais de X%
+                                liés à l’affacturage.
+                                C’est un système qui leur permet d’être protégés avec un
+                                paiement rapide, et qui nous permet de fidéliser les
                                                         meilleurs freelances.</Typography>
+                            </Grid>
+                          }
+                          <Typography className={classes.tjm}>{profile?.serviceProviderProfile?.averageDailyRate} €/j</Typography>
+                          <Grid item container direction={'row'} justify={'center'}
+                            alignItems={'center'}>
+                            <Typography className={classes.tjmText}>Soit </Typography>
+                            <div className={classes.tjmWithTaxContainer}>
+                              <Typography className={classes.tjmWithTax}>{Math.round(profile?.serviceProviderProfile?.averageDailyRate * 1.15)}€</Typography>        {/* ///////////////////////// */}
+                            </div>
                           </Grid>
-                        }
-                        <Typography className={classes.tjm}>{profile?.averageDeliverated} €/j</Typography>
-                        <Grid item container direction={'row'} justify={'center'}
-                          alignItems={'center'}>
-                          <Typography className={classes.tjmText}>Soit </Typography>
-                          <div className={classes.tjmWithTaxContainer}>
-                            <Typography className={classes.tjmWithTax}>632,50€</Typography>
-                          </div>
+                          <Typography className={classes.tjmText}>Commission incluse</Typography>
                         </Grid>
-                        <Typography className={classes.tjmText}>Commission incluse</Typography>
-                      </Grid>
-                      <Grid item container justify="center" alignItems="center" className={classes.tjmSecondContainer}>
-                        <Typography variant={'body2'} className={classes.tjmSecondtext}>En
+                        <Grid item container justify="center" alignItems="center" className={classes.tjmSecondContainer}>
+                          <Typography variant={'body2'} className={classes.tjmSecondtext}>En
                                                     pré-selectionnant ce profil, vous acceptez <span
-                            style={{ color: 'yellow' }}>les CGV</span> du profil</Typography>
+                              style={{ color: 'yellow' }}>les CGV</span> du profil</Typography>
+                        </Grid>
                       </Grid>
-                    </Grid>
-                    <RevealProfil profil={profile?.serviceProviderProfile} className={classes.revealProfil} index={i}
-                      setCheckedProfiles={handleCheckedProfiles} />
-                  </Element>
+                      <RevealProfil profil={profile?.serviceProviderProfile}
+                        acracyBlurb={profile?.acracyBlurb}
+                        className={classes.revealProfil} index={i}
+                        setCheckedProfiles={handleCheckedProfiles} />
+                    </Element>
+                  )
+                }
                 )}
-
               </div>
             </div>
-            <Grid container direction={'column'} className={classes.briefContainer}>
-              <Element name="lastContainer">
-                <div className={classes.bloc}>
-                  <Typography variant={'h2'}>Détails du profil recherché</Typography>
-                  <Typography variant={'h1'}>{briefData?.profile?.text || null}</Typography>
-                </div>
-              </Element>
+
+            {/* Requirements */}
+            <Grid container direction="column" className={classes.briefContainer}>
+              <Box mt={5}>
+                <Element name="lastContainer">
+                  <div className={classes.bloc}>
+                    <Typography variant={'h2'}>Détails du profil recherché</Typography>
+                    <Typography variant={'h1'}>{briefData?.profile?.text || null}</Typography>
+                  </div>
+                </Element>
+              </Box>
               <div className={classes.bloc}>
                 <Typography variant={'h4'} className={classes.title}>Expertises clés du
                                     profil</Typography>
                 <Grid item container direction={"row"} spacing={1}>
                   {briefData.missionRequirements.expertises.map((tag, key) => <Grid item><Tag
                     key={key} title={tag.expertise.text} isPrimaryColor
-                    tagType="Prioritaire" isWithCheckbox checked={tag.priority} /></Grid>)}
+                    tagType="Prioritaire" isWithCheckbox checked={tag.priority}
+                    isDisabled
+                  />
+                  </Grid>)}
                 </Grid>
               </div>
               <div className={classes.bloc}>
                 <Typography variant={'h4'} className={classes.title}>Langue souhaitée</Typography>
                 <Grid style={{ width: '80%' }} item container direction={"row"} spacing={1}>
                   <Grid item>
-                    <Tag title={briefData.missionRequirements.languages[0].language}
-                      isPrimaryColor
-                      tagType="Critère indispensable"
-                      isWithCheckbox
-                      checked={briefData.missionRequirements.languages[0].essential}
-                    />
+                    {briefData?.missionRequirements?.languages?.map((language, i) =>
+                      <Tag
+                        key={i}
+                        title={formatLanguagesValues(language?.language)}
+                        isPrimaryColor
+                        tagType="Critère indispensable"
+                        isWithCheckbox
+                        checked={language?.essential}
+                        isDisabled
+                      />
+                    )}
                   </Grid>
                 </Grid>
               </div>
@@ -339,6 +374,7 @@ const ProfileSelection = (props) => {
                       tagType="Critère indispensable"
                       isWithCheckbox
                       checked={briefData.missionRequirements.sensitivity.essential}
+                      isDisabled
                     />
                   </Grid>
                 </Grid>
@@ -346,7 +382,7 @@ const ProfileSelection = (props) => {
               <div className={classes.bloc}>
                 <Typography variant={'h4'} className={classes.title}>Séniorite souhaitée</Typography>
                 <Typography variant={'h4'}
-                  className={classes.briefSeniority}>{briefData.missionRequirements.seniority}</Typography>
+                  className={classes.briefSeniority}>{formatSeniorityType(briefData.missionRequirements.seniority)}</Typography>
               </div>
               <div className={classes.secondTitle}>
                 <Typography variant={'h1'}>Ma Mission</Typography>
@@ -355,43 +391,56 @@ const ProfileSelection = (props) => {
                 <Typography variant={'h2'}>Titre de la mission</Typography>
                 <Typography variant={'h1'}>{briefData.missionContext.title}</Typography>
               </div>
-
             </Grid>
-            <Grid container direction={'row'} className={classes.footerCard}>
-              <Grid container item xs={5} direction={'column'} spacing={2}>
-                <Grid item className={classes.blocTypoUp}>
-                  <Typography variant={"h4"} className={classes.typo}>Format</Typography>
-                  <Typography variant={"body1"}
-                    className={classes.typo}>{briefData.missionContext.format}</Typography>
-                </Grid>
-                <Grid item className={classes.blocTypoDown}>
-                  <Typography variant={"h4"} className={classes.typo}>Rythme</Typography>
-                  <Typography variant={"body1"}
-                    className={classes.typo}>{briefData.missionContext.weeklyRythm}</Typography>
-                </Grid>
+
+            {/* Mission details */}
+            <Grid container className={classes.footerCard}>
+              {/* Mission details 1st row */}
+              <Grid item xs={5} className={classes.blocTypoUp}>
+                <Typography variant={"h4"} className={classes.typo}>Format</Typography>
+                <Typography variant={"body1"}
+                  className={classes.typo}>{formatType(briefData.missionContext.format)}</Typography>
               </Grid>
-              <Grid container item xs={5} direction={'column'} spacing={2}>
-                <Grid item className={classes.blocTypoUp}>
-                  <Typography variant={"h4"} className={classes.typo}>Durée</Typography>
-                  <Typography variant={"body1"}
-                    className={classes.typo}>{briefData.missionContext.duration.nb}
-                    {briefData.missionContext.duration.nb} à partir
-                                        du {briefData.missionContext.startDate}</Typography>
-                </Grid>
-                <Grid item className={classes.blocTypoDown}>
-                  <Typography variant={"h4"} className={classes.typo}>Adresse</Typography>
-                  <Typography variant={"body1"}
-                    className={classes.typo}>{briefData.missionContext.address}</Typography>
-                </Grid>
+              <Grid item xs={5} className={classes.blocTypoUp}>
+                <Typography variant={"h4"} className={classes.typo}>Durée</Typography>
+                <Typography variant={"body1"}
+                  className={classes.typo}>{briefData.missionContext.duration.nb}
+                  {' '}
+                  {formatDurationType(briefData.missionContext.duration.unit).toLowerCase()}
+                  {' '}
+                  à partir du {formatDate(briefData.missionContext.startDate)}
+                </Typography>
               </Grid>
-              <Grid container item xs={2} direction={'column'} spacing={2}>
+              <Grid container item xs={2} direction={'column'}>
                 <Grid item container className={classes.blocTypoUp}>
                   <Typography variant={"h4"} className={classes.typo}>TJM</Typography>
                   <Typography variant={"body1"}
                     className={classes.typo}>{briefData.missionContext.estimatedAverageDailyRate} €/j</Typography>
                 </Grid>
               </Grid>
+              {/* Mission details 2nd row */}
+              <Grid container>
+                <Grid container item xs={5}>
+                  <Grid item className={classes.blocTypoDown}>
+                    <Typography variant={"h4"} className={classes.typo}>Rythme</Typography>
+                    <Typography variant={"body1"}
+                      className={classes.typo}>{formatFrequencyType(briefData.missionContext.weeklyRythm)}
+                    </Typography>
+                  </Grid>
+                </Grid>
+                <Grid container xs={7}>
+                  {(briefData?.missionContext?.format === 'INPLACE_ONLY' || briefData?.missionContext?.format === 'BOTH'
+                    ? <Grid item className={classes.blocTypoDown}>
+                      <Typography variant={"h4"} className={classes.typo}>Adresse</Typography>
+                      <Typography variant={"body1"}
+                        className={classes.typo}>{briefData.missionContext.address}</Typography>
+                    </Grid>
+                    : null
+                  )}
+                </Grid>
+              </Grid>
             </Grid>
+
             <Grid container direction={'column'} className={classes.briefContainer}>
               <div className={classes.bloc}>
                 <Typography variant={'h2'}>Livrable.s</Typography>
@@ -444,46 +493,54 @@ const ProfileSelection = (props) => {
           <Grid container item xs={9} direction={'row'}>
             <Typography
               className={classes.cartTitle}>{checkedProfiles.length === 0 ?
-                'Aucuns Profils pre-sélectionnés'
+                'Aucun Profil pré-sélectionné'
                 :
                 'Ma pre-sélection'
               }</Typography>
-            {checkedProfiles.map((profileIndex, index) =>
-              <ListItem className={classes.cartList}>
-                <ListItemAvatar>
-                  <Avatar
-                    onMouseEnter={(event) => { setAnchorElPopover(event.currentTarget); }}
-                    onMouseLeave={() => { setAnchorElPopover(null); }}
-                    className={classes.avatar}>
-                    <img
-                      src={quotesData[profileIndex].serviceProviderProfile.linkedinAvatar}
-                      alt={quotesData[profileIndex].serviceProviderProfile.firstName}
-                      className={classes.cartAvatar}
-                    />
-                  </Avatar>
-                  <Popover
-                    id="mouse-over-popover"
-                    open={openPopover}
-                    anchorEl={anchorElPopover}
-                    onClose={() => setAnchorElPopover(null)}
-                    anchorOrigin={{
-                      vertical: 'top',
-                      horizontal: 'center',
-                    }}
-                    transformOrigin={{
-                      vertical: 'bottom',
-                      horizontal: 'center',
-                    }}
-                    className={classes.popover}
-                    classes={{
-                      paper: classes.paperPopover,
-                    }}
-                    disableRestoreFocus
-                  >
-                    {quotesData[profileIndex].serviceProviderProfile.firstName} {quotesData[profileIndex].serviceProviderProfile.lastName}
-                  </Popover>
-                </ListItemAvatar>
-              </ListItem>
+            {checkedProfiles.map((profileIndex, index) => {
+              // console.log('profileIndex', profileIndex)
+              return (
+                <ListItem className={classes.cartList} >
+                  <ListItemAvatar className={classes.selectedProfilesContainer}>
+                    <Avatar
+                      onMouseEnter={(event) => { setAnchorElPopover(event.currentTarget); }}
+                      onMouseLeave={() => { setAnchorElPopover(null); }}
+                      className={classes.avatar}>
+                      <img
+                        src={quotesData[profileIndex].serviceProviderProfile.linkedinAvatar || avatarPlaceholder}
+                        alt={quotesData[profileIndex].serviceProviderProfile.firstName}
+                        className={classes.cartAvatar}
+                      />
+                    </Avatar>
+                    <Popover
+                      id="mouse-over-popover"
+                      open={openPopover}
+                      anchorEl={anchorElPopover}
+                      onClose={() => setAnchorElPopover(null)}
+                      anchorOrigin={{
+                        vertical: 'top',
+                        horizontal: 'center',
+                      }}
+                      transformOrigin={{
+                        vertical: 'bottom',
+                        horizontal: 'center',
+                      }}
+                      className={classes.popover}
+                      classes={{
+                        paper: classes.paperPopover,
+                      }}
+                      disableRestoreFocus
+                    >
+                      {quotesData[profileIndex].serviceProviderProfile.firstName} {quotesData[profileIndex].serviceProviderProfile.lastName}
+                    </Popover>
+                    <Grid item container direction="column">
+                      <Typography variant="subtitle2" className={classes.selectedProfileInfos}>{quotesData[profileIndex].serviceProviderProfile.firstName}</Typography>
+                      <Typography variant="body1" className={classes.selectedProfileInfos}>{quotesData[profileIndex].serviceProviderProfile.profile.text}</Typography>
+                    </Grid>
+                  </ListItemAvatar>
+                </ListItem>
+              )
+            }
             )}
           </Grid>
           {checkedProfiles.length === 0 ?
@@ -528,11 +585,13 @@ const ProfileSelection = (props) => {
             <CloseIcon />
           </IconButton>
           <Typography variant={"h1"}>Aucun profil ne me convient</Typography>
-          <Typography variant={"body1"} style={{ marginBottom: 20 }}>Afin de pouvoir améliorer nos futures propositions, n’hésitez pas à
-                        nous dire la raison du refus de ces profils.</Typography>
-          <CustomSelect placeholder={"Sélectionner raison"} label={"Raison"} optionsValues={['Compétences', "Tarifs", "Ce n’est pas ce que je cherche", "Le brief a changé", "Le projet a été annulé"]} value={noProfilSelect} handleChangeOut={setNoProfilSelect} />
-          <CustomTextArea style={{ height: 241 }} placeholder={"Donnez nous plus de détails"} valueOut={noProfilMotif} handleChangeOut={setNoProfilMotif} />
-          <CustomButton theme={"filledButton"} style={{ width: 254 }} title={"Confirmer et envoyer réponse"} handleClick={() => refuseAllProfiles()} loading={validateLoading} />
+          <Box my={2}>
+            <Typography variant={"body1"} style={{ marginBottom: 20 }}>Afin de pouvoir améliorer nos futures propositions, n’hésitez pas à
+              nous dire la raison du refus de ces profils.</Typography>
+          </Box>
+          <CustomSelect placeholder={"Sélectionner raison"} label={"Raison*"} optionsValues={['Compétences', "Tarifs", "Ce n’est pas ce que je cherche", "Le brief a changé", "Le projet a été annulé"]} value={noProfilSelect} handleChangeOut={setNoProfilSelect} />
+          <CustomTextArea size="large" placeholder={"Donnez nous plus de détails"} valueOut={noProfilMotif} handleChangeOut={setNoProfilMotif} />
+          <CustomButton theme={"filledButton"} style={{ width: 254 }} title={"Confirmer et envoyer réponse"} handleClick={() => refuseAllProfiles()} loading={validateLoading} disabled={noProfilMotif.trim().length === 0 || !noProfilSelect} />
         </Grid>
       </Dialog>
       <Dialog open={validateChoiceModaleOpen} onClose={handleValidateChoiceModaleOpen} classes={{ paper: classes.modale }}>
@@ -540,37 +599,46 @@ const ProfileSelection = (props) => {
           <IconButton aria-label="close" className={classes.iconButton} onClick={handleValidateChoiceModaleOpen}>
             <CloseIcon />
           </IconButton>
-          <Typography variant={"h1"}>Confirmation sélection</Typography>
+          <Typography variant={"h1"} style={{ marginBottom: 20 }}>Confirmation sélection</Typography>
           <Typography variant={"body1"} >Vous êtes sur le point de confirmer la sélection des profils.</Typography>
-          <Typography variant={"body1"} style={{ marginBottom: 20 }}>En confirmant, vous recevrez un email sur <span style={{ color: "#ecf805" }}>prénomnom@entreprise.com</span> vous invitant à signer le devis.</Typography>
+          <Typography variant={"body1"} style={{ marginBottom: 20 }}>En confirmant, vous recevrez un email sur <span style={{ color: "#ecf805" }}>{myProfileData?.email}</span> vous invitant à signer le devis.</Typography>
           <Typography variant={"body1"}>Dès la signature de ce dernier, vous pourrez accéder aux profils.</Typography>
           <Grid item container direction={"row"}>
             <CustomButton style={{ width: 183 }} theme={"filledButton"} title={"Confimer ma sélection"} handleClick={() => validateProfiles()} loading={validateLoading} />
           </Grid>
         </Grid>
       </Dialog>
-      <Dialog open={contactOpen} onClose={handleContactOpen} classes={{ paper: classes.modale }}>
+      {/* <Dialog open={contactOpen} onClose={handleContactOpen} classes={{ paper: classes.modale }}>
         <Grid item container direction={'column'} justify={'center'} className={classes.modaleContainer}>
-          <IconButton aria-label="close" className={classes.iconButton} onClick={handleContactOpen}>
+          <IconButton aria-label="close" className={classes.iconButton} onClick={() => handleContactOpen()}>
             <CloseIcon />
           </IconButton>
-          <Typography variant={"h1"}>Faire une demande à acracy</Typography>
-          <CustomSelect placeholder={"Sélectionner raison"} label={"Raison"} optionsValues={['Contacter Acracy']} value={contactSelect} handleChangeOut={setContactSelect} />
-          <CustomTextArea style={{ height: 328 }} placeholder={"Dites nous comment on peut vous aider"} valueOut={contactMessage} handleChangeOut={setContactMessage} />
-          <CustomButton theme={"filledButton"} style={{ width: 254 }} title={"Envoyé"} handleClick={() => contactAcracy(contactMessage, contactSelect, false, handleContactOpen)} loading={contactLoading} />
+          <Typography variant={"h1"}>Contacter acracy</Typography>
+          <Box mt={4}>
+            <Typography variant="body1">
+              Afin de pouvoir au mieux vous répondre, merci de préciser la raison de votre prise de contact.
+            </Typography>
+          </Box>
+          <CustomSelect placeholder={"Sélectionner raison"} label={'Raison*'} optionsValues={['Contacter Acracy']} value={contactSelect} handleChangeOut={setContactSelect} />
+          <CustomTextArea size='large' placeholder={"Dites nous comment on peut vous aider"} valueOut={contactMessage} handleChangeOut={setContactMessage} />
+          <CustomButton theme={"filledButton"} style={{ width: 254 }} title={"Envoyer"} handleClick={() => contactAcracy(contactMessage, contactSelect, false, handleContactOpen)} loading={contactLoading} />
         </Grid>
-      </Dialog>
+      </Dialog> */}
+
+      <ContactModale open={contactOpen} setOpen={setContactModaleOpen} interview={false} title="Contacter acracy" placeHolder="Donnez nous plus de détails" subtitle="Afin de pouvoir au mieux vous répondre, merci de préciser la raison de votre prise de contact." />
+
       <Dialog open={interviewOpen} onClose={handleInterviewOpen} classes={{ paper: classes.modale }}>
         <Grid item container direction={'column'} justify={'center'} className={classes.modaleContainer}>
           <IconButton aria-label="close" className={classes.iconButton} onClick={handleInterviewOpen}>
             <CloseIcon />
           </IconButton>
           <Typography variant={"h1"}>Confirmation d'entretien</Typography>
-          <CustomTextArea style={{ height: 328 }} placeholder={"Donnez nous plus de détails sur ces entretiens"} valueOut={interviewMessage} handleChangeOut={setInterviewMessage} />
-          <CustomButton theme={"filledButton"} style={{ width: 254 }} title={"Envoyé"} handleClick={() => contactAcracy(interviewMessage, 'Interview', true, handleInterviewOpen)} loading={contactLoading} />
+          <Typography>Sed ut labore et molestiae consequatur, vel eum fugiat, quo pertineant non fuisse torquem detraxit hosti et quidem faciunt, ut et accurate disserendum et dolorem? sunt autem quidam e nostris, qui studiose antiqua persequeris, claris et fortibus viris commemorandis.</Typography>
+          {/* <CustomTextArea size='large' placeholder={"Donnez nous plus de détails sur ces entretiens"} valueOut={interviewMessage} handleChangeOut={setInterviewMessage} /> */}
+          <CustomButton theme={"filledButton"} style={{ width: 254 }} title={"Envoyer"} handleClick={() => contactAcracy(interviewMessage, 'Interview', true, handleInterviewOpen)} loading={contactLoading} />
         </Grid>
       </Dialog>
-    </Grid>
+    </Grid >
 
   );
 };
