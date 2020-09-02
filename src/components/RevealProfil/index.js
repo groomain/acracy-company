@@ -3,6 +3,7 @@ import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import CustomSwitch from "../../components/Switch";
 import Tag from "../../components/Tags/Tag";
+import CheckableTag from "../../components/Tags/CheckableTag";
 import CircleImage from "../CircleImage";
 import CustomButton from "../Button";
 import styles from './styles'
@@ -13,17 +14,22 @@ import checkStatus from "../../assets/icons/check-statut.svg";
 import clsx from "clsx";
 import CustomLoader from "../Loader";
 import CustomAppBar from '../AppBar';
+// Pics
+import severine from '../../assets/pics/severine/severine-small.png';
+// Services
+import { formatLanguagesValues, formatSeniorityType } from '../../utils/services/format';
 
-const RevealProfil = ({ setCheckedProfiles, index, modeMission, profil, ...props }) => {
+const RevealProfil = ({ setCheckedProfiles, index, modeMission, profil, acracyBlurb, ...props }) => {
+  console.log('RevealProfil -> profil', profil)
   const classes = styles();
   const [checked, setChecked] = React.useState(false);
 
   return (
     <div className={clsx(classes.root, { [classes.rootModeMission]: modeMission })}>
-      <CustomAppBar path='/home' />
+      <CustomAppBar path='/brief' />
       {profil ?
         <Grid container direction={"column"} justify={'center'}>
-          <Grid container direction={"column"} justify={'center'} alignItems={'center'}
+          <Grid container direction={"column"} justify={'center'}
             className={clsx(classes.firstBlock, { [classes.firstBlockModeMission]: modeMission })}>
             <Grid container direction="row" justify={'center'} xs={12} className={classes.upCard}>
               <Grid item xs={4}>
@@ -33,7 +39,9 @@ const RevealProfil = ({ setCheckedProfiles, index, modeMission, profil, ...props
               </Grid>
               <Grid item xs={8} direction={"column"} justify={'center'}>
                 <Grid item className={classes.tagPreSelect}>
-                  {checked && <Tag title="Profil pré-sélectionné" isPrimaryColor />}
+                  {checked && <Grid container>
+                    <Tag title="Profil pré-sélectionné" isPrimaryColor />
+                  </Grid>}
                 </Grid>
                 <Typography
                   className={clsx(classes.name, { [classes.nameModeMission]: modeMission })}>{profil?.firstName} {profil?.lastName}</Typography>
@@ -77,12 +85,12 @@ const RevealProfil = ({ setCheckedProfiles, index, modeMission, profil, ...props
             </Grid>
             <Grid item className={classes.textContainer}>
               <Typography className={clsx(classes.text, { [classes.textModeMission]: modeMission })}>
-                {profil?.acracyBlurb}
+                {acracyBlurb}
               </Typography>
             </Grid>
             {!modeMission &&
               <Grid container direction={'row'} alignItems={'center'} className={classes.authorContainer}>
-                <CircleImage />
+                <CircleImage src={severine} />
                 <Typography variant="body2" className={classes.authorTypo}>le Blurb de Séverine</Typography>
               </Grid>}
           </Grid>
@@ -98,7 +106,7 @@ const RevealProfil = ({ setCheckedProfiles, index, modeMission, profil, ...props
               <Grid container direction={"row"} justify={'center'} className={classes.tagContainer}>
                 {
                   profil?.expertises?.map((item, index) =>
-                    <Tag title={item.expertise.text} className={classes.tag} isPrimaryColor={item.priority} />
+                    <CheckableTag title={item.expertise.text} className={classes.tag} checked={item.priority} isDisabled />
                   )
                 }
                 {/*<Tag title="Influence" isPrimaryColor className={classes.tag}/>*/}
@@ -115,8 +123,8 @@ const RevealProfil = ({ setCheckedProfiles, index, modeMission, profil, ...props
                 className={clsx(classes.profilElementItem, { [classes.profilElementItemModeMission]: modeMission })}>
                 <ProfileElement
                   category='Sensibilité'
-                  item1={profil?.sensitivities[0]?.text}
-                  item2={profil?.sensitivities[1] ? profil?.sensitivities[1].text : undefined}
+                  item1={profil?.sensitivities[0]?.sensitivity?.text}
+                  item2={profil?.sensitivities[1] ? profil?.sensitivities[1]?.sensitivity?.text : undefined}
                   modeMission={modeMission}
                 />
               </Grid>
@@ -124,8 +132,8 @@ const RevealProfil = ({ setCheckedProfiles, index, modeMission, profil, ...props
                 className={clsx(classes.profilElementItem, { [classes.profilElementItemModeMission]: modeMission })}>
                 <ProfileElement
                   category='Langues'
-                  item1={profil?.languages[0]}
-                  item2={profil?.languages[1] ? profil?.languages[1] : undefined}
+                  item1={formatLanguagesValues(profil?.languages[0])}
+                  item2={profil?.languages[1] ? formatLanguagesValues(profil?.languages[1]) : undefined}
                   modeMission={modeMission}
                 />
               </Grid>
@@ -133,7 +141,7 @@ const RevealProfil = ({ setCheckedProfiles, index, modeMission, profil, ...props
                 className={clsx(classes.profilElementItem, { [classes.profilElementItemModeMission]: modeMission })}>
                 <ProfileElement
                   category='Séniorité'
-                  item1={profil?.seniority}
+                  item1={formatSeniorityType(profil?.seniority)}
                   modeMission={modeMission}
                 />
               </Grid>
