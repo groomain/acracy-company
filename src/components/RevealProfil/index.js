@@ -20,7 +20,6 @@ import severine from '../../assets/pics/severine/severine-small.png';
 import { formatLanguagesValues, formatSeniorityType } from '../../utils/services/format';
 
 const RevealProfil = ({ setCheckedProfiles, index, modeMission, profil, acracyBlurb, ...props }) => {
-  console.log('RevealProfil -> profil', profil)
   const classes = styles();
   const [checked, setChecked] = React.useState(false);
 
