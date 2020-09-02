@@ -90,7 +90,7 @@ export const MissionSuivi = ({ data, pathname, ...props }) => {
             secondaryTypographyProps={{ className: clsx(classes.secondaryText, { [classes.textDone]: step >= 2 }) }}
             primary="Sélection profil"
             secondary={step >= 2 && ""} />
-          {step >= 2 && <DevisIcon number={1} onClick={() => (setDevisOpen(true))} className={classes.downloadIcon} />}
+          {step >= 2 && data.signedQuote && <DevisIcon number={1} onClick={() => (setDevisOpen(true))} className={classes.downloadIcon} />}
         </ListItem>
         <ListItem className={classes.listItem}>
           <ListItemAvatar className={classes.avatar}>
@@ -117,16 +117,16 @@ export const MissionSuivi = ({ data, pathname, ...props }) => {
             secondaryTypographyProps={{ className: clsx(classes.secondaryText, { [classes.textDone]: step >= 4 }) }}
             primary="Fin de la mission"
             secondary={step >= 4 && `${data.invoices.length} facture(s) à télécharger`} />
-          {step >= 4 && <FactureIcon number={data.invoices.length} onClick={() => (setfactureOpen(true))} className={classes.downloadIcon} />}
+          {step >= 4 && data.invoices && <FactureIcon number={data.invoices.length} onClick={() => (setfactureOpen(true))} className={classes.downloadIcon} />}
         </ListItem>
       </List>
-      {step >= 2 &&
+      {step >= 2 && data.signedQuote &&
         <DownloadModal open={devisOpen}
           files={[data.signedQuote]}
           type={"devis"}
           setOpen={setDevisOpen}
         />}
-      {step >= 4 &&
+      {step >= 4 && data.invoices &&
         <DownloadModal open={factureOpen}
           files={data.invoices.map((invoice) => invoice.attachment)}
           type={"facture"}
