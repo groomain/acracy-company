@@ -122,8 +122,8 @@ const RevealProfil = ({ setCheckedProfiles, index, modeMission, profil, acracyBl
                 className={clsx(classes.profilElementItem, { [classes.profilElementItemModeMission]: modeMission })}>
                 <ProfileElement
                   category='Sensibilité'
-                  item1={profil?.sensitivities[0]?.sensitivity?.text}
-                  item2={profil?.sensitivities[1] ? profil?.sensitivities[1]?.sensitivity?.text : undefined}
+                  item1={profil?.sensitivity[0]?.sensitivity?.text}
+                  item2={profil?.sensitivity[1] ? profil?.sensitivity[1]?.sensitivity?.text : undefined}
                   modeMission={modeMission}
                 />
               </Grid>
