@@ -26,7 +26,7 @@ import ValidationModal, { RefusalModal } from '../../../pages/HomePage/Modals/Va
 import styles from './styles';
 import { getQuotesLaunched, getCompaniesLaunched, setComingFromDashboard } from '../../../pages/HomePage/reducer';
 import severinePicture from '../../../assets/pics/severine/severine-small.png';
-import { shortenLongText, addTwoWorkingDays, formatDate } from '../../../utils/services/format';
+import { shortenLongText, addTwoWorkingDays, formatDate, formatDateForComparaison } from '../../../utils/services/format';
 import * as moment from 'moment';
 import {
   WAITING_FOR_VALIDATION,
@@ -177,7 +177,7 @@ export const Mission = ({ mission, matching, today, ...props }) => {
       if (mission?.status === IN_PROGRESS) {
 
         // Missions futures
-        const futureMission = formatDate(mission?.dateStart) > formatDate(today);
+        const futureMission = formatDateForComparaison(mission?.dateStart) > formatDateForComparaison(today);
         if (futureMission) {
           const startingPoint = new Date(mission?.dateStart).getTime();
           const todayInTimestamp = new Date(today).getTime();
@@ -189,7 +189,7 @@ export const Mission = ({ mission, matching, today, ...props }) => {
 
           // Missions avec facture en attente
           if (mission?.invoices?.find(x => x.status === WAITING_FOR_PAYMENT)) {
-            if (mission?.invoices?.find(x => x.paymentDate && (formatDate(x.paymentDate) <= formatDate(today)))) { // Avec retard de facture
+            if (mission?.invoices?.find(x => x.paymentDate && (formatDateForComparaison(x.paymentDate) <= formatDateForComparaison(today)))) { // Avec retard de facture
               return {
                 status: 'Retard de paiement',
                 color: 'danger',

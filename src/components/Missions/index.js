@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from "react-i18next";
-import moment from 'moment';
 
 import { getMissionsLaunched, getBriefsLaunched } from '../../pages/HomePage/reducer';
 import { Grid, Typography, Box } from '@material-ui/core/';
@@ -12,8 +11,7 @@ import CustomLoader from '../Loader';
 import sharedStyles from "../../utils/styles";
 
 import { WAITING_FOR_SIGNATURE, FINISHED, IN_PROGRESS, REFUSED } from './constants';
-import { formatWithLineBreak, dateToTimestamp, formatDate } from '../../utils/services/format';
-moment.locale('fr');
+import { formatWithLineBreak, dateToTimestamp, formatDate, formatDateForComparaison } from '../../utils/services/format';
 
 export const Missions = () => {
   const { t } = useTranslation();
@@ -63,8 +61,8 @@ export const Missions = () => {
     }
   }, [missions]);
 
-  const inProgressMissions = missions?.filter(x => (x?.status === IN_PROGRESS && formatDate(x?.dateStart) <= formatDate(today)));
-  const futureMissions = missions?.filter(x => x.status === IN_PROGRESS && formatDate(x.dateStart) > formatDate(today));
+  const inProgressMissions = missions?.filter(x => (x?.status === IN_PROGRESS && formatDateForComparaison(x?.dateStart) <= formatDateForComparaison(today)));
+  const futureMissions = missions?.filter(x => x.status === IN_PROGRESS && formatDateForComparaison(x.dateStart) > formatDateForComparaison(today));
   const finishedMissions = missions?.filter(x => x.status === FINISHED);
   const refusedBriefs = briefsData?.filter(x => x.status === REFUSED);
 
