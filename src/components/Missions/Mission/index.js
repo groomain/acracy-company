@@ -93,7 +93,7 @@ export const Mission = ({ mission, matching, today, ...props }) => {
       return <RetardIcon className={classes.icon} />
     } else if (status === WAITING_FOR_ACCEPTANCE || status === WAITING_FOR_SIGNATURE) {
       return <AValiderIcon className={classes.icon} />;
-    } else if (status === WAITING_FOR_MATCHING || status === WAITING_FOR_CUSTOMER_SELECTION) {
+    } else if (status === WAITING_FOR_MATCHING || status === WAITING_FOR_CUSTOMER_SELECTION || status === WAITING_FOR_QUOTES) {
       return <MatchingIcon className={classes.icon} />;
     } else {
       if (status === IN_PROGRESS && mission?.dateStart > today) {
