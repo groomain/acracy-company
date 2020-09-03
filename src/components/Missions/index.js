@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from "react-i18next";
+import moment from 'moment';
 
 import { getMissionsLaunched, getBriefsLaunched } from '../../pages/HomePage/reducer';
 import { Grid, Typography, Box } from '@material-ui/core/';
@@ -10,11 +11,9 @@ import DarkWrapper from '../Layout/DarkWrapper';
 import CustomLoader from '../Loader';
 import sharedStyles from "../../utils/styles";
 
-import { formatWithLineBreak } from '../../utils/services/format';
-// import { missions } from '../../mock/missions';
-// import { briefs } from '../../mock/briefs';
 import { WAITING_FOR_SIGNATURE, FINISHED, IN_PROGRESS, REFUSED } from './constants';
-import { dateToTimestamp } from '../../utils/services/format';
+import { formatWithLineBreak, dateToTimestamp, formatDate } from '../../utils/services/format';
+moment.locale('fr');
 
 export const Missions = () => {
   const { t } = useTranslation();
@@ -64,15 +63,10 @@ export const Missions = () => {
     }
   }, [missions]);
 
-  // console.log("here", missions?.filter(x => x?.status === IN_PROGRESS && x?.dateStart <= today))
-  const inProgressMissions = missions?.filter(x => (x?.status === IN_PROGRESS && x?.dateStart <= today) || (x.status === FINISHED && x.dateEnd?.length < 1));
-  // console.log('inProgressMissions', inProgressMissions)
-  const futureMissions = missions?.filter(x => x.status === IN_PROGRESS && x.dateStart >= today);
-  // console.log('futureMissions', futureMissions)
-  const finishedMissions = missions?.filter(x => x.status === FINISHED && x.dateEnd?.length > 0);
-  // console.log('finishedMissions', finishedMissions)
+  const inProgressMissions = missions?.filter(x => (x?.status === IN_PROGRESS && formatDate(x?.dateStart) <= formatDate(today)));
+  const futureMissions = missions?.filter(x => x.status === IN_PROGRESS && formatDate(x.dateStart) > formatDate(today));
+  const finishedMissions = missions?.filter(x => x.status === FINISHED);
   const refusedBriefs = briefsData?.filter(x => x.status === REFUSED);
-  // console.log('refusedBriefs', refusedBriefs)
 
   const displayInProgressMissionsTitle = () => {
     return (
