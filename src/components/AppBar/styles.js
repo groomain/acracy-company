@@ -72,11 +72,20 @@ export default makeStyles(theme => ({
     position: 'absolute',
     left: '35%'
   },
-  backToDashboardButton: {
+  missionNavButton: {
     marginLeft: '7%',
-    cursor: 'pointer'
+    cursor: 'pointer',
+    '& img:first-of-type': {
+      marginRight: '1rem'
+    },
+    '&:hover h2': {
+      color: theme.palette.secondary.lighter
+    }
   },
-  backToDashboardImage: {
+  missionNavImage: {
     transform: 'rotate(180deg)'
+  },
+  pen: {
+    marginLeft: '1rem'
   }
 }));
