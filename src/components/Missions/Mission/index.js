@@ -40,7 +40,8 @@ import {
   FINISHED,
   IN_PROGRESS,
   WAITING_FOR_QUOTES,
-  PAID
+  PAID,
+  REFUSED
 } from '../constants';
 import QuoteSignatureValidationModal from "../../../pages/HomePage/Modals/QuoteSignatureValidationModal";
 import { useTranslation } from "react-i18next";
@@ -88,7 +89,9 @@ export const Mission = ({ mission, matching, today, ...props }) => {
 
   const getStatusIcon = (mission) => {
     const status = mission?.status;
-    if (status === WAITING_FOR_ACCEPTANCE || status === WAITING_FOR_SIGNATURE) {
+    if (status === REFUSED) {
+      return <RetardIcon className={classes.icon} />
+    } else if (status === WAITING_FOR_ACCEPTANCE || status === WAITING_FOR_SIGNATURE) {
       return <AValiderIcon className={classes.icon} />;
     } else if (status === WAITING_FOR_MATCHING || status === WAITING_FOR_CUSTOMER_SELECTION) {
       return <MatchingIcon className={classes.icon} />;
@@ -162,6 +165,13 @@ export const Mission = ({ mission, matching, today, ...props }) => {
 
   useEffect(() => {
     const getMissionStatus = (missionInvoiceStatus, mission) => {
+
+      if (mission?.status === REFUSED) {
+        return {
+          status: t('dashboard.missions.refusedByAcracy'),
+          color: 'danger',
+        }
+      }
 
       const futureMission = mission?.dateStart > today;
 
@@ -265,7 +275,12 @@ export const Mission = ({ mission, matching, today, ...props }) => {
   }, [companiesDataFetched, companiesData, dispatch, loadingButton, mission, matching])
 
   const renderMissionButton = (status) => {
-    if (status === WAITING_FOR_CUSTOMER_SELECTION || status === WAITING_FOR_SIGNATURE || status?.invoices?.find(x => x.status === WAITING_FOR_PAYMENT && x.attachment) || status?.invoices?.find(x => x.status === WAITING_FOR_VALIDATION && x.attachment)) {
+    if (status === REFUSED) {
+      return (
+        <Grid container className={classes.gridRightNoCursor}> {/* Add an empty navlink to fill the button space */}
+        </Grid>
+      )
+    } else if (status === WAITING_FOR_CUSTOMER_SELECTION || status === WAITING_FOR_SIGNATURE || status?.invoices?.find(x => x.status === WAITING_FOR_PAYMENT && x.attachment) || status?.invoices?.find(x => x.status === WAITING_FOR_VALIDATION && x.attachment)) {
       return (
         <Grid container
           className={clsx(classes.gridRight, status?.invoices?.find(x => x.paymentDate < today) ? classes.rightRed : classes.primary)}
@@ -324,10 +339,11 @@ export const Mission = ({ mission, matching, today, ...props }) => {
                   </Typography>
                 </Grid>
                 <Grid item xs={2}>
-                  <IconButton className={classes.buttonIcon} aria-label="display more actions"
-                    onClick={() => setOpen(true)} color="secondary">
-                    <MenuIcon />
-                  </IconButton>
+                  {mission?.status !== REFUSED &&
+                    <IconButton className={classes.buttonIcon} aria-label="display more actions"
+                      onClick={() => setOpen(true)} color="secondary">
+                      <MenuIcon />
+                    </IconButton>}
                 </Grid>
               </Grid>
 
@@ -344,7 +360,8 @@ export const Mission = ({ mission, matching, today, ...props }) => {
 
             <NavLink
               to={mission ? `/mission/${mission?.externalId}` : `/brief/${matching?.externalId}`}
-              className={clsx(classes.gridCenter, missionDone ? classes.gridCenterFinished : null)}>
+              onClick={e => mission?.status === REFUSED ? e.preventDefault() : e}
+              className={clsx(classes.gridCenter, missionDone ? classes.gridCenterFinished : mission?.status === REFUSED ? classes.noCursor : null)}>
               <Grid container>  {/*RIGHT PART*/}
                 <Grid item container xs={12} direction='row'>
                   {/* 1st column */}
@@ -405,7 +422,7 @@ export const Mission = ({ mission, matching, today, ...props }) => {
                 </Grid>
               </Grid>
             </NavLink>
-            {renderMissionButton(matching?.status || mission)}
+            {renderMissionButton(matching?.status || mission?.status || mission)}
           </Grid>
           :
           <Grid container direction={'row'} justify={'center'} alignItems={'center'} className={classes.container}>

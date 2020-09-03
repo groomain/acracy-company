@@ -13,7 +13,7 @@ import sharedStyles from "../../utils/styles";
 import { formatWithLineBreak } from '../../utils/services/format';
 // import { missions } from '../../mock/missions';
 // import { briefs } from '../../mock/briefs';
-import { WAITING_FOR_SIGNATURE, FINISHED, IN_PROGRESS } from './constants';
+import { WAITING_FOR_SIGNATURE, FINISHED, IN_PROGRESS, REFUSED } from './constants';
 import { dateToTimestamp } from '../../utils/services/format';
 
 export const Missions = () => {
@@ -62,15 +62,16 @@ export const Missions = () => {
 
   useEffect(() => {
     if (toValidateMission?.length > 0) {
-      setBriefsList(briefsData?.concat(missionAsMatchingProfile));
+      setBriefsList(briefsData?.filter(x => x.status !== REFUSED)?.concat(missionAsMatchingProfile));
     } else {
-      setBriefsList(briefsData);
+      setBriefsList(briefsData?.filter(x => x.status !== REFUSED));
     }
   }, [briefsData, toValidateMission, missionAsMatchingProfile]);
 
   const inProgressMissions = missions?.filter(x => (x?.status === IN_PROGRESS && x?.dateStart < today && x?.dateEnd?.length < 1) || (x.status === FINISHED && x.dateEnd?.length < 1));
   const futureMissions = missions?.filter(x => x.status === IN_PROGRESS && x.dateStart > today);
   const finishedMissions = missions?.filter(x => x.status === FINISHED && x.dateEnd?.length > 0);
+  const refusedBriefs = briefsData?.filter(x => x.status === REFUSED);
 
   const displayInProgressMissionsTitle = () => {
     return (
@@ -137,6 +138,22 @@ export const Missions = () => {
                 </Typography>
                 {finishedMissions
                   .sort((a, b) => dateToTimestamp(a.dateStart) - (b.dateStart))
+                  .map((mission, key) => <Mission key={key} mission={mission} today={today} />)}
+              </>
+            )}
+            {refusedBriefs?.length > 0 && (
+              <>
+                <Typography variant="h2">
+                  {t('dashboard.missions.refusedTitle')}
+                </Typography>
+                {refusedBriefs
+                  .sort((a, b) => dateToTimestamp(a.dateStart) - (b.dateStart))
+                  .map(x => {
+                    return {
+                      brief: x,
+                      ...x
+                    }
+                  })
                   .map((mission, key) => <Mission key={key} mission={mission} today={today} />)}
               </>
             )}
