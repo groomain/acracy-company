@@ -112,10 +112,7 @@ export const CustomAppBar = (props) => {
         <NavLink to={'/'} className={classes.logo}>
           <img src={acracyLogo} alt="acracyLogo" />
         </NavLink>
-        {((props.path || location.path) !== '/brief') || ((props.path || location.path) !== '/reveal')
-          ? null
-          : <div className={classes.grow} />
-        }
+        {(props.path || location.path) !== '/brief' && <div className={classes.grow} />}
         {renderButtons()}
       </Toolbar>
       <ContactModale open={contactOpen} setOpen={setContactModaleOpen} interview={false} title="Contacter acracy" placeHolder="Donnez nous plus de détails" subtitle="Afin de pouvoir au mieux vous répondre, merci de préciser la raison de votre prise de contact." />
