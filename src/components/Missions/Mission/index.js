@@ -242,14 +242,14 @@ export const Mission = ({ mission, matching, today, ...props }) => {
     setMissionStatus(result);
   }, [mission, today]);
 
-  const handleClick = (status) => {
-    if (status === WAITING_FOR_SIGNATURE) {
+  const handleClick = (param) => {
+    if (param?.status === WAITING_FOR_SIGNATURE) {
       setInfosOpen(true)
     } else {
-      if (status?.invoices?.find(x => x.status === WAITING_FOR_VALIDATION)) {
+      if (param?.invoices?.find(x => x.status === WAITING_FOR_VALIDATION)) {
         setValidationModalOpen(true);
         setPreselectedFile(sortedCRA[0]);
-      } else if (status?.invoices?.find(x => x.status === WAITING_FOR_PAYMENT)) {
+      } else if (param?.invoices?.find(x => x.status === WAITING_FOR_PAYMENT)) {
         setInvoicesModalOpen(true);
         setPreselectedFile(sortedInvoices[0]);
       } else {
@@ -274,18 +274,18 @@ export const Mission = ({ mission, matching, today, ...props }) => {
     }
   }, [companiesDataFetched, companiesData, dispatch, loadingButton, mission, matching])
 
-  const renderMissionButton = (status) => {
-    if (status === REFUSED) {
+  const renderMissionButton = (param) => {
+    if (param?.status === REFUSED) {
       return (
         <Grid container className={classes.gridRightNoCursor}> {/* Add an empty navlink to fill the button space */}
         </Grid>
       )
-    } else if (status === WAITING_FOR_CUSTOMER_SELECTION || status === WAITING_FOR_SIGNATURE || status?.invoices?.find(x => x.status === WAITING_FOR_PAYMENT && x.attachment) || status?.invoices?.find(x => x.status === WAITING_FOR_VALIDATION && x.attachment)) {
+    } else if (param?.status === WAITING_FOR_CUSTOMER_SELECTION || param?.status === WAITING_FOR_SIGNATURE || param?.invoices?.find(x => x.status === WAITING_FOR_PAYMENT && x.attachment) || param?.invoices?.find(x => x.status === WAITING_FOR_VALIDATION)) {
       return (
         <Grid container
-          className={clsx(classes.gridRight, status?.invoices?.find(x => x.paymentDate < today) ? classes.rightRed : classes.primary)}
+          className={clsx(classes.gridRight, param?.invoices?.find(x => x.paymentDate < today) ? classes.rightRed : classes.primary)}
           alignItems={'center'} justify={'center'}
-          onClick={() => handleClick(status)}
+          onClick={() => handleClick(param)}
         >
           <Grid item>
             {loadingButton && companiesLoading
@@ -422,7 +422,7 @@ export const Mission = ({ mission, matching, today, ...props }) => {
                 </Grid>
               </Grid>
             </NavLink>
-            {renderMissionButton(matching?.status || mission?.status || mission)}
+            {renderMissionButton(matching || mission)}
           </Grid>
           :
           <Grid container direction={'row'} justify={'center'} alignItems={'center'} className={classes.container}>
