@@ -13,7 +13,6 @@ import star from "../../assets/icons/expertises.svg";
 import checkStatus from "../../assets/icons/check-statut.svg";
 import clsx from "clsx";
 import CustomLoader from "../Loader";
-import CustomAppBar from '../AppBar';
 // Pics
 import severine from '../../assets/pics/severine/severine-small.png';
 // Services
@@ -25,7 +24,6 @@ const RevealProfil = ({ setCheckedProfiles, index, modeMission, profil, acracyBl
 
   return (
     <div className={clsx(classes.root, { [classes.rootModeMission]: modeMission })}>
-      <CustomAppBar path='/brief' />
       {profil ?
         <Grid container direction={"column"} justify={'center'}>
           <Grid container direction={"column"} justify={'center'}

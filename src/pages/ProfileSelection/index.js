@@ -22,6 +22,7 @@ import Tag from "../../components/Tags/Tag";
 import CustomLoader from "../../components/Loader";
 import { Link, Element, animateScroll as scroll } from 'react-scroll'
 import * as Scroll from 'react-scroll';
+
 import CustomButton from "../../components/Button";
 import CustomSelect from "../../components/Inputs/CustomSelect";
 import CustomTextArea from "../../components/Inputs/CustomTextArea";
@@ -30,6 +31,7 @@ import Popover from "@material-ui/core/Popover";
 import CloseIcon from '@material-ui/icons/Close';
 import IconButton from "@material-ui/core/IconButton";
 import ContactModale from '../../components/ContactModale';
+import CustomAppBar from '../../components/AppBar';
 // Pics
 import severine from '../../assets/pics/severine/severine-small.png';
 import avatarPlaceholder from '../../assets/icons/profil-roll-out-black.svg';
@@ -189,6 +191,7 @@ const ProfileSelection = (props) => {
       alignItems="center"
       direction="column"
     >
+      <CustomAppBar path='/reveal' />
       <Grid
         container
         justify="center"
@@ -357,25 +360,23 @@ const ProfileSelection = (props) => {
               </div>
               <div className={classes.bloc}>
                 <Typography variant={'h4'} className={classes.title}>Langue souhaitée</Typography>
-                <Grid style={{ width: '80%' }} item container direction={"row"} spacing={1}>
-                  <Grid item>
-                    {briefData?.missionRequirements?.languages?.map((language, i) =>
-                      <Tag
-                        key={i}
-                        title={formatLanguagesValues(language?.language)}
-                        isPrimaryColor
-                        tagType="Critère indispensable"
-                        isWithCheckbox
-                        checked={language?.essential}
-                        isDisabled
-                      />
-                    )}
-                  </Grid>
+                <Grid item item container direction={"row"} spacing={1}>
+                  {briefData?.missionRequirements?.languages?.map((language, i) =>
+                    <Tag
+                      key={i}
+                      title={formatLanguagesValues(language?.language)}
+                      isPrimaryColor
+                      tagType="Critère indispensable"
+                      isWithCheckbox
+                      checked={language?.essential}
+                      isDisabled
+                    />
+                  )}
                 </Grid>
               </div>
               <div className={classes.bloc}>
                 <Typography variant={'h4'} className={classes.title}>Sensibilité souhaitée</Typography>
-                <Grid style={{ width: '80%' }} item container direction={"row"} spacing={1}>
+                <Grid item container direction={"row"} spacing={1}>
                   <Grid item>
                     <Tag title={briefData.missionRequirements.sensitivity.sensitivity.text}
                       isPrimaryColor
