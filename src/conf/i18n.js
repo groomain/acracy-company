@@ -309,7 +309,9 @@ i18n
               incidentModalTitle: 'Déclarer un incident',
               day: 'jour',
               week: 'semaine',
-              month: 'mois'
+              month: 'mois',
+              refusedTitle: "Refus",
+              refusedByAcracy: "Refusé par acracy"
             }
           },
           header: {

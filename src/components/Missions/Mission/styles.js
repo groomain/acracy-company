@@ -35,6 +35,18 @@ export default makeStyles(theme => ({
       cursor: 'pointer',
     },
   },
+  gridRightNoCursor: {
+    borderRadius: '0 15px 15px 0',
+    width: '10%',
+    '&:hover': {
+      cursor: 'initial',
+    },
+  },
+  noCursor: {
+    '&:hover': {
+      cursor: 'initial',
+    },
+  },
   withoutButton: {
     backgroundColor: "#151d15",
     '&:hover': {
