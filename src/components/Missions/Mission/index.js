@@ -24,11 +24,9 @@ import CustomButton from '../../Button';
 import InvoiceManagementModal from '../../../pages/HomePage/Modals/InvoiceManagementModal';
 import ValidationModal, { RefusalModal } from '../../../pages/HomePage/Modals/ValidationModal';
 import styles from './styles';
-// import { openSnackBar } from '../../App/reducer';
 import { getQuotesLaunched, getCompaniesLaunched, setComingFromDashboard } from '../../../pages/HomePage/reducer';
 import severinePicture from '../../../assets/pics/severine/severine-small.png';
 import { shortenLongText, addTwoWorkingDays, formatDate } from '../../../utils/services/format';
-import { getPath } from '../../../utils/services/validationChecks';
 import * as moment from 'moment';
 import {
   WAITING_FOR_VALIDATION,
@@ -140,7 +138,7 @@ export const Mission = ({ mission, matching, today, ...props }) => {
             status: 'Faites votre sélection',
             avatar: '?',
             title: `Découvrir les profils`,
-            subtext: `Nous vous proposons ${quotes?.length ?? 0} top freelance!`,
+            subtext: `Nous vous proposons ${quotes?.length ?? 0} top freelance ${quotes?.length > 1 ? 's' : ''} !`,
             buttonText: 'Valider et découvrir les profils'
           };
         case WAITING_FOR_SIGNATURE:
@@ -161,73 +159,67 @@ export const Mission = ({ mission, matching, today, ...props }) => {
   useEffect(() => {
     const getMissionStatus = (missionInvoiceStatus, mission) => {
 
-      if (mission?.status === REFUSED) {
+      if (mission?.status === REFUSED) { // Missions refusées
         return {
           status: t('dashboard.missions.refusedByAcracy'),
           color: 'danger',
         }
       }
 
-      const futureMission = mission?.dateStart > today;
-
-      if (futureMission) {
-        const startingPoint = new Date(mission?.dateStart).getTime();
-        const todayInTimestamp = new Date(today).getTime();
-        const days = Math.floor((startingPoint - todayInTimestamp) / 86400000);
-
+      if (mission?.status === FINISHED) { // Missions finalisées
         return {
-          status: `Démarre dans ${days} jour${days > 2 ? 's' : ''} `,
+          status: `Mission finalisée le ${formatDate(mission?.dateEnd)} `,
+          color: 'secondary'
         }
       }
 
-      if (mission?.invoices?.find(x => x.status === WAITING_FOR_VALIDATION && (!x.attachment || getPath(x.attachment, "attachment").length === 0))) {
-        return {
-          status: 'Facture en attente de validation',
-          buttonText: "Contrôler le compte rendu d'activité"
-        }
-      }
+      // Missions en cours
+      if (mission?.status === IN_PROGRESS) {
 
-      // No invoice with "WAITING_FOR_PAYMENT" status
-      if (!mission?.invoices?.find(x => x.status === WAITING_FOR_PAYMENT)) {
-        if (mission?.status === FINISHED) {
-          if (mission?.dateEnd?.length > 1) {
-            return {
-              status: `Mission finalisée le ${formatDate(mission?.dateEnd)} `,
-              color: 'secondary'
-            }
-          }
-          else {
-            return {
-              status: 'Travail terminé'
-            }
-          }
-        } else if (mission?.status === IN_PROGRESS) {
+        // Missions futures
+        const futureMission = formatDate(mission?.dateStart) > formatDate(today);
+        if (futureMission) {
+          const startingPoint = new Date(mission?.dateStart).getTime();
+          const todayInTimestamp = new Date(today).getTime();
+          const days = Math.floor((startingPoint - todayInTimestamp) / 86400000);
           return {
-            status: 'Mission en cours'
-          }
-        }
-      } else {
-        // At least 1 invoice has "WAITING_FOR_PAYMENT" status
-        if (mission?.invoices?.find(x => x.paymentDate < today)) {
-          return {
-            status: 'Retard de paiement',
-            color: 'danger',
-            buttonText: 'Payer facture'
-          }
-        }
-        if (mission?.invoices?.find(x => x.attachment && getPath(x.attachment, "attachment").length === 0)) {
-          return {
-            status: 'Facture à payer',
-            buttonText: 'Payer facture'
+            status: `Démarre dans ${days} jour${days > 2 ? 's' : ''} `,
           }
         } else {
-          if (mission?.status === FINISHED) {
-            return {
-              status: 'Travail terminé'
+
+          // Missions avec facture en attente
+          if (mission?.invoices?.find(x => x.status === WAITING_FOR_PAYMENT)) {
+            if (mission?.invoices?.find(x => x.paymentDate && (formatDate(x.paymentDate) <= formatDate(today)))) { // Avec retard de facture
+              return {
+                status: 'Retard de paiement',
+                color: 'danger',
+                buttonText: 'Payer facture'
+              }
+            } else {
+              if (mission?.invoices?.find(x => x.attachment)) { // Avec facture en PJ
+                return {
+                  status: 'Facture à payer',
+                  buttonText: 'Payer facture'
+                }
+              }
             }
           } else {
-            return {
-              status: 'Mission en cours'
+            if (mission?.invoices?.find(x => x?.status === WAITING_FOR_VALIDATION)) {
+              return {
+                status: 'Facture en attente de validation', // Sans facture en PJ
+                buttonText: "Contrôler le compte rendu d'activité"
+              }
+            } else {
+              // Missions sans facture en attente
+              if (mission?.invoices?.find(x => x?.latestInvoice)) {
+                return {
+                  status: 'Travail terminé'
+                }
+              } else {
+                return {
+                  status: 'Mission en cours'
+                }
+              }
             }
           }
         }
