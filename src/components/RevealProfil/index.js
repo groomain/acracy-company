@@ -66,17 +66,17 @@ const RevealProfil = ({ setCheckedProfiles, index, modeMission, profil, acracyBl
               className={clsx(classes.customButtonContainer, { [classes.customButtonContainerModeMission]: modeMission })}>
               <Grid xs={4} item container justify={'center'}>
                 <CustomButton xs={4} title={'Voir son CV'}
-                  handleClick={() => { return window.location.href = profil?.linkedinLink }}
+                  handleClick={() => { return window.open(profil?.portfolioLink, '_blank') }} ///////////////////////
                   className={clsx(classes.customButtonLeft, { [classes.customButtonModeMission]: modeMission })} />
               </Grid>
               <Grid xs={4} item container justify={'center'}>
                 <CustomButton title={'Voir son Portfolio'}
-                  handleClick={() => { return window.location.href = profil?.portfolioLink }}
+                  handleClick={() => { return window.open(profil?.portfolioLink, '_blank') }} ///////////////////
                   className={clsx(classes.customButton, { [classes.customButtonModeMission]: modeMission })} />
               </Grid>
               <Grid xs={4} item container justify={'center'}>
                 <CustomButton title={'Voir son Site'}
-                  handleClick={() => { return window.location.href = profil?.linkedinLink }}
+                  handleClick={() => { return window.open(profil?.portfolioLink, '_blank') }} //////////////////////////
                   className={clsx(classes.customButtonRight, { [classes.customButtonModeMission]: modeMission })} />
               </Grid>
             </Grid>
