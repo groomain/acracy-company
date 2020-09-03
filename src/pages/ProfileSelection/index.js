@@ -113,7 +113,11 @@ const ProfileSelection = (props) => {
   };
 
   const contactAcracy = (message, reason, interview, setOpen) => {
-    dispatch(contactAcracyLaunched({ message: message, reason: reason, interview: interview }));
+    let validateProfiles = [];
+    for (let i = 0; i < checkedProfiles.length; i++) {
+      validateProfiles.push(quotesData[checkedProfiles[i]].externalId)
+    }
+    dispatch(contactAcracyLaunched({ message: message, reason: reason, interview: interview, selectedProfiles: validateProfiles }));
     setOpen()
   };
 
@@ -260,14 +264,18 @@ const ProfileSelection = (props) => {
           <Grid item container xs={6} className={classes.middleContainer} direction="column">
             <Grid item container direction="column" className={classes.firstMiddleContainer}>
               <Typography className={classes.mainTitle}>Il est temps de faire votre sélection !</Typography>
-              <Typography variant={'h2'}>Le mot d'acracy</Typography>
-              <Typography className={classes.word}>{briefData.acracyRecommandation}</Typography>
-              <Grid container direction={'row'} alignItems={'center'} className={classes.authorContainer}>
-                <CircleImage src={severine} />
-                <Typography variant="body2" className={classes.authorTypo}>
-                  Séverine, Chief Talent Officier
+              {briefData?.acracyRecommandation &&
+                <>
+                  <Typography variant={'h2'}>Le mot d'acracy</Typography>
+                  <Typography className={classes.word}>{briefData.acracyRecommandation}</Typography>
+                  <Grid container direction={'row'} alignItems={'center'} className={classes.authorContainer}>
+                    <CircleImage src={severine} />
+                    <Typography variant="body2" className={classes.authorTypo}>
+                      Séverine, Chief Talent Officier
                 </Typography>
-              </Grid>
+                  </Grid>
+                </>
+              }
             </Grid>
 
             {/* Available profiles */}
@@ -298,12 +306,12 @@ const ProfileSelection = (props) => {
                                                         meilleurs freelances.</Typography>
                             </Grid>
                           }
-                          <Typography className={classes.tjm}>{profile?.serviceProviderProfile?.averageDailyRate} €/j</Typography>
+                          <Typography className={classes.tjm}>{profile?.averageDailyRateNegotiatedForServiceProvider} €/j</Typography>
                           <Grid item container direction={'row'} justify={'center'}
                             alignItems={'center'}>
                             <Typography className={classes.tjmText}>Soit </Typography>
                             <div className={classes.tjmWithTaxContainer}>
-                              <Typography className={classes.tjmWithTax}>{Math.round(profile?.serviceProviderProfile?.averageDailyRate * 1.15)}€</Typography>        {/* ///////////////////////// */}
+                              <Typography className={classes.tjmWithTax}>{profile?.averageDailyRateNegotiatedForCompany?.toFixed(2)}€</Typography>        {/* ///////////////////////// */}
                             </div>
                           </Grid>
                           <Typography className={classes.tjmText}>Commission incluse</Typography>
@@ -464,7 +472,7 @@ const ProfileSelection = (props) => {
 
                 <CustomExpansionPanel isTag={false} panelTitle="Détails des livrables">
                   <Typography>
-                    {briefData.missionDetail.DetailsOfDeliverables}
+                    {briefData.missionDetail.detailsOfDeliverables}
                   </Typography>
                 </CustomExpansionPanel>
               </div>
@@ -495,52 +503,47 @@ const ProfileSelection = (props) => {
               className={classes.cartTitle}>{checkedProfiles.length === 0 ?
                 'Aucun Profil pré-sélectionné'
                 :
-                'Ma pre-sélection'
-              }</Typography>
-            {checkedProfiles.map((profileIndex, index) => {
-              // console.log('profileIndex', profileIndex)
-              return (
-                <ListItem className={classes.cartList} >
-                  <ListItemAvatar className={classes.selectedProfilesContainer}>
-                    <Avatar
-                      onMouseEnter={(event) => { setAnchorElPopover(event.currentTarget); }}
-                      onMouseLeave={() => { setAnchorElPopover(null); }}
-                      className={classes.avatar}>
-                      <img
-                        src={quotesData[profileIndex].serviceProviderProfile.linkedinAvatar || avatarPlaceholder}
-                        alt={quotesData[profileIndex].serviceProviderProfile.firstName}
-                        className={classes.cartAvatar}
-                      />
-                    </Avatar>
-                    <Popover
-                      id="mouse-over-popover"
-                      open={openPopover}
-                      anchorEl={anchorElPopover}
-                      onClose={() => setAnchorElPopover(null)}
-                      anchorOrigin={{
-                        vertical: 'top',
-                        horizontal: 'center',
-                      }}
-                      transformOrigin={{
-                        vertical: 'bottom',
-                        horizontal: 'center',
-                      }}
-                      className={classes.popover}
-                      classes={{
-                        paper: classes.paperPopover,
-                      }}
-                      disableRestoreFocus
-                    >
-                      {quotesData[profileIndex].serviceProviderProfile.firstName} {quotesData[profileIndex].serviceProviderProfile.lastName}
-                    </Popover>
-                    <Grid item container direction="column">
-                      <Typography variant="subtitle2" className={classes.selectedProfileInfos}>{quotesData[profileIndex].serviceProviderProfile.firstName}</Typography>
-                      <Typography variant="body1" className={classes.selectedProfileInfos}>{quotesData[profileIndex].serviceProviderProfile.profile.text}</Typography>
-                    </Grid>
-                  </ListItemAvatar>
-                </ListItem>
-              )
-            }
+                'Ma pré-sélection'
+              }
+            </Typography>
+            {checkedProfiles.map((profileIndex, index) =>
+              <ListItem className={classes.cartList}>
+                <ListItemAvatar className={classes.selectedProfilesContainer}>
+                  <Avatar
+                    onMouseEnter={(event) => { setAnchorElPopover(event.currentTarget); }}
+                    onMouseLeave={() => { setAnchorElPopover(null); }}
+                    className={classes.avatar}
+                    src={quotesData[profileIndex].serviceProviderProfile.linkedinAvatar}
+                    alt={quotesData[profileIndex].serviceProviderProfile.firstName}
+                  >
+                  </Avatar>
+                  <Popover
+                    id="mouse-over-popover"
+                    open={openPopover}
+                    anchorEl={anchorElPopover}
+                    onClose={() => setAnchorElPopover(null)}
+                    anchorOrigin={{
+                      vertical: 'top',
+                      horizontal: 'center',
+                    }}
+                    transformOrigin={{
+                      vertical: 'bottom',
+                      horizontal: 'center',
+                    }}
+                    className={classes.popover}
+                    classes={{
+                      paper: classes.paperPopover,
+                    }}
+                    disableRestoreFocus
+                  >
+                    {quotesData[profileIndex].serviceProviderProfile.firstName} {quotesData[profileIndex].serviceProviderProfile.lastName}
+                  </Popover>
+                  <Grid item container direction="column">
+                    <Typography variant="subtitle2" className={classes.selectedProfileInfos}>{quotesData[profileIndex].serviceProviderProfile.firstName}</Typography>
+                    <Typography variant="body1" className={classes.selectedProfileInfos}>{quotesData[profileIndex].serviceProviderProfile.profile.text}</Typography>
+                  </Grid>
+                </ListItemAvatar>
+              </ListItem>
             )}
           </Grid>
           {checkedProfiles.length === 0 ?
@@ -633,9 +636,11 @@ const ProfileSelection = (props) => {
             <CloseIcon />
           </IconButton>
           <Typography variant={"h1"}>Confirmation d'entretien</Typography>
-          <Typography>Sed ut labore et molestiae consequatur, vel eum fugiat, quo pertineant non fuisse torquem detraxit hosti et quidem faciunt, ut et accurate disserendum et dolorem? sunt autem quidam e nostris, qui studiose antiqua persequeris, claris et fortibus viris commemorandis.</Typography>
-          {/* <CustomTextArea size='large' placeholder={"Donnez nous plus de détails sur ces entretiens"} valueOut={interviewMessage} handleChangeOut={setInterviewMessage} /> */}
-          <CustomButton theme={"filledButton"} style={{ width: 254 }} title={"Envoyer"} handleClick={() => contactAcracy(interviewMessage, 'Interview', true, handleInterviewOpen)} loading={contactLoading} />
+          <Box my={3}>
+            <Typography>Sed ut labore et molestiae consequatur, vel eum fugiat, quo pertineant non fuisse torquem detraxit hosti et quidem faciunt, ut et accurate disserendum et dolorem? sunt autem quidam e nostris, qui studiose antiqua persequeris, claris et fortibus viris commemorandis.</Typography>
+            {/* <CustomTextArea size='large' placeholder={"Donnez nous plus de détails sur ces entretiens"} valueOut={interviewMessage} handleChangeOut={setInterviewMessage} /> */}
+          </Box>
+          <CustomButton theme={"filledButton"} style={{ width: 198 }} title={"Envoyer"} handleClick={() => contactAcracy(interviewMessage, 'Interview', true, handleInterviewOpen)} loading={contactLoading} />
         </Grid>
       </Dialog>
     </Grid >
