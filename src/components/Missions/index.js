@@ -62,7 +62,7 @@ export const Missions = () => {
     } else {
       setBriefsList(briefsData?.filter(x => x.status !== REFUSED));
     }
-  }, []);
+  }, [missions]);
 
   // console.log("here", missions?.filter(x => x?.status === IN_PROGRESS && x?.dateStart <= today))
   const inProgressMissions = missions?.filter(x => (x?.status === IN_PROGRESS && x?.dateStart <= today) || (x.status === FINISHED && x.dateEnd?.length < 1));
