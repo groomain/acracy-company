@@ -62,7 +62,7 @@ const { actions, reducer } = createSlice({
       .set('missionsData', null),
     getMissionsSuccess: (state, action) => state
       .set('missionsLoading', false)
-      .set('missionsData', action.payload.missions),
+      .set('missionsData', action.payload),
     getMissionsFailure: (state, action) => state
       .set('missionsLoading', false)
       .set('missionsData', null),
