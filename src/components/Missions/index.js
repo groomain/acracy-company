@@ -24,10 +24,6 @@ export const Missions = () => {
   const today = new Date(Date.now()).toISOString();
   const [briefsList, setBriefsList] = useState();
 
-  // Delete when connecting to the DB
-  // const missionsLoading = false;
-  // const briefsLoading = false;
-
   const { missionsLoading, briefsLoading, briefsData, missions, updateMissionSent } = useSelector(state => ({
     missions: state.getIn(['dashboard', 'missionsData']),
     missionsLoading: state.getIn(['dashboard', 'missionsLoading']),
@@ -40,14 +36,14 @@ export const Missions = () => {
   useEffect(() => {
     dispatch(getMissionsLaunched());
     dispatch(getBriefsLaunched());
-  }, [dispatch]);
+  }, []);
 
   // Refetch the missions after updating missions (= validate CRA)
   useEffect(() => {
     if (updateMissionSent) {
       dispatch(getMissionsLaunched());
     }
-  }, [dispatch, updateMissionSent])
+  }, [updateMissionSent])
 
   const toValidateMission = missions?.filter(x => x.status === WAITING_FOR_SIGNATURE);
 
@@ -66,12 +62,17 @@ export const Missions = () => {
     } else {
       setBriefsList(briefsData?.filter(x => x.status !== REFUSED));
     }
-  }, [briefsData, toValidateMission, missionAsMatchingProfile]);
+  }, []);
 
-  const inProgressMissions = missions?.filter(x => (x?.status === IN_PROGRESS && x?.dateStart < today && x?.dateEnd?.length < 1) || (x.status === FINISHED && x.dateEnd?.length < 1));
-  const futureMissions = missions?.filter(x => x.status === IN_PROGRESS && x.dateStart > today);
+  // console.log("here", missions?.filter(x => x?.status === IN_PROGRESS && x?.dateStart <= today))
+  const inProgressMissions = missions?.filter(x => (x?.status === IN_PROGRESS && x?.dateStart <= today) || (x.status === FINISHED && x.dateEnd?.length < 1));
+  // console.log('inProgressMissions', inProgressMissions)
+  const futureMissions = missions?.filter(x => x.status === IN_PROGRESS && x.dateStart >= today);
+  // console.log('futureMissions', futureMissions)
   const finishedMissions = missions?.filter(x => x.status === FINISHED && x.dateEnd?.length > 0);
+  // console.log('finishedMissions', finishedMissions)
   const refusedBriefs = briefsData?.filter(x => x.status === REFUSED);
+  // console.log('refusedBriefs', refusedBriefs)
 
   const displayInProgressMissionsTitle = () => {
     return (
@@ -163,7 +164,7 @@ export const Missions = () => {
     }
     return missionsList;
   };
-  return displayMissions()
+  return displayMissions();
 };
 
 export default Missions;
