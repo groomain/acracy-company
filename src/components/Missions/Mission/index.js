@@ -96,30 +96,25 @@ export const Mission = ({ mission, matching, today, ...props }) => {
     } else if (status === WAITING_FOR_MATCHING || status === WAITING_FOR_CUSTOMER_SELECTION || status === WAITING_FOR_QUOTES) {
       return <MatchingIcon className={classes.icon} />;
     } else {
+      if (mission?.invoices?.find(x => x.status === WAITING_FOR_PAYMENT && x.paymentDate < today)) {
+        return <RetardIcon className={classes.icon} /> // retard paiment
+      }
+      if (status === IN_PROGRESS && mission?.invoices?.find(x => x.status === WAITING_FOR_PAYMENT && x.lastInvoice)) {
+        return <TravailIcon className={classes.icon} />; // travail terminé
+      }
+      if (mission?.invoices?.find(x => x.status === WAITING_FOR_PAYMENT)) {
+        return <TravailIcon className={classes.icon} /> // facture à payer
+      }
+      if (mission?.invoices?.find(x => x.status === WAITING_FOR_VALIDATION)) {
+        return <EnCoursIcon className={classes.icon} /> // facture en attente de validation
+      }
       if (status === IN_PROGRESS && mission?.dateStart > today) {
-        return <DemarreIcon className={classes.icon} />
+        return <DemarreIcon className={classes.icon} /> // démarre dans X jours 
       }
-      if (!mission?.invoices?.find(x => x.status === WAITING_FOR_PAYMENT)) {
-        if (status === IN_PROGRESS) {
-          return <EnCoursIcon className={classes.icon} />;
-        } else {
-          if (mission?.dateEnd?.length < 1) {
-            return <TravailIcon className={classes.icon} />;
-          } else {
-            return <MissionHistoIcon className={classes.icon} />;
-          }
-        }
-      } else {
-        if (mission?.invoices?.find(x => x.paymentDate < today)) {
-          return <RetardIcon className={classes.icon} />
-        } else {
-          if (status === IN_PROGRESS && (getPath(mission?.invoices?.attachement).length > 0 || !mission?.invoices?.attachment)) {
-            return <EnCoursIcon className={classes.icon} />;
-          } else {
-            return <TravailIcon className={classes.icon} />;
-          }
-        }
+      if (status === FINISHED) {
+        return <MissionHistoIcon className={classes.icon} />; // mission finalisée (historique)
       }
+      return <EnCoursIcon className={classes.icon} />; // par défaut (mission en cours)
     }
   }
 
