@@ -95,6 +95,11 @@ export const dateToTimestamp = (date) => {
   return Math.round(new Date(date).getTime());
 };
 
+// Special date format to compare dates from DB and compare them to today's date in the same format
+// (future missions vs. in progress missions)
+export const formatDateForComparaison = (date) => {
+  return moment(date).format("YYYYMMDD");
+}
 
 export const formatType = (val) => {
   switch (val) {

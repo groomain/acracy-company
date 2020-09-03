@@ -24,11 +24,9 @@ import CustomButton from '../../Button';
 import InvoiceManagementModal from '../../../pages/HomePage/Modals/InvoiceManagementModal';
 import ValidationModal, { RefusalModal } from '../../../pages/HomePage/Modals/ValidationModal';
 import styles from './styles';
-// import { openSnackBar } from '../../App/reducer';
 import { getQuotesLaunched, getCompaniesLaunched, setComingFromDashboard } from '../../../pages/HomePage/reducer';
 import severinePicture from '../../../assets/pics/severine/severine-small.png';
-import { shortenLongText, addTwoWorkingDays, formatDate } from '../../../utils/services/format';
-import { getPath } from '../../../utils/services/validationChecks';
+import { shortenLongText, addTwoWorkingDays, formatDate, formatDateForComparaison } from '../../../utils/services/format';
 import * as moment from 'moment';
 import {
   WAITING_FOR_VALIDATION,
@@ -96,30 +94,25 @@ export const Mission = ({ mission, matching, today, ...props }) => {
     } else if (status === WAITING_FOR_MATCHING || status === WAITING_FOR_CUSTOMER_SELECTION || status === WAITING_FOR_QUOTES) {
       return <MatchingIcon className={classes.icon} />;
     } else {
+      if (mission?.invoices?.find(x => x.status === WAITING_FOR_PAYMENT && x.paymentDate < today)) {
+        return <RetardIcon className={classes.icon} /> // retard paiment
+      }
+      if (status === IN_PROGRESS && mission?.invoices?.find(x => x.status === WAITING_FOR_PAYMENT && x.lastInvoice)) {
+        return <TravailIcon className={classes.icon} />; // travail terminé
+      }
+      if (mission?.invoices?.find(x => x.status === WAITING_FOR_PAYMENT)) {
+        return <TravailIcon className={classes.icon} /> // facture à payer
+      }
+      if (mission?.invoices?.find(x => x.status === WAITING_FOR_VALIDATION)) {
+        return <EnCoursIcon className={classes.icon} /> // facture en attente de validation
+      }
       if (status === IN_PROGRESS && mission?.dateStart > today) {
-        return <DemarreIcon className={classes.icon} />
+        return <DemarreIcon className={classes.icon} /> // démarre dans X jours 
       }
-      if (!mission?.invoices?.find(x => x.status === WAITING_FOR_PAYMENT)) {
-        if (status === IN_PROGRESS) {
-          return <EnCoursIcon className={classes.icon} />;
-        } else {
-          if (mission?.dateEnd?.length < 1) {
-            return <TravailIcon className={classes.icon} />;
-          } else {
-            return <MissionHistoIcon className={classes.icon} />;
-          }
-        }
-      } else {
-        if (mission?.invoices?.find(x => x.paymentDate < today)) {
-          return <RetardIcon className={classes.icon} />
-        } else {
-          if (status === IN_PROGRESS && (getPath(mission?.invoices?.attachement).length > 0 || !mission?.invoices?.attachment)) {
-            return <EnCoursIcon className={classes.icon} />;
-          } else {
-            return <TravailIcon className={classes.icon} />;
-          }
-        }
+      if (status === FINISHED) {
+        return <MissionHistoIcon className={classes.icon} />; // mission finalisée (historique)
       }
+      return <EnCoursIcon className={classes.icon} />; // par défaut (mission en cours)
     }
   }
 
@@ -145,7 +138,7 @@ export const Mission = ({ mission, matching, today, ...props }) => {
             status: 'Faites votre sélection',
             avatar: '?',
             title: `Découvrir les profils`,
-            subtext: `Nous vous proposons ${quotes?.length ?? 0} top freelance!`,
+            subtext: `Nous vous proposons ${quotes?.length ?? 0} top freelance ${quotes?.length > 1 ? 's' : ''} !`,
             buttonText: 'Valider et découvrir les profils'
           };
         case WAITING_FOR_SIGNATURE:
@@ -166,73 +159,67 @@ export const Mission = ({ mission, matching, today, ...props }) => {
   useEffect(() => {
     const getMissionStatus = (missionInvoiceStatus, mission) => {
 
-      if (mission?.status === REFUSED) {
+      if (mission?.status === REFUSED) { // Missions refusées
         return {
           status: t('dashboard.missions.refusedByAcracy'),
           color: 'danger',
         }
       }
 
-      const futureMission = mission?.dateStart > today;
-
-      if (futureMission) {
-        const startingPoint = new Date(mission?.dateStart).getTime();
-        const todayInTimestamp = new Date(today).getTime();
-        const days = Math.floor((startingPoint - todayInTimestamp) / 86400000);
-
+      if (mission?.status === FINISHED) { // Missions finalisées
         return {
-          status: `Démarre dans ${days} jour${days > 2 ? 's' : ''} `,
+          status: `Mission finalisée le ${formatDate(mission?.dateEnd)} `,
+          color: 'secondary'
         }
       }
 
-      if (mission?.invoices?.find(x => x.status === WAITING_FOR_VALIDATION && (!x.attachment || getPath(x.attachment, "attachment").length === 0))) {
-        return {
-          status: 'Facture en attente de validation',
-          buttonText: "Contrôler le compte rendu d'activité"
-        }
-      }
+      // Missions en cours
+      if (mission?.status === IN_PROGRESS) {
 
-      // No invoice with "WAITING_FOR_PAYMENT" status
-      if (!mission?.invoices?.find(x => x.status === WAITING_FOR_PAYMENT)) {
-        if (mission?.status === FINISHED) {
-          if (mission?.dateEnd?.length > 1) {
-            return {
-              status: `Mission finalisée le ${formatDate(mission?.dateEnd)} `,
-              color: 'secondary'
-            }
-          }
-          else {
-            return {
-              status: 'Travail terminé'
-            }
-          }
-        } else if (mission?.status === IN_PROGRESS) {
+        // Missions futures
+        const futureMission = formatDateForComparaison(mission?.dateStart) > formatDateForComparaison(today);
+        if (futureMission) {
+          const startingPoint = new Date(mission?.dateStart).getTime();
+          const todayInTimestamp = new Date(today).getTime();
+          const days = Math.floor((startingPoint - todayInTimestamp) / 86400000);
           return {
-            status: 'Mission en cours'
-          }
-        }
-      } else {
-        // At least 1 invoice has "WAITING_FOR_PAYMENT" status
-        if (mission?.invoices?.find(x => x.paymentDate < today)) {
-          return {
-            status: 'Retard de paiement',
-            color: 'danger',
-            buttonText: 'Payer facture'
-          }
-        }
-        if (mission?.invoices?.find(x => x.attachment && getPath(x.attachment, "attachment").length === 0)) {
-          return {
-            status: 'Facture à payer',
-            buttonText: 'Payer facture'
+            status: `Démarre dans ${days} jour${days > 2 ? 's' : ''} `,
           }
         } else {
-          if (mission?.status === FINISHED) {
-            return {
-              status: 'Travail terminé'
+
+          // Missions avec facture en attente
+          if (mission?.invoices?.find(x => x.status === WAITING_FOR_PAYMENT)) {
+            if (mission?.invoices?.find(x => x.paymentDate && (formatDateForComparaison(x.paymentDate) <= formatDateForComparaison(today)))) { // Avec retard de facture
+              return {
+                status: 'Retard de paiement',
+                color: 'danger',
+                buttonText: 'Payer facture'
+              }
+            } else {
+              if (mission?.invoices?.find(x => x.attachment)) { // Avec facture en PJ
+                return {
+                  status: 'Facture à payer',
+                  buttonText: 'Payer facture'
+                }
+              }
             }
           } else {
-            return {
-              status: 'Mission en cours'
+            if (mission?.invoices?.find(x => x?.status === WAITING_FOR_VALIDATION)) {
+              return {
+                status: 'Facture en attente de validation', // Sans facture en PJ
+                buttonText: "Contrôler le compte rendu d'activité"
+              }
+            } else {
+              // Missions sans facture en attente
+              if (mission?.invoices?.find(x => x?.latestInvoice)) {
+                return {
+                  status: 'Travail terminé'
+                }
+              } else {
+                return {
+                  status: 'Mission en cours'
+                }
+              }
             }
           }
         }
@@ -242,14 +229,14 @@ export const Mission = ({ mission, matching, today, ...props }) => {
     setMissionStatus(result);
   }, [mission, today]);
 
-  const handleClick = (status) => {
-    if (status === WAITING_FOR_SIGNATURE) {
+  const handleClick = (param) => {
+    if (param?.status === WAITING_FOR_SIGNATURE) {
       setInfosOpen(true)
     } else {
-      if (status?.invoices?.find(x => x.status === WAITING_FOR_VALIDATION)) {
+      if (param?.invoices?.find(x => x.status === WAITING_FOR_VALIDATION)) {
         setValidationModalOpen(true);
         setPreselectedFile(sortedCRA[0]);
-      } else if (status?.invoices?.find(x => x.status === WAITING_FOR_PAYMENT)) {
+      } else if (param?.invoices?.find(x => x.status === WAITING_FOR_PAYMENT)) {
         setInvoicesModalOpen(true);
         setPreselectedFile(sortedInvoices[0]);
       } else {
@@ -274,18 +261,18 @@ export const Mission = ({ mission, matching, today, ...props }) => {
     }
   }, [companiesDataFetched, companiesData, dispatch, loadingButton, mission, matching])
 
-  const renderMissionButton = (status) => {
-    if (status === REFUSED) {
+  const renderMissionButton = (param) => {
+    if (param?.status === REFUSED) {
       return (
         <Grid container className={classes.gridRightNoCursor}> {/* Add an empty navlink to fill the button space */}
         </Grid>
       )
-    } else if (status === WAITING_FOR_CUSTOMER_SELECTION || status === WAITING_FOR_SIGNATURE || status?.invoices?.find(x => x.status === WAITING_FOR_PAYMENT && x.attachment) || status?.invoices?.find(x => x.status === WAITING_FOR_VALIDATION && x.attachment)) {
+    } else if (param?.status === WAITING_FOR_CUSTOMER_SELECTION || param?.status === WAITING_FOR_SIGNATURE || param?.invoices?.find(x => x.status === WAITING_FOR_PAYMENT && x.attachment) || param?.invoices?.find(x => x.status === WAITING_FOR_VALIDATION)) {
       return (
         <Grid container
-          className={clsx(classes.gridRight, status?.invoices?.find(x => x.paymentDate < today) ? classes.rightRed : classes.primary)}
+          className={clsx(classes.gridRight, param?.invoices?.find(x => x.paymentDate < today) ? classes.rightRed : classes.primary)}
           alignItems={'center'} justify={'center'}
-          onClick={() => handleClick(status)}
+          onClick={() => handleClick(param)}
         >
           <Grid item>
             {loadingButton && companiesLoading
@@ -422,7 +409,7 @@ export const Mission = ({ mission, matching, today, ...props }) => {
                 </Grid>
               </Grid>
             </NavLink>
-            {renderMissionButton(matching?.status || mission?.status || mission)}
+            {renderMissionButton(matching || mission)}
           </Grid>
           :
           <Grid container direction={'row'} justify={'center'} alignItems={'center'} className={classes.container}>
