@@ -59,7 +59,7 @@ export const Missions = () => {
     } else {
       setBriefsList(briefsData?.filter(x => x.status !== REFUSED));
     }
-  }, [missions]);
+  }, [missions, briefsData]);
 
   const inProgressMissions = missions?.filter(x => (x?.status === IN_PROGRESS && formatDateForComparaison(x?.dateStart) <= formatDateForComparaison(today)));
   const futureMissions = missions?.filter(x => x.status === IN_PROGRESS && formatDateForComparaison(x.dateStart) > formatDateForComparaison(today));
