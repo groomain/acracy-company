@@ -38,7 +38,7 @@ export const ValidationModal = ({ open, handleClose, files, missionId, preselect
 
   const updateInvoice = (data) => {
     const allData = {
-      id: missionId,
+      id: preselectedFile?.externalId,
       ...data
     }
     dispatch(updateMissionLaunched(allData))
