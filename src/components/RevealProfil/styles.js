@@ -91,6 +91,12 @@ export default makeStyles(theme => ({
   selected: {
     color: theme.palette.primary.main
   },
+  button: {
+    width: '100%'
+  },
+  middleButton: {
+    margin: '0 1rem'
+  },
   customButtonContainer: {
     width: '100%',
     marginTop: 80

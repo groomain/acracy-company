@@ -82,7 +82,7 @@ const RevealProfil = ({ setCheckedProfiles, index, modeMission, profil, acracyBl
               <Grid xs={4} item container justify={'center'}>
                 <CustomButton title={'Voir son CV'}
                   handleClick={() => { return window.open(LINKEDIN_LINK, '_blank') }}
-                  className={clsx(classes.customButton, { [classes.customButtonModeMission]: modeMission })}
+                  className={classes.button}
                   disabled={!LINKEDIN_LINK}
                   theme={!LINKEDIN_LINK && "disabledOutlined"}
                 />
@@ -91,7 +91,7 @@ const RevealProfil = ({ setCheckedProfiles, index, modeMission, profil, acracyBl
               <Grid xs={4} item container justify={'center'}>
                 <CustomButton xs={4} title={'Voir son Portfolio'}
                   handleClick={() => downloadFile({ attachmentId: PORTFOLIO_UPLOAD })}
-                  className={clsx(classes.customButtonLeft, { [classes.customButtonModeMission]: modeMission })}
+                  className={clsx(classes.button, classes.middleButton)}
                   disabled={!PORTFOLIO_UPLOAD}
                   theme={!PORTFOLIO_UPLOAD && "disabledOutlined"}
                   loading={fileLoading}
@@ -101,7 +101,7 @@ const RevealProfil = ({ setCheckedProfiles, index, modeMission, profil, acracyBl
               <Grid xs={4} item container justify={'center'}>
                 <CustomButton title={'Voir son Site'}
                   handleClick={() => { return window.open(PORTFOLIO_LINK, '_blank') }}
-                  className={clsx(classes.customButtonRight, { [classes.customButtonModeMission]: modeMission })}
+                  className={classes.button}
                   disabled={!PORTFOLIO_LINK}
                   theme={!PORTFOLIO_LINK && "disabledOutlined"}
                 />
