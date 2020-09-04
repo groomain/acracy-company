@@ -320,9 +320,13 @@ const ProfileSelection = (props) => {
                           <Typography className={classes.tjmText}>Commission incluse</Typography>
                         </Grid>
                         <Grid item container justify="center" alignItems="center" className={classes.tjmSecondContainer}>
-                          <Typography variant={'body2'} className={classes.tjmSecondtext}>En
-                                                    pré-selectionnant ce profil, vous acceptez <span
-                              style={{ color: 'yellow' }}>les CGV</span> du profil</Typography>
+                          <Typography variant={'body2'} className={classes.tjmSecondtext}>En pré-selectionnant ce profil, vous acceptez {' '}
+                            <a href={profile?.serviceProviderProfile?.linkGeneralConditionOfSale || 'https://acracy.co/cgu-cgv/'}
+                              target="_blank"
+                              className={classes.link}>
+                              les cgv
+                           </a> du profil
+                           </Typography>
                         </Grid>
                       </Grid>
                       <RevealProfil profil={profile?.serviceProviderProfile}

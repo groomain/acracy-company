@@ -345,5 +345,13 @@ export const styles = makeStyles(theme => ({
   selectedProfileInfos: {
     color: theme.palette.secondary.black,
     margin: '0 1rem'
+  },
+  link: {
+    fontsize: 17,
+    color: theme.palette.primary.main,
+    textDecoration: 'none',
+    '&:hover': {
+      color: theme.palette.primary.bright
+    }
   }
 }));
