@@ -26,7 +26,7 @@ function* downloadFile(action) {
             'x-api-key': config.apiKey
           }
         });
-        window.open(file.url);
+        window.open(file.url, '_blank');
       } catch (error) {
         console.log(error);
         yield put(openSnackBar({ message: "Oups, une erreur est survenue", error: true }));
