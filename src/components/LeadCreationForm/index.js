@@ -38,7 +38,7 @@ const LeadCreationForm = ({ values, errors, touched, handleBlur, handleChange, l
   const { missionContext, missionRequirements, missionDetail, expertises, customDeliverable, search, desireds
   } = values;
 
-  const { listOfExpertises, expansionPanelOpen, sensitivities, leadCreationStep, updateLeadDraftLoading, leadSaveLoading, leadDraftId, changeLeadStatusLoading } = useSelector(state => ({
+  const { listOfExpertises, expansionPanelOpen, sensitivities, leadCreationStep, updateLeadDraftLoading, leadSaveLoading, leadDraftId, changeLeadStatusLoading, updateLeadDraftSuccess } = useSelector(state => ({
     listOfExpertises: state.getIn(['leadCreation', 'expertises']),
     expansionPanelOpen: state.getIn(['leadCreation', 'expansionPanelOpen']),
     sensitivities: state.getIn(['leadCreation', 'sensitivities']),
@@ -47,7 +47,8 @@ const LeadCreationForm = ({ values, errors, touched, handleBlur, handleChange, l
     leadCreationStep: state.getIn(['dashboard', 'leadCreationStep']),
     leadSaveLoading: state.getIn(['leadCreation', 'leadSaveLoading']),
     leadDraftId: state.getIn(['leadCreation', 'leadDraftId']),
-    changeLeadStatusLoading: state.getIn(['leadCreation', 'changeLeadStatusLoading'])
+    changeLeadStatusLoading: state.getIn(['leadCreation', 'changeLeadStatusLoading']),
+    updateLeadDraftSuccess: state.getIn(['leadCreation'], 'updateLeadDraftSuccess')
   }))
 
 
@@ -56,6 +57,13 @@ const LeadCreationForm = ({ values, errors, touched, handleBlur, handleChange, l
       dispatch(changeLeadStatusLaunched({ leadId: leadDraftId, status: 'NEED_HELP' }));
     }
   }, [leadDraftId]);
+
+  useEffect(() => {
+    if ((leadDraftId || updateLeadDraftSuccess) && hasToWaitBeforeGotoStep2) {
+      setHasToWaitBeforeGotoStep2(false);
+      setActiveStep(1);
+    }
+  }, [leadDraftId, updateLeadDraftSuccess]);
 
   const [searchedCategory, setSearchedCategory] = useState();
   const [deliverables, setDeliverables] = useState([]);
@@ -67,6 +75,7 @@ const LeadCreationForm = ({ values, errors, touched, handleBlur, handleChange, l
   const [disableSendBrief, setDisableSendBrief] = useState(true);
   const [activeStep, setActiveStep] = useState(leadCreationStep);
   const [hasToWaitBeforeCallHelp, setHasToWaitBeforeCallHelp] = useState(false);
+  const [hasToWaitBeforeGotoStep2, setHasToWaitBeforeGotoStep2] = useState(false);
 
   useEffect(() => {
     if (values?.missionContext?.budget?.value &&
@@ -409,8 +418,8 @@ const LeadCreationForm = ({ values, errors, touched, handleBlur, handleChange, l
     if (leadCreationStep === 0) {
       values.missionContext.duration.nb = parseInt(values.missionContext.duration.nb);
       values.missionContext.budget.value = parseInt(values.missionContext.budget.value);
-      leadSave(values)
-      setActiveStep(1)
+      leadSave(values);
+      setHasToWaitBeforeGotoStep2(true);
     } else {
       let redirectToMission = true;
       let redirect = false;
