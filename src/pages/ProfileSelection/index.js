@@ -352,7 +352,7 @@ const ProfileSelection = (props) => {
                 <Grid item container direction={"row"} spacing={1}>
                   {briefData.missionRequirements.expertises.map((tag, key) => <Grid item><Tag
                     key={key} title={tag.expertise.text} isPrimaryColor
-                    tagType="Prioritaire" isWithCheckbox checked={tag.priority}
+                    tagType="Prioritaire" isWithCheckbox checkedArray={tag.priority}
                     isDisabled
                   />
                   </Grid>)}
@@ -368,7 +368,7 @@ const ProfileSelection = (props) => {
                       isPrimaryColor
                       tagType="Critère indispensable"
                       isWithCheckbox
-                      checked={language?.essential}
+                      checkedArray={language?.essential}
                       isDisabled
                     />
                   )}
@@ -382,7 +382,7 @@ const ProfileSelection = (props) => {
                       isPrimaryColor
                       tagType="Critère indispensable"
                       isWithCheckbox
-                      checked={briefData.missionRequirements.sensitivity.essential}
+                      checkedArray={briefData.missionRequirements.sensitivity.essential}
                       isDisabled
                     />
                   </Grid>

@@ -60,7 +60,9 @@ export default makeStyles(theme => ({
     maxWidth: 337,
     borderRadius: 15,
     padding: 20,
-    alignItems: 'center'
+    display: 'flex',
+    alignItems: 'center',
+    direction: "column"
   },
   blackCardModeMission: {
     height: 287,
@@ -116,14 +118,6 @@ export default makeStyles(theme => ({
     padding: 10,
     paddingTop: 25
   },
-  tagContainer: {
-    padding: 20,
-    paddingTop: 5
-  },
-  tag: {
-    width: 'auto',
-    margin: 5
-  },
   profilElementItem: {
     width: 357,
     maxHeight: 87
@@ -141,7 +135,7 @@ export default makeStyles(theme => ({
   },
   firstBlock: {
     width: "100%",
-    margin :'auto'
+    margin: 'auto'
   },
   firstBlockModeMission: {
     width: "90%",
