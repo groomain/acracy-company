@@ -368,73 +368,73 @@ const ProfileSelection = (props) => {
 
             {/* Requirements */}
             <Grid container direction="column" className={classes.briefContainer}>
-              <Grid xs={9}>
-                <Box mt={5}>
+              <Box mt={15}>
+                <Grid xs={9}>
                   <Element name="lastContainer">
                     <div className={classes.bloc}>
                       <Typography variant={'h2'}>Détails du profil recherché</Typography>
                       <Typography variant={'h1'}>{briefData?.profile?.text || null}</Typography>
                     </div>
                   </Element>
-                </Box>
-                <div className={classes.bloc}>
-                  <Typography variant={'h4'} className={classes.title}>Expertises clés du
+                  <div className={classes.bloc}>
+                    <Typography variant={'h4'} className={classes.title}>Expertises clés du
                                     profil</Typography>
-                  <Grid item container direction={"row"} spacing={1}>
-                    {briefData.missionRequirements.expertises.map((tag, key) => <Grid item><Tag
-                      key={key} title={tag.expertise.text} isPrimaryColor
-                      tagType="Prioritaire" isWithCheckbox checkedArray={tag.priority}
-                      isDisabled
-                    />
-                    </Grid>)}
-                  </Grid>
-                </div>
-                <div className={classes.bloc}>
-                  <Typography variant={'h4'} className={classes.title}>Langue souhaitée</Typography>
-                  <Grid item item container direction={"row"} spacing={1}>
-                    {briefData?.missionRequirements?.languages?.map((language, i) =>
-                      <Tag
-                        key={i}
-                        title={formatLanguagesValues(language?.language)}
-                        isPrimaryColor
-                        tagType="Critère indispensable"
-                        isWithCheckbox
-                        checkedArray={language?.essential}
+                    <Grid item container direction={"row"} spacing={1}>
+                      {briefData.missionRequirements.expertises.map((tag, key) => <Grid item><Tag
+                        key={key} title={tag.expertise.text} isPrimaryColor
+                        tagType="Prioritaire" isWithCheckbox checkedArray={tag.priority}
                         isDisabled
                       />
-                    )}
-                  </Grid>
-                </div>
-                <div className={classes.bloc}>
-                  <Typography variant={'h4'} className={classes.title}>Sensibilité souhaitée</Typography>
-                  <Grid item container direction={"row"} spacing={1}>
-                    <Grid item>
-                      <Tag title={briefData.missionRequirements.sensitivity.sensitivity.text}
-                        isPrimaryColor
-                        tagType="Critère indispensable"
-                        isWithCheckbox
-                        checkedArray={briefData.missionRequirements.sensitivity.essential}
-                        isDisabled
-                      />
+                      </Grid>)}
                     </Grid>
-                  </Grid>
-                </div>
-                <div className={classes.bloc}>
-                  <Grid container direction="column">
-                    <Typography variant={'h4'} className={classes.title}>Séniorité souhaitée</Typography>
-                    <Typography variant={'h4'}
-                      className={classes.briefSeniority}>{formatSeniorityType(briefData.missionRequirements.seniority)}</Typography>
-                  </Grid>
-                </div>
-                <div className={classes.secondTitle}>
-                  <Typography variant={'h1'}>Ma Mission</Typography>
-                </div>
-                <div className={classes.bloc}>
-                  <Typography variant={'h2'}>Titre de la mission</Typography>
-                  <Typography variant={'h1'}>{briefData.missionContext.title}</Typography>
-                </div>
-              </Grid>
+                  </div>
+                  <div className={classes.bloc}>
+                    <Typography variant={'h4'} className={classes.title}>Langue souhaitée</Typography>
+                    <Grid item item container direction={"row"} spacing={1}>
+                      {briefData?.missionRequirements?.languages?.map((language, i) =>
+                        <Tag
+                          key={i}
+                          title={formatLanguagesValues(language?.language)}
+                          isPrimaryColor
+                          tagType="Critère indispensable"
+                          isWithCheckbox
+                          checkedArray={language?.essential}
+                          isDisabled
+                        />
+                      )}
+                    </Grid>
+                  </div>
+                  <div className={classes.bloc}>
+                    <Typography variant={'h4'} className={classes.title}>Sensibilité souhaitée</Typography>
+                    <Grid item container direction={"row"} spacing={1}>
+                      <Grid item>
+                        <Tag title={briefData.missionRequirements.sensitivity.sensitivity.text}
+                          isPrimaryColor
+                          tagType="Critère indispensable"
+                          isWithCheckbox
+                          checkedArray={briefData.missionRequirements.sensitivity.essential}
+                          isDisabled
+                        />
+                      </Grid>
+                    </Grid>
+                  </div>
+                  <div className={classes.bloc}>
+                    <Grid container direction="column">
+                      <Typography variant={'h4'} className={classes.title}>Séniorité souhaitée</Typography>
+                      <Typography variant={'h4'}
+                        className={classes.briefSeniority}>{formatSeniorityType(briefData.missionRequirements.seniority)}</Typography>
+                    </Grid>
+                  </div>
+                  <div className={classes.secondTitle}>
+                    <Typography variant={'h1'}>Ma Mission</Typography>
+                  </div>
+                  <div className={classes.bloc}>
+                    <Typography variant={'h2'}>Titre de la mission</Typography>
+                    <Typography variant={'h1'}>{briefData.missionContext.title}</Typography>
+                  </div>
+                </Grid>
 
+              </Box>
               {/* Mission details */}
               <Grid container className={classes.footerCard}>
                 {/* Mission details 1st row */}
