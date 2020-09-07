@@ -78,6 +78,7 @@ export const Mission = ({ mission, matching, today, ...props }) => {
   const startDate = mission?.brief?.missionContext?.startDate || matching?.missionContext?.startDate;
   const sortedInvoices = mission?.invoices?.filter(x => x.status === WAITING_FOR_PAYMENT).sort((a, b) => new Date(Math.round(new Date(a.paymentDate).getTime())) - new Date(Math.round(new Date(b.paymentDate).getTime())));
   const sortedCRA = mission?.invoices?.filter(x => x.status === WAITING_FOR_VALIDATION).sort((a, b) => new Date(Math.round(new Date(a.startDate).getTime())) - new Date(Math.round(new Date(b.startDate).getTime())));
+  const matchingStartDate = matching?.dateStartMatching;
 
   useEffect(() => {
     if (updateMissionSent) {
@@ -131,7 +132,7 @@ export const Mission = ({ mission, matching, today, ...props }) => {
             status: 'Matching en cours',
             avatar: match,
             title: 'Matching en cours',
-            subtext: `Garanti en 48h.\n Estimé au ${addTwoWorkingDays(startDate, 2)}`
+            subtext: `Garanti en 48h.\n Estimé au ${addTwoWorkingDays(matchingStartDate, 2)}`
           };
         case WAITING_FOR_CUSTOMER_SELECTION:
           return {
