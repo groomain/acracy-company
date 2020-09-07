@@ -2,7 +2,8 @@ import makeStyles from '@material-ui/core/styles/makeStyles';
 
 export default makeStyles(theme => ({
   root: {
-    width: 705
+    width: 705,
+    minHeight: '100vh',
   },
   rootModeMission: {
     backgroundColor: '#151d15',
@@ -56,7 +57,7 @@ export default makeStyles(theme => ({
   },
   blackCard: {
     backgroundColor: theme.palette.secondary.mid,
-    height: 287,
+    minHeight: 287,
     maxWidth: 337,
     borderRadius: 15,
     padding: 20,
@@ -126,14 +127,17 @@ export default makeStyles(theme => ({
   },
   profilElementItem: {
     width: 357,
-    maxHeight: 87
+    minHeight: 87
+  },
+  middleProfilElementItem: {
+    margin: '.5rem auto'
   },
   profilElementItemModeMission: {
     width: 235,
-    maxHeight: 87
+    minHeight: 87
   },
   profilElementContainer: {
-    maxHeight: 287,
+    marginLeft: '.8rem'
   },
   profilElementContainerModeMission: {
     maxHeight: 287,

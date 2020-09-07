@@ -16,7 +16,7 @@ import CustomLoader from "../Loader";
 // Pics
 import severine from '../../assets/pics/severine/severine-small.png';
 // Services
-import { formatLanguagesValues, formatSeniorityType } from '../../utils/services/format';
+import { formatSeniorityType } from '../../utils/services/format';
 import { downloadFileLaunched } from "../DownloadModal/reducer";
 import styles from './styles'
 
@@ -107,78 +107,76 @@ const RevealProfil = ({ setCheckedProfiles, index, modeMission, profil, acracyBl
                 />
               </Grid>
             </Grid>
-            <Grid item className={classes.textContainer}>
-              <Typography className={clsx(classes.text, { [classes.textModeMission]: modeMission })}>
-                {acracyBlurb}
-              </Typography>
-            </Grid>
-            {!modeMission &&
-              <Grid container direction={'row'} alignItems={'center'} className={classes.authorContainer}>
-                <CircleImage src={severine} />
-                <Typography variant="body2" className={classes.authorTypo}>le Blurb de Séverine</Typography>
-              </Grid>}
+            <Box my={3}>
+              {acracyBlurb &&
+                <>
+                  <Grid item className={classes.textContainer}>
+                    <Typography className={clsx(classes.text, { [classes.textModeMission]: modeMission })}>
+                      {acracyBlurb}
+                    </Typography>
+                  </Grid>
+                  {!modeMission &&
+                    <Grid container direction={'row'} alignItems={'center'} className={classes.authorContainer}>
+                      <CircleImage src={severine} />
+                      <Typography variant="body2" className={classes.authorTypo}>le Blurb de Séverine</Typography>
+                    </Grid>
+                  }
+                </>
+              }
+            </Box>
           </Grid>
-          <Grid container direction={"row"} justify={'space-between'} spacing={1} xs={12}>
-
-            <Grid item container xs={6} justify={'center'} alignItems="center" className={clsx(classes.blackCard, { [classes.blackCardModeMission]: modeMission })}>
-              <Grid container direction="column" justify="center" alignItems="center">
-                <Box my={1}>
-                  <img src={star} alt="Star" />
-                </Box>
-                <Grid item>
-                  <Typography variant='h4'>Expertises</Typography>
+          <Box my={1}>
+            <Grid container direction={"row"} xs={12}>
+              <Grid item container xs={6} justify={'center'} alignItems="center" className={clsx(classes.blackCard, { [classes.blackCardModeMission]: modeMission })}>
+                <Grid container direction="column" justify="center" alignItems="center">
+                  <Box my={1}>
+                    <img src={star} alt="Star" />
+                  </Box>
+                  <Grid item>
+                    <Typography variant='h4'>Expertises</Typography>
+                  </Grid>
+                </Grid>
+                <Grid container direction={"row"} justify={'center'}>
+                  {profil?.expertises?.map((item, index) =>
+                    <CheckableTag key={index} title={item.expertise.text} checked={item.priority} isDisabled />
+                  )}
                 </Grid>
               </Grid>
-              <Grid container direction={"row"} justify={'center'}>
-                {profil?.expertises?.map((item, index) =>
-                  <CheckableTag key={index} title={item.expertise.text} checked={item.priority} isDisabled />
-                )}
-                {profil?.expertises?.map((item, index) =>
-                  <CheckableTag key={index} title={item.expertise.text} checked={item.priority} isDisabled />
-                )}
-                {/*<Tag title="Influence" isPrimaryColor className={classes.tag}/>*/}
-                {/*<Tag title="Brand Content" isPrimaryColor className={classes.tag}/>*/}
-                {/*<Tag title="Présentation écrite" isPrimaryColor className={classes.tag}/>*/}
-                {/*<Tag title="Activation" className={classes.tag}/>*/}
-                {/*<Tag title="Créativité" className={classes.tag}/>*/}
-              </Grid>
-            </Grid>
 
-            <Grid item container xs={6} direction={"column"} justify={'space-between'} spacing={0}
-              className={clsx(classes.profilElementContainer, { [classes.profilElementContainerModeMission]: modeMission })}>
-              <Grid container spacing={1} item
-                className={clsx(classes.profilElementItem, { [classes.profilElementItemModeMission]: modeMission })}>
-                <ProfileElement
-                  category='Sensibilité'
-                  item1={profil?.sensitivity[0]?.text}
-                  item2={profil?.sensitivity[1] ? profil?.sensitivity[1].text : undefined}
-                  modeMission={modeMission}
-                />
-              </Grid>
-              <Grid container spacing={1} item
-                className={clsx(classes.profilElementItem, { [classes.profilElementItemModeMission]: modeMission })}>
-                <ProfileElement
-                  category='Langues'
-                  item1={profil?.languages && formatLanguagesValues(profil?.languages[0])}
-                  item2={(profil?.languages && profil?.languages[1]) ? formatLanguagesValues(profil?.languages[1]) : undefined}
-                  modeMission={modeMission}
-                />
-              </Grid>
-              <Grid container spacing={1} item
-                className={clsx(classes.profilElementItem, { [classes.profilElementItemModeMission]: modeMission })}>
-                <ProfileElement
-                  category='Séniorité'
-                  item1={formatSeniorityType(profil?.seniority)}
-                  modeMission={modeMission}
-                />
+              <Grid item container xs={6}
+                className={clsx(classes.profilElementContainer, { [classes.profilElementContainerModeMission]: modeMission })}>
+                <Grid container item
+                  className={clsx(classes.profilElementItem, { [classes.profilElementItemModeMission]: modeMission })}>
+                  <ProfileElement
+                    category='Sensibilité'
+                    items={profil?.sensitivities}
+                    modeMission={modeMission}
+                  />
+                </Grid>
+                <Grid container item
+                  className={clsx(classes.profilElementItem, classes.middleProfilElementItem, { [classes.profilElementItemModeMission]: modeMission })}>
+                  <ProfileElement
+                    category='Langues'
+                    items={profil?.languages}
+                    modeMission={modeMission}
+                  />
+                </Grid>
+                <Grid container item
+                  className={clsx(classes.profilElementItem, { [classes.profilElementItemModeMission]: modeMission })}>
+                  <ProfileElement
+                    category='Séniorité'
+                    items={[formatSeniorityType(profil?.seniority)]}
+                    modeMission={modeMission}
+                  />
+                </Grid>
               </Grid>
             </Grid>
-          </Grid>
+          </Box>
         </Grid>
         :
         <CustomLoader />
       }
-    </div>);
+    </div >);
 };
 
 export default RevealProfil;

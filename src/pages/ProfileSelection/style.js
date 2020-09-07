@@ -18,18 +18,17 @@ export const styles = makeStyles(theme => ({
     height: 17,
     paddingLeft: 2
   },
-  bottomContainer: {
-
+  element: {
+    position: 'relative',
+    width: '100%'
   },
   firstMiddleContainer: {
-    // height: '100vh',
-    // minHeight: 900
     padding: '2rem 0'
   },
   middleContainer: {
     paddingLeft: '6%',
-    marginTop: 100,
-    marginBottom: 200
+    marginTop: 150,
+    marginBottom: 100
   },
   loader: {
     width: '100vh',
@@ -41,7 +40,7 @@ export const styles = makeStyles(theme => ({
     padding: 15,
     width: 215,
     height: 322,
-    marginTop: 100
+    marginTop: 150
   },
   cardTitle: {
     paddingTop: 10,
@@ -274,10 +273,11 @@ export const styles = makeStyles(theme => ({
     color: theme.palette.primary.main
   },
   firstGridElement: {
-    position: 'absolute',
+    position: 'sticky',
     marginTop: 70,
+    top: 200,
     width: 215,
-    left: '80%'
+    right: 10
   },
   tjmSecondContainer: {
     backgroundColor: '#1b251c',
@@ -292,7 +292,8 @@ export const styles = makeStyles(theme => ({
     paddingTop: 70, paddingBottom: 70
   },
   briefContainer: {
-    width: '70%', marginLeft: "5%"
+    width: '70%',
+    marginLeft: "5%"
   },
   briefSeniority: {
     width: '100%',

@@ -271,77 +271,94 @@ const ProfileSelection = (props) => {
             </List>
           </Grid>}
 
-
-        {briefData ?
-          <Grid item container xs={6} className={classes.middleContainer} direction="column">
-            <Grid item container direction="column" className={classes.firstMiddleContainer}>
-              <Typography className={classes.mainTitle}>Il est temps de faire votre sélection !</Typography>
-              {briefData?.acracyRecommandation &&
-                <>
-                  <Typography variant={'h2'}>Le mot d'acracy</Typography>
-                  <Typography className={classes.word}>{briefData.acracyRecommandation}</Typography>
-                  <Grid container direction={'row'} alignItems={'center'} className={classes.authorContainer}>
-                    <CircleImage src={severine} />
-                    <Typography variant="body2" className={classes.authorTypo}>
-                      Séverine, Chief Talent Officier
+        {briefData
+          ? <Grid xs={9} container direction="column">
+            <Grid container>
+              <Grid item container xs={9} className={classes.middleContainer} direction="column">
+                <Grid item container direction="column" className={classes.firstMiddleContainer}>
+                  <Typography className={classes.mainTitle}>Il est temps de faire votre sélection !</Typography>
+                  {briefData?.acracyRecommandation &&
+                    <>
+                      <Typography variant={'h2'}>Le mot d'acracy</Typography>
+                      <Typography className={classes.word}>{briefData.acracyRecommandation}</Typography>
+                      <Grid container direction={'row'} alignItems={'center'} className={classes.authorContainer}>
+                        <CircleImage src={severine} />
+                        <Typography variant="body2" className={classes.authorTypo}>
+                          Séverine, Chief Talent Officier
                 </Typography>
-                  </Grid>
-                </>
-              }
-            </Grid>
+                      </Grid>
+                    </>
+                  }
+                </Grid>
+              </Grid>
 
+              <Grid item container xs={3}>
+                <Grid item container direction={'column'} className={classes.card}>
+                  <Typography variant={'h3'} className={classes.cardTitle}>Faites votre choix</Typography>
+                  <Typography variant={'body1'}>Cliquez sur ce bouton <img src={miniSwitch} alt="mini-switch" className={classes.miniSwitch} /> pour pré-selectionner un ou
+                            plusieurs profils. Vous
+                            pourrez ensuite valider votre selection ou réaliser un/des entretien.s.</Typography>
+                </Grid>
+              </Grid>
+            </Grid>
             {/* Available profiles */}
             <div ref={elementsRef}>
               <div ref={heightRef}>
                 {quotesData.map((profile, i) => {
                   // console.log('profile', profile)
                   return (
-                    <Element name={i} >
-                      <Grid item container direction={'column'}
-                        className={classes.firstGridElement}>
-                        <Grid item container justify={'center'} alignItems={'center'} className={classes.tjmContainer} spacing={0}>
-                          <img src={infosSmall} alt={'infoSmall'}
-                            className={classes.infoTjm}
-                            aria-owns={open ? 'mouse-over-popover' : undefined}
-                            aria-haspopup="true" onMouseEnter={handlePopoverOpen}
-                            onMouseLeave={handlePopoverClose} />
-                          {open &&
-                            <Grid item container direction={'column'}
-                              className={classes.paper}>
-                              <Typography className={classes.popoverTypoTitle}>Pourquoi ce TJM
-                                                        étrange ?</Typography>
-                              <Typography className={classes.popoverTypo}>
-                                Nous incluons dans le TJM des freelances les frais de X%
-                                liés à l’affacturage.
-                                C’est un système qui leur permet d’être protégés avec un
-                                paiement rapide, et qui nous permet de fidéliser les
-                                                        meilleurs freelances.</Typography>
-                            </Grid>
-                          }
-                          <Typography className={classes.tjm}>{profile?.averageDailyRateNegotiatedForServiceProvider} €/j</Typography>
-                          <Grid item container direction={'row'} justify={'center'}
-                            alignItems={'center'}>
-                            <Typography className={classes.tjmText}>Soit </Typography>
-                            <div className={classes.tjmWithTaxContainer}>
-                              <Typography className={classes.tjmWithTax}>{profile?.averageDailyRateNegotiatedForCompany?.toFixed(2)}€</Typography>        {/* ///////////////////////// */}
-                            </div>
-                          </Grid>
-                          <Typography className={classes.tjmText}>Commission incluse</Typography>
+                    <Element name={i} className={classes.element}>
+                      <Grid container>
+                        <Grid item xs={9}>
+                          <RevealProfil
+                            profil={profile?.serviceProviderProfile}
+                            acracyBlurb={profile?.acracyBlurb}
+                            className={classes.revealProfil} index={i}
+                            setCheckedProfiles={handleCheckedProfiles} />
                         </Grid>
-                        <Grid item container justify="center" alignItems="center" className={classes.tjmSecondContainer}>
-                          <Typography variant={'body2'} className={classes.tjmSecondtext}>En pré-selectionnant ce profil, vous acceptez {' '}
-                            <a href={profile?.serviceProviderProfile?.linkGeneralConditionOfSale || 'https://acracy.co/cgu-cgv/'}
-                              target="_blank"
-                              className={classes.link}>
-                              les cgv
+                        <Grid xs={3}>
+                          <Grid item container direction={'column'} className={classes.firstGridElement}>
+                            <Grid item container justify={'center'} alignItems={'center'} className={classes.tjmContainer} spacing={0}>
+                              <img src={infosSmall} alt={'infoSmall'}
+                                className={classes.infoTjm}
+                                aria-owns={open ? 'mouse-over-popover' : undefined}
+                                aria-haspopup="true" onMouseEnter={handlePopoverOpen}
+                                onMouseLeave={handlePopoverClose} />
+                              {open &&
+                                <Grid item container direction={'column'}
+                                  className={classes.paper}>
+                                  <Typography className={classes.popoverTypoTitle}>Pourquoi ce TJM
+                                                        étrange ?</Typography>
+                                  <Typography className={classes.popoverTypo}>
+                                    Nous incluons dans le TJM des freelances les frais de X%
+                                    liés à l’affacturage.
+                                    C’est un système qui leur permet d’être protégés avec un
+                                    paiement rapide, et qui nous permet de fidéliser les
+                                                        meilleurs freelances.</Typography>
+                                </Grid>
+                              }
+                              <Typography className={classes.tjm}>{profile?.averageDailyRateNegotiatedForServiceProvider} €/j</Typography>
+                              <Grid item container direction={'row'} justify={'center'}
+                                alignItems={'center'}>
+                                <Typography className={classes.tjmText}>Soit </Typography>
+                                <div className={classes.tjmWithTaxContainer}>
+                                  <Typography className={classes.tjmWithTax}>{profile?.averageDailyRateNegotiatedForCompany?.toFixed(2)}€</Typography>        {/* ///////////////////////// */}
+                                </div>
+                              </Grid>
+                              <Typography className={classes.tjmText}>Commission incluse</Typography>
+                            </Grid>
+                            <Grid item container justify="center" alignItems="center" className={classes.tjmSecondContainer}>
+                              <Typography variant={'body2'} className={classes.tjmSecondtext}>En pré-selectionnant ce profil, vous acceptez {' '}
+                                <a href={profile?.serviceProviderProfile?.linkGeneralConditionOfSale || 'https://acracy.co/cgu-cgv/'}
+                                  target="_blank"
+                                  className={classes.link}>
+                                  les cgv
                            </a> du profil
                            </Typography>
+                            </Grid>
+                          </Grid>
                         </Grid>
                       </Grid>
-                      <RevealProfil profil={profile?.serviceProviderProfile}
-                        acracyBlurb={profile?.acracyBlurb}
-                        className={classes.revealProfil} index={i}
-                        setCheckedProfiles={handleCheckedProfiles} />
                     </Element>
                   )
                 }
@@ -351,106 +368,108 @@ const ProfileSelection = (props) => {
 
             {/* Requirements */}
             <Grid container direction="column" className={classes.briefContainer}>
-              <Box mt={5}>
-                <Element name="lastContainer">
-                  <div className={classes.bloc}>
-                    <Typography variant={'h2'}>Détails du profil recherché</Typography>
-                    <Typography variant={'h1'}>{briefData?.profile?.text || null}</Typography>
-                  </div>
-                </Element>
-              </Box>
-              <div className={classes.bloc}>
-                <Typography variant={'h4'} className={classes.title}>Expertises clés du
+              <Grid xs={9}>
+                <Box mt={5}>
+                  <Element name="lastContainer">
+                    <div className={classes.bloc}>
+                      <Typography variant={'h2'}>Détails du profil recherché</Typography>
+                      <Typography variant={'h1'}>{briefData?.profile?.text || null}</Typography>
+                    </div>
+                  </Element>
+                </Box>
+                <div className={classes.bloc}>
+                  <Typography variant={'h4'} className={classes.title}>Expertises clés du
                                     profil</Typography>
-                <Grid item container direction={"row"} spacing={1}>
-                  {briefData.missionRequirements.expertises.map((tag, key) => <Grid item><Tag
-                    key={key} title={tag.expertise.text} isPrimaryColor
-                    tagType="Prioritaire" isWithCheckbox checkedArray={tag.priority}
-                    isDisabled
-                  />
-                  </Grid>)}
-                </Grid>
-              </div>
-              <div className={classes.bloc}>
-                <Typography variant={'h4'} className={classes.title}>Langue souhaitée</Typography>
-                <Grid item item container direction={"row"} spacing={1}>
-                  {briefData?.missionRequirements?.languages?.map((language, i) =>
-                    <Tag
-                      key={i}
-                      title={formatLanguagesValues(language?.language)}
-                      isPrimaryColor
-                      tagType="Critère indispensable"
-                      isWithCheckbox
-                      checkedArray={language?.essential}
+                  <Grid item container direction={"row"} spacing={1}>
+                    {briefData.missionRequirements.expertises.map((tag, key) => <Grid item><Tag
+                      key={key} title={tag.expertise.text} isPrimaryColor
+                      tagType="Prioritaire" isWithCheckbox checkedArray={tag.priority}
                       isDisabled
                     />
-                  )}
-                </Grid>
-              </div>
-              <div className={classes.bloc}>
-                <Typography variant={'h4'} className={classes.title}>Sensibilité souhaitée</Typography>
-                <Grid item container direction={"row"} spacing={1}>
-                  <Grid item>
-                    <Tag title={briefData.missionRequirements.sensitivity.sensitivity.text}
-                      isPrimaryColor
-                      tagType="Critère indispensable"
-                      isWithCheckbox
-                      checkedArray={briefData.missionRequirements.sensitivity.essential}
-                      isDisabled
-                    />
+                    </Grid>)}
                   </Grid>
-                </Grid>
-              </div>
-              <div className={classes.bloc}>
-                <Typography variant={'h4'} className={classes.title}>Séniorite souhaitée</Typography>
-                <Typography variant={'h4'}
-                  className={classes.briefSeniority}>{formatSeniorityType(briefData.missionRequirements.seniority)}</Typography>
-              </div>
-              <div className={classes.secondTitle}>
-                <Typography variant={'h1'}>Ma Mission</Typography>
-              </div>
-              <div className={classes.bloc}>
-                <Typography variant={'h2'}>Titre de la mission</Typography>
-                <Typography variant={'h1'}>{briefData.missionContext.title}</Typography>
-              </div>
-            </Grid>
+                </div>
+                <div className={classes.bloc}>
+                  <Typography variant={'h4'} className={classes.title}>Langue souhaitée</Typography>
+                  <Grid item item container direction={"row"} spacing={1}>
+                    {briefData?.missionRequirements?.languages?.map((language, i) =>
+                      <Tag
+                        key={i}
+                        title={formatLanguagesValues(language?.language)}
+                        isPrimaryColor
+                        tagType="Critère indispensable"
+                        isWithCheckbox
+                        checkedArray={language?.essential}
+                        isDisabled
+                      />
+                    )}
+                  </Grid>
+                </div>
+                <div className={classes.bloc}>
+                  <Typography variant={'h4'} className={classes.title}>Sensibilité souhaitée</Typography>
+                  <Grid item container direction={"row"} spacing={1}>
+                    <Grid item>
+                      <Tag title={briefData.missionRequirements.sensitivity.sensitivity.text}
+                        isPrimaryColor
+                        tagType="Critère indispensable"
+                        isWithCheckbox
+                        checkedArray={briefData.missionRequirements.sensitivity.essential}
+                        isDisabled
+                      />
+                    </Grid>
+                  </Grid>
+                </div>
+                <div className={classes.bloc}>
+                  <Grid container direction="column">
+                    <Typography variant={'h4'} className={classes.title}>Séniorité souhaitée</Typography>
+                    <Typography variant={'h4'}
+                      className={classes.briefSeniority}>{formatSeniorityType(briefData.missionRequirements.seniority)}</Typography>
+                  </Grid>
+                </div>
+                <div className={classes.secondTitle}>
+                  <Typography variant={'h1'}>Ma Mission</Typography>
+                </div>
+                <div className={classes.bloc}>
+                  <Typography variant={'h2'}>Titre de la mission</Typography>
+                  <Typography variant={'h1'}>{briefData.missionContext.title}</Typography>
+                </div>
+              </Grid>
 
-            {/* Mission details */}
-            <Grid container className={classes.footerCard}>
-              {/* Mission details 1st row */}
-              <Grid item xs={5} className={classes.blocTypoUp}>
-                <Typography variant={"h4"} className={classes.typo}>Format</Typography>
-                <Typography variant={"body1"}
-                  className={classes.typo}>{formatType(briefData.missionContext.format)}</Typography>
-              </Grid>
-              <Grid item xs={5} className={classes.blocTypoUp}>
-                <Typography variant={"h4"} className={classes.typo}>Durée</Typography>
-                <Typography variant={"body1"}
-                  className={classes.typo}>{briefData.missionContext.duration.nb}
-                  {' '}
-                  {formatDurationType(briefData.missionContext.duration.unit).toLowerCase()}
-                  {' '}
-                  à partir du {formatDate(briefData.missionContext.startDate)}
-                </Typography>
-              </Grid>
-              <Grid container item xs={2} direction={'column'}>
-                <Grid item container className={classes.blocTypoUp}>
-                  <Typography variant={"h4"} className={classes.typo}>TJM</Typography>
+              {/* Mission details */}
+              <Grid container className={classes.footerCard}>
+                {/* Mission details 1st row */}
+                <Grid item xs={5} className={classes.blocTypoUp}>
+                  <Typography variant={"h4"} className={classes.typo}>Format</Typography>
                   <Typography variant={"body1"}
-                    className={classes.typo}>{briefData.missionContext.estimatedAverageDailyRate} €/j</Typography>
+                    className={classes.typo}>{formatType(briefData.missionContext.format)}</Typography>
                 </Grid>
-              </Grid>
-              {/* Mission details 2nd row */}
-              <Grid container>
-                <Grid container item xs={5}>
-                  <Grid item className={classes.blocTypoDown}>
-                    <Typography variant={"h4"} className={classes.typo}>Rythme</Typography>
+                <Grid item xs={5} className={classes.blocTypoUp}>
+                  <Typography variant={"h4"} className={classes.typo}>Durée</Typography>
+                  <Typography variant={"body1"}
+                    className={classes.typo}>{briefData.missionContext.duration.nb}
+                    {' '}
+                    {formatDurationType(briefData.missionContext.duration.unit).toLowerCase()}
+                    {' '}
+                  à partir du {formatDate(briefData.missionContext.startDate)}
+                  </Typography>
+                </Grid>
+                <Grid container item xs={2} direction={'column'}>
+                  <Grid item container className={classes.blocTypoUp}>
+                    <Typography variant={"h4"} className={classes.typo}>TJM</Typography>
                     <Typography variant={"body1"}
-                      className={classes.typo}>{formatFrequencyType(briefData.missionContext.weeklyRythm)}
-                    </Typography>
+                      className={classes.typo}>{briefData.missionContext.estimatedAverageDailyRate} €/j</Typography>
                   </Grid>
                 </Grid>
-                <Grid container xs={7}>
+                {/* Mission details 2nd row */}
+                <Grid container>
+                  <Grid container item xs={5}>
+                    <Grid item className={classes.blocTypoDown}>
+                      <Typography variant={"h4"} className={classes.typo}>Rythme</Typography>
+                      <Typography variant={"body1"}
+                        className={classes.typo}>{formatFrequencyType(briefData.missionContext.weeklyRythm)}
+                      </Typography>
+                    </Grid>
+                  </Grid>
                   {(briefData?.missionContext?.format === 'INPLACE_ONLY' || briefData?.missionContext?.format === 'BOTH'
                     ? <Grid item className={classes.blocTypoDown}>
                       <Typography variant={"h4"} className={classes.typo}>Adresse</Typography>
@@ -461,56 +480,46 @@ const ProfileSelection = (props) => {
                   )}
                 </Grid>
               </Grid>
+
+              <Grid container direction={'column'} className={classes.briefContainer}>
+                <div className={classes.bloc}>
+                  <Typography variant={'h2'}>Livrable.s</Typography>
+                  <Grid container direction={'row'} className={classes.tagContainer} spacing={1}>
+                    {briefData?.deliverables?.map((tag, key) =>
+                      <Grid item>
+                        <Tag key={key} title={tag.text} isPrimaryColor={false} />
+                      </Grid>)}
+                  </Grid>
+                </div>
+                <div className={classes.bloc}>
+
+                  <CustomExpansionPanel isTag={false}
+                    panelTitle="Contexte de la mission et tâches à réaliser">
+                    <Typography>
+                      {briefData.missionDetail.contextAndTasks}
+                    </Typography>
+                  </CustomExpansionPanel>
+                </div>
+                <div className={classes.bloc}>
+
+                  <CustomExpansionPanel isTag={false} panelTitle="Détails des livrables">
+                    <Typography>
+                      {briefData.missionDetail.detailsOfDeliverables}
+                    </Typography>
+                  </CustomExpansionPanel>
+                </div>
+              </Grid>
             </Grid>
 
-            <Grid container direction={'column'} className={classes.briefContainer}>
-              <div className={classes.bloc}>
-                <Typography variant={'h2'}>Livrable.s</Typography>
-                <Grid container direction={'row'} className={classes.tagContainer} spacing={1}>
-                  {briefData?.deliverables?.map((tag, key) =>
-                    <Grid item>
-                      <Tag key={key} title={tag.text} isPrimaryColor={false} />
-                    </Grid>)}
-                </Grid>
-              </div>
-              <div className={classes.bloc}>
-
-                <CustomExpansionPanel isTag={false}
-                  panelTitle="Contexte de la mission et tâches à réaliser">
-                  <Typography>
-                    {briefData.missionDetail.contextAndTasks}
-                  </Typography>
-                </CustomExpansionPanel>
-              </div>
-              <div className={classes.bloc}>
-
-                <CustomExpansionPanel isTag={false} panelTitle="Détails des livrables">
-                  <Typography>
-                    {briefData.missionDetail.detailsOfDeliverables}
-                  </Typography>
-                </CustomExpansionPanel>
-              </div>
-            </Grid>
           </Grid>
-          :
-          <Grid item container xs={12} className={classes.loader} direction="column" justify="center"
+          : <Grid item container xs={12} className={classes.loader} direction="column" justify="center"
             alignItems="center">
             <CustomLoader />
           </Grid>
         }
-
-        {briefData &&
-          <Grid item container xs={3}>
-            <Grid item container direction={'column'} className={classes.card}>
-              <Typography variant={'h3'} className={classes.cardTitle}>Faites votre choix</Typography>
-              <Typography variant={'body1'}>Cliquez sur ce bouton <img src={miniSwitch} alt="mini-switch" className={classes.miniSwitch} /> pour pré-selectionner un ou
-                            plusieurs profils. Vous
-                            pourrez ensuite valider votre selection ou réaliser un/des entretien.s.</Typography>
-            </Grid>
-          </Grid>
-        }
       </Grid>
-      {briefData &&
+      {
+        briefData &&
         <Grid item container className={classes.cart} direction={'row'} xs={12}>
           <Grid container item xs={9} direction={'row'}>
             <Typography
@@ -663,7 +672,6 @@ const ProfileSelection = (props) => {
         </Grid>
       </Dialog>
     </Grid >
-
   );
 };
 export default ProfileSelection;
