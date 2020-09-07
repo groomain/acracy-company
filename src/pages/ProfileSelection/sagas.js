@@ -55,8 +55,8 @@ function* validateProfiles(action) {
     } else if (type === 'REFUSE_ALL_QUOTES') {
       body.type = type;
       body.payload = {
-        reason: reason,
-        message: text
+        reasonForRefusal: reason,
+        messageForRefusal: text
       }
     }
     const validateProfiles = yield API.post(config.apiGateway.NAME, `/briefs/${quoteId}/actions`, {
