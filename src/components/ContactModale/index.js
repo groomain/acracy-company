@@ -28,6 +28,8 @@ const ContactModale = ({
   const contactAcracy = (message, reason, interview) => {
     dispatch(contactAcracyLaunched({ message, reason, interview }));
     handleContactOpen();
+    setContactMessage('');
+    setContactSelect('');
   };
 
   const handleContactOpen = () => {
@@ -48,8 +50,8 @@ const ContactModale = ({
         <CustomSelect placeholder="Sélectionner raison" label="Raison*" optionsValues={reasons} value={contactSelect} handleChangeOut={setContactSelect} withDisabledValue />
         <CustomTextArea placeholder={placeHolder} valueOut={contactMessage} handleChangeOut={setContactMessage} />
         <CustomButton theme="filledButton" style={{ width: 122 }} title="Envoyer"
-                      disabled={contactSelect === reasons[0]}
-                      handleClick={() => contactAcracy(contactMessage, contactSelect, interview)} loading={contactLoading} />
+          disabled={contactSelect === reasons[0]}
+          handleClick={() => contactAcracy(contactMessage, contactSelect, interview)} loading={contactLoading} />
       </Grid>
     </Dialog>
   );

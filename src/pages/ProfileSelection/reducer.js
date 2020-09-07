@@ -57,7 +57,7 @@ const { actions, reducer } = createSlice({
       .set('contactLoading', true)
       .set('contactResponse', null),
     contactAcracySuccess: (state, action) => state
-      .set('contactLoading', true)
+      .set('contactLoading', false)
       .set('contactResponse', action.payload),
     contactAcracyFailure: (state, action) => state
       .set('contactResponse', null)

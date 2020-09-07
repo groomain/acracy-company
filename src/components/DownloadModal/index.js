@@ -13,8 +13,8 @@ import { downloadFileLaunched } from "./reducer";
 
 export const DownloadModal = ({ open, setOpen, handleClose, files, type, ...props }) => {
   const classes = styles();
-  const filesName = files.map((file, index) => file.name);
-  const filesId = files.map((file, index) => file.externalId);
+  const filesName = files.map((file, index) => file?.name);
+  const filesId = files.map((file, index) => file?.externalId);
   const [file, setFile] = React.useState(null);
   const dispatch = useDispatch();
 

@@ -54,8 +54,10 @@ function* validateProfiles(action) {
       body.payload = { basket: listId };
     } else if (type === 'REFUSE_ALL_QUOTES') {
       body.type = type;
-      body.text = text;
-      body.reason = reason;
+      body.payload = {
+        reasonForRefusal: reason,
+        messageForRefusal: text
+      }
     }
     const validateProfiles = yield API.post(config.apiGateway.NAME, `/briefs/${quoteId}/actions`, {
       headers: {
@@ -75,27 +77,39 @@ function* validateProfiles(action) {
 }
 
 function* contactAcracy(action) {
-  try {
-    const { message, reason, interview } = action.payload;
-    const validateProfiles = yield API.post(config.apiGateway.NAME, `/messages`, {
-      headers: {
-        'x-api-key': config.apiKey
-      },
-      body: {
-        type: "COMPANY_EMPLOYEE_CONTACT",
-        payload: {
-          reason: reason,
-          message: message
-        }
-      }
-    });
+  const { message, reason, interview, selectedProfiles } = action.payload;
+  let sendMessage;
 
-    yield put(contactAcracySuccess(validateProfiles));
+  try {
     if (interview) {
+      sendMessage = yield API.post(config.apiGateway.NAME, `/messages`, {
+        headers: {
+          'x-api-key': config.apiKey
+        },
+        body: {
+          type: "COMPANY_JOB_INTERVIEW",
+          payload: {
+            message: selectedProfiles.toString()
+          }
+        }
+      })
       yield put(openSnackBar({ message: "👉 N’oubliez pas de mettre à jour votre sélection de profils une fois les entretiens passés" }));
     } else {
+      sendMessage = yield API.post(config.apiGateway.NAME, `/messages`, {
+        headers: {
+          'x-api-key': config.apiKey
+        },
+        body: {
+          type: "COMPANY_EMPLOYEE_CONTACT",
+          payload: {
+            reason: reason,
+            message: message
+          }
+        }
+      });
       yield put(openSnackBar({ message: "Votre message a été envoyé avec succès" }));
     }
+    yield put(contactAcracySuccess(sendMessage));
   } catch (err) {
     console.log(err);
     yield put(contactAcracyFailure(err));
