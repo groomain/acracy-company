@@ -54,7 +54,7 @@ export default makeStyles(theme => ({
     width: '28%',
   },
   phoneMargin: {
-    marginTop: 10
+    marginTop: -20
   },
   charteContainer: {
     marginTop: 25,
