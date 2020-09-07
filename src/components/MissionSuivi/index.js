@@ -34,10 +34,10 @@ export const MissionSuivi = ({ data, pathname, ...props }) => {
   const existingSteps = {
     "WAITING_FOR_ACCEPTANCE": 0,
     "WAITING_FOR_MATCHING": 1,
-    "WAITING_FOR_QUOTES": 2,
-    "WAITING_FOR_CUSTOMER_SELECTION": 3,
-    "IN_PROGRESS": 4,
-    "CLOSED": 5
+    "WAITING_FOR_QUOTES": 1,
+    "WAITING_FOR_CUSTOMER_SELECTION": 2,
+    "IN_PROGRESS": 3,
+    "CLOSED": 4
   };
   const step = data.status ? existingSteps[data.status] : 0;
 
