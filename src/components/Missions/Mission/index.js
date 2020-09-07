@@ -145,8 +145,8 @@ export const Mission = ({ mission, matching, today, ...props }) => {
           return {
             status: 'Devis à valider',
             buttonText: 'Valider devis',
-            avatar: quotes?.brief.serviceProviderProfile.linkedinAvatar,
-            title: `${quotes?.brief.serviceProviderProfile.firstName} ${quotes?.brief.serviceProviderProfile.lastName} `,
+            avatar: quotes && quotes[0]?.serviceProviderProfile?.linkedinAvatar,
+            title: `${quotes && quotes[0]?.serviceProviderProfile?.firstName} ${quotes && quotes[0]?.serviceProviderProfile?.lastName} `,
           };
         default:
           break;
