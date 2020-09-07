@@ -75,12 +75,21 @@ const ProfileSelection = (props) => {
   const heightRef = useRef();
   const elementsRef = useRef();
   let Element = Scroll.Element;
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = React.useState();
   const open = Boolean(anchorEl);
 
   // Popover pour les profils du panier
-  const [anchorElPopover, setAnchorElPopover] = React.useState(null);
-  const openPopover = Boolean(anchorElPopover);
+  const [popOpened, setPopOpened] = useState({
+    open: false,
+    anchorEl: null
+  })
+
+  const setAnchorElPopover = (anchorEl, id) => {
+    setPopOpened({
+      id,
+      anchorEl: anchorEl
+    })
+  }
 
   // Modale - aucun profil sélectionné
   const [noProfileModaleOpen, setNoProfileModaleOpen] = useState(false);
@@ -511,21 +520,30 @@ const ProfileSelection = (props) => {
                 'Ma pré-sélection'
               }
             </Typography>
-            {checkedProfiles.map((profileIndex, index) =>
-              <ListItem className={classes.cartList}>
-                <ListItemAvatar className={classes.selectedProfilesContainer}>
-                  <Avatar
-                    onMouseEnter={(event) => { setAnchorElPopover(event.currentTarget); }}
-                    onMouseLeave={() => { setAnchorElPopover(null); }}
-                    className={classes.avatar}
-                    src={quotesData[profileIndex].serviceProviderProfile.linkedinAvatar}
-                    alt={quotesData[profileIndex].serviceProviderProfile.firstName}
-                  >
-                  </Avatar>
+            <List className={classes.cartList}>
+              {checkedProfiles.map((profileIndex, index) =>
+                <>
+                  <ListItem key={index}  >
+                    <ListItemAvatar className={classes.selectedProfilesContainer}>
+                      <Avatar
+                        className={classes.avatar}
+                        src={quotesData[profileIndex].serviceProviderProfile.linkedinAvatar || avatarPlaceholder}
+                        alt={quotesData[profileIndex].serviceProviderProfile.firstName}
+                        onMouseEnter={(event) => { setAnchorElPopover(event.currentTarget, index); }}
+                        onMouseLeave={() => { setAnchorElPopover(null); }}
+                      >
+                      </Avatar>
+
+                      <Grid item container direction="column" style={{ display: 'none' }}> {/* Hide profile infos */}
+                        <Typography variant="subtitle2" className={classes.selectedProfileInfos}>{quotesData[profileIndex].serviceProviderProfile.firstName}</Typography>
+                        <Typography variant="body1" className={classes.selectedProfileInfos}>{quotesData[profileIndex].serviceProviderProfile.profile.text}</Typography>
+                      </Grid>
+                    </ListItemAvatar>
+                  </ListItem>
                   <Popover
                     id="mouse-over-popover"
-                    open={openPopover}
-                    anchorEl={anchorElPopover}
+                    open={popOpened.id === index}
+                    anchorEl={popOpened.anchorEl}
                     onClose={() => setAnchorElPopover(null)}
                     anchorOrigin={{
                       vertical: 'top',
@@ -543,13 +561,9 @@ const ProfileSelection = (props) => {
                   >
                     {quotesData[profileIndex].serviceProviderProfile.firstName} {quotesData[profileIndex].serviceProviderProfile.lastName}
                   </Popover>
-                  <Grid item container direction="column">
-                    <Typography variant="subtitle2" className={classes.selectedProfileInfos}>{quotesData[profileIndex].serviceProviderProfile.firstName}</Typography>
-                    <Typography variant="body1" className={classes.selectedProfileInfos}>{quotesData[profileIndex].serviceProviderProfile.profile.text}</Typography>
-                  </Grid>
-                </ListItemAvatar>
-              </ListItem>
-            )}
+                </>
+              )}
+            </List>
           </Grid>
           {checkedProfiles.length === 0 ?
             <Grid item container direction={'row'} xs={3}>

@@ -321,10 +321,10 @@ export const styles = makeStyles(theme => ({
   },
   cartAvatar: {
     width: 46,
-    height: 46
+    height: 46,
   },
   cartList: {
-    width: 250
+    display: 'flex'
   },
   cartButton1: {
     width: 221, marginRight: 20
@@ -340,7 +340,8 @@ export const styles = makeStyles(theme => ({
   },
   selectedProfilesContainer: {
     display: 'flex',
-    alignItems: 'center'
+    alignItems: 'center',
+    position: 'relative'
   },
   selectedProfileInfos: {
     color: theme.palette.secondary.black,
