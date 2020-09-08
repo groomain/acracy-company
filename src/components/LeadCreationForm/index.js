@@ -49,8 +49,9 @@ const LeadCreationForm = ({ values, errors, touched, handleBlur, handleChange, l
     leadDraftId: state.getIn(['leadCreation', 'leadDraftId']),
     changeLeadStatusLoading: state.getIn(['leadCreation', 'changeLeadStatusLoading']),
     updateLeadDraftSuccess: state.getIn(['leadCreation'], 'updateLeadDraftSuccess')
-  }))
+  }));
 
+  const FORMATTED_DAY = 'DAY' || 'Jours';
 
   useEffect(() => {
     if (hasToWaitBeforeCallHelp) {
@@ -80,31 +81,31 @@ const LeadCreationForm = ({ values, errors, touched, handleBlur, handleChange, l
   useEffect(() => {
     if (values?.missionContext?.budget?.value &&
       values?.missionContext?.budget?.type &&
-      values?.missionContext?.duration?.nb &&
-      values?.missionContext?.duration?.unit &&
-      values?.missionContext?.weeklyRythm &&
-      values?.missionContext?.profilNumber) {
-      let preciseRate
+      values?.missionContext?.duration?.nb
+    ) {
+      let preciseRate;
+      let daysNb = values?.missionContext?.weeklyRythm || 5;
+      let profilsNumber = values?.missionContext?.profilNumber || 1;
+      let durationUnit = values?.missionContext?.duration?.unit || 'DAY';
 
-      let daysNb = values?.missionContext?.weeklyRythm
       if (values?.missionContext?.budget?.type === 'DAILY_RATE') {  // DAILY_RATE
         // montant global = budget x durée x nbprofils x 1.15
-        if (values?.missionContext?.duration?.unit === 'MONTH') {
-          preciseRate = parseInt(values?.missionContext?.budget?.value, 10) * daysNb * parseInt(values?.missionContext?.duration?.nb, 10) * 4 * parseInt(values?.missionContext?.profilNumber, 10) * (1+process.env.REACT_APP_COMMISSION_RATE);
-        } else if (values?.missionContext?.duration?.unit === 'WEEK') {
-          preciseRate = parseInt(values?.missionContext?.budget?.value, 10) * daysNb * parseInt(values?.missionContext?.duration?.nb, 10) * parseInt(values?.missionContext?.profilNumber, 10) * (1+process.env.REACT_APP_COMMISSION_RATE);
-        } else if (values?.missionContext?.duration?.unit === 'DAY') {
-          preciseRate = parseInt(values?.missionContext?.budget?.value, 10) * parseInt(values?.missionContext?.duration?.nb, 10) * parseInt(values?.missionContext?.profilNumber, 10) * (1+process.env.REACT_APP_COMMISSION_RATE);
+        if (durationUnit === 'MONTH') {
+          preciseRate = parseInt(values?.missionContext?.budget?.value, 10) * daysNb * parseInt(values?.missionContext?.duration?.nb, 10) * 4 * parseInt(profilsNumber, 10) * (1 + process.env.REACT_APP_COMMISSION_RATE);
+        } else if (durationUnit === 'WEEK') {
+          preciseRate = parseInt(values?.missionContext?.budget?.value, 10) * daysNb * parseInt(values?.missionContext?.duration?.nb, 10) * parseInt(profilsNumber, 10) * (1 + process.env.REACT_APP_COMMISSION_RATE);
+        } else if (durationUnit === 'DAY') {
+          preciseRate = parseInt(values?.missionContext?.budget?.value, 10) * parseInt(values?.missionContext?.duration?.nb, 10) * parseInt(profilsNumber, 10) * (1 + process.env.REACT_APP_COMMISSION_RATE);
         }
         setWithCommission(Math.ceil(preciseRate));
       } else if (values?.missionContext?.budget?.type === 'TOTAL') { // TOTAL
         // TMJ = (budgetx0.85) / nb jours / nb profils
-        if (values?.missionContext?.duration?.unit === 'MONTH') {
-          preciseRate = (parseInt(values?.missionContext?.budget?.value, 10) * (1-process.env.REACT_APP_COMMISSION_RATE)) / (daysNb * parseInt(values?.missionContext?.duration?.nb, 10) * 4) / parseInt(values?.missionContext?.profilNumber, 10);
-        } else if (values?.missionContext?.duration?.unit === 'WEEK') {
-          preciseRate = (parseInt(values?.missionContext?.budget?.value, 10) * (1-process.env.REACT_APP_COMMISSION_RATE)) / (daysNb * parseInt(values?.missionContext?.duration?.nb, 10)) / parseInt(values?.missionContext?.profilNumber, 10);
-        } else if (values?.missionContext?.duration?.unit === 'DAY') {
-          preciseRate = (parseInt(values?.missionContext?.budget?.value, 10) * (1-process.env.REACT_APP_COMMISSION_RATE)) / parseInt(values?.missionContext?.duration?.nb, 10) / parseInt(values?.missionContext?.profilNumber, 10);
+        if (durationUnit === 'MONTH') {
+          preciseRate = (parseInt(values?.missionContext?.budget?.value, 10) * (1 - process.env.REACT_APP_COMMISSION_RATE)) / (daysNb * parseInt(values?.missionContext?.duration?.nb, 10) * 4) / parseInt(profilsNumber, 10);
+        } else if (durationUnit === 'WEEK') {
+          preciseRate = (parseInt(values?.missionContext?.budget?.value, 10) * (1 - process.env.REACT_APP_COMMISSION_RATE)) / (daysNb * parseInt(values?.missionContext?.duration?.nb, 10)) / parseInt(profilsNumber, 10);
+        } else if (durationUnit === 'DAY') {
+          preciseRate = (parseInt(values?.missionContext?.budget?.value, 10) * (1 - process.env.REACT_APP_COMMISSION_RATE)) / parseInt(values?.missionContext?.duration?.nb, 10) / parseInt(profilsNumber, 10);
         }
       }
       setWithCommission(Math.ceil(preciseRate));
@@ -431,9 +432,11 @@ const LeadCreationForm = ({ values, errors, touched, handleBlur, handleChange, l
   const getWorkedDaysResult = (workDurationNb, workDurationUnit, weeklyRythm, profilNumber) => {
     switch (workDurationUnit) {
       case 'MONTH':
-        return Math.ceil(weeklyRythm * (4 * workDurationNb) * profilNumber);
+      case 'Mois':
+        return Math.ceil((weeklyRythm || 5) * (4 * workDurationNb) * (profilNumber || 1));
       case 'WEEK':
-        return Math.ceil(weeklyRythm * workDurationNb * profilNumber);
+      case 'Semaines':
+        return Math.ceil((weeklyRythm || 5) * workDurationNb * (profilNumber || 1));
       default:
         break;
     }
@@ -544,7 +547,7 @@ const LeadCreationForm = ({ values, errors, touched, handleBlur, handleChange, l
                     ></CustomSelect>
                   </Grid>
                   <Box mx={1} style={{ marginTop: '-2rem' }}>
-                    {(values?.missionContext?.duration?.nb && values?.missionContext?.weeklyRythm && values?.missionContext?.profilNumber && values?.missionContext?.duration?.unit !== 'DAY') &&
+                    {values?.missionContext?.duration?.nb && values?.missionContext?.duration?.unit && values?.missionContext?.duration?.unit !== FORMATTED_DAY &&
                       <Typography variant="h2">Soit {' '}
                         {getWorkedDaysResult(values?.missionContext?.duration?.nb,
                           values?.missionContext?.duration?.unit,
@@ -578,7 +581,7 @@ const LeadCreationForm = ({ values, errors, touched, handleBlur, handleChange, l
                       name='missionContext.budget.type'
                     ></CustomSelect>
                   </Grid>
-                  {(values?.missionContext?.budget?.value && values?.missionContext?.budget?.type && values?.missionContext?.duration?.nb && values?.missionContext?.duration?.unit && values?.missionContext?.weeklyRythm && values?.missionContext?.profilNumber) || values?.missionContext?.estimatedAverageDailyRate
+                  {values?.missionContext?.budget?.value && values?.missionContext?.budget?.type && values?.missionContext?.duration?.nb && values?.missionContext?.duration?.unit || values?.missionContext?.estimatedAverageDailyRate
                     ? <Typography variant='h2' style={{ marginTop: '-2rem', marginBottom: '1rem', paddingLeft: '0.45rem' }}>
                       {(values?.missionContext.budget.type === 'Taux journalier' || values?.missionContext?.budget?.type === 'TOTAL'
                         ? `Soit un taux journalier de ${withCommission || Math.ceil(values?.missionContext?.estimatedAverageDailyRate)}€, une fois la commission acracy déduite.`
