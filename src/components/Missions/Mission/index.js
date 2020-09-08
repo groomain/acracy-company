@@ -204,22 +204,21 @@ export const Mission = ({ mission, matching, today, ...props }) => {
                 }
               }
             }
+          }
+          if (mission?.invoices?.find(x => x?.status === WAITING_FOR_VALIDATION)) {
+            return {
+              status: 'Facture en attente de validation', // Sans facture en PJ
+              buttonText: "Contrôler le compte rendu d'activité"
+            }
           } else {
-            if (mission?.invoices?.find(x => x?.status === WAITING_FOR_VALIDATION)) {
+            // Missions sans facture en attente
+            if (mission?.invoices?.find(x => x?.latestInvoice)) {
               return {
-                status: 'Facture en attente de validation', // Sans facture en PJ
-                buttonText: "Contrôler le compte rendu d'activité"
+                status: 'Travail terminé'
               }
             } else {
-              // Missions sans facture en attente
-              if (mission?.invoices?.find(x => x?.latestInvoice)) {
-                return {
-                  status: 'Travail terminé'
-                }
-              } else {
-                return {
-                  status: 'Mission en cours'
-                }
+              return {
+                status: 'Mission en cours'
               }
             }
           }
