@@ -12,7 +12,10 @@ export default makeStyles(theme => ({
     padding: '10px 20px',
     position: 'relative',
     margin: 15,
-    alignContent: 'space-between'
+    alignContent: 'space-between',
+    '&:hover' : {
+      cursor: 'pointer'
+    }
   },
   titleBox: {
     margin: '0 20px 0 0',
@@ -38,7 +41,8 @@ export default makeStyles(theme => ({
     borderRadius: 15
   },
   newDraft: {
-    color: theme.palette.primary.main
+    color: theme.palette.primary.bright,
+    fontFamily: 'Basier Medium',
   },
   toUppercase: {
     textTransform: 'uppercase',

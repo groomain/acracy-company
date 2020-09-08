@@ -1,23 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector, useDispatch } from 'react-redux';
-import { NavLink } from 'react-router-dom';
 import * as moment from 'moment';
-
-import { CustomButton } from '../../Button';
 import { Grid, Box, Typography, IconButton } from '@material-ui/core';
-import styles from './styles';
-import DraftWrapper from './DraftWrapper';
 import ClearIcon from '@material-ui/icons/Clear';
+import { CustomButton } from '../../Button';
+import DraftWrapper from './DraftWrapper';
 import SearchIcon from '../../../assets/icons/searchIcon';
 import StartIcon from '../../../assets/icons/demarrer.svg';
 import ToValidateIcon from '../../../assets/icons/a-valider.svg';
 import WaitingForCallIcon from '../../../assets/icons/en-attente-de-rappel.svg';
-
 import { setLeadCreationStep } from '../../../pages/HomePage/reducer';
 import { shortenLongText } from '../../../utils/services/format';
 import { deleteLeadLaunched } from '../../../pages/HomePage/reducer';
-import { getPath } from '../../../utils/services/validationChecks';
+import styles from './styles';
+
 
 moment.locale('fr');
 
@@ -97,83 +94,70 @@ const Draft = ({ draft }) => {
   };
 
   return (
-    <DraftWrapper>
-      <Grid container direction='row' justify='space-between'>
-        <Grid item container direction='column' xs={11}>
-          <NavLink
-            to={`/lead/${draft?.externalId}`}
-            className={classes.draftLink}
-            onClick={setLeadStep}
-          >
-            <Box className={classes.statusLine}>
-              <Grid container >
-                <Grid item>
-                  <Grid container alignItems="center">
-                    <Box className={classes.iconBox}>{renderIcon(getStatusResult)}</Box>
-                    <Grid>
-                      <Typography variant='h2' className={classes.toUppercase}>{getStatusResult?.title} ({getStatusResult?.progress} %)</Typography>
-                      <Typography variant='body2'>Créé le : {date}</Typography>
-                    </Grid>
-                  </Grid>
-                </Grid>
-              </Grid>
-            </Box>
-            <Box className={classes.titleLine}>
-              <Grid container wrap="nowrap">
-                <Grid item>
-                  <Box className={classes.titleBox}>
-                    <Typography variant='h3' className={draft?.missionContext.title ? null : classes.newDraft}>
-                      {draft?.missionContext.title ? shortenLongText(draft?.missionContext.title, 42) : t('draft.newBriefTitle')}
-                    </Typography>
-                  </Box>
-                </Grid>
-              </Grid>
-            </Box>
-            <Box className={classes.searchLine}>
-              <Grid container alignItems='center'>
-                <Grid item container>
-                  <SearchIcon color='#fff' size="small" />
-                  <Box mx={1.5}>
-                    <Typography variant='body2'>{shortenLongText(draft?.search.text, 30)}</Typography>
-                  </Box>
-                </Grid>
-              </Grid>
-            </Box>
-          </NavLink>
-        </Grid>
-        <Grid item xs={1}>
-          {
-            getStatusResult?.title !== GET_CALLED &&
-            <IconButton aria-label="close" size="small" onClick={() => setOpen(!open)}>
-              <ClearIcon color="secondary" />
-            </IconButton>
-          }
+  <DraftWrapper to={`/lead/${draft?.externalId}`} onClick={setLeadStep}>
+    <Grid item container direction='column' xs={12}>
+      <Grid item container direction='row' className={classes.statusLine}>
+        <Box className={classes.iconBox}>{renderIcon(getStatusResult)}</Box>
+        <Grid item>
+          <Typography variant='h2'
+                      className={classes.toUppercase}>{getStatusResult?.title} ({getStatusResult?.progress} %)</Typography>
+          <Typography variant='body2'>Créé le : {date}</Typography>
         </Grid>
       </Grid>
-      {open &&
-        <Grid
-          container
-          direction='column'
-          className={classes.overlay}
-        >
-          <CustomButton
-            type="button"
-            handleClick={deleteLead}
-            loading={deletingLeadLoading}
-            title={t('draft.confirmDelete')}
-            theme="filledButton"
-            className={classes.buttonGroup}
-          />
-          <CustomButton
-            type="button"
-            handleClick={() => setOpen(!open)}
-            title={t('draft.cancel')}
-            theme="primaryButton"
-            className={classes.buttonGroup}
-          />
+      <Box className={classes.titleLine}>
+        <Grid container wrap="nowrap">
+          <Grid item>
+            <Box className={classes.titleBox}>
+              <Typography variant='h3' className={draft?.missionContext.title ? null : classes.newDraft}>
+                {draft?.missionContext.title ? shortenLongText(draft?.missionContext.title, 42) : t('draft.newBriefTitle')}
+              </Typography>
+            </Box>
+          </Grid>
         </Grid>
+      </Box>
+      <Box className={classes.searchLine}>
+        <Grid container alignItems='center'>
+          <Grid item container>
+            <SearchIcon color='#fff' size="small"/>
+            <Box mx={1.5}>
+              <Typography variant='body2'>{shortenLongText(draft?.search.text, 30)}</Typography>
+            </Box>
+          </Grid>
+        </Grid>
+      </Box>
+    </Grid>
+    <Grid item xs={1}>
+      {
+        getStatusResult?.title !== GET_CALLED &&
+        <IconButton aria-label="close" size="small" onClick={() => setOpen(!open)}>
+          <ClearIcon color="secondary"/>
+        </IconButton>
       }
-    </DraftWrapper >
+    </Grid>
+    {open &&
+    <Grid
+        container
+        direction='column'
+        className={classes.overlay}
+    >
+      <CustomButton
+          type="button"
+          handleClick={deleteLead}
+          loading={deletingLeadLoading}
+          title={t('draft.confirmDelete')}
+          theme="filledButton"
+          className={classes.buttonGroup}
+      />
+      <CustomButton
+          type="button"
+          handleClick={() => setOpen(!open)}
+          title={t('draft.cancel')}
+          theme="primaryButton"
+          className={classes.buttonGroup}
+      />
+    </Grid>
+    }
+  </DraftWrapper>
   )
 };
 
