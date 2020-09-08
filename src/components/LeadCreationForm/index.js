@@ -90,21 +90,21 @@ const LeadCreationForm = ({ values, errors, touched, handleBlur, handleChange, l
       if (values?.missionContext?.budget?.type === 'DAILY_RATE') {  // DAILY_RATE
         // montant global = budget x durée x nbprofils x 1.15
         if (values?.missionContext?.duration?.unit === 'MONTH') {
-          preciseRate = parseInt(values?.missionContext?.budget?.value, 10) * daysNb * parseInt(values?.missionContext?.duration?.nb, 10) * 4 * parseInt(values?.missionContext?.profilNumber, 10) * 1.15;
+          preciseRate = parseInt(values?.missionContext?.budget?.value, 10) * daysNb * parseInt(values?.missionContext?.duration?.nb, 10) * 4 * parseInt(values?.missionContext?.profilNumber, 10) * (1+process.env.REACT_APP_COMMISSION_RATE);
         } else if (values?.missionContext?.duration?.unit === 'WEEK') {
-          preciseRate = parseInt(values?.missionContext?.budget?.value, 10) * daysNb * parseInt(values?.missionContext?.duration?.nb, 10) * parseInt(values?.missionContext?.profilNumber, 10) * 1.15;
+          preciseRate = parseInt(values?.missionContext?.budget?.value, 10) * daysNb * parseInt(values?.missionContext?.duration?.nb, 10) * parseInt(values?.missionContext?.profilNumber, 10) * (1+process.env.REACT_APP_COMMISSION_RATE);
         } else if (values?.missionContext?.duration?.unit === 'DAY') {
-          preciseRate = parseInt(values?.missionContext?.budget?.value, 10) * parseInt(values?.missionContext?.duration?.nb, 10) * parseInt(values?.missionContext?.profilNumber, 10) * 1.15;
+          preciseRate = parseInt(values?.missionContext?.budget?.value, 10) * parseInt(values?.missionContext?.duration?.nb, 10) * parseInt(values?.missionContext?.profilNumber, 10) * (1+process.env.REACT_APP_COMMISSION_RATE);
         }
         setWithCommission(Math.ceil(preciseRate));
       } else if (values?.missionContext?.budget?.type === 'TOTAL') { // TOTAL
         // TMJ = (budgetx0.85) / nb jours / nb profils
         if (values?.missionContext?.duration?.unit === 'MONTH') {
-          preciseRate = (parseInt(values?.missionContext?.budget?.value, 10) * 0.85) / (daysNb * parseInt(values?.missionContext?.duration?.nb, 10) * 4) / parseInt(values?.missionContext?.profilNumber, 10);
+          preciseRate = (parseInt(values?.missionContext?.budget?.value, 10) * (1-process.env.REACT_APP_COMMISSION_RATE)) / (daysNb * parseInt(values?.missionContext?.duration?.nb, 10) * 4) / parseInt(values?.missionContext?.profilNumber, 10);
         } else if (values?.missionContext?.duration?.unit === 'WEEK') {
-          preciseRate = (parseInt(values?.missionContext?.budget?.value, 10) * 0.85) / (daysNb * parseInt(values?.missionContext?.duration?.nb, 10)) / parseInt(values?.missionContext?.profilNumber, 10);
+          preciseRate = (parseInt(values?.missionContext?.budget?.value, 10) * (1-process.env.REACT_APP_COMMISSION_RATE)) / (daysNb * parseInt(values?.missionContext?.duration?.nb, 10)) / parseInt(values?.missionContext?.profilNumber, 10);
         } else if (values?.missionContext?.duration?.unit === 'DAY') {
-          preciseRate = (parseInt(values?.missionContext?.budget?.value, 10) * 0.85) / parseInt(values?.missionContext?.duration?.nb, 10) / parseInt(values?.missionContext?.profilNumber, 10);
+          preciseRate = (parseInt(values?.missionContext?.budget?.value, 10) * (1-process.env.REACT_APP_COMMISSION_RATE)) / parseInt(values?.missionContext?.duration?.nb, 10) / parseInt(values?.missionContext?.profilNumber, 10);
         }
       }
       setWithCommission(Math.ceil(preciseRate));
