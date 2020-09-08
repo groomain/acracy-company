@@ -222,6 +222,10 @@ i18n
               minMaxInfo: "1 maximum"
             }
           },
+          incidentMessage: {
+            title: 'Envoyer',
+            placeholder: 'Un souci sur la mission ? Dites-nous tout.'
+          },
           leadCreation: {
             synthesis: 'Synthèse Brief',
             details: 'Détails Brief',
