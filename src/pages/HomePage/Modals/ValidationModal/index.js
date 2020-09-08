@@ -44,7 +44,7 @@ export const ValidationModal = ({ open, handleClose, files, missionId, preselect
     dispatch(updateMissionLaunched(allData))
   }
 
-  const commission = preselectedFile?.amount * 0.15;
+  const commission = preselectedFile?.amount * process.env.REACT_APP_COMMISSION_RATE;
 
   return (
     <Dialog
