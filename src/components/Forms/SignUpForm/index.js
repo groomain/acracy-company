@@ -278,7 +278,7 @@ const SignUpForm = ({ values, errors, touched, handleBlur, handleChange, handleS
             <Grid item xs={10}>
               <Typography variant={"h4"}>
                 {t('signup.conditions1')}
-                <a href={'https://www.notion.so/La-charte-du-freelance-acracy-006d33f66b5041418ac22c4e54403eba'}
+                <a href={'https://acracy.co/cgu-cgv/'}
                   target="_blank"
                   className={classes.link}>
                   {t('signup.termsAndConditions')}
