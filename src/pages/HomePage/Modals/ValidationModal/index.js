@@ -1,24 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Formik } from 'formik';
-import * as Yup from 'yup';
-
 import { Box, Dialog, Typography, IconButton, Grid, Snackbar } from '@material-ui/core/';
 import CloseIcon from '@material-ui/icons/Close';
-import styles from '../styles';
-import CustomButton from "../../../../components/Button";
-import CustomTextField from '../../../../components/Inputs/CustomTextField';
-import CustomCheckBox from '../../../../components/CheckBox';
-
-import {
-  updateMissionLaunched,
-  sendRefusalMessageLaunched,
-  closeRefusalSnackBar
-} from '../../reducer';
-import CustomModal from '../../../../components/Modal';
+import { updateMissionLaunched, sendRefusalMessageLaunched, closeRefusalSnackBar } from '../../reducer';
+import { Formik } from 'formik';
+import * as Yup from 'yup';
 import CustomSelect from "../../../../components/Inputs/CustomSelect";
+import CustomTextField from '../../../../components/Inputs/CustomTextField';
+import CustomButton from "../../../../components/Button";
+import CustomCheckBox from '../../../../components/CheckBox';
+import CustomModal from '../../../../components/Modal';
 import { formatDate } from '../../../../utils/services/format';
 import smallCheck from "../../../../assets/icons/small-check.svg";
+import styles from '../styles';
 
 export const ValidationModal = ({ open, handleClose, files, missionId, preselectedFile, setValidationModalOpen, setRefusalModalOpen, ...props }) => {
   const dispatch = useDispatch();
@@ -149,7 +143,7 @@ const InvoicesDownloadForm = ({ values, errors, touched, handleBlur, handleChang
   const invoiceFile = files?.filter(x => `${x.numero} du ${formatDate(x.paymentDate)}` === selectedFile);
   const [extractedFile] = invoiceFile;
 
-  const [disabled, setDisabled] = useState(true);
+  const [disabled, setDisabled] = useState(false);
 
   const openRefusalModal = () => {
     setValidationModalOpen(false);
@@ -157,20 +151,13 @@ const InvoicesDownloadForm = ({ values, errors, touched, handleBlur, handleChang
   };
 
   useEffect(() => {
-    if (companiesData?.administrativeProfile?.purchaseOrder || extractedFile?.latestInvoice) {
-      if (companiesData?.administrativeProfile?.purchaseOrder && !extractedFile?.latestInvoice) {
-        if (orderFormNumber.trim().length < 1) {
-          setDisabled(false)
-        }
-      } else if (!companiesData?.administrativeProfile?.purchaseOrder && extractedFile?.latestInvoice) {
-        if (!workDone) {
-          setDisabled(false);
-        }
-      }
-      setDisabled(false)
-    } else if (!companiesData?.administrativeProfile?.purchaseOrder && !extractedFile?.latestInvoice) {
-      setDisabled(false)
-    };
+    if (companiesData?.administrativeProfile?.purchaseOrder && orderFormNumber.trim().length === 0) {
+      setDisabled(true);
+    } else if (extractedFile?.latestInvoice && !workDone) {
+      setDisabled(true);
+    } else {
+      setDisabled(false);
+    }
   }, [companiesData, extractedFile, orderFormNumber, workDone]);
 
   return (
