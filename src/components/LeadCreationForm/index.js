@@ -492,7 +492,7 @@ const LeadCreationForm = ({ values, errors, touched, handleBlur, handleChange, l
                 <CustomSelect
                   label={t('leadCreation.workspaceLabel')}
                   optionsValues={setOptionsValues('workspace')}
-                  value={missionContext?.format || null}
+                  value={missionContext?.format || 'WHATEVER'}
                   name='missionContext.format'
                   onChange={handleChange}
 
@@ -515,7 +515,7 @@ const LeadCreationForm = ({ values, errors, touched, handleBlur, handleChange, l
                   label={t('leadCreation.frequencyLabel') + '*'}
                   optionsValues={setOptionsValues('frequency')}
                   onChange={handleChange}
-                  value={missionContext?.weeklyRythm}
+                  value={missionContext?.weeklyRythm || 5}
                   name='missionContext.weeklyRythm'
                 ></CustomSelect>
               </Grid>
@@ -539,7 +539,7 @@ const LeadCreationForm = ({ values, errors, touched, handleBlur, handleChange, l
                     <CustomSelect
                       optionsValues={setOptionsValues('duration')}
                       onChange={handleChange}
-                      value={missionContext?.duration?.unit || null}
+                      value={missionContext?.duration?.unit || 'DAY'}
                       name='missionContext.duration.unit'
                     ></CustomSelect>
                   </Grid>
@@ -593,7 +593,7 @@ const LeadCreationForm = ({ values, errors, touched, handleBlur, handleChange, l
                   label={t('leadCreation.profilesLabel')}
                   optionsValues={setOptionsValues('profilesNumber')}
                   onChange={handleChange}
-                  value={missionContext?.profilNumber}
+                  value={missionContext?.profilNumber || 1}
                   name='missionContext.profilNumber'
                   id='missionContext.profilNumber'
                 ></CustomSelect>
