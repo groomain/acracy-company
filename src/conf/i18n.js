@@ -80,7 +80,7 @@ i18n
           upload: {
             title: "Shared documents",
             subtitle: "Do you want to add documents ?",
-            confidentialityText: "We respect your privacy",
+            confidentialityText: "acracy undertakes to respect the confidentiality of shared information, and to sign an NDA if necessary.",
             addDocument: "Add document",
             maxFileSize: "Max file size : 5Mb"
           },
@@ -273,7 +273,7 @@ i18n
               multiple: "Documents partagés"
             },
             subtitle: "N'hésitez pas à partager tout document utile (brief, job description, références)",
-            confidentialityText: "Acracy s’engage à respecter la confidentialité des informations partagées. Tum dicere exorsus est consecutus? laudem et via procedat oratio quaerimus igitur, quid.",
+            confidentialityText: "acracy s’engage à respecter la confidentialité des informations partagées, et à signer un NDA si nécessaire.",
             addDocument: "Ajouter un document",
             maxFileSize: "Taille de fichier maximum : 5 Mo"
           },
