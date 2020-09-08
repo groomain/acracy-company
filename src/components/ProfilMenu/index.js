@@ -14,8 +14,10 @@ import ContactModale from "../ContactModale";
 import { logoutLaunched } from "../App/reducer";
 import { useDispatch } from 'react-redux';
 import Typography from "@material-ui/core/Typography";
+import {useTranslation} from "react-i18next";
 
 export const ProfilMenu = () => {
+  const { t } = useTranslation();
   const classes = styles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const isMenuOpen = Boolean(anchorEl);
@@ -62,7 +64,7 @@ export const ProfilMenu = () => {
             onMouseEnter={() => setOvered1(true)}
             onMouseLeave={() => setOvered1(false)}>
             <ProfilIcon hovered={hovered1} />
-              Mon profil
+            {t('profilMenu.profil')}
           </NavLink>
         </Grid>
         <Grid item container direction={'row'} className={classes.row}>
@@ -70,7 +72,7 @@ export const ProfilMenu = () => {
             onMouseEnter={() => setOvered2(true)}
             onMouseLeave={() => setOvered2(false)}>
             <AdministratifIcon hovered={hovered2} className={classes.icon} />
-                        L'administratif
+            {t('profilMenu.admin')}
                     </NavLink>
         </Grid>
         <Grid item container direction={'row'} className={classes.row}>
@@ -78,7 +80,7 @@ export const ProfilMenu = () => {
             onMouseEnter={() => setOvered3(true)}
             onMouseLeave={() => setOvered3(false)}>
             <ContactIcon hovered={hovered3} className={classes.icon} />
-              Contacter acracy
+            {t('profilMenu.contact')}
           </Typography>
         </Grid>
         <Grid item container direction={'row'} className={classes.row}>
@@ -86,7 +88,7 @@ export const ProfilMenu = () => {
             onMouseEnter={() => setOvered4(true)}
             onMouseLeave={() => setOvered4(false)}>
             <DecoIcon hovered={hovered4} className={classes.icon} />
-                        Se déconnecter
+            {t('profilMenu.logout')}
                     </Typography>
         </Grid>
       </Grid>

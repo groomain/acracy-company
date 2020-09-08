@@ -296,7 +296,7 @@ i18n
           },
           dashboard: {
             welcome: "Bonjour, ",
-            subtitle: "Merci d’avoir rejoint acracy ! Ceci est votre tableau de bord. Vous y trouverez toute l’information nécessaire pour gérer vos missions.",
+            subtitle: "Nous sommes ravis de vous accueillir sur acracy. Voici votre tableau de bord, pour nous briefer et suivre vos missions",
             missions: {
               name: "Mission",
               missionsTitle: "Mes Missions",
@@ -313,6 +313,12 @@ i18n
               refusedTitle: "Refus",
               refusedByAcracy: "Refusé par acracy"
             }
+          },
+          profilMenu: {
+            profil: 'Mon Profil',
+            admin: 'L\'administratif',
+            contact: 'Contacter acracy',
+            logout: 'Me déconnecter'
           },
           header: {
             login: 'Se connecter',
