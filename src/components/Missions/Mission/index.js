@@ -136,7 +136,7 @@ export const Mission = ({ mission, matching, today, ...props }) => {
           };
         case WAITING_FOR_CUSTOMER_SELECTION:
           return {
-            status: 'Faites votre sélection',
+            status: 'Faire votre sélection',
             avatar: '?',
             title: `Découvrir les profils`,
             subtext: `Nous vous proposons ${quotes?.length ?? 0} top freelance ${quotes?.length > 1 ? 's' : ''} !`,
@@ -218,7 +218,7 @@ export const Mission = ({ mission, matching, today, ...props }) => {
               }
             } else {
               return {
-                status: 'Mission en cours'
+                status: 'Missions en cours'
               }
             }
           }
