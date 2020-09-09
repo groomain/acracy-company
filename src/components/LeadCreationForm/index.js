@@ -923,7 +923,7 @@ const LeadCreationForm = ({ values, errors, touched, handleBlur, handleChange, l
       </Stepper>
       {getStepContent(leadCreationStep)}
       {openCallMeModal && <CustomModal
-        title="Au clic sur “Confirmer”, le remplissage de brief se mettra en pause, et vous serez rappelé par l’un des account managers d’acracy qui le finalisera au téléphone avec vous"
+        title="Au clic sur “Confirmer”, le remplissage de brief se mettra en pause, et vous serez rappelé.e par l’un des account managers d’acracy qui le finalisera au téléphone avec vous"
         open={openCallMeModal}
         handleClose={() =>
           setOpenCallMeModal(false)}
