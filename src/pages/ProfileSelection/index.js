@@ -377,7 +377,7 @@ const ProfileSelection = (props) => {
                     </div>
                   </Element>
                   <div className={classes.bloc}>
-                    <Typography variant={'h4'} className={classes.title}>Expertises clés du
+                    <Typography variant={'h4'} className={classes.title}>Les expertises-clés du
                                     profil</Typography>
                     <Grid item container direction={"row"} spacing={1}>
                       {briefData.missionRequirements.expertises.map((tag, key) => <Grid item><Tag

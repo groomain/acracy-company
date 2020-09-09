@@ -214,11 +214,11 @@ i18n
             fieldTitleStarted: "Modifier ma sélection",
             fieldTitleNewSelection: "Démarrer ma sélection",
             expertise: {
-              label: "Expertises clés du profil",
+              label: "Les expertises-clés du profil",
               minMaxInfo: "5 maximum dont 3 prioritaires",
             },
             sensitivity: {
-              label: "Sensibilité clé du profil",
+              label: "Son domaine de prédilection",
               minMaxInfo: "1 maximum"
             }
           },
@@ -255,10 +255,10 @@ i18n
             discoverTips: "Découvrez nos conseils pour les briefs parfaits",
             // step 2
             profileDetails: "Détails du profil recherché",
-            profileexpertises: "Expertises clés du profil*",
-            profileSensitivity: 'Sensibilité clé du profil',
-            profileLanguages: 'Langue Principale*',
-            profileSeniority: "Séniorité souhaitée",
+            profileexpertises: "Les expertises-clés du profil*",
+            profileSensitivity: 'Son domaine de prédilection',
+            profileLanguages: 'Quelles langues sont nécessaires ?*',
+            profileSeniority: "Et quel niveau de séniorité ?",
             deliverablesDetails: "Détails des livrables",
             textarea: {
               missionContext: {

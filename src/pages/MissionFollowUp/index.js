@@ -218,7 +218,7 @@ const MissionFollowUp = (props) => {
                 <Typography variant={'h1'}>{data.brief.profile?.text}</Typography>
               </div>
               <div className={classes.bloc}>
-                <Typography variant={'h4'} className={classes.title}>Expertises clés du
+                <Typography variant={'h4'} className={classes.title}>Les expertises-clés du
                                     profil</Typography>
                 <Grid item container direction={"row"} spacing={1}>
                   {data.brief.missionRequirements.expertises.map((tag, key) => <Grid item>
