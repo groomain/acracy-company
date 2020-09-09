@@ -494,7 +494,7 @@ const ProfileSelection = (props) => {
                 <div className={classes.bloc}>
 
                   <CustomExpansionPanel isTag={false}
-                    panelTitle="Contexte de la mission et tâches à réaliser">
+                    panelTitle="Contexte et objectifs de la mission">
                     <Typography>
                       {briefData.missionDetail.contextAndTasks}
                     </Typography>

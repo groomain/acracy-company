@@ -18,7 +18,7 @@ export const withArrowIcon = () => (
     <div style={styles}>
       <CustomExpansionPanel
         isTag={false}
-        panelTitle="Contexte de la mission et tâches à réaliser"
+        panelTitle="Contexte et objectifs de la mission"
       >
         <Typography>
           Certe, inquam, pertinax non recusandae itaque aiunt hanc quasi naturalem atque corrupti, quos. In oculis quidem exercitus quid ex eo delectu rerum, quem modo ista sis. Epicurus in animis nostris inesse notionem, ut ipsi auctori huius disciplinae placet: constituam. Primum igitur, quid et dolorem? sunt autem quidam e nostris,
@@ -35,7 +35,7 @@ export const withPlusIcon = () => (
     <div style={styles}>
       <CustomExpansionPanel
         isTag
-        panelTitle="Contexte de la mission et tâches à réaliser"
+        panelTitle="Contexte et objectifs de la mission"
       >
         <Typography>
           Sed ut labore et molestiae consequatur, vel eum fugiat, quo pertineant non fuisse torquem detraxit hosti et quidem faciunt, ut et accurate disserendum et dolorem? sunt autem quidam e nostris, qui studiose antiqua persequeris, claris et fortibus viris commemorandis.
