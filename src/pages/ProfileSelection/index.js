@@ -605,7 +605,7 @@ const ProfileSelection = (props) => {
       }
       <Dialog open={validateCodeError === 409} onClose={handleInformationCompleteOpen} classes={{ paper: classes.modale }}>
         <Grid item container direction={'column'} justify={'center'} className={classes.modaleContainer}>
-          <Typography variant={"h1"}>Validez vos informations entreprise</Typography>
+          <Typography variant={"h1"}>Complétez vos informations administratives pour passer à l'étape suivante.</Typography>
           <Typography variant={"body1"} style={{ marginBottom: 20 }}>Sed ut labore et molestiae consequatur, vel eum fugiat, quo pertineant non fuisse torquem detraxit hosti  :</Typography>
           <CustomButton theme={"filledButton"} style={{ width: 254 }} title={"Compléter mes informations"} handleClick={() => console.log("test confirme réponse")} />
         </Grid>
