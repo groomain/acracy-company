@@ -204,14 +204,14 @@ const LeadCreationForm = ({ values, errors, touched, handleBlur, handleChange, l
         )
       case 'duration':
         return (
-          [{ code: 'DAY', TEXT: 'Jours' },
-          { code: 'WEEK', TEXT: 'Semaines' },
-          { code: 'MONTH', TEXT: 'Mois' }]
+          [{ code: 'DAY', TEXT: 'jours' },
+          { code: 'WEEK', TEXT: 'semaines' },
+          { code: 'MONTH', TEXT: 'mois' }]
         )
       case 'budgetType':
         return (
-          [{ code: 'DAILY_RATE', TEXT: 'Taux journalier' },
-          { code: 'TOTAL', TEXT: 'Budget total' }]
+          [{ code: 'DAILY_RATE', TEXT: 'taux journalier' },
+          { code: 'TOTAL', TEXT: 'budget total' }]
         )
       case 'profilesNumber':
         return (

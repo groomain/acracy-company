@@ -141,18 +141,18 @@ export const formatFrequencyType = (val) => {
 
 export const formatDurationType = val => {
   switch (val) {
-    case 'Jours':
+    case 'jours':
       return 'DAY'
-    case 'Semaines':
+    case 'semaines':
       return 'WEEK'
-    case 'Mois':
+    case 'mois':
       return 'MONTH'
     case 'DAY':
-      return 'Jours'
+      return 'jours'
     case 'WEEK':
-      return 'Semaines'
+      return 'semaines'
     case 'MONTH':
-      return 'Mois'
+      return 'mois'
     default:
   }
 }
@@ -160,9 +160,9 @@ export const formatDurationType = val => {
 export const formatBudgetType = val => {
   switch (val) {
     case 'TOTAL':
-      return 'Budget total'
+      return 'budget total'
     case 'DAILY_RATE':
-      return 'Taux journalier'
+      return 'taux journalier'
     default:
   }
 }
