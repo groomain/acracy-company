@@ -60,7 +60,7 @@ export const ValidationModal = ({ open, handleClose, files, missionId, preselect
             <Grid item container>
               <Grid item container>
                 <Box mt={2}>
-                  <Typography >Merci de bien vouloir vérifier les informations ci-dessous et valider le compte rendu d’activité.</Typography>
+                  <Typography>Vérifiez les informations entrées par votre freelance pour la facturation.</Typography>
                 </Box>
                 <Grid item>
                   <Box mt={2}>
@@ -165,8 +165,8 @@ const InvoicesDownloadForm = ({ values, errors, touched, handleBlur, handleChang
       <Box>
         {companiesData?.administrativeProfile?.purchaseOrder && (
           <CustomTextField
-            label="Veuillez indiquer ici votre numéro de bon de commande*"
-            placeholder="Numéro bon de commande"
+            label="Veuillez indiquer le numéro de bon de commande*"
+            placeholder="Le numéro de bon de commande"
             name="orderFormNumber"
             value={orderFormNumber}
             onBlur={handleBlur}
