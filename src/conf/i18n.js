@@ -309,7 +309,7 @@ i18n
               finished: "Historique",
               profileMatching: "Matching de profil",
               noMission: "Aucune mission en cours.\n Commencez par rechercher un type de profil ou livrable pour démarrer un brief.",
-              freelanceInfosModal: 'Voir coordonnées freelance',
+              freelanceInfosModal: 'Coordonnées de votre freelance',
               incidentModalTitle: 'Déclarer un incident',
               day: 'jour',
               week: 'semaine',
