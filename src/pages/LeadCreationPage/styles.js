@@ -12,18 +12,21 @@ export default makeStyles(theme => ({
     borderRadius: 15,
   },
   icon: {
-    padding: ' 2rem 0 0 2rem',
     margin: 0,
   },
   description: {
-    padding: '2rem'
+    fontSize: 22,
+    fontFamily: 'Basier Regular',
+    color: '#fff',
+    letterSpacing: '-0.45px',
+    padding: '15px 0 0 0'
   },
   description2: {
     padding: '1rem 0'
   },
   yellowText: {
-    fontSize: 17,
-    fontFamily: 'Basier Medium',
+    fontSize: 22,
+    fontFamily: 'Basier Regular',
     color: theme.palette.primary.main,
     letterSpacing: '-0.45px',
   },
