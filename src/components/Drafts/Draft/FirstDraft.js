@@ -1,6 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link as RouterLink } from 'react-router-dom';
+import {useHistory} from 'react-router-dom';
 
 import { Grid, Box, Typography } from '@material-ui/core';
 import DraftWrapper from './DraftWrapper';
@@ -9,7 +9,8 @@ import { formatWithLineBreak } from '../../../utils/services/format';
 import styles from './styles';
 
 const FirstDraft = () => {
-  const { t } = useTranslation();
+    const history = useHistory();
+    const { t } = useTranslation();
   const classes = styles();
 
   return (
@@ -23,7 +24,7 @@ const FirstDraft = () => {
           {formatWithLineBreak(t('draft.firstBriefTitle'))}
         </Typography>
         <Box>
-          <Button title={t('draft.firstBriefButton')} theme='filledButton' component={RouterLink} to="/lead" />
+          <Button title={t('draft.firstBriefButton')} theme='filledButton' onClick={() => history.push("/lead")} />
         </Box>
       </Grid>
     </DraftWrapper>
