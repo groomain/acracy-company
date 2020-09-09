@@ -214,11 +214,11 @@ i18n
             fieldTitleStarted: "Modifier ma sélection",
             fieldTitleNewSelection: "Démarrer ma sélection",
             expertise: {
-              label: "Expertises clés du profil",
+              label: "Les expertises-clés du profil",
               minMaxInfo: "5 maximum dont 3 prioritaires",
             },
             sensitivity: {
-              label: "Sensibilité clé du profil",
+              label: "Son domaine de prédilection",
               minMaxInfo: "1 maximum"
             }
           },
@@ -255,19 +255,19 @@ i18n
             discoverTips: "Découvrez nos conseils pour les briefs parfaits",
             // step 2
             profileDetails: "Détails du profil recherché",
-            profileexpertises: "Expertises clés du profil*",
-            profileSensitivity: 'Sensibilité clé du profil',
-            profileLanguages: 'Langue Principale*',
-            profileSeniority: "Séniorité souhaitée",
-            deliverablesDetails: "Détails des livrables",
+            profileexpertises: "Les expertises-clés du profil*",
+            profileSensitivity: 'Son domaine de prédilection',
+            profileLanguages: 'Quelles langues sont nécessaires ?*',
+            profileSeniority: "Et quel niveau de séniorité ?",
+            deliverablesDetails: "Précisions sur le travail attendu",
             textarea: {
               missionContext: {
-                label: "Contexte de la mission et tâches à réaliser*",
+                label: "Contexte et objectifs de la mission*",
                 placeholder: "Ex: \"Dans le cadre du lancement de notre nouvelle boisson \"Energy 3000\", nous cherchons un stratège Social Media pour définir un plan d'activation Instagram à destination des 18-25 ans.\""
               },
               deliverablesDetails: {
                 label: "Détail des livrables*",
-                placeholder: "C’est le moment de nous en dire le plus possible sur ce qui fait partie des livrables et quelles sont vos attentes exactes. Dites-nous-en le plus possible. \nEx: “Wireframes: 10 écrans (mobile et desktop) ; Format Sketch ; Possibilité de consulter sur Invision…”"
+                placeholder: "Donnez-nous le plus d'informations possibles sur le travail attendu (quantité, type, style...). Ex : 10 wireframes (mobile et desktop) sur Sketch / 3 scripts humoristiques pour des 30\" / 2 formats mobiles d'acquisition"
               }
             }
           },
@@ -277,7 +277,7 @@ i18n
               multiple: "Documents partagés"
             },
             subtitle: "N'hésitez pas à partager tout document utile (brief, job description, références)",
-            confidentialityText: "acracy s’engage à respecter la confidentialité des informations partagées, et à signer un NDA si nécessaire.",
+            confidentialityText: "acracy s’engage à respecter la confidentialité des informations partagées. Nous pouvons évidemment signer un NDA si besoin.",
             addDocument: "Ajouter un document",
             maxFileSize: "Taille de fichier maximum : 5 Mo"
           },
