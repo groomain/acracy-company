@@ -208,7 +208,7 @@ export const Mission = ({ mission, matching, today, ...props }) => {
           if (mission?.invoices?.find(x => x?.status === WAITING_FOR_VALIDATION)) {
             return {
               status: 'Facture en attente de validation', // Sans facture en PJ
-              buttonText: "Contrôler le compte rendu d'activité"
+              buttonText: "Il n'y a plus qu'à valider le compte-rendu d'activité pour lancer la facturation"
             }
           } else {
             // Missions sans facture en attente
