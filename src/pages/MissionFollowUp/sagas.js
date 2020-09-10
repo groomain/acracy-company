@@ -11,6 +11,7 @@ import {push} from "connected-react-router";
 import {openSnackBar} from "../../components/App/reducer";
 import * as moment from 'moment';
 import React from "react";
+import {formatDateForComparaison} from "../../utils/services/format";
 
 function* getBrief(action) {
   const { id } = action.payload;
@@ -52,7 +53,8 @@ function* getMission(action) {
     yield put(getMissionFailure());
     yield put(push('/'));
   }
-  if (missionData.status === "IN_PROGRESS" && (Date.parse(missionData.dateStart)/1000 - Date.now()/1000) > 0) {
+  const today = new Date(Date.now()).toISOString();
+  if (missionData.status === "IN_PROGRESS" && (formatDateForComparaison(missionData.dateStart) > formatDateForComparaison(today))) {
     yield put(openSnackBar({ message: "C'est tout bon ! Votre mission peut démarrer.", error: false, emoji: <span role="img" aria-label="okay">👌</span>}));
   }
   else if (missionData.invoices.length !== 0) {
