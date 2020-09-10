@@ -606,7 +606,7 @@ const ProfileSelection = (props) => {
       <Dialog open={validateCodeError === 409} onClose={handleInformationCompleteOpen} classes={{ paper: classes.modale }}>
         <Grid item container direction={'column'} justify={'center'} className={classes.modaleContainer}>
           <Typography variant={"h1"}>Validez vos informations entreprise</Typography>
-          <Typography variant={"body1"} style={{ marginBottom: 20 }}>Sed ut labore et molestiae consequatur, vel eum fugiat, quo pertineant non fuisse torquem detraxit hosti  :</Typography>
+          <Typography variant={"body1"} style={{ marginBottom: 20 }}>Complétez vos informations administratives pour passer à l'étape suivante.</Typography>
           <CustomButton theme={"filledButton"} style={{ width: 254 }} title={"Compléter mes informations"} handleClick={() => console.log("test confirme réponse")} />
         </Grid>
       </Dialog>
@@ -639,23 +639,6 @@ const ProfileSelection = (props) => {
           </Grid>
         </Grid>
       </Dialog>
-      {/* <Dialog open={contactOpen} onClose={handleContactOpen} classes={{ paper: classes.modale }}>
-        <Grid item container direction={'column'} justify={'center'} className={classes.modaleContainer}>
-          <IconButton aria-label="close" className={classes.iconButton} onClick={() => handleContactOpen()}>
-            <CloseIcon />
-          </IconButton>
-          <Typography variant={"h1"}>Contacter acracy</Typography>
-          <Box mt={4}>
-            <Typography variant="body1">
-              Afin de pouvoir au mieux vous répondre, merci de préciser la raison de votre prise de contact.
-            </Typography>
-          </Box>
-          <CustomSelect placeholder={"Sélectionner raison"} label={'Raison*'} optionsValues={['Contacter Acracy']} value={contactSelect} handleChangeOut={setContactSelect} />
-          <CustomTextArea size='large' placeholder={"Dites nous comment on peut vous aider"} valueOut={contactMessage} handleChangeOut={setContactMessage} />
-          <CustomButton theme={"filledButton"} style={{ width: 254 }} title={"Envoyer"} handleClick={() => contactAcracy(contactMessage, contactSelect, false, handleContactOpen)} loading={contactLoading} />
-        </Grid>
-      </Dialog> */}
-
       <ContactModale open={contactOpen} setOpen={setContactModaleOpen} interview={false} title="Contacter acracy" placeHolder="Donnez nous plus de détails" subtitle="Afin de pouvoir au mieux vous répondre, merci de préciser la raison de votre prise de contact." />
 
       <Dialog open={interviewOpen} onClose={handleInterviewOpen} classes={{ paper: classes.modale }}>
@@ -665,8 +648,7 @@ const ProfileSelection = (props) => {
           </IconButton>
           <Typography variant={"h1"}>Confirmation d'entretien</Typography>
           <Box my={3}>
-            <Typography>Sed ut labore et molestiae consequatur, vel eum fugiat, quo pertineant non fuisse torquem detraxit hosti et quidem faciunt, ut et accurate disserendum et dolorem? sunt autem quidam e nostris, qui studiose antiqua persequeris, claris et fortibus viris commemorandis.</Typography>
-            {/* <CustomTextArea size='large' placeholder={"Donnez nous plus de détails sur ces entretiens"} valueOut={interviewMessage} handleChangeOut={setInterviewMessage} /> */}
+            <Typography>En cliquant sur ce bouton, vous confirmez votre souhait que nous organisions un entretien pour vous avec les profils pré-sélectionnés</Typography>
           </Box>
           <CustomButton theme={"filledButton"} style={{ width: 198 }} title={"Envoyer"} handleClick={() => contactAcracy(interviewMessage, 'Interview', true, handleInterviewOpen)} loading={contactLoading} />
         </Grid>

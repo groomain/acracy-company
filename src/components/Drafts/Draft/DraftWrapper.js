@@ -8,11 +8,16 @@ const DraftWrapper = ({ children, to, onClick, ...props }) => {
   const classes = styles();
     const history = useHistory();
   return (
+      onClick ?
           <Grid className={classes.draft} onClick={() =>  {
               history.push(to ? to : '/');
               onClick()
           }} {...props}>
       {children}
+          </Grid>
+          :
+          <Grid className={classes.draft} {...props}>
+              {children}
           </Grid>
   );
 };

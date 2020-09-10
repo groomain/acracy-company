@@ -28,7 +28,7 @@ export const Calendar = ({ error, label, minDate, startDate, onChange, handleCha
   return (
     <MuiPickersUtilsProvider utils={LocalizedUtils} locale={'fr'}>
       <Typography variant="h4">{label}</Typography>
-      <Grid container justify="space-around">
+      <Grid container >
         <KeyboardDatePicker
           // disableToolbar
           onClick={() => setCalendarOpen(true)}

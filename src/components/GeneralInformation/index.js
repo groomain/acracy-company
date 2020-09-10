@@ -23,7 +23,7 @@ const GeneralInformation = ({ ...props }) => {
 
   useEffect(() => {
     if (missingInfosForm1 === false || missingInfosForm2 === false || missingInfosForm3 === false || missingInfosForm4 === false || missingInfosForm5 === false || missingFilesForm === false) {
-      dispatch(openSnackBar({ message: 'Avant d’accéder à la sélection nous avons besoins de vos informations administratives', error: false }));
+      dispatch(openSnackBar({ message: 'Avant d\'aller plus loin, nous avons besoin des informations administratives sur votre entreprise.' , error: false }));
     }
   }, [dispatch]);
 
