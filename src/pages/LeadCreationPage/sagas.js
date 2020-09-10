@@ -36,7 +36,6 @@ function* doLeadSave(action) { // create a new lead
       yield put(changeLeadStatusLaunched({ leadId, status: 'FINALIZE' }))
       yield put(push('/home')); // Will be changed to /brief/:id
       yield put(handleCurrentStep(0));
-      yield put(openSnackBar({ message: "👏 Brief déposé et en cours de validation ! Suivez ici l’avancement de votre mission.", error: false }));
     }
     else {
       yield put(setLeadCreationStep(1))
@@ -96,7 +95,6 @@ function* doUpdateLeadDraft(action) { // update an existing lead
       yield put(changeLeadStatusLaunched({ leadId, status: 'FINALIZE' }))
       yield put(push('/home')); // Will be changed to /brief/:id
       yield put(handleCurrentStep(0));
-      yield put(openSnackBar({ message: "👏 Brief déposé et en cours de validation ! Suivez ici l’avancement de votre mission.", error: false }));
     }
     else { yield put(setLeadCreationStep(1)) };
   } catch (error) {

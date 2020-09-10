@@ -32,6 +32,7 @@ const initialState = Immutable.Map({
   resendCodeFailure: null,
   snackBarOpen: false,
   snackBarMessage: null,
+  snackBarEmoji: null,
   snackBarError: null
 });
 
@@ -147,6 +148,7 @@ const { actions, reducer } = createSlice({
     openSnackBar: (state, action) => state
       .set('snackBarOpen', true)
       .set('snackBarMessage', action.payload.message)
+      .set('snackBarEmoji', action.payload.emoji)
       .set('snackBarError', action.payload.error),
     closeSnackBar: (state, action) => state
       .set('snackBarOpen', false),
