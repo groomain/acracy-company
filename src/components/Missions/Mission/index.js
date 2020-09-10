@@ -370,7 +370,7 @@ export const Mission = ({ mission, matching, today, ...props }) => {
                   <Grid item xs={4}>
                     <Grid item className={classes.blocTypoUp}>
                       <Typography variant={"h4"} className={classes.typo}>Taux journalier</Typography>
-                      <Typography variant={"body1"} className={classes.typo}>{Math.ceil(mission?.missionContext?.budget?.dailyRate || matching?.missionContext?.budget?.dailyRate)} €/j</Typography>
+                      <Typography variant={"body1"} className={classes.typo}>{Math.ceil(mission?.missionContext?.budget?.dailyRate || matching?.missionContext?.budget?.dailyRate || mission?.brief?.missionContext?.budget?.dailyRateForCompany)} €/j</Typography>
                     </Grid>
                   </Grid>
                 </Grid>
