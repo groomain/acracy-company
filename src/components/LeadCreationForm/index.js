@@ -447,11 +447,11 @@ const LeadCreationForm = ({ values, errors, touched, handleBlur, handleChange, l
   // render complet de la page 0
   const setLeadSynthesis = () => {
     return (
-      <Box className={classes.stepContent}>
-        <Typography variant={"h1"} >{t('leadCreation.synthesis')}</Typography>
+      <Box>
+        <Typography variant={"h1"} className={classes.stepTitle}>{t('leadCreation.synthesis')}</Typography>
         <Grid container>
 
-          <Grid item xs={12} className={classes.fieldRows}>
+          <Grid item xs={12}>
             <SearchBar
               name='researchValue'
               context='leadCreation'
@@ -558,9 +558,7 @@ const LeadCreationForm = ({ values, errors, touched, handleBlur, handleChange, l
               </Grid>
 
               <Grid item container xs={12} className={classes.fieldRows}>
-                <Box>
                   <Typography variant='h4'>{t('leadCreation.budgetLabel') + '*'}</Typography>
-                </Box>
                 <Grid container spacing={2}>
                   <Grid item xs={7}>
                     <CustomTextField

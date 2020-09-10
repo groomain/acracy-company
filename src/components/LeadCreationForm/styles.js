@@ -23,16 +23,17 @@ export default makeStyles(theme => ({
   stepButton: {
     padding: 0
   },
-  stepContent: {
-    paddingTop: '4rem',
-  },
   fieldRows: {
-    paddingTop: theme.spacing(3)
+    paddingTop: 40
+  },
+  stepTitle: {
+    marginTop: 60,
+    marginBottom: 10
   },
   icon: {
     background: theme.palette.secondary.medium,
-    width: 49,
-    height: 49,
+    width: 37,
+    height: 37,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',

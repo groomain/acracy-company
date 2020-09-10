@@ -34,7 +34,7 @@ export const CustomSelect = ({ label, value, placeholder, type, error, isMulti, 
   }
 
   return (
-    <Box style={{ height: '140px' }} className={className}>
+    <Box className={className}>
       <Typography variant='h4'>{label}</Typography >
       <Select
         type={type}
