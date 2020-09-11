@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector, useDispatch } from 'react-redux';
+import {NavLink} from "react-router-dom";
 import * as moment from 'moment';
 import { Grid, Box, Typography, IconButton } from '@material-ui/core';
 import ClearIcon from '@material-ui/icons/Clear';
@@ -94,70 +95,78 @@ const Draft = ({ draft }) => {
   };
 
   return (
-  <DraftWrapper to={`/lead/${draft?.externalId}`} onClick={setLeadStep}>
-    <Grid item container direction='column' xs={12}>
-      <Grid item container direction='row' className={classes.statusLine}>
-        <Box className={classes.iconBox}>{renderIcon(getStatusResult)}</Box>
-        <Grid item>
-          <Typography variant='h2'
-                      className={classes.toUppercase}>{getStatusResult?.title} ({getStatusResult?.progress} %)</Typography>
-          <Typography variant='body2'>Créé le : {date}</Typography>
-        </Grid>
-      </Grid>
-      <Box className={classes.titleLine}>
-        <Grid container wrap="nowrap">
-          <Grid item>
-            <Box className={classes.titleBox}>
-              <Typography variant='h3' className={draft?.missionContext.title ? null : classes.newDraft}>
-                {draft?.missionContext.title ? shortenLongText(draft?.missionContext.title, 42) : t('draft.newBriefTitle')}
-              </Typography>
-            </Box>
+      <DraftWrapper>
+          <Grid container direction={"row"}>
+              <Grid item container direction='column' xs={11}>
+                  <NavLink
+                      to={`/lead/${draft?.externalId}`}
+                      className={classes.draftLink}
+                      onClick={setLeadStep}>
+                      <Grid item container direction='row' className={classes.statusLine}>
+                          <Box className={classes.iconBox}>{renderIcon(getStatusResult)}</Box>
+                          <Grid item>
+                              <Typography variant='h2'
+                                          className={classes.toUppercase}>{getStatusResult?.title} ({getStatusResult?.progress} %)</Typography>
+                              <Typography variant='body2'>Créé le : {date}</Typography>
+                          </Grid>
+                      </Grid>
+                      <Box className={classes.titleLine}>
+                          <Grid container wrap="nowrap">
+                              <Grid item>
+                                  <Box className={classes.titleBox}>
+                                      <Typography variant='h3'
+                                                  className={draft?.missionContext.title ? null : classes.newDraft}>
+                                          {draft?.missionContext.title ? shortenLongText(draft?.missionContext.title, 42) : t('draft.newBriefTitle')}
+                                      </Typography>
+                                  </Box>
+                              </Grid>
+                          </Grid>
+                      </Box>
+                      <Box className={classes.searchLine}>
+                          <Grid container alignItems='center'>
+                              <Grid item container>
+                                  <SearchIcon color='#fff' size="small"/>
+                                  <Box mx={1.5}>
+                                      <Typography variant='body2'>{shortenLongText(draft?.search.text, 30)}</Typography>
+                                  </Box>
+                              </Grid>
+                          </Grid>
+                      </Box>
+                  </NavLink>
+              </Grid>
+              <Grid item xs={1}>
+                  {
+                      getStatusResult?.title !== GET_CALLED &&
+                      <IconButton aria-label="close" size="small" onClick={() => setOpen(!open)}>
+                          <ClearIcon color="secondary"/>
+                      </IconButton>
+                  }
+              </Grid>
+              {open &&
+              <Grid
+                  container
+                  direction='column'
+                  className={classes.overlay}
+              >
+                  <CustomButton
+                      type="button"
+                      handleClick={deleteLead}
+                      loading={deletingLeadLoading}
+                      title={t('draft.confirmDelete')}
+                      theme="filledButton"
+                      className={classes.buttonGroup}
+                  />
+                  <CustomButton
+                      type="button"
+                      handleClick={() => setOpen(!open)}
+                      title={t('draft.cancel')}
+                      theme="primaryButton"
+                      className={classes.buttonGroup}
+                  />
+              </Grid>
+              }
           </Grid>
-        </Grid>
-      </Box>
-      <Box className={classes.searchLine}>
-        <Grid container alignItems='center'>
-          <Grid item container>
-            <SearchIcon color='#fff' size="small"/>
-            <Box mx={1.5}>
-              <Typography variant='body2'>{shortenLongText(draft?.search.text, 30)}</Typography>
-            </Box>
-          </Grid>
-        </Grid>
-      </Box>
-    </Grid>
-    <Grid item xs={1}>
-      {
-        getStatusResult?.title !== GET_CALLED &&
-        <IconButton aria-label="close" size="small" onClick={() => setOpen(!open)}>
-          <ClearIcon color="secondary"/>
-        </IconButton>
-      }
-    </Grid>
-    {open &&
-    <Grid
-        container
-        direction='column'
-        className={classes.overlay}
-    >
-      <CustomButton
-          type="button"
-          handleClick={deleteLead}
-          loading={deletingLeadLoading}
-          title={t('draft.confirmDelete')}
-          theme="filledButton"
-          className={classes.buttonGroup}
-      />
-      <CustomButton
-          type="button"
-          handleClick={() => setOpen(!open)}
-          title={t('draft.cancel')}
-          theme="primaryButton"
-          className={classes.buttonGroup}
-      />
-    </Grid>
-    }
-  </DraftWrapper>
+      </DraftWrapper>
   )
 };
 
