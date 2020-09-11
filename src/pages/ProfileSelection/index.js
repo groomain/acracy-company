@@ -41,9 +41,11 @@ import miniSwitch from "../../assets/icons/mini-switch.svg";
 // Services
 import { formatLanguagesValues, formatType, formatFrequencyType, formatDate, formatDurationType, formatSeniorityType } from '../../utils/services/format';
 import { getMyProfilePersonalInformationsLaunched } from '../MyProfile/reducer';
+import {useTranslation} from "react-i18next";
 
 const ProfileSelection = (props) => {
   const quoteId = props?.match?.params;
+  const { t } = useTranslation();
 
   // console.log(quoteId);
 
@@ -329,12 +331,7 @@ const ProfileSelection = (props) => {
                                   className={classes.paper}>
                                   <Typography className={classes.popoverTypoTitle}>Pourquoi ce TJM
                                                         étrange ?</Typography>
-                                  <Typography className={classes.popoverTypo}>
-                                    Nous incluons dans le TJM des freelances les frais de X%
-                                    liés à l’affacturage.
-                                    C’est un système qui leur permet d’être protégés avec un
-                                    paiement rapide, et qui nous permet de fidéliser les
-                                                        meilleurs freelances.</Typography>
+                                  <Typography className={classes.popoverTypo}>{t('profileSelection.tjmPopover1')}{parseFloat(process.env.REACT_APP_FACTOR_COMMISSION_RATE) * 100}{t('profileSelection.tjmPopover2')}</Typography>
                                 </Grid>
                               }
                               <Typography className={classes.tjm}>{profile?.averageDailyRateNegotiatedForServiceProvider} €/j</Typography>

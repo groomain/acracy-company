@@ -113,6 +113,10 @@ i18n
       fr: {
         // APP
         translation: {
+          profileSelection: {
+            tjmPopover1: 'Nous incluons dans le TJM des freelances les frais de ',
+            tjmPopover2: '% liés à l’affacturage. C’est un système qui leur permet d’être protégés avec un paiement rapide, et qui nous permet de fidéliser les meilleurs freelances.'
+          },
           loginPageTitle: 'Connexion',
           email: 'Email',
           password: 'Mot de Passe',
@@ -260,6 +264,10 @@ i18n
             profileLanguages: 'Quelles langues sont nécessaires ?*',
             profileSeniority: "Et quel niveau de séniorité ?",
             deliverablesDetails: "Précisions sur le travail attendu",
+            estimatedAverageDailyRate1: 'Soit un taux journalier de ',
+            estimatedAverageDailyRate2: '€, une fois les frais d\'affacturage et la commission acracy ajoutés.',
+            estimatedAverageDailyRate3: 'Soit un montant global de ',
+            estimatedAverageDailyRate4: '€, une fois déduits les frais d’affacturage et la commission acracy.',
             textarea: {
               missionContext: {
                 label: "Contexte et objectifs de la mission*",

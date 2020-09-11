@@ -91,24 +91,24 @@ const LeadCreationForm = ({ values, errors, touched, handleBlur, handleChange, l
       if (values?.missionContext?.budget?.type === 'DAILY_RATE') {  // DAILY_RATE
         // montant global = budget x durée x nbprofils x 1.15
         if (durationUnit === 'MONTH') {
-          preciseRate = parseInt(values?.missionContext?.budget?.value, 10) * daysNb * parseInt(values?.missionContext?.duration?.nb, 10) * 4 * parseInt(profilsNumber, 10) * (1 + parseFloat(process.env.REACT_APP_COMMISSION_RATE));
+          preciseRate = parseInt(values?.missionContext?.budget?.value, 10) * daysNb * parseInt(values?.missionContext?.duration?.nb, 10) * 4 * parseInt(profilsNumber, 10) * (1 + parseFloat(process.env.REACT_APP_ACRACY_COMMISSION_RATE)) * (1 + parseFloat(process.env.REACT_APP_FACTOR_COMMISSION_RATE));
         } else if (durationUnit === 'WEEK') {
-          preciseRate = parseInt(values?.missionContext?.budget?.value, 10) * daysNb * parseInt(values?.missionContext?.duration?.nb, 10) * parseInt(profilsNumber, 10) * (1 + parseFloat(process.env.REACT_APP_COMMISSION_RATE));
+          preciseRate = parseInt(values?.missionContext?.budget?.value, 10) * daysNb * parseInt(values?.missionContext?.duration?.nb, 10) * parseInt(profilsNumber, 10) * (1 + parseFloat(process.env.REACT_APP_ACRACY_COMMISSION_RATE)) * (1 + parseFloat(process.env.REACT_APP_FACTOR_COMMISSION_RATE));
         } else if (durationUnit === 'DAY') {
-          preciseRate = parseInt(values?.missionContext?.budget?.value, 10) * parseInt(values?.missionContext?.duration?.nb, 10) * parseInt(profilsNumber, 10) * (1 + parseFloat(process.env.REACT_APP_COMMISSION_RATE));
+          preciseRate = parseInt(values?.missionContext?.budget?.value, 10) * parseInt(values?.missionContext?.duration?.nb, 10) * parseInt(profilsNumber, 10) * (1 + parseFloat(process.env.REACT_APP_ACRACY_COMMISSION_RATE)) * (1 + parseFloat(process.env.REACT_APP_FACTOR_COMMISSION_RATE));
         }
         setWithCommission(Math.ceil(preciseRate));
       } else if (values?.missionContext?.budget?.type === 'TOTAL') { // TOTAL
         // TMJ = (budgetx0.85) / nb jours / nb profils
         if (durationUnit === 'MONTH') {
-          preciseRate = (parseInt(values?.missionContext?.budget?.value, 10) * (1 - process.env.REACT_APP_COMMISSION_RATE)) / (daysNb * parseInt(values?.missionContext?.duration?.nb, 10) * 4) / parseInt(profilsNumber, 10);
+          preciseRate = (parseInt(values?.missionContext?.budget?.value, 10) / (daysNb * parseInt(values?.missionContext?.duration?.nb, 10) * 4) / (1 + parseFloat(process.env.REACT_APP_ACRACY_COMMISSION_RATE)) / (1 + parseFloat(process.env.REACT_APP_FACTOR_COMMISSION_RATE))) / parseInt(profilsNumber, 10);
         } else if (durationUnit === 'WEEK') {
-          preciseRate = (parseInt(values?.missionContext?.budget?.value, 10) * (1 - process.env.REACT_APP_COMMISSION_RATE)) / (daysNb * parseInt(values?.missionContext?.duration?.nb, 10)) / parseInt(profilsNumber, 10);
+          preciseRate = (parseInt(values?.missionContext?.budget?.value, 10) / (daysNb * parseInt(values?.missionContext?.duration?.nb, 10)) / (1 + parseFloat(process.env.REACT_APP_ACRACY_COMMISSION_RATE)) / (1 + parseFloat(process.env.REACT_APP_FACTOR_COMMISSION_RATE))) / parseInt(profilsNumber, 10);
         } else if (durationUnit === 'DAY') {
-          preciseRate = (parseInt(values?.missionContext?.budget?.value, 10) * (1 - process.env.REACT_APP_COMMISSION_RATE)) / parseInt(values?.missionContext?.duration?.nb, 10) / parseInt(profilsNumber, 10);
+          preciseRate = (parseInt(values?.missionContext?.budget?.value, 10) / parseInt(values?.missionContext?.duration?.nb, 10) / (1 + parseFloat(process.env.REACT_APP_ACRACY_COMMISSION_RATE)) / (1 + parseFloat(process.env.REACT_APP_FACTOR_COMMISSION_RATE))) / parseInt(profilsNumber, 10);
         }
       }
-      setWithCommission(Math.ceil(preciseRate));
+      setWithCommission(Math.round(preciseRate*100)/100);
       changeValue('missionContext.estimatedAverageDailyRate', preciseRate);
     }
   }, [values?.missionContext?.budget, values?.missionContext?.duration, values?.missionContext?.profilNumber, values?.missionContext?.weeklyRythm])
@@ -582,8 +582,8 @@ const LeadCreationForm = ({ values, errors, touched, handleBlur, handleChange, l
                   {values?.missionContext?.budget?.value && values?.missionContext?.budget?.type && values?.missionContext?.duration?.nb && values?.missionContext?.duration?.unit || values?.missionContext?.estimatedAverageDailyRate
                     ? <Typography variant='h2' style={{ marginTop: '-2rem', marginBottom: '1rem', paddingLeft: '0.45rem' }}>
                       {(values?.missionContext.budget.type === 'Taux journalier' || values?.missionContext?.budget?.type === 'TOTAL'
-                        ? `Soit un taux journalier de ${withCommission || Math.ceil(values?.missionContext?.estimatedAverageDailyRate)}€, une fois la commission acracy déduite.`
-                        : `Soit un montant global de ${withCommission || Math.ceil(values?.missionContext?.estimatedAverageDailyRate)}€, une fois déduits les frais d’affacturage et la commission acracy.`)}
+                        ? t('leadCreation.estimatedAverageDailyRate1') + (withCommission || Math.ceil(values?.missionContext?.estimatedAverageDailyRate)) + t('leadCreation.estimatedAverageDailyRate2')
+                        : t('leadCreation.estimatedAverageDailyRate3') + (withCommission || Math.ceil(values?.missionContext?.estimatedAverageDailyRate)) + t('leadCreation.estimatedAverageDailyRate4'))}
                     </Typography>
                     : null}
                 </Grid>
