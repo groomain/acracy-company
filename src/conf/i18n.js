@@ -353,6 +353,9 @@ i18n
             confirmNewPassword: "Confirmation du nouveau mot de passe",
             confirmNewPasswordPlaceholder: "Confirmez nouveau mot de passe",
             modifyPassword: "Modifier mon mot de passe"
+          },
+          adminPage: {
+            companyData: "Données de mon entreprise"
           }
         }
       }
