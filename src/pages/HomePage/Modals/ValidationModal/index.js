@@ -38,7 +38,7 @@ export const ValidationModal = ({ open, handleClose, files, missionId, preselect
     dispatch(updateMissionLaunched(allData))
   }
 
-  const commission = preselectedFile?.amount * process.env.REACT_APP_COMMISSION_RATE;
+  const commission = preselectedFile?.amount * process.env.REACT_APP_ACRACY_COMMISSION_RATE;
 
   return (
     <Dialog
@@ -93,7 +93,7 @@ export const ValidationModal = ({ open, handleClose, files, missionId, preselect
                         <Typography>{commission}€</Typography>
                       </Grid>
                       <Grid item xs={9}>
-                        <Typography>15% de commission acracy</Typography>
+                        <Typography>{parseFloat(process.env.REACT_APP_ACRACY_COMMISSION_RATE)*100}% de commission acracy</Typography>
                       </Grid>
                     </Grid>
                   </Box>
