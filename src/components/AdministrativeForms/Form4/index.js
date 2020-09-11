@@ -70,9 +70,9 @@ export const Form4 = ({ values, errors, touched, handleBlur, handleChange, handl
               error={!!getIn(touched, 'administrativeProfile.billing.email') && !!getIn(errors, 'administrativeProfile.billing.email')}
             />
           </Grid>
-          <Grid item container direction={'row'} md={6}>
+          <Grid item container direction={'row'} md={6} style={{ paddingLeft: 20 }}>
             <Grid item>
-              <Typography variant={'body1'}>{t('signup.phoneNumber') + '*'}</Typography>
+              <Typography variant={'h4'}>{t('signup.phoneNumber') + '*'}</Typography>
             </Grid>
             <Grid item container spacing={4} className={classes.phoneMargin}>
               <Grid item md={5}>

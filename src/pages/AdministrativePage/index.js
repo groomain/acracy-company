@@ -200,7 +200,7 @@ export const AdministrativePage = (props) => {
       </Grid>
       {companyData &&
         <Grid item xs={9} container alignItems={'center'} justify={'center'} style={{ marginBottom: 500 }}>
-          <Typography variant={'h1'} style={{ width: '80%', marginTop: 40 }}>Données de l'entreprise</Typography>
+          <Typography variant={'h1'} style={{ width: '80%', marginTop: 40 }}>{t('adminPage.companyData')}</Typography>
           <Element name={'2'} className={classes.element}>
             {/* FORM Informations générales */}
             <Formik

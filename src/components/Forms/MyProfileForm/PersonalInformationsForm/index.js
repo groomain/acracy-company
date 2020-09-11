@@ -50,7 +50,7 @@ export const PersonalInformationsForm = ({ values, errors, touched, handleBlur, 
       <Grid item container>
         <Element name={6} className={classes.element}>
           <Typography variant={'h1'} className={classes.cardTitle}>{t('myProfile.personalInformations')}</Typography>
-          <Grid item container className={classes.card}>
+          <Grid item container className={classes.card} spacing={4}>
             <Grid item container spacing={2}>
               <Grid item xs={6}>
                 <CustomTextField

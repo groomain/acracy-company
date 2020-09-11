@@ -45,7 +45,7 @@ const PasswordForm = ({ values, errors, touched, handleBlur, handleChange, handl
       <Grid item container>
         <Element name={6} className={classes.element}>
           <Typography variant={'h1'} className={classes.cardTitle}>{t('myProfile.password')}</Typography>
-          <Grid item container className={classes.card}>
+          <Grid item container className={classes.card} spacing={2}>
             <Grid item container spacing={2}>
               <Grid item xs={6}>
                 <CustomPasswordField
