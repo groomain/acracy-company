@@ -70,7 +70,7 @@ const LeadCreationPage = (props) => {
 
   useEffect(() => {
     if (leadCreationPageWithSearchResult?.TEXT || leadCreationPageWithSearchResult?.value) {
-      let newInitialValues = { "search": { "code": leadCreationPageWithSearchResult.KEY || "", "text": leadCreationPageWithSearchResult.TEXT || leadCreationPageWithSearchResult.value, "type": leadCreationPageWithSearchResult.TYPE || 'OTHER' } }
+      let newInitialValues = { ...initialValues, "search": { "code": leadCreationPageWithSearchResult.KEY || "", "text": leadCreationPageWithSearchResult.TEXT || leadCreationPageWithSearchResult.value, "type": leadCreationPageWithSearchResult.TYPE || 'OTHER' } }
       setInitialValues(newInitialValues)
     }
   }, [leadCreationPageWithSearchResult]);
