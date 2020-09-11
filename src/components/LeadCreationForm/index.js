@@ -147,12 +147,12 @@ const LeadCreationForm = ({ values, errors, touched, handleBlur, handleChange, l
   }, [search, missionContext])
 
   useEffect(() => { // Disable the "être rappelé" button
-    if (search?.text?.length > 1) {
+    if (search?.text?.length > 1 && checkLength(missionContext?.title, 0)) {
       setDisableCallMeBtn(false)
     } else {
       setDisableCallMeBtn(true)
     }
-  }, [search]);
+  }, [search, missionContext]);
 
   const getStepContent = step => {
     switch (step) {
