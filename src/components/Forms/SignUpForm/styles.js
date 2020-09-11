@@ -15,9 +15,6 @@ export default makeStyles(theme => ({
   formGridItem: {
     padding: '7rem 0'
   },
-  marginTop: {
-    marginTop: 30
-  },
   stepper: {
     backgroundColor: theme.palette.secondary.black,
     paddingLeft: ".5rem",

@@ -186,8 +186,8 @@ const SignUpForm = ({ values, errors, touched, handleBlur, handleChange, handleS
           </Grid>
 
           <Grid container item direction='column' className={classes.marginTop}>
-            <Box>
-              <Typography variant={'body1'} >{t('signup.phoneNumber') + '*'}</Typography>
+            <Box my={2}>
+              <Typography variant={'h4'} >{t('signup.phoneNumber') + '*'}</Typography>
             </Box>
             <Grid container spacing={2}>
 
