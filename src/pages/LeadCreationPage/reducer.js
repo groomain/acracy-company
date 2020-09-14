@@ -13,6 +13,7 @@ const initialState = Immutable.Map({
   //
   updateLeadDraftLoading: false,
   updateLeadDraftErrorMessage: null,
+  updateLeadDraftSuccess: false,
   updateResponse: null,
   //
   changeLeadStatusLoading: false,
