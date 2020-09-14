@@ -48,7 +48,7 @@ const LeadCreationForm = ({ values, errors, touched, handleBlur, handleChange, l
     leadSaveLoading: state.getIn(['leadCreation', 'leadSaveLoading']),
     leadDraftId: state.getIn(['leadCreation', 'leadDraftId']),
     changeLeadStatusLoading: state.getIn(['leadCreation', 'changeLeadStatusLoading']),
-    updateLeadDraftSuccess: state.getIn(['leadCreation'], 'updateLeadDraftSuccess')
+    updateLeadDraftSuccess: state.getIn(['leadCreation', 'updateLeadDraftSuccess'])
   }));
 
   const FORMATTED_DAY = 'DAY' || 'Jours';
