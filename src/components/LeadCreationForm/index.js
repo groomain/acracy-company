@@ -250,8 +250,8 @@ const LeadCreationForm = ({ values, errors, touched, handleBlur, handleChange, l
 
   useEffect(() => setSearchedCategory(search), []);
 
-  const handleNumberField = (e, limit) => {
-    const numberResult = handleNumberInput(e, limit);
+  const handleNumberField = (e, limit, min) => {
+    const numberResult = handleNumberInput(e, limit, min);
     handleChange(numberResult)
   }
 
@@ -536,7 +536,7 @@ const LeadCreationForm = ({ values, errors, touched, handleBlur, handleChange, l
                   <Grid item xs={7}>
                     <CustomTextField
                       placeholder={t('leadCreation.durationPlaceholder')}
-                      onChange={e => handleNumberField(e, 4)}
+                      onChange={e => handleNumberField(e, 0, 1)}
                       value={missionContext?.duration?.nb || null}
                       name='missionContext.duration.nb'
                       error={(parseFloat(missionContext?.duration?.nb) != missionContext?.duration?.nb) && missionContext?.duration?.nb}
