@@ -9,12 +9,14 @@ import CustomSelect from "../../Inputs/CustomSelect";
 import CustomNavLink from "../../CustomNavLink";
 import CustomCheckbox from '../../CheckBox';
 import backToTop from '../../../utils/backToTop';
-import { checkLength } from '../../../utils/services/validationChecks';
 import { Typography, Grid, Stepper, Step, StepLabel, StepButton, Box, StepConnector } from "@material-ui/core";
 import areaCodes from "../../../utils/areaCodes.json";
-import styles from './styles';
 
 import { handleCurrentStep } from '../../App/reducer';
+import { checkLength } from '../../../utils/services/validationChecks';
+import { handleNumberInput } from '../../../utils/services/format';
+
+import styles from './styles';
 
 const SignUpForm = ({ values, errors, touched, handleBlur, handleChange, handleSubmit }) => {
   const { t } = useTranslation();
@@ -71,6 +73,11 @@ const SignUpForm = ({ values, errors, touched, handleBlur, handleChange, handleS
   };
 
   const [disabledFirstStep, setDisabledFirstStep] = useState(true);
+
+  const handleNumberField = (e, limit) => {
+    const numberResult = handleNumberInput(e, limit);
+    handleChange(numberResult);
+  };
 
   useEffect(() => {
     if (
@@ -195,7 +202,7 @@ const SignUpForm = ({ values, errors, touched, handleBlur, handleChange, handleS
                 <CustomSelect
                   name='phonePrefix'
                   optionsValues={optionsValues}
-                  value={values.phonePrefix}
+                  value={phonePrefix}
                   onBlur={handleBlur('phonePrefix')}
                   onChange={handleChange}
                   error={!!touched.phonePrefix && !!errors.phonePrefix}
@@ -208,7 +215,7 @@ const SignUpForm = ({ values, errors, touched, handleBlur, handleChange, handleS
                   type="text"
                   value={phoneNumber}
                   onBlur={handleBlur}
-                  onChange={handleChange}
+                  onChange={e => handleNumberField(e, 0)}
                   placeholder={t('signup.phoneNumberPlaceholder')}
                   error={!!touched.phoneNumber && !!errors.phoneNumber}
                 />
