@@ -75,7 +75,7 @@ export const AdministrativePage = (props) => {
 
   const initialValuesForm1 = {
     administrativeProfile: {
-      legalForm: companyData?.administrativeProfile?.legalForm || '',
+      legalForm: companyData?.administrativeProfile?.legalForm || 'SA Société Anonyme',
       socialReason: companyData?.administrativeProfile?.socialReason || '',
       siret: companyData?.administrativeProfile?.siret || '',
       shareCapital: companyData?.administrativeProfile?.shareCapital || '',
@@ -105,7 +105,7 @@ export const AdministrativePage = (props) => {
         address: companyData?.administrativeProfile?.headOffice?.address || null,
         zipCode: companyData?.administrativeProfile?.headOffice?.zipCode || null,
         city: companyData?.administrativeProfile?.headOffice?.city || null,
-        country: companyData?.administrativeProfile?.headOffice?.country || null
+        country: companyData?.administrativeProfile?.headOffice?.country || 'France'
       }
     }
   };
@@ -128,7 +128,7 @@ export const AdministrativePage = (props) => {
         address: companyData?.administrativeProfile?.billing?.address || null,
         zipCode: companyData?.administrativeProfile?.billing?.zipCode || null,
         city: companyData?.administrativeProfile?.billing?.city || null,
-        country: companyData?.administrativeProfile?.billing?.country || null
+        country: companyData?.administrativeProfile?.billing?.country || 'France'
       }
     }
   };
@@ -152,7 +152,7 @@ export const AdministrativePage = (props) => {
         lastName: companyData?.administrativeProfile?.billing?.lastName || null,
         email: companyData?.administrativeProfile?.billing?.email || null,
         phone: {
-          code: companyData?.administrativeProfile?.billing?.phone?.code ? getAreaCodeFromNumber(companyData?.administrativeProfile?.billing?.phone?.code) : null,
+          code: companyData?.administrativeProfile?.billing?.phone?.code ? getAreaCodeFromNumber(companyData?.administrativeProfile?.billing?.phone?.code) : 'FR : +33',
           number: companyData?.administrativeProfile?.billing?.phone?.number || null
         }
       }
@@ -204,11 +204,12 @@ export const AdministrativePage = (props) => {
           <Element name={'2'} className={classes.element}>
             {/* FORM Informations générales */}
             <Formik
-              render={props => <Form1 {...props} />}
+              render={props => <Form1 {...props}
+                companyId={userDynamo.companyId}
+              />}
               initialValues={initialValuesForm1}
               validationSchema={ValidationSchemaForm1}
               enableReinitialize
-              onSubmit={handleSubmit}
             />
           </Element>
 
