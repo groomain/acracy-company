@@ -224,7 +224,7 @@ function* doConfirmSignUp(action) {
     yield Auth.confirmSignUp(username, code);
     yield put(push('/login'));
     yield put(confirmSignupSuccess(translateConfirmSignUpSuccess()));
-    yield put(openSnackBar({ message: translateConfirmSignUpSuccess() + <span role="img" aria-label="clap">👏</span>, error: false }));
+    yield put(openSnackBar({ message: translateConfirmSignUpSuccess(), error: false }));
   } catch (error) {
     console.log(error);
     yield put(confirmSignupFailure(translateConfirmSignUpError(error.code)));

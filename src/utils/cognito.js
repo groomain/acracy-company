@@ -15,7 +15,7 @@ const translateSignUpError = (errorCode) => {
 };
 
 const translateConfirmSignUpSuccess = () => {
-  return 'Merci, votre compte est désormais actif. Connectez-vous pour remplir un brief '
+  return 'Merci, votre compte est désormais actif. Connectez-vous pour remplir un brief 👏'
 };
 
 const translateResendCodeSuccess = () => {
