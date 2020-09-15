@@ -220,3 +220,9 @@ export const formatLanguagesValues = val => {
     default:
   }
 }
+
+export const handleNumberInput = (e, limit) => { // Ignore tous les caractères à part les , et les . + limite le nb de décimales
+  let t = e.target.value.replace(',', '.').replace(/[^0-9.]/g, '');
+  e.target.value = (t.indexOf(".") >= 0) ? (t.substr(0, t.indexOf(".")) + t.substr(t.indexOf("."), limit)) : t;
+  return e
+}
