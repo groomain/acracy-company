@@ -12,7 +12,7 @@ export const CustomButton = ({ loading, title, theme, rippleDisabled, type, hand
     <Button
       type={type}
       onClick={handleClick}
-      disableRipple={rippleDisabled}
+      disableRipple
       className={`${classes.button} ${classes[theme]} ${className}`}
       disabled={disabled}
       {...props}

@@ -67,8 +67,8 @@ const ProfileSelection = (props) => {
     dispatch(getMyProfilePersonalInformationsLaunched(employeeId));
   }, [dispatch]);
 
-  // console.log('ProfileSelection -> briefData', briefData)
-  // console.log('ProfileSelection -> quotesData', quotesData)
+  console.log('ProfileSelection -> briefData', briefData)
+  console.log('ProfileSelection -> quotesData', quotesData)
 
   // Scroll
   let [checkedProfiles, setCheckedProfiles] = React.useState(checkedProfilesStore);

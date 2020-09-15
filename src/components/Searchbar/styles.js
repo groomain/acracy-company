@@ -37,7 +37,7 @@ const reactSelectStyles = {
   container: styles => {
     return {
       ...styles,
-      height: 84
+      height: 64
     }
   },
   control: (base, state) => ({
@@ -56,7 +56,8 @@ const reactSelectStyles = {
   clearIndicator: styles => {
     return {
       ...styles,
-      marginRight: 20
+      padding: 0,
+      marginRight: 22
     }
   },
   placeholder: styles => {

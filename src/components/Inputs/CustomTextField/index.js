@@ -14,7 +14,7 @@ export const CustomTextField = ({ label, placeholder, type, onUpdateFieldValue, 
   };
 
   return (
-    <Box className={className} style={{ height: '140px' }}>
+    <Box className={className}>
       <Typography variant='h4'>{label}</Typography >
       <FilledInput
         type={type}
@@ -53,7 +53,7 @@ export const CustomPasswordField = ({ label, placeholder, error, helperText, ...
     event.preventDefault();
   };
   return (
-    <Box style={{ height: '140px' }}>
+    <Box>
       <Typography variant='h4'>{label}</Typography>
       <FilledInput
         classes={{ root: `${classes.root} ${error ? classes.error : null}`, focused: classes.focused, select: classes.select }}

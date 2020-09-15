@@ -580,7 +580,7 @@ const LeadCreationForm = ({ values, errors, touched, handleBlur, handleChange, l
                     ></CustomSelect>
                   </Grid>
                   {values?.missionContext?.budget?.value && values?.missionContext?.budget?.type && values?.missionContext?.duration?.nb && values?.missionContext?.duration?.unit || values?.missionContext?.estimatedAverageDailyRate
-                    ? <Typography variant='h2' style={{ marginTop: '-2rem', marginBottom: '1rem', paddingLeft: '0.45rem' }}>
+                    ? <Typography variant="h2" style={{ paddingLeft: '0.45rem' }}>
                       {(values?.missionContext.budget.type === 'Taux journalier' || values?.missionContext?.budget?.type === 'TOTAL'
                         ? t('leadCreation.estimatedAverageDailyRate1') + (withCommission || Math.ceil(values?.missionContext?.estimatedAverageDailyRate)) + t('leadCreation.estimatedAverageDailyRate2')
                         : t('leadCreation.estimatedAverageDailyRate3') + (withCommission || Math.ceil(values?.missionContext?.estimatedAverageDailyRate)) + t('leadCreation.estimatedAverageDailyRate4'))}

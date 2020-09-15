@@ -12,8 +12,8 @@ export default makeStyles(theme => ({
       borderColor: theme.palette.secondary.main
     },
     '& input': {
-      height: 84,
-      padding: '0 30px'
+      height: 64,
+      padding: '0 22px'
     }
   },
   paper: {

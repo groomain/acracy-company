@@ -5,7 +5,7 @@ import smallIcon from '../../assets/icons/checkbox-checked-black.svg';
 export default makeStyles(theme => ({
   root: {
     border: `1px solid ${theme.palette.secondary.medium}`,
-    height: 84,
+    height: 64,
     overflow: 'hidden',
     borderRadius: 15,
     backgroundColor: 'rgba(86, 94, 86, 0.1)',
@@ -13,6 +13,7 @@ export default makeStyles(theme => ({
     caretColor: theme.palette.secondary.main,
     color: theme.palette.secondary.main,
     fontWeight: 500,
+    fontSize: 14,
     margin: '.8rem auto 0',
     boxSizing: 'border-box',
     '&$focused': {
@@ -20,7 +21,7 @@ export default makeStyles(theme => ({
       borderColor: theme.palette.secondary.main,
     },
     '& .MuiFilledInput-input': {
-      padding: '0 30px',
+      padding: '0 22px',
       color: theme.palette.secondary
     }
   },
@@ -29,7 +30,7 @@ export default makeStyles(theme => ({
   },
   focused: {},
   input: {
-    padding: '30px 50px 0 30px !important',
+    padding: '22px 50px 22px 30px !important;',
     alignItems: 'center',
     fontFamily: "Basier Medium",
     '&:hover, &:focus': {
@@ -43,11 +44,11 @@ export default makeStyles(theme => ({
   },
   icon: {
     fill: '#fff',
-    transform: 'translate(-30px, 7px) scale(1.5)',
+    transform: 'translate(-22px, 7px)',
     transition: '.3s'
   },
   iconClosed: {
-    transform: 'translate(-30px, 7px) scale(1.5) rotate(180deg)'
+    transform: 'translate(-22px, 7px) rotate(180deg)'
   },
   dropdownStyle: {
     overflowStyle: 'none', // IE scrollbar
@@ -69,9 +70,9 @@ export default makeStyles(theme => ({
   },
   menuItem: {
     margin: 0,
-    height: 61,
-    fontSize: 17,
-    padding: '0 30px',
+    height: 51,
+    fontSize: 14,
+    padding: '0 17px',
     fontFamily: "Basier Medium",
     '& div span': {
       fontFamily: "Basier Medium",

@@ -83,5 +83,5 @@ export default makeStyles(theme => ({
   disabledText: {
     textAlign: 'center',
     opacity: '.5'
-  }
+  },
 }));

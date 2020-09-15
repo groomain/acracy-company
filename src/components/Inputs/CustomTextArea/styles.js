@@ -8,13 +8,13 @@ export default makeStyles(theme => ({
     backgroundColor: `${fade(theme.palette.secondary.inputFadeFilter, 0.1)}`,
     color: theme.palette.secondary.main,
     fontWeight: 500,
-    fontSize: 17,
-    lineHeight: '34px',
+    fontSize: 14,
+    lineHeight: '25px',
     alignItems: 'flex-start',
     padding: 0,
   },
   label: {
-    fontSize: 17,
+    fontSize: 14,
     color: theme.palette.secondary.main,
     fontWeight: 500
   },
@@ -22,7 +22,7 @@ export default makeStyles(theme => ({
     color: theme.palette.secondary.medium
   },
   input: {
-    padding: 30,
+    padding: 22,
     borderRadius: 15,
     border: `1px solid ${theme.palette.secondary.medium}`,
     minHeight: 100,

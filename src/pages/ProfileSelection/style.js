@@ -186,7 +186,7 @@ export const styles = makeStyles(theme => ({
     bottom: 0,
     backgroundColor: 'yellow',
     width: '100%',
-    height: 104,
+    height: 78,
   },
   popover: {
     pointerEvents: 'none',

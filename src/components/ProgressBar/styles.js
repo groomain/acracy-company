@@ -7,7 +7,7 @@ export default makeStyles(theme => ({
         width: props.width,
         backgroundColor: 'yellow',
         position: 'fixed',
-        top: 104,
+        top: 78,
         transition: 'width 2s',
         zIndex: 2
     })

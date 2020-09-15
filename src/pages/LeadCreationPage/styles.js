@@ -38,7 +38,7 @@ export default makeStyles(theme => ({
     boxShadow: "0px 1px 8px black"
   },
   toolbar: {
-    height: 104,
+    height: 78,
     paddingLeft: 40,
     paddingRight: 40
   },

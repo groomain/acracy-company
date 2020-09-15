@@ -27,7 +27,7 @@ export const basierBold = {
   src: `url(${BasierCircleBold})`
 };
 
-export const theme = createMuiTheme({
+const theme = createMuiTheme({
   palette: {
     primary: {
       main: '#ecf805',
@@ -60,16 +60,21 @@ export const theme = createMuiTheme({
         },
       },
     },
+    MuiInput: {
+      root: {
+        fontSize: 14,
+      },
+    },
   },
   typography: {
     h1: {
-      fontSize: 34,
+      fontSize: 26,
       fontFamily: 'Basier Regular',
       color: '#fff',
       letterSpacing: '-1.26px',
     },
     h2: {
-      fontSize: 17,
+      fontSize: 14,
       fontFamily: 'Basier Medium',
       color: '#ecf805',
       letterSpacing: '-0.45px',
@@ -80,7 +85,7 @@ export const theme = createMuiTheme({
       color: '#fff',
     },
     h4: {
-      fontSize: 17,
+      fontSize: 14,
       fontFamily: 'Basier Medium',
       color: '#fff',
       letterSpacing: '-0.45px',
@@ -109,5 +114,12 @@ export const theme = createMuiTheme({
       color: '#fff',
     },
     fontFamily: "Basier Medium"
-  }
+  },
+  props: {
+    MuiButtonBase: {
+      disableRipple: true, // No more ripple, on the whole application 💣!
+    },
+  },
 });
+
+export { theme };

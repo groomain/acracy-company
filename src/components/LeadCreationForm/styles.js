@@ -24,7 +24,7 @@ export default makeStyles(theme => ({
     padding: 0
   },
   fieldRows: {
-    paddingTop: 40
+    paddingTop: 30
   },
   stepTitle: {
     marginTop: 60,
