@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { Typography, Grid, Box } from "@material-ui/core";
 import { checkMissingInfosForm4 } from '../../../pages/AdministrativePage/reducer';
 import { getIn } from "formik";
-import { getPhonePrefixCode } from "../../../utils/services/format.js";
+import { getPhonePrefixCode, handleNumberInput } from "../../../utils/services/format.js";
 import areaCodes from "../../../utils/areaCodes.json";
 import { isNullOrEmpty } from "../isNullOrEmpty";
 import CustomTextField from "../../Inputs/CustomTextField";
@@ -30,6 +30,11 @@ export const Form4 = ({ values, errors, touched, handleBlur, handleChange, handl
   const { companyUpdateLoading } = useSelector(state => ({
     companyUpdateLoading: state.getIn(['Administrative', 'companyUpdateLoading']),
   }));
+
+  const handleNumberField = (e, limit) => {
+    const numberResult = handleNumberInput(e, limit);
+    handleChange(numberResult);
+  };
 
   return (
     <Grid item container direction={'column'} className={classes.card}>
@@ -91,7 +96,7 @@ export const Form4 = ({ values, errors, touched, handleBlur, handleChange, handl
                   type="text"
                   value={administrativeProfile.billing.phone.number}
                   onBlur={handleBlur}
-                  onChange={handleChange}
+                  onChange={e => handleNumberField(e, 0)}
                   placeholder={t('signup.phoneNumberPlaceholder')}
                   error={!!getIn(touched, 'administrativeProfile.billing.phone.number') && !!getIn(errors, 'administrativeProfile.billing.phone.number')}
                 />
