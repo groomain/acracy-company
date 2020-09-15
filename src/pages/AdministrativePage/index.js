@@ -204,11 +204,12 @@ export const AdministrativePage = (props) => {
           <Element name={'2'} className={classes.element}>
             {/* FORM Informations générales */}
             <Formik
-              render={props => <Form1 {...props} />}
+              render={props => <Form1 {...props}
+                companyId={userDynamo.companyId}
+              />}
               initialValues={initialValuesForm1}
               validationSchema={ValidationSchemaForm1}
               enableReinitialize
-              onSubmit={handleSubmit}
             />
           </Element>
 
