@@ -3,15 +3,18 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { Typography, Grid, Box } from '@material-ui/core';
 import { getIn } from "formik";
-import { checkMissingInfosForm1 } from '../../../pages/AdministrativePage/reducer';
+import { checkMissingInfosForm1, putCompanyLaunched } from '../../../pages/AdministrativePage/reducer';
 import { isNullOrEmpty } from "../isNullOrEmpty";
 import CustomTextField from '../../Inputs/CustomTextField';
 import CustomSelect from '../../Inputs/CustomSelectAdministrative';
 import CustomSwitch from '../../Switch';
 import CustomButton from '../../Button';
+//
+import { handleNumberInput } from '../../../utils/services/format';
+
 import styles from '../styles';
 
-export const Form1 = ({ values, errors, touched, handleBlur, handleChange, handleSubmit }) => {
+export const Form1 = ({ values, errors, touched, handleBlur, handleChange, companyId }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const classes = styles();
@@ -42,6 +45,15 @@ export const Form1 = ({ values, errors, touched, handleBlur, handleChange, handl
   const { companyUpdateLoading } = useSelector(state => ({
     companyUpdateLoading: state.getIn(['Administrative', 'companyUpdateLoading']),
   }));
+
+  const handleNumberField = (e, limit) => {
+    const numberResult = handleNumberInput(e, limit);
+    handleChange(numberResult);
+  };
+
+  const handleSubmit = (payload) => {
+    dispatch(putCompanyLaunched({ ...payload, companyId }))
+  };
 
   return (
     <Grid item container direction="row" className={classes.card}>
@@ -88,8 +100,7 @@ export const Form1 = ({ values, errors, touched, handleBlur, handleChange, handl
             name="administrativeProfile.shareCapital"
             value={administrativeProfile.shareCapital}
             onBlur={handleBlur}
-            onChange={handleChange}
-            type={"number"}
+            onChange={e => handleNumberField(e, 3)} // Substing = numbers included : pass 3 for 2 decimals
             error={!!getIn(touched, 'administrativeProfile.shareCapital') && !!getIn(errors, 'administrativeProfile.shareCapital')}
           />
         </Grid>
@@ -152,7 +163,13 @@ export const Form1 = ({ values, errors, touched, handleBlur, handleChange, handl
             theme="filledButton"
             className={classes.saveButton}
             disabled={isNullOrEmpty(administrativeProfile.legalForm) || isNullOrEmpty(administrativeProfile.socialReason) || isNullOrEmpty(administrativeProfile.siret) || isNullOrEmpty(administrativeProfile.shareCapital) || !/\d/.test(administrativeProfile.shareCapital) || (isNullOrEmpty(administrativeProfile.vatNumber) && administrativeProfile.intraCommunityVAT === true)}
-            handleClick={() => handleSubmit({ administrativeProfile, webSite })}
+            handleClick={() => handleSubmit({
+              administrativeProfile: {
+                ...administrativeProfile,
+                shareCapital: parseFloat(administrativeProfile.shareCapital)
+              },
+              webSite
+            })}
             loading={companyUpdateLoading}
           />
         </Grid>

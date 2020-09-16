@@ -28,7 +28,7 @@ import { languages } from './options';
 import UploadInput from '../Inputs/LeadUpload';
 
 import { checkLength } from '../../utils/services/validationChecks';
-import { formatLanguagesValues } from '../../utils/services/format';
+import { formatLanguagesValues, handleNumberInput } from '../../utils/services/format';
 
 const LeadCreationForm = ({ values, errors, touched, handleBlur, handleChange, leadId, onUpdateMissionTitle, handleSubmit, props }) => {
   const { t } = useTranslation();
@@ -108,7 +108,7 @@ const LeadCreationForm = ({ values, errors, touched, handleBlur, handleChange, l
           preciseRate = (parseInt(values?.missionContext?.budget?.value, 10) / parseInt(values?.missionContext?.duration?.nb, 10) / (1 + parseFloat(process.env.REACT_APP_ACRACY_COMMISSION_RATE)) / (1 + parseFloat(process.env.REACT_APP_FACTOR_COMMISSION_RATE))) / parseInt(profilsNumber, 10);
         }
       }
-      setWithCommission(Math.round(preciseRate*100)/100);
+      setWithCommission(Math.round(preciseRate * 100) / 100);
       changeValue('missionContext.estimatedAverageDailyRate', preciseRate);
     }
   }, [values?.missionContext?.budget, values?.missionContext?.duration, values?.missionContext?.profilNumber, values?.missionContext?.weeklyRythm])
@@ -248,7 +248,12 @@ const LeadCreationForm = ({ values, errors, touched, handleBlur, handleChange, l
     setSearchedCategory(e);
   }
 
-  useEffect(() => setSearchedCategory(search), [])
+  useEffect(() => setSearchedCategory(search), []);
+
+  const handleNumberField = (e, limit, min) => {
+    const numberResult = handleNumberInput(e, limit, min);
+    handleChange(numberResult)
+  }
 
   const showDeliverablesSettings = () => {
     const selectableDeliverables = searchedCategory?.DELIVERABLES || searchedCategory?.links
@@ -531,10 +536,10 @@ const LeadCreationForm = ({ values, errors, touched, handleBlur, handleChange, l
                   <Grid item xs={7}>
                     <CustomTextField
                       placeholder={t('leadCreation.durationPlaceholder')}
-                      onChange={handleChange}
+                      onChange={e => handleNumberField(e, 0, 1)}
                       value={missionContext?.duration?.nb || null}
                       name='missionContext.duration.nb'
-                      error={(parseInt(missionContext?.duration?.nb) != missionContext?.duration?.nb) && missionContext?.duration?.nb}
+                      error={(parseFloat(missionContext?.duration?.nb) != missionContext?.duration?.nb) && missionContext?.duration?.nb}
                     // helperText={(missionContext?.duration?.nb && missionContext?.duration?.nb < 1) && "1 jour minimum"}
                     ></CustomTextField>
                   </Grid>
@@ -558,16 +563,16 @@ const LeadCreationForm = ({ values, errors, touched, handleBlur, handleChange, l
               </Grid>
 
               <Grid item container xs={12} className={classes.fieldRows}>
-                  <Typography variant='h4'>{t('leadCreation.budgetLabel') + '*'}</Typography>
+                <Typography variant='h4'>{t('leadCreation.budgetLabel') + '*'}</Typography>
                 <Grid container spacing={2}>
                   <Grid item xs={7}>
                     <CustomTextField
                       endAdornment={<InputAdornment position="end"><EuroSymbolIcon /></InputAdornment>}
-                      onChange={handleChange}
+                      onChange={e => handleNumberField(e, 3)} // Substring = included -> ex: Select 3 for 2 decimals
                       value={missionContext?.budget?.value || null}
                       name='missionContext.budget.value'
                       placeholder={t('leadCreation.budgetPlaceholder')}
-                      error={(parseInt(missionContext?.budget?.value) != missionContext?.budget?.value) && missionContext?.budget?.value}
+                      error={(parseFloat(missionContext?.budget?.value) != missionContext?.budget?.value) && missionContext?.budget?.value}
                       onBlur={handleBlur}
                     ></CustomTextField>
                   </Grid>
@@ -753,7 +758,7 @@ const LeadCreationForm = ({ values, errors, touched, handleBlur, handleChange, l
                 </Grid>
                 <CustomSelect
                   optionsValues={languages}
-                  // onBlur={handleBlur('phonePrefix')}
+                  // onBlur={handleBlur
                   onChange={(e) => { changeValue('missionRequirements.languages', [{ language: e.target.value }]) }}
                   value={missionRequirements?.languages?.length > 0 ? { type: missionRequirements?.languages[0]?.language || null, text: missionRequirements?.languages[0]?.text || null } : { type: null, text: null }}
                   error={!!touched.languages && !!errors.languages}
@@ -783,7 +788,7 @@ const LeadCreationForm = ({ values, errors, touched, handleBlur, handleChange, l
             <CustomSelect
               name="seniority"
               optionsValues={setOptionsValues('seniority')}
-              onBlur={handleBlur('phonePrefix')}
+              onBlur={handleBlur}
               onChange={handleChange}
               value={missionRequirements?.seniority}
               error={!!touched.seniority && !!errors.seniority}
