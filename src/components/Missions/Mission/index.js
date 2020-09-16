@@ -139,7 +139,7 @@ export const Mission = ({ mission, matching, today, ...props }) => {
             status: 'Faire votre sélection',
             avatar: '?',
             title: `Découvrir les profils`,
-            subtext: `Nous vous proposons ${quotes?.length ?? 0} top freelance ${quotes?.length > 1 ? 's' : ''} !`,
+            subtext: `Nous vous proposons ${matching?.quote.length ?? 0} top freelance${matching?.quote.length > 1 ? 's' : ''} !`,
             buttonText: 'Valider et découvrir les profils'
           };
         case WAITING_FOR_SIGNATURE:
