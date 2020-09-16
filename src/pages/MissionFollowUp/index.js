@@ -182,7 +182,7 @@ const MissionFollowUp = (props) => {
                 <Grid item container className={classes.blocTypoUp}>
                   <Typography variant={"h4"} className={classes.typo}>TJM</Typography>
                   <Typography variant={"body1"}
-                    className={classes.typo}>{data.brief.missionContext.estimatedAverageDailyRate} €/j</Typography>
+                    className={classes.typo}>{data.brief.missionContext.budget.dailyRateForCompany} €/j</Typography>
                 </Grid>
               </Grid>
             </Grid>
