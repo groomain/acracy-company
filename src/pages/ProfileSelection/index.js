@@ -41,7 +41,7 @@ import miniSwitch from "../../assets/icons/mini-switch.svg";
 // Services
 import { formatLanguagesValues, formatType, formatFrequencyType, formatDate, formatDurationType, formatSeniorityType } from '../../utils/services/format';
 import { getMyProfilePersonalInformationsLaunched } from '../MyProfile/reducer';
-import {useTranslation} from "react-i18next";
+import { useTranslation } from "react-i18next";
 
 const ProfileSelection = (props) => {
   const quoteId = props?.match?.params;
@@ -454,7 +454,7 @@ const ProfileSelection = (props) => {
                   <Grid item container className={classes.blocTypoUp}>
                     <Typography variant={"h4"} className={classes.typo}>TJM</Typography>
                     <Typography variant={"body1"}
-                      className={classes.typo}>{briefData.missionContext.estimatedAverageDailyRate} €/j</Typography>
+                      className={classes.typo}>{briefData.missionContext.budget.dailyRateForCompany} €/j</Typography>
                   </Grid>
                 </Grid>
                 {/* Mission details 2nd row */}
