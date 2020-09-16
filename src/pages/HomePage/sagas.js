@@ -96,6 +96,16 @@ function* doGetBriefs(action) {
     };
 
     const briefs = yield API.get(config.apiGateway.NAME, apiURL, params);
+    let quotesData;
+    for (let i = 0; i < briefs.briefs.length; i++) {
+      let id = briefs.briefs[i].externalId;
+      quotesData = yield API.get(config.apiGateway.NAME, `/quotes?briefId=${id}`, {
+        headers: {
+          'x-api-key': config.apiKey
+        }
+      })
+      briefs.briefs[i].quote = quotesData.quotes;
+    }
     yield put(getBriefsSuccess(briefs.briefs));
   } catch (err) {
     console.log('function*doGetBriefs -> err', err)
