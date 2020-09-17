@@ -7,7 +7,7 @@ import { Grid, Box, Typography, IconButton } from '@material-ui/core';
 import ClearIcon from '@material-ui/icons/Clear';
 import { CustomButton } from '../../Button';
 import DraftWrapper from './DraftWrapper';
-import SearchIcon from '../../../assets/icons/searchIcon';
+import SearchIcon from '../../../assets/icons/searchIconSmall.svg';
 import StartIcon from '../../../assets/icons/demarrer.svg';
 import ToValidateIcon from '../../../assets/icons/a-valider.svg';
 import WaitingForCallIcon from '../../../assets/icons/en-attente-de-rappel.svg';
@@ -125,7 +125,7 @@ const Draft = ({ draft }) => {
             <Box className={classes.searchLine}>
               <Grid container alignItems='center'>
                 <Grid item container>
-                  <SearchIcon color='#fff' size="small" />
+                  <img src={SearchIcon} alt="search" />
                   <Box mx={1.5}>
                     <Typography variant='body2'>{shortenLongText(draft?.search.text, 30)}</Typography>
                   </Box>
