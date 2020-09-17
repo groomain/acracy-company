@@ -11,9 +11,12 @@ import SearchIcon from '../../../assets/icons/searchIcon';
 import StartIcon from '../../../assets/icons/demarrer.svg';
 import ToValidateIcon from '../../../assets/icons/a-valider.svg';
 import WaitingForCallIcon from '../../../assets/icons/en-attente-de-rappel.svg';
+//
 import { setLeadCreationStep } from '../../../pages/HomePage/reducer';
-import { shortenLongText } from '../../../utils/services/format';
 import { deleteLeadLaunched } from '../../../pages/HomePage/reducer';
+//
+import { shortenLongText } from '../../../utils/services/format';
+import { getPath } from '../../../utils/services/validationChecks';
 import styles from './styles';
 
 
@@ -37,11 +40,23 @@ const Draft = ({ draft }) => {
   const creationDate = draft?.createdDate;
   const date = moment(creationDate).format("DD.MM à HH:mm");
 
+  const checkNoExpertisesOrLanguages = () => {
+    const requirementsArrayToMatch = ["requirements.expertises", "requirements.languages"];
+    const receivedRequirements = getPath(draft.missionRequirements, 'requirements');
+
+    const stuff = requirementsArrayToMatch.every(function (element, index) {
+      return element === receivedRequirements[index];
+    });
+    if (requirementsArrayToMatch.length == receivedRequirements.length && stuff) {
+      return true
+    }
+  };
+
   useEffect(() => {
     const getStatus = (draftStatus) => {
       let status;
       if (draftStatus === 'DRAFT') {
-        if (draft?.missionDetail || draft?.missionRequirements) {
+        if (draft?.missionDetail || !checkNoExpertisesOrLanguages()) {
           return status = {
             title: FINALIZE_BRIEF,
             progress: 80
@@ -53,7 +68,7 @@ const Draft = ({ draft }) => {
             status: 'lead'
           }
         }
-      } else if (draftStatus === 'HELP_NEEDED') {
+      } else if (draftStatus === 'HELP_NEEDED' || checkNoExpertisesOrLanguages()) {
         if (!draft?.missionDetail || !draft?.missionRequirements) {
           return status = {
             title: GET_CALLED,
