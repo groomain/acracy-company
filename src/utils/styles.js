@@ -67,7 +67,7 @@ export default makeStyles(theme => ({
     top: 0,
   },
   pannelLayout: {
-    paddingTop: '10rem',
+    paddingTop: '11.5rem',
     paddingBottom: '10rem'
   },
   midWidth: {
