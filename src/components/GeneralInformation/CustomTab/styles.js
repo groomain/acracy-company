@@ -25,7 +25,7 @@ export default makeStyles(theme => ({
     paddingRight: 40,
     minHeight: 0,
     textTransform: 'none',
-    fontSize: 17,
+    fontSize: 14,
     fontFamily: 'Basier Medium',
     letterSpacing: '-0.45px',
   },

@@ -3,14 +3,18 @@ import makeStyles from '@material-ui/core/styles/makeStyles';
 export default makeStyles(theme => ({
   container: {
     position: 'sticky',
-    top: 105,
+    paddingTop: 80,
     background: theme.palette.secondary.dark,
     height: 600,
-    alignItems: 'center',
-    width: 600
+    maxWidth: 600,
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    top: 30
   },
-  title: {
-    fontSize: 35,
+  primaryTitle: {
+    paddingBottom: 25,
+    paddingLeft: 20,
+    display: 'block'
   },
   secondaryTitle: {
     backgroundColor: theme.palette.secondary.dark,

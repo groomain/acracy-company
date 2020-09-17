@@ -28,8 +28,8 @@ const GeneralInformation = ({ ...props }) => {
   }, [dispatch]);
 
   return (
-    <Grid container className={classes.container} justify={'center'} {...props}>
-      <Typography variant="body2" className={classes.title}>
+    <Grid className={classes.container} justify={'center'} {...props}>
+      <Typography className={classes.primaryTitle} variant="h1" component="span">
         L'administratif
       </Typography>
       <Tabs

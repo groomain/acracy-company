@@ -2,7 +2,7 @@ import makeStyles from '@material-ui/core/styles/makeStyles';
 
 export default makeStyles(theme => ({
     container: {
-        marginTop: 100
+        marginTop: 78
     },
     leftContainer: {
         minHeight: '100vh',
