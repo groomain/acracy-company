@@ -51,7 +51,7 @@ export const Dashboard = () => {
         <Box my={2}>
           <Typography variant='body1'>{t('dashboard.subtitle')}</Typography>
         </Box>
-        <Box my={2}>
+        <Box my={5}>
           <Searchbar onUpdateChosenCategory={handleSearchResult} />
         </Box>
       </Grid>
