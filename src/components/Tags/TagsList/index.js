@@ -86,7 +86,7 @@ export const TagsList = ({ tags, type, maxSelection, selectedExpertiseArray, sel
             />)}
             <CustomButton
               title={t('buttonTitles.validate')}
-              theme="asLink"
+              theme='primaryButton'
               rippleDisabled
               disabled={selectedTags?.length < 1}
               handleClick={handleSelection}

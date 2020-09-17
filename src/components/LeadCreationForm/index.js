@@ -630,14 +630,6 @@ const LeadCreationForm = ({ values, errors, touched, handleBlur, handleChange, l
             </Grid>
           </Grid>
         </Grid>
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
       </Box >
     )
   }

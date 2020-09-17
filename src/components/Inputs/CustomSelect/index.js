@@ -78,7 +78,7 @@ export const CustomSelect = ({ label, value, placeholder, type, error, isMulti, 
         {isMulti && (
           optionsValues.map((option) => (
             <MenuItem key={option.KEY} value={option.KEY}
-              classes={{ root: classes.menuItem, selected: classes.selected }}
+              classes={{ root: `${classes.menuItem} ${classes.menutItemWithFocus}`, selected: classes.selected }}
             >
               <ListItemText primary={option.TEXT} />
               <CustomCheckbox

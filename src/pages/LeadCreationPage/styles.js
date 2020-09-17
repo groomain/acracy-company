@@ -14,8 +14,13 @@ export default makeStyles(theme => ({
   icon: {
     margin: 0,
   },
+  image: {
+    display: 'block',
+    width: 75,
+    height: 75
+  },
   description: {
-    fontSize: 22,
+    fontSize: 17,
     fontFamily: 'Basier Regular',
     color: '#fff',
     letterSpacing: '-0.45px',
@@ -25,7 +30,6 @@ export default makeStyles(theme => ({
     padding: '1rem 0'
   },
   yellowText: {
-    fontSize: 22,
     fontFamily: 'Basier Regular',
     color: theme.palette.primary.main,
     letterSpacing: '-0.45px',

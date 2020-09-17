@@ -103,7 +103,7 @@ const theme = createMuiTheme({
       color: '#fff'
     },
     body1: {
-      fontSize: 17,
+      fontSize: 14,
       fontFamily: 'Basier Regular',
       color: '#fff',
       letterSpacing: '-0.45px',

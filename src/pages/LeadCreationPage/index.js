@@ -224,7 +224,7 @@ const LeadCreationPage = (props) => {
                       className={classes.briefTipRoot}
                     >
                       <Grid item className={classes.icon}>
-                        <img src={phonecall} alt="Appel téléphonique" />
+                        <img className={classes.image} src={phonecall} alt="Appel téléphonique" />
                       </Grid>
                       <Typography className={classes.description}>Cliquez sur «
                 <span className={classes.yellowText}> être rappelé.e. </span>»

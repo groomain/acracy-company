@@ -216,6 +216,7 @@ const SearchResults = ({ searchResults, onUpdateChosenCategory, value }) => {
           SingleValue
         }}
         styles={reactSelectStyles}
+        
       />
       {newOption && (
         <Box my={2}>

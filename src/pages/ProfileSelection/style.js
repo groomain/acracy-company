@@ -39,7 +39,8 @@ export const styles = makeStyles(theme => ({
     borderRadius: 15,
     padding: 15,
     width: 215,
-    height: 322,
+    position: 'sticky',
+    top: 100,
     marginTop: 150
   },
   cardTitle: {
@@ -275,7 +276,7 @@ export const styles = makeStyles(theme => ({
   firstGridElement: {
     position: 'sticky',
     marginTop: 70,
-    top: 200,
+    top: 100,
     width: 215,
     right: 10
   },

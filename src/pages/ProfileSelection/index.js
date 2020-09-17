@@ -295,12 +295,14 @@ const ProfileSelection = (props) => {
               </Grid>
 
               <Grid item container xs={3}>
-                <Grid item container direction={'column'} className={classes.card}>
-                  <Typography variant={'h3'} className={classes.cardTitle}>Faites votre choix</Typography>
+                <div>
+                  <Grid item container direction={'column'} className={classes.card}>
+                    <Typography variant={'h3'} className={classes.cardTitle}>Faites votre choix</Typography>
                   <Typography variant={'body1'}>Cliquez sur ce bouton <img src={miniSwitch} alt="mini-switch" className={classes.miniSwitch} /> pour pré-selectionner un ou
                             plusieurs profils. Vous
                             pourrez ensuite valider votre selection ou réaliser un/des entretien.s.</Typography>
-                </Grid>
+                  </Grid>
+                </div>
               </Grid>
             </Grid>
             {/* Available profiles */}
