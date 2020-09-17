@@ -53,14 +53,14 @@ const SearchResults = ({ searchResults, onUpdateChosenCategory, value }) => {
 
   useEffect(() => {
     if (value?.type === "PROFILE" && resultsList.length > 0 && !searchValue) {
-      let profileResults = resultsList.find(result => result.label === "Profil recherché")
+      let profileResults = resultsList.find(result => result.label === t('searchbar.profileLabel'))
       let algoliaFullProfileResult = profileResults.options.find(result => result.TEXT === value.text)
       setSearchValue(algoliaFullProfileResult)
       onUpdateChosenCategory(algoliaFullProfileResult);
     }
     else if (value?.type === "DELIVERABLE" && resultsList.length > 0 && !searchValue) {
-      let deliverableResults = resultsList.find(result => result.label === "Livrable recherché")
-      let algoliaFullDeliverableResult = deliverableResults.options.find(result => result.TEXT === value.text)
+      let deliverableResults = resultsList.find(result => result.label === t('searchbar.briefsLabel'))
+      let algoliaFullDeliverableResult = deliverableResults?.options.find(result => result.TEXT === value.text)
       setSearchValue(algoliaFullDeliverableResult)
       onUpdateChosenCategory(algoliaFullDeliverableResult);
     }
@@ -222,7 +222,7 @@ const SearchResults = ({ searchResults, onUpdateChosenCategory, value }) => {
           <Typography variant="h2">
             {searchValue?.TYPE === "OTHER" &&
               ('« ' + searchValue?.TEXT + ' » ' + t('searchbar.newOption'))
-              }
+            }
           </Typography>
         </Box>
       )}
