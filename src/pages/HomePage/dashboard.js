@@ -55,8 +55,8 @@ export const Dashboard = () => {
           <Searchbar onUpdateChosenCategory={handleSearchResult} />
         </Box>
       </Grid>
-      <Box my={6}>
-        <Box my={6}>
+      <Box my={5}>
+        <Box my={5}>
           <Typography variant='h1'>{t('dashboard.missions.missionsTitle')}</Typography>
         </Box>
         <Grid item style={{ position: 'relative' }}>
