@@ -53,7 +53,7 @@ export const CustomPasswordField = ({ label, placeholder, error, helperText, ...
     event.preventDefault();
   };
   return (
-    <Box style={{ height: '140px' }}>
+    <Box style={{ height: '140px'}}>
       <Typography variant='h4'>{label}</Typography>
       <FilledInput
         classes={{ root: `${classes.root} ${error ? classes.error : null}`, focused: classes.focused, select: classes.select }}

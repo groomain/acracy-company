@@ -551,7 +551,7 @@ const LeadCreationForm = ({ values, errors, touched, handleBlur, handleChange, l
                       name='missionContext.duration.unit'
                     ></CustomSelect>
                   </Grid>
-                  <Box mx={1} style={{ marginTop: '-2rem' }}>
+                  <Box mx={1} style={{height: 1, }}>
                     {values?.missionContext?.duration?.nb && values?.missionContext?.duration?.unit && values?.missionContext?.duration?.unit !== FORMATTED_DAY &&
                       <Typography variant="h2">Soit {' '}
                         {getWorkedDaysResult(values?.missionContext?.duration?.nb,
