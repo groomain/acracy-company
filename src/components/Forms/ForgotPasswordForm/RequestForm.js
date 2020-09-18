@@ -43,7 +43,7 @@ const RequestForm = (props) => {
       direction="column"
       justify="center"
     >
-      <Typography variant="h1" className={classes.titleSignIn}>{t('forgotPassword.forgotPasswordPageTitle')}</Typography>
+      <Typography variant="h1" className={classes.titleForgotPassword}>{t('forgotPassword.forgotPasswordPageTitle')}</Typography>
       <Typography variant="body1">{t('forgotPassword.forgotPasswordSubtitle')}</Typography>
 
       <Grid className={classes.container}>
@@ -58,7 +58,7 @@ const RequestForm = (props) => {
             placeholder={t('yourEmail')}
             error={!!touched.email && !!errors.email}
           />
-          <Grid container justify='flex-end'>
+          <Grid container justify='flex-end' style={{marginTop: 19}}>
             <CustomButton
               type="submit"
               loading={requestCodeLoading}
