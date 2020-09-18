@@ -5,7 +5,7 @@ export default makeStyles(theme => ({
     background: theme.palette.secondary.dark,
     minHeight: 230,
     borderRadius: 15,
-    padding: '15px',
+    padding: '14px',
     alignItems: 'center',
     position: 'relative',
     transform: 'translate(-2rem) !important',
