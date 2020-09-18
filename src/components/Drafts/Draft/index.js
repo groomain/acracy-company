@@ -130,7 +130,7 @@ const Draft = ({ draft }) => {
                 <Grid item>
                   <Box className={classes.titleBox}>
                     <Typography variant='h3'
-                      className={draft?.missionContext.title ? null : classes.newDraft}>
+                      className={draft?.missionContext.title ? classes.titleOfMission : classes.newDraft}>
                       {draft?.missionContext.title ? shortenLongText(draft?.missionContext.title, 42) : t('draft.newBriefTitle')}
                     </Typography>
                   </Box>
@@ -181,7 +181,7 @@ const Draft = ({ draft }) => {
           </Grid>
         }
       </Grid>
-    </DraftWrapper>
+    </DraftWrapper >
   )
 };
 

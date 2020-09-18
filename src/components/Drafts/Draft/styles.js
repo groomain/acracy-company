@@ -13,7 +13,7 @@ export default makeStyles(theme => ({
     position: 'relative',
     margin: 15,
     alignContent: 'space-between',
-    '&:hover' : {
+    '&:hover': {
       cursor: 'pointer'
     }
   },
@@ -43,6 +43,13 @@ export default makeStyles(theme => ({
   newDraft: {
     color: theme.palette.primary.bright,
     fontFamily: 'Basier Medium',
+  },
+  titleOfMission: {
+    fontFamily: 'Basier Medium',
+    fontSize: '22px',
+    fontWeight: 500,
+    lineHeight: 1.55,
+    color: '#ffffff'
   },
   toUppercase: {
     textTransform: 'uppercase',
