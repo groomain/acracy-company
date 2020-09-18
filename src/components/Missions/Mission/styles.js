@@ -113,7 +113,7 @@ export default makeStyles(theme => ({
   },
   statusContainer: {
     height: '20%',
-    padding: '15px 5px 0',
+    padding: '8px 5px 0',
     position: 'relative',
   },
   titleContainer: {
