@@ -134,7 +134,7 @@ export default makeStyles(theme => ({
     paddingRight: 38
   },
   outsideContainer: {
-    marginTop: 8
+    marginTop: 10
   },
   outsideTypo: {
     marginLeft: 10
