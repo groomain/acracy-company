@@ -44,7 +44,6 @@ const SignInPage = () => {
     <Grid
       container
       direction="column"
-      // justify="center"
       className={classes.connectionDiv}
     >
       <Grid item xs={7} container className={classes.container}>
