@@ -7,9 +7,6 @@ export default makeStyles(theme => ({
     },
     noMissionSubtitle: {
         color: theme.palette.secondary.medium,
-        fontFamily: 'Basier Regular',
-        fontSize: '17px',
-        lineHeight: '29px',
         letterSpacing: '-0.45px'
     }
 }));
