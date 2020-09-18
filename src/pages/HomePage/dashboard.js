@@ -52,7 +52,9 @@ export const Dashboard = () => {
           <Typography variant='body1'>{t('dashboard.subtitle')}</Typography>
         </Box>
         <Box my={2}>
-          <Searchbar onUpdateChosenCategory={handleSearchResult} />
+          <Searchbar
+              onUpdateChosenCategory={handleSearchResult}
+              hideLabel />
         </Box>
       </Grid>
       <Box my={6}>
