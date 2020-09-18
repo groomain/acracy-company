@@ -73,7 +73,12 @@ export default makeStyles(theme => ({
     width: '100%',
   },
   typo: {
-    padding: 5,
+    // padding: 5,
+    width: '100%',
+    textAlign: 'left'
+  },
+  typoH4: {
+    lineHeight: 2,
     width: '100%',
     textAlign: 'left'
   },
