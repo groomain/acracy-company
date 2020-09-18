@@ -93,7 +93,7 @@ export const Missions = () => {
     if (inProgressMissions?.length > 0 || futureMissions?.length > 0 || finishedMissions?.length > 0 || briefsList?.length > 0) {
       missionsList = (
         <Grid item>
-          <Box my={6}>
+          <Box my={'54px'}>
             {briefsList?.length > 0 && (
               <>
                 <Typography variant="h2">
