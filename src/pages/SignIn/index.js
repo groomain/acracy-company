@@ -44,13 +44,12 @@ const SignInPage = () => {
     <Grid
       container
       direction="column"
-      justify="center"
       className={classes.connectionDiv}
     >
       <Grid item xs={7} container className={classes.container}>
         <Grid item xs={3} />
         <Grid item xs={7}>
-          <Grid container direction="column" style={{ margin: '120px 0' }}>
+          <Grid container direction="column" style={{ margin: '174px 0'}}>
             <Typography variant="h2">acracy entreprise</Typography>
             <Typography variant="h1" className={classes.titleSignIn}>Je m'identifie</Typography>
             <Formik
