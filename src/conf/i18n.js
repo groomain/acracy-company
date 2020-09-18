@@ -277,6 +277,12 @@ i18n
                 label: "Détail des livrables*",
                 placeholder: "Donnez-nous le plus d'informations possibles sur le travail attendu (quantité, type, style...). Ex : 10 wireframes (mobile et desktop) sur Sketch / 3 scripts humoristiques pour des 30\" / 2 formats mobiles d'acquisition"
               }
+            },
+            callPopin: {
+              title: "Vous souhaitez être rappelé.e",
+              text: "Au clic sur “Confirmer”, le remplissage de brief se mettra en pause, et vous serez rappelé.e par l’un des account managers d’acracy qui le finalisera au téléphone avec vous.",
+              cancel: "Annuler et continuer mon brief",
+              confirm: "Confirmer"
             }
           },
           upload: {
