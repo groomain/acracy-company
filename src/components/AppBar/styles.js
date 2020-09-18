@@ -19,7 +19,7 @@ export default makeStyles(theme => ({
   div: {
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-end',
     alignContent: 'center',
     alignItems: 'center',
     width: 390,
@@ -87,5 +87,8 @@ export default makeStyles(theme => ({
   },
   pen: {
     marginLeft: '1rem'
+  },
+  newBriefButton: {
+    paddingRight: '32px'
   }
 }));
