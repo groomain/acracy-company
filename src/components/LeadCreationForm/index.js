@@ -742,7 +742,8 @@ const LeadCreationForm = ({ values, errors, touched, handleBlur, handleChange, l
                         isPrimaryColor
                         tagType="Critère indispensable"
                         isWithCheckbox
-                        checkedArray={missionRequirements?.sensitivity?.essential}
+                        multipleChoice
+                        checkedArray={missionRequirements?.sensitivity?.essential ? [missionRequirements.sensitivity.sensitivity.text] : null}
                         onCheckChange={() => handleSensitivityCheck()}
                       />}
                   </Grid>}
@@ -774,8 +775,9 @@ const LeadCreationForm = ({ values, errors, touched, handleBlur, handleChange, l
                         isPrimaryColor
                         tagType="Critère indispensable"
                         isWithCheckbox
+                        multipleChoice
                         onCheckChange={() => changeValue(`missionRequirements.languages[${key}].essential`, !missionRequirements.languages[key].essential)}
-                        checkedArray={tag.essential}
+                        checkedArray={missionRequirements?.languages?.map(language => { if (language.essential) { return formatLanguagesValues(language.language) } })}
                       />))}
                   </Grid>
                 }
