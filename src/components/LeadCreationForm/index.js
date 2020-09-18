@@ -551,7 +551,7 @@ const LeadCreationForm = ({ values, errors, touched, handleBlur, handleChange, l
                       name='missionContext.duration.unit'
                     ></CustomSelect>
                   </Grid>
-                  <Box mx={1} style={{height: 1}}>
+                  <Box mx={1} style={{ height: 1 }}>
                     {values?.missionContext?.duration?.nb && values?.missionContext?.duration?.unit && values?.missionContext?.duration?.unit !== FORMATTED_DAY &&
                       <Typography variant="h2">Soit {' '}
                         {getWorkedDaysResult(values?.missionContext?.duration?.nb,
@@ -677,7 +677,7 @@ const LeadCreationForm = ({ values, errors, touched, handleBlur, handleChange, l
     return (
       <Box className={classes.stepContent}>
         <Typography variant='h2'>{t('leadCreation.profileDetails')}</Typography>
-        <Typography variant='h1'>{values?.search?.TEXT}</Typography>
+        <Typography variant='h1'>{values?.search?.TEXT || values?.search?.text}</Typography>
 
         <Grid container>
           {/* Expertises */}
