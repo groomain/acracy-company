@@ -122,7 +122,7 @@ export default makeStyles(theme => ({
     position: 'relative',
   },
   titleContainer: {
-    padding: '28px 30px 15px 30px'
+    padding: '28px 30px 30px 30px'
   },
   title: {
     fontSize: 22,
