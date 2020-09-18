@@ -14,7 +14,7 @@ export default makeStyles(theme => ({
     color: theme.palette.secondary.main,
     fontWeight: 500,
     fontSize: 14,
-    margin: '.8rem auto 0',
+    margin: '10px auto 0',
     boxSizing: 'border-box',
     '&$focused': {
       backgroundColor: 'inherit',

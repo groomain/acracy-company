@@ -8,6 +8,7 @@ import { NavLink } from "react-router-dom";
 import { checkLength } from '../../../utils/services/validationChecks';
 
 import styles from "./styles";
+import Box from "@material-ui/core/Box";
 
 const LoginForm = (props) => {
   const { t } = useTranslation();
@@ -59,6 +60,7 @@ const LoginForm = (props) => {
           error={!!touched.email && !!errors.email}
           helperText={touched.email && errors.email ? t(errors.email) : ''}
         />
+        <Grid style={{marginTop: 28}}>
         <CustomPasswordField
           id="password"
           label={t('password') + '*'}
@@ -69,8 +71,11 @@ const LoginForm = (props) => {
           error={!!touched.password && !!errors.password}
           helperText={touched.password && errors.password ? t(errors.password) : ''}
         />
+        </Grid>
+        <Grid style={{marginTop: -2}}>
         <NavLink to={'/forgotPassword'} className={classes.navLink}>{t('forgotPassword.forgotPasswordButton')}</NavLink>
-        <Grid container direction={'row'} justify={'flex-end'}>
+        </Grid>
+        <Grid container direction={'row'} justify={'flex-end'} style={{marginTop: 4}}>
           <CustomButton
             type="submit"
             loading={loginLoading}

@@ -3,6 +3,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
 import { requestPasswordCodeLaunched } from '../../App/reducer';
+import { openSnackBar } from '../../App/reducer';
+
 import { CustomButton } from '../../Button/';
 import { Grid, Box, Divider, Typography } from '@material-ui/core/';
 import CustomTextField, { CustomPasswordField } from "../../Inputs/CustomTextField";
@@ -36,6 +38,12 @@ const SubmitForm = (props) => {
     setTimeout(() => {
       setCodeNotReceivedClicked(true);
     }, 800);
+  };
+
+  const handleDifferentPasswords = () => {
+    if (password !== confirmPassword) {
+      dispatch(openSnackBar({ message: "Les mots de passe doivent être identiques", error: true }))
+    }
   };
 
   const [disabled, setDisabled] = useState(false);
@@ -96,6 +104,10 @@ const SubmitForm = (props) => {
               title={t('submitNewPasswordButton')}
               theme={disabled ? 'disabledFilled' : 'filledButton'}
               disabled={disabled}
+              handleClick={() => {
+                handleDifferentPasswords();
+                handleSubmit()
+              }}
             />
           </Grid>
           <div className={sharedClasses.hrdivider} />

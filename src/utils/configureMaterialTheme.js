@@ -89,6 +89,7 @@ const theme = createMuiTheme({
       fontFamily: 'Basier Medium',
       color: '#fff',
       letterSpacing: '-0.45px',
+      lineHeight: 2
     },
     subtitle1: {
       fontSize: 21,
