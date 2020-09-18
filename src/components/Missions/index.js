@@ -87,8 +87,8 @@ export const Missions = () => {
             {missionsLoading || briefsLoading
                 ? <CustomLoader size={70}/>
                 : <Grid container direction={'column'} justify='center' alignItems='center'>
-                  <Typography className={classes.noMissionTitle}>{t('dashboard.missions.noMissionTitle')}</Typography>
-                  <Typography className={classes.noMissionSubtitle}>{t('dashboard.missions.noMissionSubtitle')}</Typography>
+                  <Typography variant="h4" className={classes.noMissionTitle}>{t('dashboard.missions.noMissionTitle')}</Typography>
+                  <Typography variant="body1" className={classes.noMissionSubtitle}>{t('dashboard.missions.noMissionSubtitle')}</Typography>
                 </Grid>
             }
           </Grid>
