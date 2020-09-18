@@ -84,7 +84,7 @@ const Drafts = ({ ...props }) => {
   const draftsNumber = leadsData?.length > 0 ? ('0' + leadsData?.length).slice(-2) : null
 
   return (
-    <Box my={4}>
+    <Box style={{ marginTop: '40px' }}>
       <Typography variant='h2'>{draftsNumber} {t('draft.briefsTitle')}</Typography>
       <br />
       {draftsList}
