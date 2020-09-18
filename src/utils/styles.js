@@ -58,16 +58,13 @@ export default makeStyles(theme => ({
     marginBottom: 40,
 
   },
-  container: {
-    paddingTop: 30
-  },
   pannel: {
     padding: '15.3rem 0 5rem 0',
     position: 'sticky',
     top: 0,
   },
   pannelLayout: {
-    paddingTop: '10rem',
+    paddingTop: 164,
     paddingBottom: '10rem'
   },
   midWidth: {
@@ -83,5 +80,11 @@ export default makeStyles(theme => ({
   disabledText: {
     textAlign: 'center',
     opacity: '.5'
+  },
+  container: {
+    marginTop: 40
+  },
+  titleForgotPassword: {
+    marginBottom: 10
   }
 }));
