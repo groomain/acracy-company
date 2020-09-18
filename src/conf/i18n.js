@@ -168,6 +168,7 @@ i18n
             briefsTitle: 'Brouillons',
             newBrief: 'Nouveau brief',
             firstBriefTitle: 'Créez votre premier \nbrief',
+            addBrief: "Créez un nouveau \nbrief",
             firstBriefButton: "C'est parti !",
             newBriefTitle: "Votre nouveau brief vous attend !",
             startBrief: "Démarrer brief",
