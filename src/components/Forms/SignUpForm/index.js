@@ -78,6 +78,7 @@ const SignUpForm = ({ values, errors, touched, handleBlur, handleChange, handleS
     const numberResult = handleNumberInput(e, limit);
     handleChange(numberResult);
   };
+  // console.log("phonePrefix", phonePrefix);
 
   useEffect(() => {
     if (
