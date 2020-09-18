@@ -13,6 +13,7 @@ import { Typography, Grid, Stepper, Step, StepLabel, StepButton, Box, StepConnec
 import areaCodes from "../../../utils/areaCodes.json";
 
 import { handleCurrentStep } from '../../App/reducer';
+import { openSnackBar } from '../../App/reducer';
 import { checkLength } from '../../../utils/services/validationChecks';
 import { handleNumberInput } from '../../../utils/services/format';
 
@@ -44,6 +45,12 @@ const SignUpForm = ({ values, errors, touched, handleBlur, handleChange, handleS
 
   const getSteps = () => {
     return [t('signup.personnalInfos'), t('password')];
+  };
+
+  const handleDifferentPasswords = () => {
+    if (password !== confirmPassword) {
+      dispatch(openSnackBar({ message: "Les mots de passe doivent être identiques", error: true }))
+    }
   };
 
   function getStepContent(step) {
@@ -78,6 +85,7 @@ const SignUpForm = ({ values, errors, touched, handleBlur, handleChange, handleS
     const numberResult = handleNumberInput(e, limit);
     handleChange(numberResult);
   };
+  // console.log("phonePrefix", phonePrefix);
 
   useEffect(() => {
     if (
@@ -310,6 +318,7 @@ const SignUpForm = ({ values, errors, touched, handleBlur, handleChange, handleS
                 theme={disabledSecondStep ? "disabledFilled" : "filledButton"}
                 handleClick={() => {
                   handleStep(3);
+                  handleDifferentPasswords();
                   handleSubmit({ email, password })
                 }}
                 loading={signupLoading}

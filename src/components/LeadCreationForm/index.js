@@ -551,7 +551,7 @@ const LeadCreationForm = ({ values, errors, touched, handleBlur, handleChange, l
                       name='missionContext.duration.unit'
                     ></CustomSelect>
                   </Grid>
-                  <Box mx={1} style={{ marginTop: '-2rem' }}>
+                  <Box mx={1} style={{ height: 1 }}>
                     {values?.missionContext?.duration?.nb && values?.missionContext?.duration?.unit && values?.missionContext?.duration?.unit !== FORMATTED_DAY &&
                       <Typography variant="h2">Soit {' '}
                         {getWorkedDaysResult(values?.missionContext?.duration?.nb,
@@ -677,7 +677,7 @@ const LeadCreationForm = ({ values, errors, touched, handleBlur, handleChange, l
     return (
       <Box className={classes.stepContent}>
         <Typography variant='h2'>{t('leadCreation.profileDetails')}</Typography>
-        <Typography variant='h1'>{values?.search?.TEXT}</Typography>
+        <Typography variant='h1'>{values?.search?.TEXT || values?.search?.text}</Typography>
 
         <Grid container>
           {/* Expertises */}
@@ -742,7 +742,8 @@ const LeadCreationForm = ({ values, errors, touched, handleBlur, handleChange, l
                         isPrimaryColor
                         tagType="Critère indispensable"
                         isWithCheckbox
-                        checkedArray={missionRequirements?.sensitivity?.essential}
+                        multipleChoice
+                        checkedArray={missionRequirements?.sensitivity?.essential ? [missionRequirements.sensitivity.sensitivity.text] : null}
                         onCheckChange={() => handleSensitivityCheck()}
                       />}
                   </Grid>}
@@ -774,8 +775,9 @@ const LeadCreationForm = ({ values, errors, touched, handleBlur, handleChange, l
                         isPrimaryColor
                         tagType="Critère indispensable"
                         isWithCheckbox
+                        multipleChoice
                         onCheckChange={() => changeValue(`missionRequirements.languages[${key}].essential`, !missionRequirements.languages[key].essential)}
-                        checkedArray={tag.essential}
+                        checkedArray={missionRequirements?.languages?.map(language => { if (language.essential) { return formatLanguagesValues(language.language) } })}
                       />))}
                   </Grid>
                 }

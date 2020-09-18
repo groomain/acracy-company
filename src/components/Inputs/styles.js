@@ -13,7 +13,7 @@ export default makeStyles(theme => ({
     caretColor: theme.palette.secondary.main,
     color: theme.palette.secondary.main,
     fontWeight: 500,
-    margin: '.8rem auto 0',
+    margin: '10px auto 0',
     boxSizing: 'border-box',
     '&$focused': {
       backgroundColor: 'inherit',

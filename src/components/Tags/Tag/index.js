@@ -51,9 +51,9 @@ const Tag = ({ title, isPrimaryColor, multipleChoice, isWithInput, placeholder, 
     )
   };
 
-
+  // The whole white part (priority) is clickable
   if (multipleChoice) {
-    let checked = checkedArray?.indexOf(title)
+    let checked = checkedArray?.indexOf(title);
     content = (
       <div className={classes.checkboxTagContainer}>
         <span>{title}</span>

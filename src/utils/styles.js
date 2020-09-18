@@ -44,7 +44,7 @@ export default makeStyles(theme => ({
     height: 30
   },
   titleSignIn: {
-    paddingBottom: 20
+    paddingBottom: 10
   },
   divider: {
     marginTop: 40,
@@ -54,7 +54,7 @@ export default makeStyles(theme => ({
   hrdivider: {
     height: "1px",
     backgroundColor: `${theme.palette.secondary.medium}`,
-    marginTop: 40,
+    marginTop: 44,
     marginBottom: 40,
 
   },
@@ -86,5 +86,8 @@ export default makeStyles(theme => ({
   },
   titleForgotPassword: {
     marginBottom: 10
+  },
+  marginTextfield: {
+    marginTop: 28
   }
 }));
