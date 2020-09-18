@@ -19,7 +19,7 @@ export default makeStyles(theme => ({
   gridCenter: {
     display: 'flex',
     textDecoration: 'none',
-    paddingLeft: '2%',
+    paddingLeft: '31px',
     width: '62%',
   },
   gridCenterFinished: {
