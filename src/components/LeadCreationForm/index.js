@@ -348,11 +348,11 @@ const LeadCreationForm = ({ values, errors, touched, handleBlur, handleChange, l
   // OK a garder
   const renderSearchedTypeSettings = (searchedCategory) => {
     if (searchedCategory?.TYPE === 'PROFILE' || searchedCategory?.type === 'PROFILE') {
-
       return showDeliverablesSettings()
-    } else if (searchedCategory?.TYPE === 'DELIVERABLE' || searchedCategory?.type === 'DELIVERABLES') { }
-    return showProfilesSettings()
-  }
+    } else if (searchedCategory?.TYPE === 'DELIVERABLE' || searchedCategory?.type === 'DELIVERABLES') {
+      return showProfilesSettings()
+    }
+  };
 
   const minDate = new Date().setDate(new Date().getDate() + 30);
 
