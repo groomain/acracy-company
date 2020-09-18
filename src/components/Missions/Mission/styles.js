@@ -68,8 +68,8 @@ export default makeStyles(theme => ({
     letterSpacing: '0px',
   },
   blocAvatar: {
-    marginTop: '20%',
-    marginBottom: '4%',
+    paddingTop: '44px',
+    paddingBottom: '5px',
     width: '100%',
   },
   typo: {
