@@ -25,7 +25,7 @@ const CustomConfigure = connectStateResults(({ searchResults }) =>
   <Configure hitsPerPage={searchResults?.nbHits} />
 );
 
-const Searchbar = ({ onUpdateChosenCategory, value }) => {
+const Searchbar = ({ onUpdateChosenCategory, value, hideLabel }) => {
   const searchClient = useMemo(() => algoliasearch(
     process.env.REACT_APP_ALGOLIA,
     process.env.REACT_APP_ALGOLIA_KEY
@@ -37,12 +37,12 @@ const Searchbar = ({ onUpdateChosenCategory, value }) => {
       indexName={process.env.REACT_APP_ALGOLIA_INDEX_NAME}
     >
       <CustomConfigure />
-      <CustomSearchbar onUpdateChosenCategory={onUpdateChosenCategory} value={value} />
+      <CustomSearchbar onUpdateChosenCategory={onUpdateChosenCategory} value={value} hideLabel={hideLabel} />
     </InstantSearch>
   );
 };
 
-const SearchResults = ({ searchResults, onUpdateChosenCategory, value }) => {
+const SearchResults = ({ searchResults, onUpdateChosenCategory, value, hideLabel }) => {
   const classes = styles();
   const { t } = useTranslation();
 
@@ -189,11 +189,12 @@ const SearchResults = ({ searchResults, onUpdateChosenCategory, value }) => {
 
   return (
     <Box my={4}>
+      {!hideLabel &&
       <Box my={2} style={{ height: 30 }}>
         <Typography variant="h2">
           {renderTitle(searchValue?.TYPE) || newOption?.title}
         </Typography>
-      </Box>
+      </Box>}
       <CreatableSelect
         onChange={handleOnChange}
         value={searchValue}
