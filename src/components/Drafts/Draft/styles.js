@@ -52,8 +52,13 @@ export default makeStyles(theme => ({
     color: '#ffffff'
   },
   toUppercase: {
+    fontFamily: 'Basier Regular',
     textTransform: 'uppercase',
-    fontSize: 15
+    fontSize: 14
+  },
+  demarrerBrief: {
+    fontFamily: 'Basier Regular',
+    fontSize: 14
   },
   firstBriefTitle: {
     lineHeight: .5

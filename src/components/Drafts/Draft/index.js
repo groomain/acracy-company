@@ -19,7 +19,6 @@ import { shortenLongText } from '../../../utils/services/format';
 import { getPath } from '../../../utils/services/validationChecks';
 import styles from './styles';
 
-
 moment.locale('fr');
 
 const Draft = ({ draft }) => {
@@ -119,7 +118,7 @@ const Draft = ({ draft }) => {
             onClick={setLeadStep}>
             <Grid item container direction='row' className={classes.statusLine}>
               <Box className={classes.iconBox}>{renderIcon(getStatusResult)}</Box>
-              <Grid item>
+              <Grid item className={classes.startBrief}>
                 <Typography variant='h2'
                   className={classes.toUppercase}>{getStatusResult?.title} ({getStatusResult?.progress} %)</Typography>
                 <Typography variant='body2'>Créé le : {date}</Typography>
