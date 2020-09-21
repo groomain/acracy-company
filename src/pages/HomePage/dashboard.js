@@ -48,15 +48,17 @@ export const Dashboard = () => {
     <Grid className={clsx(sharedClasses.pannelLayout, sharedClasses.fullPage)}>
       <Grid item className={sharedClasses.midWidth}>
         <Typography variant='h1'>{t('dashboard.welcome')}{userName || 'Pascal'}</Typography>
-        <Box my={2}>
+        <Box style={{ marginTop: '20px' }}>
           <Typography variant='body1'>{t('dashboard.subtitle')}</Typography>
         </Box>
-        <Box my={5}>
-          <Searchbar onUpdateChosenCategory={handleSearchResult} />
+        <Box style={{ marginTop: '6px' }}>
+          <Searchbar
+            onUpdateChosenCategory={handleSearchResult}
+            hideLabel />
         </Box>
       </Grid>
-      <Box my={5}>
-        <Box my={5}>
+      <Box>
+        <Box style={{ marginTop: '40px' }}>
           <Typography variant='h1'>{t('dashboard.missions.missionsTitle')}</Typography>
         </Box>
         <Grid item style={{ position: 'relative' }}>

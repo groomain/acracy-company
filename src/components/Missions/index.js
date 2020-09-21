@@ -13,10 +13,13 @@ import sharedStyles from "../../utils/styles";
 import { WAITING_FOR_SIGNATURE, FINISHED, IN_PROGRESS, REFUSED } from './constants';
 import { formatWithLineBreak, dateToTimestamp, formatDate, formatDateForComparaison } from '../../utils/services/format';
 
+import styles from './styles';
+
 export const Missions = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const sharedClasses = sharedStyles();
+  const classes = styles();
 
   const today = new Date(Date.now()).toISOString();
   const [briefsList, setBriefsList] = useState();
@@ -80,10 +83,13 @@ export const Missions = () => {
       <>
         {displayInProgressMissionsTitle()}
         <DarkWrapper isBleed justify='center' alignItems='center'>
-          <Grid className={sharedClasses.disabledText}>
+          <Grid className={classes.noMissionTitle}>
             {missionsLoading || briefsLoading
-              ? <CustomLoader size={70} />
-              : <span>{formatWithLineBreak(t('dashboard.missions.noMission'))}</span>
+                ? <CustomLoader size={70}/>
+                : <Grid container direction={'column'} justify='center' alignItems='center'>
+                  <Typography variant="h4" className={classes.noMissionTitle}>{t('dashboard.missions.noMissionTitle')}</Typography>
+                  <Typography variant="body1" className={classes.noMissionSubtitle}>{t('dashboard.missions.noMissionSubtitle')}</Typography>
+                </Grid>
             }
           </Grid>
         </DarkWrapper>

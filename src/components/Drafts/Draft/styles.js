@@ -61,7 +61,8 @@ export default makeStyles(theme => ({
     fontSize: 14
   },
   firstBriefTitle: {
-    lineHeight: .5
+    lineHeight: .5,
+    fontFamily: 'Basier Medium',
   },
   draftLink: {
     textDecoration: 'none',
