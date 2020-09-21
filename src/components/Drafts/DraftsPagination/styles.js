@@ -4,7 +4,7 @@ export default makeStyles(theme => ({
   pagination: {
     position: 'absolute',
     top: '-1.5rem',
-    right: 78,
+    right: -5,
     display: 'flex'
   },
   paginationContainer: {

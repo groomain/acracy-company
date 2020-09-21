@@ -15,7 +15,7 @@ export default makeStyles(theme => ({
     display: 'flex',
     alignItems: 'center',
     cursor: 'pointer',
-    padding: '5px 25px',
+    padding: '5px 25px 5px 30px',
     color: theme.palette.secondary.main,
     textDecoration: 'none',
     '&:hover svg g, &:hover svg path': {

@@ -7,7 +7,7 @@ import { Grid, Box, Typography, IconButton } from '@material-ui/core';
 import ClearIcon from '@material-ui/icons/Clear';
 import { CustomButton } from '../../Button';
 import DraftWrapper from './DraftWrapper';
-import SearchIcon from '../../../assets/icons/searchIcon';
+import SearchIcon from '../../../assets/icons/searchIconSmall.svg';
 import StartIcon from '../../../assets/icons/demarrer.svg';
 import ToValidateIcon from '../../../assets/icons/a-valider.svg';
 import WaitingForCallIcon from '../../../assets/icons/en-attente-de-rappel.svg';
@@ -18,7 +18,6 @@ import { deleteLeadLaunched } from '../../../pages/HomePage/reducer';
 import { shortenLongText } from '../../../utils/services/format';
 import { getPath } from '../../../utils/services/validationChecks';
 import styles from './styles';
-
 
 moment.locale('fr');
 
@@ -119,7 +118,7 @@ const Draft = ({ draft }) => {
             onClick={setLeadStep}>
             <Grid item container direction='row' className={classes.statusLine}>
               <Box className={classes.iconBox}>{renderIcon(getStatusResult)}</Box>
-              <Grid item>
+              <Grid item className={classes.startBrief}>
                 <Typography variant='h2'
                   className={classes.toUppercase}>{getStatusResult?.title} ({getStatusResult?.progress} %)</Typography>
                 <Typography variant='body2'>Créé le : {date}</Typography>
@@ -130,7 +129,7 @@ const Draft = ({ draft }) => {
                 <Grid item>
                   <Box className={classes.titleBox}>
                     <Typography variant='h3'
-                      className={draft?.missionContext.title ? null : classes.newDraft}>
+                      className={draft?.missionContext.title ? classes.titleOfMission : classes.newDraft}>
                       {draft?.missionContext.title ? shortenLongText(draft?.missionContext.title, 42) : t('draft.newBriefTitle')}
                     </Typography>
                   </Box>
@@ -140,7 +139,7 @@ const Draft = ({ draft }) => {
             <Box className={classes.searchLine}>
               <Grid container alignItems='center'>
                 <Grid item container>
-                  <SearchIcon color='#fff' size="small" />
+                  <img src={SearchIcon} alt="search" />
                   <Box mx={1.5}>
                     <Typography variant='body2'>{shortenLongText(draft?.search.text, 30)}</Typography>
                   </Box>
@@ -181,7 +180,7 @@ const Draft = ({ draft }) => {
           </Grid>
         }
       </Grid>
-    </DraftWrapper>
+    </DraftWrapper >
   )
 };
 

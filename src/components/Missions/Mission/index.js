@@ -361,7 +361,7 @@ export const Mission = ({ mission, matching, today, ...props }) => {
                   {/* 2nd column */}
                   <Grid item xs={4}>
                     <Grid item className={classes.blocTypoUp}>
-                      <Typography variant={"h4"} className={classes.typo}>Format</Typography>
+                      <Typography variant={"h4"} className={classes.typoH4}>Format</Typography>
                       <Typography variant={"body1"} className={classes.typo}>{formatType(mission?.brief?.missionContext?.format || matching?.missionContext?.format)}</Typography>
                     </Grid>
                   </Grid>
@@ -369,7 +369,7 @@ export const Mission = ({ mission, matching, today, ...props }) => {
                   {/* 3rd column */}
                   <Grid item xs={4}>
                     <Grid item className={classes.blocTypoUp}>
-                      <Typography variant={"h4"} className={classes.typo}>Taux journalier</Typography>
+                      <Typography variant={"h4"} className={classes.typoH4}>Taux journalier</Typography>
                       <Typography variant={"body1"} className={classes.typo}>{Math.ceil(matching?.missionContext?.budget?.dailyRateForCompany || mission?.brief?.missionContext?.budget?.dailyRateForCompany)} €/j</Typography>
                     </Grid>
                   </Grid>
@@ -378,7 +378,7 @@ export const Mission = ({ mission, matching, today, ...props }) => {
                   {/* 1st column */}
                   <Grid item xs={4}>
                     <Grid item className={classes.blocTypoDownAvatar}>
-                      <Typography variant={"h4"} className={classes.typo}>
+                      <Typography variant={"h4"} className={classes.typoH4}>
                         {mission?.serviceProviderProfile?.firstName || matching?.serviceProviderProfile?.firstName || matchingValues?.title}
                         {mission?.serviceProviderProfile?.lastName || matching?.serviceProviderProfile?.lastName}
                       </Typography>
@@ -390,7 +390,7 @@ export const Mission = ({ mission, matching, today, ...props }) => {
                   {/* 2nd column */}
                   <Grid item xs={4}>
                     <Grid item className={classes.blocTypoDown}>
-                      <Typography variant={"h4"} className={classes.typo}>Rythme</Typography>
+                      <Typography variant={"h4"} className={classes.typoH4}>Rythme</Typography>
                       <Typography variant={"body1"} className={classes.typo}>
                         {weekly === 5 ? 'Plein temps' : 'Temps partiel'} ({weekly} jours)
                   </Typography>
@@ -400,7 +400,7 @@ export const Mission = ({ mission, matching, today, ...props }) => {
                   {/* 3rd column */}
                   <Grid item xs={4}>
                     <Grid item className={classes.blocTypoDown}>
-                      <Typography variant={"h4"} className={classes.typo}>Durée</Typography>
+                      <Typography variant={"h4"} className={classes.typoH4}>Durée</Typography>
                       <Typography variant={"body1"} className={classes.typo}>
                         {durationNb}{' '}{t(`dashboard.missions.${durationUnit?.toLowerCase()}`)}{(durationNb > 1 && durationUnit !== 'MONTH') && 's'} à partir du {formatDate(startDate)}
                       </Typography>
