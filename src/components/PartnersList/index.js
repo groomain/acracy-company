@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, Typography } from '@material-ui/core';
+import { Grid, Typography, Box } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 
 import styles from './styles';
@@ -20,17 +20,20 @@ const PartnersList = () => {
 
   return (
     <>
-      <Grid item className={classes.collaboratorsGridItem}>
-        <Typography variant={"h1"}>
-          {t('collaborators')}
-        </Typography>
+      <Grid item>
+        <Box my={'40px'}>
+          <Typography variant={"h1"}>
+            {t('collaborators')}
+          </Typography>
+        </Box>
       </Grid>
-      <br />
-      <Grid container className={classes.iconContainer}>
+      <Grid container>
         {logos.map((logo, i) => {
           return (
-            <Grid key={i} item xs={4} >
-              <CircleImage theme='partner' alt='partner' src={logo} />
+            <Grid item key={i}>
+              <Box mr={'28px'} mb={'28px'}>
+                <CircleImage theme='partner' alt='partner' src={logo} icon={'NONO'} />
+              </Box>
             </Grid>
           )
         })}

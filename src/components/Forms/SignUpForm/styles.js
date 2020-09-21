@@ -13,7 +13,7 @@ export default makeStyles(theme => ({
     minHeight: '100vh'
   },
   formGridItem: {
-    padding: '7rem 0'
+    margin: '125px 0'
   },
   stepper: {
     backgroundColor: theme.palette.secondary.black,
@@ -28,16 +28,14 @@ export default makeStyles(theme => ({
   stepButton: {
     padding: 0
   },
-  stepContent: {
-    paddingTop: '4rem',
-  },
   signupRows: {
     paddingTop: theme.spacing(2)
   },
   icon: {
     background: theme.palette.secondary.medium,
-    width: 49,
-    height: 49,
+    width: 37,
+    height: 37,
+    padding: '5.5px',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -51,9 +49,10 @@ export default makeStyles(theme => ({
   active: {
     background: theme.palette.secondary.main,
     color: theme.palette.secondary.medium,
+    border: '1px solid',
     borderColor: theme.palette.secondary.main,
     backgroundClip: 'content-box',
-    padding: '.3rem'
+    padding: '5.5px'
   },
   inactiveLabel: {
     color: theme.palette.secondary.medium
