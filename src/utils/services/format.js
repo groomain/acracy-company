@@ -224,7 +224,7 @@ export const formatLanguagesValues = val => {
 export const handleNumberInput = (e, limit, min) => { // Ignore tous les caractères à part les , et les . + limite le nb de décimales
   let t;
   if (min) {
-    t = e.target.value.replace(',', '.').replace(/[^1-9.]/g, '');
+    t = e.target.value.replace(',', '.').replace(/^[^1-9][0-9]*$/g, '');
   } else {
     t = e.target.value.replace(',', '.').replace(/[^0-9.]/g, '');
   }
