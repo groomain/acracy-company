@@ -13,7 +13,7 @@ export default makeStyles(theme => ({
     minHeight: '100vh'
   },
   formGridItem: {
-    padding: '7rem 0'
+    margin: '125px 0'
   },
   stepper: {
     backgroundColor: theme.palette.secondary.black,
