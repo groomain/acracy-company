@@ -119,20 +119,19 @@ const SignUpForm = ({ values, errors, touched, handleBlur, handleChange, handleS
 
   const setPersonnalInfos = () => {
     return (
-      <Box className={classes.stepContent}>
-        <Typography variant={"h1"} >{t('signup.createAccount')}</Typography>
-        <br />
-        <br />
-        <Typography variant={"h4"} >{t('signup.alreadyHaveAccount')} &nbsp;
+      <Box>
+        <Box mt={'100px'}>
+          <Typography variant={"h1"} >{t('signup.createAccount')}</Typography>
+        </Box>
+        <Box my={'40px'}>
+          <Typography variant={"h4"} >{t('signup.alreadyHaveAccount')} &nbsp;
           <span><CustomNavLink to="/login" text={t('signup.loginLinkMsg')} theme='yellowLink'></CustomNavLink></span>
-        </Typography>
-        <br />
-        <br />
-        <Typography variant={"h2"} >{t('signup.accountCreation')}</Typography>
-        <Typography variant={"h1"} >{t('signup.personnalInfos')}</Typography>
-        <br />
-        <br />
-
+          </Typography>
+        </Box>
+        <Box my={'40px'}>
+          <Typography variant={"h2"} >{t('signup.accountCreation')}</Typography>
+          <Typography variant={"h1"} >{t('signup.personnalInfos')}</Typography>
+        </Box>
         <Grid container>
           <Grid item xs={12} className={classes.signupRows}>
             <CustomTextField
