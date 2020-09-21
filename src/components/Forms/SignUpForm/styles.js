@@ -29,7 +29,7 @@ export default makeStyles(theme => ({
     padding: 0
   },
   stepContent: {
-    paddingTop: '4rem',
+    paddingTop: '100px',
   },
   signupRows: {
     paddingTop: theme.spacing(2)
