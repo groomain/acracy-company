@@ -922,21 +922,32 @@ const LeadCreationForm = ({ values, errors, touched, handleBlur, handleChange, l
       </Stepper>
       {getStepContent(leadCreationStep)}
       {openCallMeModal && <CustomModal
-        title="Au clic sur “Confirmer”, le remplissage de brief se mettra en pause, et vous serez rappelé.e par l’un des account managers d’acracy qui le finalisera au téléphone avec vous"
+        title={t('leadCreation.callPopin.title')}
         open={openCallMeModal}
-        handleClose={() =>
-          setOpenCallMeModal(false)}
-      >
+        handleClose={() => setOpenCallMeModal(false)} >
         <Grid container className={classes.marginTop}>
           <Grid item>
-            <CustomButton
-              type="button"
-              theme='primaryButton'
-              title={'Confirmer'}
-              loading={leadSaveLoading || changeLeadStatusLoading}
-              handleClick={handleDispatchHelp}
-            >
-            </CustomButton>
+            <Typography>{t('leadCreation.callPopin.text')}</Typography>
+            <Box style={{ marginTop: '24px' }}>
+              <Grid container>
+                <Box style={{ marginRight: '30px' }}>
+                  <CustomButton
+                    type="button"
+                    theme='primaryButton'
+                    title={t('leadCreation.callPopin.cancel')}
+                    handleClick={() => setOpenCallMeModal(false)}>
+                  </CustomButton>
+                </Box>
+                <CustomButton
+                  type="button"
+                  theme='filledButton'
+                  title={t('leadCreation.callPopin.confirm')}
+                  loading={leadSaveLoading || changeLeadStatusLoading}
+                  handleClick={handleDispatchHelp}
+                >
+                </CustomButton>
+              </Grid>
+            </Box>
           </Grid>
         </Grid>
       </CustomModal>}

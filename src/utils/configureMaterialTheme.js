@@ -78,6 +78,7 @@ const theme = createMuiTheme({
       fontFamily: 'Basier Medium',
       color: '#ecf805',
       letterSpacing: '-0.45px',
+      lineHeight: 2
     },
     h3: {
       fontSize: 22,

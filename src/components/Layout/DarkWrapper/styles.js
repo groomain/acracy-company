@@ -6,7 +6,7 @@ export default makeStyles(theme => ({
     minHeight: 200,
     borderRadius: 15,
     padding: '15px',
-    margin: '1rem 0',
+    margin: '24px 0',
     position: 'relative'
   },
   bleed: {

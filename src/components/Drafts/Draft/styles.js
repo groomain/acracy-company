@@ -13,7 +13,7 @@ export default makeStyles(theme => ({
     position: 'relative',
     margin: 15,
     alignContent: 'space-between',
-    '&:hover' : {
+    '&:hover': {
       cursor: 'pointer'
     }
   },
@@ -44,9 +44,21 @@ export default makeStyles(theme => ({
     color: theme.palette.primary.bright,
     fontFamily: 'Basier Medium',
   },
+  titleOfMission: {
+    fontFamily: 'Basier Medium',
+    fontSize: '22px',
+    fontWeight: 500,
+    lineHeight: 1.55,
+    color: '#ffffff'
+  },
   toUppercase: {
+    fontFamily: 'Basier Regular',
     textTransform: 'uppercase',
-    fontSize: 15
+    fontSize: 14
+  },
+  demarrerBrief: {
+    fontFamily: 'Basier Regular',
+    fontSize: 14
   },
   firstBriefTitle: {
     lineHeight: .5,

@@ -16,6 +16,7 @@ import styles from "../../components/AppBar/styles";
 import acracyLogo from "../../assets/icons/logo-acracy.svg";
 
 import useScrollTrigger from "@material-ui/core/useScrollTrigger";
+import { Box } from "@material-ui/core";
 import { dispatchLeadId } from '../LeadCreationPage/reducer';
 
 export const HomePage = (props) => {
@@ -53,9 +54,11 @@ export const HomePage = (props) => {
           </NavLink>
           <div className={classes.grow} />
           <div className={clsx(classes.div, classes.home)}>
-            <CustomButton theme={"filledButton"} title={t('header.newBrief')}
-              component={RouterLink} to="/lead"
-              onClick={() => dispatch(dispatchLeadId(null))} />
+            <Box pr={'20px'}>
+              <CustomButton theme={"filledButton"} title={t('header.newBrief')}
+                component={RouterLink} to="/lead"
+                onClick={() => dispatch(dispatchLeadId(null))} />
+            </Box>
             <ProfilMenu />
           </div>
         </Toolbar>

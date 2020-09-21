@@ -53,8 +53,8 @@ export const Dashboard = () => {
         </Box>
         <Box style={{ marginTop: '6px' }}>
           <Searchbar
-              onUpdateChosenCategory={handleSearchResult}
-              hideLabel />
+            onUpdateChosenCategory={handleSearchResult}
+            hideLabel />
         </Box>
       </Grid>
       <Box>
