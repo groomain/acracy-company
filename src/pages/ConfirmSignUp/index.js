@@ -65,7 +65,7 @@ const ConfirmSignUpPage = () => {
             <Box mt={'26px'}>
               <Typography variant="h1">{t('confirmSignupPage.title')}</Typography>
             </Box>
-            <Box mt={'10px'}>
+            <Box mt={'10px'} mb={'60px'}>
               <Typography variant="body1">{t('confirmSignupPage.subtitle')} <span className={sharedClasses.email}>{email}</span></Typography>
             </Box>
             <Formik
