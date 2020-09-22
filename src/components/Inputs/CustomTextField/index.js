@@ -15,7 +15,7 @@ export const CustomTextField = ({ label, placeholder, type, onUpdateFieldValue, 
 
   return (
     <Box className={className}>
-      <Typography variant='h4'>{label}</Typography >
+      <Typography variant='h4' component="label">{label}</Typography >
       <FilledInput
         type={type}
         placeholder={placeholder}

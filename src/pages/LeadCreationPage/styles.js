@@ -42,7 +42,7 @@ export default makeStyles(theme => ({
     boxShadow: "0px 1px 8px black"
   },
   toolbar: {
-    height: 78,
+    height: theme.navbar.height,
     paddingLeft: 40,
     paddingRight: 40
   },

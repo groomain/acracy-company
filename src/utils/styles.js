@@ -82,7 +82,7 @@ export default makeStyles(theme => ({
     opacity: '.5'
   },
   container: {
-    marginTop: 40
+    marginTop: theme.navbar.height
   },
   titleForgotPassword: {
     marginBottom: 10

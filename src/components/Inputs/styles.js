@@ -14,7 +14,7 @@ export default makeStyles(theme => ({
     color: theme.palette.secondary.main,
     fontWeight: 500,
     fontSize: 14,
-    margin: '10px auto 0',
+    margin: '5px auto 0',
     boxSizing: 'border-box',
     '&$focused': {
       backgroundColor: 'inherit',
@@ -44,11 +44,11 @@ export default makeStyles(theme => ({
   },
   icon: {
     fill: '#fff',
-    transform: 'translate(-22px, 7px)',
+    transform: 'translate(-22px, 0)',
     transition: '.3s'
   },
   iconClosed: {
-    transform: 'translate(-22px, 7px) rotate(180deg)'
+    transform: 'translate(-22px, 0) rotate(180deg)'
   },
   dropdownStyle: {
     overflowStyle: 'none', // IE scrollbar

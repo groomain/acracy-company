@@ -123,17 +123,17 @@ const SignUpForm = ({ values, errors, touched, handleBlur, handleChange, handleS
         <Box mt={'100px'}>
           <Typography variant={"h1"} >{t('signup.createAccount')}</Typography>
         </Box>
-        <Box my={'40px'}>
+        <Box mt={'40px'} mb="60px">
           <Typography variant={"h4"} >{t('signup.alreadyHaveAccount')} &nbsp;
           <span><CustomNavLink to="/login" text={t('signup.loginLinkMsg')} theme='yellowLink'></CustomNavLink></span>
           </Typography>
         </Box>
-        <Box my={'40px'}>
+        <Box mb={'40px'}>
           <Typography variant={"h2"} >{t('signup.accountCreation')}</Typography>
           <Typography variant={"h1"} >{t('signup.personnalInfos')}</Typography>
         </Box>
         <Grid container>
-          <Grid item xs={12} className={classes.signupRows}>
+          <Grid item xs={12}>
             <CustomTextField
               name="companyName"
               type="text"
@@ -199,8 +199,8 @@ const SignUpForm = ({ values, errors, touched, handleBlur, handleChange, handleS
             />
           </Grid>
 
-          <Grid container item direction='column' className={classes.marginTop}>
-            <Box my={2}>
+          <Grid container item direction='column' className={`${classes.signupRows} ${classes.marginTop}`}>
+            <Box>
               <Typography variant={'h4'} >{t('signup.phoneNumber') + '*'}</Typography>
             </Box>
             <Grid container spacing={2}>

@@ -76,9 +76,9 @@ export const Form4 = ({ values, errors, touched, handleBlur, handleChange, handl
             />
           </Grid>
           <Grid item container direction={'row'} md={6} style={{ paddingLeft: 20 }}>
-            <Grid item>
+            <div>
               <Typography variant={'h4'}>{t('signup.phoneNumber') + '*'}</Typography>
-            </Grid>
+            </div>
             <Grid item container spacing={4} className={classes.phoneMargin}>
               <Grid item md={5}>
                 <CustomSelect

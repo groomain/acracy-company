@@ -78,7 +78,7 @@ const theme = createMuiTheme({
       fontFamily: 'Basier Medium',
       color: '#ecf805',
       letterSpacing: '-0.45px',
-      lineHeight: 2
+      lineHeight: '25px'
     },
     h3: {
       fontSize: 22,
@@ -90,7 +90,7 @@ const theme = createMuiTheme({
       fontFamily: 'Basier Medium',
       color: '#fff',
       letterSpacing: '-0.45px',
-      lineHeight: 2
+      lineHeight: '25px'
     },
     subtitle1: {
       fontSize: 21,
@@ -122,6 +122,9 @@ const theme = createMuiTheme({
       disableRipple: true, // No more ripple, on the whole application 💣!
     },
   },
+  navbar: {
+    height: 78
+  }
 });
 
 export { theme };

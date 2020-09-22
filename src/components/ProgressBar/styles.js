@@ -7,7 +7,7 @@ export default makeStyles(theme => ({
         width: props.width,
         backgroundColor: 'yellow',
         position: 'fixed',
-        top: 78,
+        top: theme.navbar.height,
         transition: 'width 2s',
         zIndex: 2
     })
