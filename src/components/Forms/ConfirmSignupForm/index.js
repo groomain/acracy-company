@@ -37,26 +37,28 @@ const ConfirmSignupForm = (props) => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <Grid container alignItems='center'>
-        <CustomTextField
-          id="code"
-          type='text'
-          label={t('confirmSignupPage.label')}
-          placeholder={t('confirmSignupPage.placeholder')}
-          value={code}
-          onBlur={handleBlur}
-          onChange={handleChange}
-          error={!!touched.code && !!errors.code}
-        />
-
-        <CustomButton
-          type="submit"
-          loading={confirmSignupLoading}
-          title={t('confirmSignupPage.buttonTitle')}
-          theme={disabled ? 'disabledOutlined' : 'primaryButton'}
-          disabled={disabled}
-          style={{ margin: '1rem 0 0 2rem' }}
-        />
+      <Grid container>
+        <Grid item>
+          <CustomTextField
+            id="code"
+            type='text'
+            label={t('confirmSignupPage.label')}
+            placeholder={t('confirmSignupPage.placeholder')}
+            value={code}
+            onBlur={handleBlur}
+            onChange={handleChange}
+            error={!!touched.code && !!errors.code}
+          />
+        </Grid>
+        <Grid item>
+          <CustomButton
+            type="submit"
+            loading={confirmSignupLoading}
+            title={t('confirmSignupPage.buttonTitle')}
+            theme={disabled ? 'disabledOutlined' : 'primaryButton'}
+            disabled={disabled}
+            style={{ margin: '60px 0 0 20px' }}
+          /></Grid>
       </Grid>
     </form>
   );
