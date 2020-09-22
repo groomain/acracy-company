@@ -286,25 +286,24 @@ const SignUpForm = ({ values, errors, touched, handleBlur, handleChange, handleS
             </Box>
           </Grid>
 
-          <Grid container justify='space-between' alignItems='center' className={classes.marginTop}>
-            <Grid item xs={2}>
+          <Grid container alignItems='center' className={classes.marginTop}>
+            <Box mr={'20px'}>
               <CustomCheckbox
                 name="conditions"
                 value="true"
                 onChange={handleChange}
+                noPadding
               />
-            </Grid>
-            <Grid item xs={10}>
-              <Typography variant={"h4"}>
-                {t('signup.conditions1')}
-                <a href={'https://acracy.co/cgu-cgv/'}
-                  target="_blank"
-                  className={classes.link}>
-                  {t('signup.termsAndConditions')}
-                </a>
-                {t('signup.conditions2')}
-              </Typography>
-            </Grid>
+            </Box>
+            <Typography variant={"h4"}>
+              {t('signup.conditions1')}
+              <a href={'https://acracy.co/cgu-cgv/'}
+                target="_blank"
+                className={classes.link}>
+                {t('signup.termsAndConditions')}
+              </a>
+              {t('signup.conditions2')}
+            </Typography>
           </Grid>
 
           <Grid container justify='space-between' className={classes.marginTop}>

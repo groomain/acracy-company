@@ -8,6 +8,9 @@ export default makeStyles(theme => ({
       backgroundColor: 'transparent',
     },
   },
+  noPadding: {
+    padding: 0
+  },
   icon: {
     borderRadius: 8,
     width: 56,
