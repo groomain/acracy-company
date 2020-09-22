@@ -251,7 +251,9 @@ const SignUpForm = ({ values, errors, touched, handleBlur, handleChange, handleS
   const setPassword = () => {
     return (
       <Box className={classes.stepContent}>
-        <Typography variant={"h2"} >{t('signup.accountCreation')}</Typography>
+        <Box mt={'100px'}>
+          <Typography variant={"h2"} >{t('signup.accountCreation')}</Typography>
+        </Box>
         <Typography variant={"h1"} >{t('signup.yourPassword')}</Typography>
         <br />
         <br />
