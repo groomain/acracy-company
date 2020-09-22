@@ -33,7 +33,7 @@ const SignUpForm = ({ values, errors, touched, handleBlur, handleChange, handleS
 
   const [optionsValues] = useState(areaCodes);
 
-  const [activeStep, setActiveStep] = useState(0);
+  const [activeStep, setActiveStep] = useState(1);
 
   useEffect(() => {
     if (activeStep === 0) {
@@ -273,7 +273,7 @@ const SignUpForm = ({ values, errors, touched, handleBlur, handleChange, handleS
           </Grid>
 
           <Grid item xs={12} className={`${classes.signupRows} ${classes.marginTop}`}>
-            <Box mb={'28px'}>
+            <Box mb={'48px'}>
               <CustomPasswordField
                 name="confirmPassword"
                 value={confirmPassword}
@@ -305,30 +305,33 @@ const SignUpForm = ({ values, errors, touched, handleBlur, handleChange, handleS
               {t('signup.conditions2')}
             </Typography>
           </Grid>
-
           <Grid container justify='space-between' className={classes.marginTop}>
             <Grid item>
-              <CustomButton
-                type="button"
-                handleClick={handleBack}
-                title={t('buttonTitles.backButton')}
-              >
-              </CustomButton>
+              <Box mt={'44px'}>
+                <CustomButton
+                  type="button"
+                  handleClick={handleBack}
+                  title={t('buttonTitles.backButton')}
+                >
+                </CustomButton>
+              </Box>
             </Grid>
             <Grid item>
-              <CustomButton
-                type="submit"
-                theme={disabledSecondStep ? "disabledFilled" : "filledButton"}
-                handleClick={() => {
-                  handleStep(3);
-                  handleDifferentPasswords();
-                  handleSubmit({ email, password })
-                }}
-                loading={signupLoading}
-                title={t('signup.createAccountButton')}
-                disabled={disabledSecondStep || signupLoading}
-              >
-              </CustomButton>
+              <Box mt={'44px'}>
+                <CustomButton
+                  type="submit"
+                  theme={disabledSecondStep ? "disabledFilled" : "filledButton"}
+                  handleClick={() => {
+                    handleStep(3);
+                    handleDifferentPasswords();
+                    handleSubmit({ email, password })
+                  }}
+                  loading={signupLoading}
+                  title={t('signup.createAccountButton')}
+                  disabled={disabledSecondStep || signupLoading}
+                >
+                </CustomButton>
+              </Box>
             </Grid>
           </Grid>
 
