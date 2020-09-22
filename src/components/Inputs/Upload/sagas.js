@@ -7,29 +7,29 @@ import {
   deleteAttachmentSuccess,
   deleteAttachmentFailure,
   getAttachmentsSuccess, getAttachmentsFailure
-} from "./reducer";
+} from './reducer';
 
-import { openSnackBar } from "../../../components/App/reducer";
+import { openSnackBar } from '../../../components/App/reducer';
 import {
-  changeAttachmentFromData,
   openAdminSnackBar
-} from "../../../pages/AdministrativePage/reducer";
-import {s3Upload} from "../../../utils/services/awsLib";
+} from '../../../pages/AdministrativePage/reducer';
+import { s3Upload } from '../../../utils/services/awsLib';
+import { getCompany } from '../../../pages/AdministrativePage/sagas';
 
 function* doUploadFile(action) {
   const payload = action.payload.files[0];
-  const type = action.payload.type;
+  const {type} = action.payload;
 
   if (payload.file.size < 1.5e+7) {
     try {
       const storedKey = yield s3Upload(`${action.payload.companyData.externalId}-${action.payload.name}`, payload.file);
-      const tempExternalId = yield API.post(config.apiGateway.NAME, encodeURI('/attachments'),
+      yield API.post(config.apiGateway.NAME, encodeURI('/attachments'),
         {
           headers: {
             'x-api-key': config.apiKey
           },
           body: {
-            type: type,
+            type,
             name: action.payload.name || payload.file.name,
             filename: storedKey,
             payload: {
@@ -37,11 +37,8 @@ function* doUploadFile(action) {
             }
           }
         });
-      const { attachmentId } = tempExternalId;
-      if (action.payload.companyData) {
-        const newCompanyData = {...action.payload.companyData, administrativeProfile: {...action.payload.companyData.administrativeProfile, legalDocuments: [...action.payload.companyData.administrativeProfile.legalDocuments, {externalId: attachmentId, name: `${action.payload.name}`}]}};
-        yield put(changeAttachmentFromData(newCompanyData));
-      }
+      yield getCompany({payload: action.payload.companyData.externalId});
+
       yield put(uploadFileSuccess());
       yield put(openAdminSnackBar({ message: "Votre document a bien été ajouté", error: false }));
     } catch (error) {
