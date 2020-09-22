@@ -259,27 +259,31 @@ const SignUpForm = ({ values, errors, touched, handleBlur, handleChange, handleS
         </Box>
         <Grid container>
           <Grid item xs={12} className={`${classes.signupRows} ${classes.marginTop}`}>
-            <CustomPasswordField
-              name="password"
-              value={password}
-              onBlur={handleBlur}
-              onChange={handleChange}
-              placeholder={t('signup.passwordPlaceholder')}
-              label={t('password') + '*'}
-              error={!!touched.password && !!errors.password}
-            />
+            <Box mb={'12px'}>
+              <CustomPasswordField
+                name="password"
+                value={password}
+                onBlur={handleBlur}
+                onChange={handleChange}
+                placeholder={t('signup.passwordPlaceholder')}
+                label={t('password') + '*'}
+                error={!!touched.password && !!errors.password}
+              />
+            </Box>
           </Grid>
 
           <Grid item xs={12} className={`${classes.signupRows} ${classes.marginTop}`}>
-            <CustomPasswordField
-              name="confirmPassword"
-              value={confirmPassword}
-              onBlur={handleBlur}
-              onChange={handleChange}
-              placeholder={t('signup.confirmPasswordPlaceholder')}
-              label={t('confirmPassword') + '*'}
-              error={!!touched.confirmPassword && !!errors.confirmPassword}
-            />
+            <Box mb={'28px'}>
+              <CustomPasswordField
+                name="confirmPassword"
+                value={confirmPassword}
+                onBlur={handleBlur}
+                onChange={handleChange}
+                placeholder={t('signup.confirmPasswordPlaceholder')}
+                label={t('confirmPassword') + '*'}
+                error={!!touched.confirmPassword && !!errors.confirmPassword}
+              />
+            </Box>
           </Grid>
 
           <Grid container justify='space-between' alignItems='center' className={classes.marginTop}>
