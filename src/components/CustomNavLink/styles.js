@@ -3,8 +3,8 @@ import makeStyles from '@material-ui/core/styles/makeStyles';
 export default makeStyles(theme => ({
   navLink: {
     color: theme.palette.secondary.main,
-    paddingLeft: 25,
-    paddingRight: 25,
+    paddingLeft: 20,
+    paddingRight: 20,
     fontSize: 14,
     textDecoration: 'none',
     '&:hover': {
