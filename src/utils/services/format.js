@@ -95,6 +95,11 @@ export const dateToTimestamp = (date) => {
   return Math.round(new Date(date).getTime());
 };
 
+// Special date format to compare dates from DB and compare them to today's date in the same format
+// (future missions vs. in progress missions)
+export const formatDateForComparaison = (date) => {
+  return moment(date).format("YYYYMMDD");
+}
 
 export const formatType = (val) => {
   switch (val) {
@@ -136,18 +141,18 @@ export const formatFrequencyType = (val) => {
 
 export const formatDurationType = val => {
   switch (val) {
-    case 'Jours':
+    case 'jours':
       return 'DAY'
-    case 'Semaines':
+    case 'semaines':
       return 'WEEK'
-    case 'Mois':
+    case 'mois':
       return 'MONTH'
     case 'DAY':
-      return 'Jours'
+      return 'jours'
     case 'WEEK':
-      return 'Semaines'
+      return 'semaines'
     case 'MONTH':
-      return 'Mois'
+      return 'mois'
     default:
   }
 }
@@ -155,9 +160,9 @@ export const formatDurationType = val => {
 export const formatBudgetType = val => {
   switch (val) {
     case 'TOTAL':
-      return 'Budget total'
+      return 'budget total'
     case 'DAILY_RATE':
-      return 'Taux journalier'
+      return 'taux journalier'
     default:
   }
 }
@@ -214,4 +219,15 @@ export const formatLanguagesValues = val => {
       return 'Italien natif'
     default:
   }
+}
+
+export const handleNumberInput = (e, limit, min) => { // Ignore tous les caractères à part les , et les . + limite le nb de décimales
+  let t;
+  if (min) {
+    t = e.target.value.replace(',', '.').replace(/^[^1-9][0-9]*$/g, '');
+  } else {
+    t = e.target.value.replace(',', '.').replace(/[^0-9.]/g, '');
+  }
+  e.target.value = (t.indexOf(".") >= 0) ? (t.substr(0, t.indexOf(".")) + t.substr(t.indexOf("."), limit)) : t;
+  return e
 }

@@ -8,7 +8,7 @@ import * as Scroll from "react-scroll/modules";
 import * as Yup from "yup";
 import { Formik } from "formik";
 import { useTranslation } from "react-i18next";
-import {getAreaCodeFromNumber, getPhonePrefixCode} from "../../utils/services/format";
+import { getAreaCodeFromNumber, getPhonePrefixCode } from "../../utils/services/format";
 import Form1 from "../../components/AdministrativeForms/Form1";
 import Form2 from "../../components/AdministrativeForms/Form2";
 import Form3 from "../../components/AdministrativeForms/Form3";
@@ -62,7 +62,7 @@ export const AdministrativePage = (props) => {
   }, [dispatch]);
 
   useEffect(() => {
-    if (companyData?.administrativeProfile?.legalDocuments?.filter((file) => file.name === companyData.externalId + '-kbis' || file.name === companyData.externalId + '-cin1' || file.name === companyData.externalId + '-status').length > 2) {
+    if (companyData?.administrativeProfile?.legalDocuments?.filter((file) => file?.name?.includes('kbis') || file?.name?.includes('cin1') || file?.name?.includes('status')).length >= 3) {
       dispatch(checkMissingFilesForm(true))
     } else {
       dispatch(checkMissingFilesForm(false))
@@ -74,8 +74,8 @@ export const AdministrativePage = (props) => {
   };
 
   const initialValuesForm1 = {
-    administrativeProfile:{
-      legalForm: companyData?.administrativeProfile?.legalForm || '',
+    administrativeProfile: {
+      legalForm: companyData?.administrativeProfile?.legalForm || 'SA Société Anonyme',
       socialReason: companyData?.administrativeProfile?.socialReason || '',
       siret: companyData?.administrativeProfile?.siret || '',
       shareCapital: companyData?.administrativeProfile?.shareCapital || '',
@@ -90,7 +90,7 @@ export const AdministrativePage = (props) => {
     administrativeProfile: Yup.object().shape({
       legalForm: Yup.string().required(),
       socialReason: Yup.string().required(),
-      siret: Yup.number().required(),
+      siret: Yup.string().required(),
       shareCapital: Yup.number().required(),
       cityOfRcsRegistration: Yup.string(),
       intraCommunityVAT: Yup.bool(),
@@ -105,7 +105,7 @@ export const AdministrativePage = (props) => {
         address: companyData?.administrativeProfile?.headOffice?.address || null,
         zipCode: companyData?.administrativeProfile?.headOffice?.zipCode || null,
         city: companyData?.administrativeProfile?.headOffice?.city || null,
-        country: companyData?.administrativeProfile?.headOffice?.country || null
+        country: companyData?.administrativeProfile?.headOffice?.country || 'France'
       }
     }
   };
@@ -114,7 +114,7 @@ export const AdministrativePage = (props) => {
     administrativeProfile: Yup.object().shape({
       headOffice: Yup.object().shape({
         address: Yup.string().required(),
-        zipCode: Yup.number().required(),
+        zipCode: Yup.string().required(),
         city: Yup.string().required(),
         country: Yup.string().required(),
       })
@@ -128,19 +128,19 @@ export const AdministrativePage = (props) => {
         address: companyData?.administrativeProfile?.billing?.address || null,
         zipCode: companyData?.administrativeProfile?.billing?.zipCode || null,
         city: companyData?.administrativeProfile?.billing?.city || null,
-        country: companyData?.administrativeProfile?.billing?.country || null
+        country: companyData?.administrativeProfile?.billing?.country || 'France'
       }
     }
   };
 
   const ValidationSchemaForm3 = Yup.object().shape({
     administrativeProfile: Yup.object().shape({
-      sameAddress: Yup.bool(),
+      sameAddress: Yup.bool().required(),
       billing: Yup.object().shape({
-        address: Yup.string().required(),
-        zipCode: Yup.number().required(),
-        city: Yup.string().required(),
-        country: Yup.string().required()
+        address: Yup.string().nullable().when('sameAddress', { is: true, then: Yup.string().required() }),
+        zipCode: Yup.string().nullable().when('sameAddress', { is: true, then: Yup.string().required() }),
+        city: Yup.string().nullable().when('sameAddress', { is: true, then: Yup.string().required() }),
+        country: Yup.string().nullable().when('sameAddress', { is: true, then: Yup.string().required() })
       })
     })
   });
@@ -152,7 +152,7 @@ export const AdministrativePage = (props) => {
         lastName: companyData?.administrativeProfile?.billing?.lastName || null,
         email: companyData?.administrativeProfile?.billing?.email || null,
         phone: {
-          code: companyData?.administrativeProfile?.billing?.phone?.code ? getAreaCodeFromNumber(companyData?.administrativeProfile?.billing?.phone?.code) : null,
+          code: companyData?.administrativeProfile?.billing?.phone?.code ? getAreaCodeFromNumber(companyData?.administrativeProfile?.billing?.phone?.code) : 'FR : +33',
           number: companyData?.administrativeProfile?.billing?.phone?.number || null
         }
       }
@@ -200,15 +200,16 @@ export const AdministrativePage = (props) => {
       </Grid>
       {companyData &&
         <Grid item xs={9} container alignItems={'center'} justify={'center'} style={{ marginBottom: 500 }}>
-          <Typography variant={'h1'} style={{ width: '80%', marginTop: 40 }}>Données de l'entreprise</Typography>
+          <Typography variant={'h1'} style={{ width: '80%', marginTop: 40 }}>{t('adminPage.companyData')}</Typography>
           <Element name={'2'} className={classes.element}>
             {/* FORM Informations générales */}
             <Formik
-              render={props => <Form1 {...props} />}
+              render={props => <Form1 {...props}
+                companyId={userDynamo.companyId}
+              />}
               initialValues={initialValuesForm1}
               validationSchema={ValidationSchemaForm1}
               enableReinitialize
-              onSubmit={handleSubmit}
             />
           </Element>
 
@@ -267,8 +268,8 @@ export const AdministrativePage = (props) => {
               initialValues={initialValuesForm4}
               validationSchema={ValidationSchemaForm4}
               onSubmit={(form) => {
-                  form.administrativeProfile.billing.phone.code = getPhonePrefixCode(form.administrativeProfile.billing.phone.code);
-                  handleSubmit(form)
+                form.administrativeProfile.billing.phone.code = getPhonePrefixCode(form.administrativeProfile.billing.phone.code);
+                handleSubmit(form)
               }}
             />
           </Element>

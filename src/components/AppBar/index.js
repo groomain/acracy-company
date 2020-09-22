@@ -4,9 +4,8 @@ import { useLocation, withRouter } from "react-router";
 import clsx from "clsx";
 import { Link as RouterLink } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-
-import { AppBar, Toolbar } from '@material-ui/core';
-import styles from "./styles";
+import { push } from "connected-react-router";
+import { AppBar, Toolbar, Grid, Typography, Box } from '@material-ui/core';
 import CustomButton from "../Button";
 import CustomNavLink from "../CustomNavLink";
 import CustomSnackBar from "../SnackBar";
@@ -15,8 +14,11 @@ import acracyLogo from "../../assets/icons/logo-acracy.svg";
 import { NavLink } from "react-router-dom";
 import useScrollTrigger from "@material-ui/core/useScrollTrigger";
 import ContactModale from "../ContactModale";
-
 import { dispatchLeadId } from '../../pages/LeadCreationPage/reducer';
+// Pics
+import arrow from '../../assets/icons/arrow.svg';
+import writeMessage from '../../assets/icons/ecrire-a-acracy.svg';
+import styles from "./styles";
 
 export const CustomAppBar = (props) => {
   let location = useLocation();
@@ -65,6 +67,34 @@ export const CustomAppBar = (props) => {
             <CustomButton title={t('header.contactUs')} onClick={() => setContactModaleOpen(!contactOpen)} />
           </div>
         );
+      case '/brief':
+        return (
+          <Grid className={classes.missionNavButton}>
+            <Grid container alignItems="center" onClick={() => dispatch(push('/home'))}>
+              <img src={arrow} alt="retour" className={classes.missionNavImage} />
+              <Box mx={2}>
+                <Typography variant="h2" color="secondary">Retour dashboard</Typography>
+              </Box>
+            </Grid>
+          </Grid>
+        );
+      case '/reveal':
+        return (
+          <Grid container justify="space-between">
+            <Grid item style={{ marginLeft: '2rem' }}>
+              <Grid container className={classes.missionNavButton} alignItems="center" onClick={() => dispatch(push('/home'))}>
+                <img src={arrow} alt="retour" className={classes.missionNavImage} />
+                <Typography variant="h2" color="secondary">Retour dashboard</Typography>
+              </Grid>
+            </Grid>
+            <Grid item>
+              <Grid container className={classes.missionNavButton} alignItems="center" onClick={() => setContactModaleOpen(true)}>
+                <Typography variant="h2" color="secondary">Faire une demande à acracy</Typography>
+                <img src={writeMessage} alt="retour" className={classes.pen} />
+              </Grid>
+            </Grid>
+          </Grid>
+        )
       default:
         break;
     }
@@ -81,7 +111,7 @@ export const CustomAppBar = (props) => {
         <NavLink to={'/'} className={classes.logo}>
           <img src={acracyLogo} alt="acracyLogo" />
         </NavLink>
-        <div className={classes.grow} />
+        {(props.path || location.path) !== '/brief' && <div className={classes.grow} />}
         {renderButtons()}
       </Toolbar>
       <ContactModale open={contactOpen} setOpen={setContactModaleOpen} interview={false} title="Contacter acracy" placeHolder="Donnez nous plus de détails" subtitle="Afin de pouvoir au mieux vous répondre, merci de préciser la raison de votre prise de contact." />

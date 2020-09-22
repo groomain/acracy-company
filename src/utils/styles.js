@@ -44,7 +44,7 @@ export default makeStyles(theme => ({
     height: 30
   },
   titleSignIn: {
-    paddingBottom: 20
+    paddingBottom: 10
   },
   divider: {
     marginTop: 40,
@@ -54,12 +54,9 @@ export default makeStyles(theme => ({
   hrdivider: {
     height: "1px",
     backgroundColor: `${theme.palette.secondary.medium}`,
-    marginTop: 40,
+    marginTop: 44,
     marginBottom: 40,
 
-  },
-  container: {
-    paddingTop: 30
   },
   pannel: {
     padding: '15.3rem 0 5rem 0',
@@ -67,7 +64,7 @@ export default makeStyles(theme => ({
     top: 0,
   },
   pannelLayout: {
-    paddingTop: '10rem',
+    paddingTop: 164,
     paddingBottom: '10rem'
   },
   midWidth: {
@@ -83,5 +80,14 @@ export default makeStyles(theme => ({
   disabledText: {
     textAlign: 'center',
     opacity: '.5'
+  },
+  container: {
+    marginTop: 40
+  },
+  titleForgotPassword: {
+    marginBottom: 10
+  },
+  marginTextfield: {
+    marginTop: 28
   }
 }));

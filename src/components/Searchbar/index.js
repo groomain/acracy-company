@@ -25,7 +25,7 @@ const CustomConfigure = connectStateResults(({ searchResults }) =>
   <Configure hitsPerPage={searchResults?.nbHits} />
 );
 
-const Searchbar = ({ onUpdateChosenCategory, value }) => {
+const Searchbar = ({ onUpdateChosenCategory, value, hideLabel }) => {
   const searchClient = useMemo(() => algoliasearch(
     process.env.REACT_APP_ALGOLIA,
     process.env.REACT_APP_ALGOLIA_KEY
@@ -37,12 +37,12 @@ const Searchbar = ({ onUpdateChosenCategory, value }) => {
       indexName={process.env.REACT_APP_ALGOLIA_INDEX_NAME}
     >
       <CustomConfigure />
-      <CustomSearchbar onUpdateChosenCategory={onUpdateChosenCategory} value={value} />
+      <CustomSearchbar onUpdateChosenCategory={onUpdateChosenCategory} value={value} hideLabel={hideLabel} />
     </InstantSearch>
   );
 };
 
-const SearchResults = ({ searchResults, onUpdateChosenCategory, value }) => {
+const SearchResults = ({ searchResults, onUpdateChosenCategory, value, hideLabel }) => {
   const classes = styles();
   const { t } = useTranslation();
 
@@ -53,14 +53,14 @@ const SearchResults = ({ searchResults, onUpdateChosenCategory, value }) => {
 
   useEffect(() => {
     if (value?.type === "PROFILE" && resultsList.length > 0 && !searchValue) {
-      let profileResults = resultsList.find(result => result.label === "Profil recherché")
+      let profileResults = resultsList.find(result => result.label === t('searchbar.profileLabel'))
       let algoliaFullProfileResult = profileResults.options.find(result => result.TEXT === value.text)
       setSearchValue(algoliaFullProfileResult)
       onUpdateChosenCategory(algoliaFullProfileResult);
     }
     else if (value?.type === "DELIVERABLE" && resultsList.length > 0 && !searchValue) {
-      let deliverableResults = resultsList.find(result => result.label === "Livrable recherché")
-      let algoliaFullDeliverableResult = deliverableResults.options.find(result => result.TEXT === value.text)
+      let deliverableResults = resultsList.find(result => result.label === t('searchbar.briefsLabel'))
+      let algoliaFullDeliverableResult = deliverableResults?.options.find(result => result.TEXT === value.text)
       setSearchValue(algoliaFullDeliverableResult)
       onUpdateChosenCategory(algoliaFullDeliverableResult);
     }
@@ -176,6 +176,12 @@ const SearchResults = ({ searchResults, onUpdateChosenCategory, value }) => {
             <Typography variant="h2">&nbsp;{t('searchbar.briefsLabel')}</Typography>
           </Grid>
         )
+      case "OTHER":
+        return (
+          <Grid container alignItems='center'>
+            <Typography variant="h2">Vous avez recherché</Typography>
+          </Grid>
+        )
       default:
         break;
     }
@@ -183,11 +189,12 @@ const SearchResults = ({ searchResults, onUpdateChosenCategory, value }) => {
 
   return (
     <Box my={4}>
+      {!hideLabel &&
       <Box my={2} style={{ height: 30 }}>
         <Typography variant="h2">
           {renderTitle(searchValue?.TYPE) || newOption?.title}
         </Typography>
-      </Box>
+      </Box>}
       <CreatableSelect
         onChange={handleOnChange}
         value={searchValue}
@@ -214,10 +221,9 @@ const SearchResults = ({ searchResults, onUpdateChosenCategory, value }) => {
       {newOption && (
         <Box my={2}>
           <Typography variant="h2">
-            {newOption.title !== (t('leadCreation.reseachLabel')) ?
-              ('« ' + newOption.value + ' » ' + t('searchbar.newOption'))
-              :
-              ''}
+            {searchValue?.TYPE === "OTHER" &&
+              ('« ' + searchValue?.TEXT + ' » ' + t('searchbar.newOption'))
+            }
           </Typography>
         </Box>
       )}

@@ -13,7 +13,7 @@ export default makeStyles(theme => ({
     caretColor: theme.palette.secondary.main,
     color: theme.palette.secondary.main,
     fontWeight: 500,
-    margin: '.8rem auto 0',
+    margin: '10px auto 0',
     boxSizing: 'border-box',
     '&$focused': {
       backgroundColor: 'inherit',
@@ -29,8 +29,7 @@ export default makeStyles(theme => ({
   },
   focused: {},
   input: {
-    padding: '0 0 0 30px',
-    display: 'flex',
+    padding: '30px 50px 0 30px !important',
     alignItems: 'center',
     fontFamily: "Basier Medium",
     '&:hover, &:focus': {

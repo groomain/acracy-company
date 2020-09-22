@@ -11,14 +11,16 @@ import CustomExpansionPanel from "../../components/CustomExpansionPanel";
 import Tag from "../../components/Tags/Tag";
 import CircleImage from "../../components/CircleImage";
 import RevealProfil from "../../components/RevealProfil";
-import infosIcon from '../../assets/icons/infos.svg'
-import matchIcon from '../../assets/icons/match.svg'
+import CustomAppBar from '../../components/AppBar';
+import infosIcon from '../../assets/icons/infos.svg';
+import matchIcon from '../../assets/icons/match.svg';
 import IconButton from "@material-ui/core/IconButton";
 import { getBriefLaunched, getMissionLaunched } from "./reducer";
 import { handleCurrentStep } from '../../components/App/reducer';
 import CustomLoader from "../../components/Loader";
 import { useLocation } from "react-router";
 import * as moment from "moment";
+import { formatLanguagesValues } from '../../utils/services/format';
 
 const format =
   [{ code: 'WHATEVER', TEXT: 'Peu importe' },
@@ -30,7 +32,7 @@ const seniority =
   [{ code: '', TEXT: "Sélectionnez le niveau d'expertise minimum" },
   { code: 'JUNIOR', TEXT: 'Junior (1 à 3 ans)' },
   { code: 'MIDDLE', TEXT: 'Middle (3 à 5 ans)' },
-  { code: 'SENIOR', TEXT: 'Senior (5 à 7 ans' },
+  { code: 'SENIOR', TEXT: 'Senior (5 à 7 ans)' },
   { code: 'EXPERT', TEXT: 'Expert (7 à 10 ans)' },
   { code: 'GURU', TEXT: 'Guru (10 ans et plus)' },
   { code: 'WHATEVER', TEXT: 'Peu importe' }];
@@ -69,7 +71,7 @@ const MissionFollowUp = (props) => {
       missionDetail: briefData.missionDetail,
       missionRequirements: briefData.missionRequirements
     },
-    customerProfile: briefData.customerProfile
+    briefSummary: briefData.briefSummary
   });
 
   useEffect(() => {
@@ -135,6 +137,7 @@ const MissionFollowUp = (props) => {
       direction="row"
       className={classes.container}
     >
+      <CustomAppBar path='/brief' />
       <Main>
         {data ?
           <Grid>
@@ -147,8 +150,8 @@ const MissionFollowUp = (props) => {
                 <Typography variant={'h1'}>{data.brief.missionContext.title}</Typography>
               </div>
             </Grid>
-            <Grid container direction={'row'} className={classes.card}>
-              <Grid container item xs={5} direction={'column'} spacing={2}>
+            <Grid container direction={'row'} className={classes.card} spacing={2}>
+              <Grid container item xs={5} direction={'column'}>
                 <Grid item className={classes.blocTypoUp}>
                   <Typography variant={"h4"} className={classes.typo}>Format</Typography>
                   <Typography variant={"body1"}
@@ -160,7 +163,7 @@ const MissionFollowUp = (props) => {
                     className={classes.typo}>{weeklyRythm.map((value) => value.code === data.brief.missionContext.weeklyRythm && value.TEXT)}</Typography>
                 </Grid>
               </Grid>
-              <Grid container item xs={5} direction={'column'} spacing={2}>
+              <Grid container item xs={5} direction={'column'}>
                 <Grid item className={classes.blocTypoUp}>
                   <Typography variant={"h4"} className={classes.typo}>Durée</Typography>
                   <Typography variant={"body1"}
@@ -169,17 +172,17 @@ const MissionFollowUp = (props) => {
                 </Grid>
                 <Grid item className={classes.blocTypoDown}>
                   {data.brief.missionContext.address &&
-                  <Typography variant={"h4"} className={classes.typo}>Adresse</Typography>
+                    <Typography variant={"h4"} className={classes.typo}>Adresse</Typography>
                   }
                   <Typography variant={"body1"}
                     className={classes.typo}>{data.brief.missionContext.address}</Typography>
                 </Grid>
               </Grid>
-              <Grid container item xs={2} direction={'column'} spacing={2}>
+              <Grid container item xs={2} direction={'column'}>
                 <Grid item container className={classes.blocTypoUp}>
                   <Typography variant={"h4"} className={classes.typo}>TJM</Typography>
                   <Typography variant={"body1"}
-                    className={classes.typo}>{data.brief.missionContext.estimatedAverageDailyRate} €/j</Typography>
+                    className={classes.typo}>{data.brief.missionContext.budget.dailyRateForCompany} €/j</Typography>
                 </Grid>
               </Grid>
             </Grid>
@@ -187,7 +190,7 @@ const MissionFollowUp = (props) => {
               <div className={classes.bloc}>
                 <Typography variant={'h2'}>Livrable.s</Typography>
                 <Grid container direction={'row'} className={classes.deliverablesContainer} spacing={1}>
-                  {data.brief.deliverables.map((tag, key) =>
+                  {data.brief.deliverables?.map((tag, key) =>
                     <Grid item>
                       <Tag key={key} title={tag.text} isPrimaryColor={false} />
                     </Grid>)}
@@ -195,12 +198,12 @@ const MissionFollowUp = (props) => {
               </div>
               <div className={classes.bloc}>
                 <CustomExpansionPanel isTag={false}
-                  panelTitle="Contexte de la mission et tâches à réaliser"
+                  panelTitle="Contexte et objectifs de la mission"
                   children={
                     <Typography>
                       {data.brief.missionDetail.contextAndTasks}
                     </Typography>
-                  }/>
+                  } />
               </div>
               <div className={classes.bloc}>
 
@@ -212,27 +215,38 @@ const MissionFollowUp = (props) => {
               </div>
               <div className={classes.bloc}>
                 <Typography variant={'h2'}>Détails du profil recherché</Typography>
-                <Typography variant={'h1'}>{data.brief.profile.text}</Typography>
+                <Typography variant={'h1'}>{data.brief.profile?.text}</Typography>
               </div>
               <div className={classes.bloc}>
-                <Typography variant={'h4'} className={classes.title}>Expertises clés du
+                <Typography variant={'h4'} className={classes.title}>Les expertises-clés du
                                     profil</Typography>
                 <Grid item container direction={"row"} spacing={1}>
-                  {data.brief.missionRequirements.expertises.map((tag, key) => <Grid item><Tag
-                    key={key} title={tag.expertise.text} isPrimaryColor
-                    tagType="Prioritaire" isWithCheckbox checked={tag.priority} /></Grid>)}
+                  {data.brief.missionRequirements.expertises.map((tag, key) => <Grid item>
+                    <Tag
+                      key={key} title={tag.expertise.text}
+                      isPrimaryColor
+                      tagType="Prioritaire"
+                      isWithCheckbox
+                      checkedArray={tag.priority}
+                      isDisabled
+                    />
+                  </Grid>
+                  )}
                 </Grid>
               </div>
               <div className={classes.bloc}>
                 <Typography variant={'h4'} className={classes.title}>Langue souhaitée</Typography>
                 <Grid style={{ width: '80%' }} item container direction={"row"} spacing={1}>
                   <Grid item>
-                    <Tag title={data.brief.missionRequirements.languages.language}
-                      isPrimaryColor
-                      tagType="Critère indispensable"
-                      isWithCheckbox
-                      checked={data.brief.missionRequirements.languages.essential}
-                    />
+                    {data.brief.missionRequirements.languages?.map(language =>
+                      <Tag title={formatLanguagesValues(language.language)}
+                        isPrimaryColor
+                        tagType="Critère indispensable"
+                        isWithCheckbox
+                        checkedArray={language.essential}
+                        isDisabled
+                      />
+                    )}
                   </Grid>
                 </Grid>
               </div>
@@ -244,7 +258,8 @@ const MissionFollowUp = (props) => {
                       isPrimaryColor
                       tagType="Critère indispensable"
                       isWithCheckbox
-                      checked={data.brief.missionRequirements.sensitivity.essential}
+                      checkedArray={data.brief.missionRequirements.sensitivity.essential}
+                      isDisabled
                     />
                   </Grid>
                 </Grid>

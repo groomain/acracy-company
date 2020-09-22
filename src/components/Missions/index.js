@@ -10,23 +10,19 @@ import DarkWrapper from '../Layout/DarkWrapper';
 import CustomLoader from '../Loader';
 import sharedStyles from "../../utils/styles";
 
-import { formatWithLineBreak } from '../../utils/services/format';
-// import { missions } from '../../mock/missions';
-// import { briefs } from '../../mock/briefs';
-import { WAITING_FOR_SIGNATURE, FINISHED, IN_PROGRESS } from './constants';
-import { dateToTimestamp } from '../../utils/services/format';
+import { WAITING_FOR_SIGNATURE, FINISHED, IN_PROGRESS, REFUSED } from './constants';
+import { formatWithLineBreak, dateToTimestamp, formatDate, formatDateForComparaison } from '../../utils/services/format';
+
+import styles from './styles';
 
 export const Missions = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const sharedClasses = sharedStyles();
+  const classes = styles();
 
   const today = new Date(Date.now()).toISOString();
   const [briefsList, setBriefsList] = useState();
-
-  // Delete when connecting to the DB
-  // const missionsLoading = false;
-  // const briefsLoading = false;
 
   const { missionsLoading, briefsLoading, briefsData, missions, updateMissionSent } = useSelector(state => ({
     missions: state.getIn(['dashboard', 'missionsData']),
@@ -40,14 +36,14 @@ export const Missions = () => {
   useEffect(() => {
     dispatch(getMissionsLaunched());
     dispatch(getBriefsLaunched());
-  }, [dispatch]);
+  }, []);
 
   // Refetch the missions after updating missions (= validate CRA)
   useEffect(() => {
     if (updateMissionSent) {
       dispatch(getMissionsLaunched());
     }
-  }, [dispatch, updateMissionSent])
+  }, [updateMissionSent])
 
   const toValidateMission = missions?.filter(x => x.status === WAITING_FOR_SIGNATURE);
 
@@ -62,15 +58,16 @@ export const Missions = () => {
 
   useEffect(() => {
     if (toValidateMission?.length > 0) {
-      setBriefsList(briefsData?.concat(missionAsMatchingProfile));
+      setBriefsList(briefsData?.filter(x => x.status !== REFUSED)?.concat(missionAsMatchingProfile));
     } else {
-      setBriefsList(briefsData);
+      setBriefsList(briefsData?.filter(x => x.status !== REFUSED));
     }
-  }, [briefsData, toValidateMission, missionAsMatchingProfile]);
+  }, [missions, briefsData]);
 
-  const inProgressMissions = missions?.filter(x => (x?.status === IN_PROGRESS && x?.dateStart < today && x?.dateEnd?.length < 1) || (x.status === FINISHED && x.dateEnd?.length < 1));
-  const futureMissions = missions?.filter(x => x.status === IN_PROGRESS && x.dateStart > today);
-  const finishedMissions = missions?.filter(x => x.status === FINISHED && x.dateEnd?.length > 0);
+  const inProgressMissions = missions?.filter(x => (x?.status === IN_PROGRESS && formatDateForComparaison(x?.dateStart) <= formatDateForComparaison(today)));
+  const futureMissions = missions?.filter(x => x.status === IN_PROGRESS && formatDateForComparaison(x.dateStart) > formatDateForComparaison(today));
+  const finishedMissions = missions?.filter(x => x.status === FINISHED);
+  const refusedBriefs = briefsData?.filter(x => x.status === REFUSED);
 
   const displayInProgressMissionsTitle = () => {
     return (
@@ -86,10 +83,13 @@ export const Missions = () => {
       <>
         {displayInProgressMissionsTitle()}
         <DarkWrapper isBleed justify='center' alignItems='center'>
-          <Grid className={sharedClasses.disabledText}>
+          <Grid className={classes.noMissionTitle}>
             {missionsLoading || briefsLoading
-              ? <CustomLoader size={70} />
-              : <span>{formatWithLineBreak(t('dashboard.missions.noMission'))}</span>
+                ? <CustomLoader size={70}/>
+                : <Grid container direction={'column'} justify='center' alignItems='center'>
+                  <Typography variant="h4" className={classes.noMissionTitle}>{t('dashboard.missions.noMissionTitle')}</Typography>
+                  <Typography variant="body1" className={classes.noMissionSubtitle}>{t('dashboard.missions.noMissionSubtitle')}</Typography>
+                </Grid>
             }
           </Grid>
         </DarkWrapper>
@@ -99,7 +99,7 @@ export const Missions = () => {
     if (inProgressMissions?.length > 0 || futureMissions?.length > 0 || finishedMissions?.length > 0 || briefsList?.length > 0) {
       missionsList = (
         <Grid item>
-          <Box my={6}>
+          <Box my={'54px'}>
             {briefsList?.length > 0 && (
               <>
                 <Typography variant="h2">
@@ -140,13 +140,29 @@ export const Missions = () => {
                   .map((mission, key) => <Mission key={key} mission={mission} today={today} />)}
               </>
             )}
+            {refusedBriefs?.length > 0 && (
+              <>
+                <Typography variant="h2">
+                  {t('dashboard.missions.refusedTitle')}
+                </Typography>
+                {refusedBriefs
+                  .sort((a, b) => dateToTimestamp(a.dateStart) - (b.dateStart))
+                  .map(x => {
+                    return {
+                      brief: x,
+                      ...x
+                    }
+                  })
+                  .map((mission, key) => <Mission key={key} mission={mission} today={today} />)}
+              </>
+            )}
           </Box>
         </Grid>
       )
     }
     return missionsList;
   };
-  return displayMissions()
+  return displayMissions();
 };
 
 export default Missions;

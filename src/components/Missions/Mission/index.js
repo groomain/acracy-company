@@ -24,11 +24,9 @@ import CustomButton from '../../Button';
 import InvoiceManagementModal from '../../../pages/HomePage/Modals/InvoiceManagementModal';
 import ValidationModal, { RefusalModal } from '../../../pages/HomePage/Modals/ValidationModal';
 import styles from './styles';
-// import { openSnackBar } from '../../App/reducer';
 import { getQuotesLaunched, getCompaniesLaunched, setComingFromDashboard } from '../../../pages/HomePage/reducer';
 import severinePicture from '../../../assets/pics/severine/severine-small.png';
-import { shortenLongText, addTwoWorkingDays, formatDate } from '../../../utils/services/format';
-import { getPath } from '../../../utils/services/validationChecks';
+import { shortenLongText, addTwoWorkingDays, formatDate, formatDateForComparaison } from '../../../utils/services/format';
 import * as moment from 'moment';
 import {
   WAITING_FOR_VALIDATION,
@@ -40,10 +38,12 @@ import {
   FINISHED,
   IN_PROGRESS,
   WAITING_FOR_QUOTES,
-  PAID
+  PAID,
+  REFUSED
 } from '../constants';
 import QuoteSignatureValidationModal from "../../../pages/HomePage/Modals/QuoteSignatureValidationModal";
 import { useTranslation } from "react-i18next";
+import { formatType } from '../../../utils/services/format';
 moment.locale('fr');
 
 export const Mission = ({ mission, matching, today, ...props }) => {
@@ -78,6 +78,7 @@ export const Mission = ({ mission, matching, today, ...props }) => {
   const startDate = mission?.brief?.missionContext?.startDate || matching?.missionContext?.startDate;
   const sortedInvoices = mission?.invoices?.filter(x => x.status === WAITING_FOR_PAYMENT).sort((a, b) => new Date(Math.round(new Date(a.paymentDate).getTime())) - new Date(Math.round(new Date(b.paymentDate).getTime())));
   const sortedCRA = mission?.invoices?.filter(x => x.status === WAITING_FOR_VALIDATION).sort((a, b) => new Date(Math.round(new Date(a.startDate).getTime())) - new Date(Math.round(new Date(b.startDate).getTime())));
+  const matchingStartDate = matching?.dateStartMatching;
 
   useEffect(() => {
     if (updateMissionSent) {
@@ -87,35 +88,32 @@ export const Mission = ({ mission, matching, today, ...props }) => {
 
   const getStatusIcon = (mission) => {
     const status = mission?.status;
-    if (status === WAITING_FOR_ACCEPTANCE || status === WAITING_FOR_SIGNATURE) {
+    if (status === REFUSED) {
+      return <RetardIcon className={classes.icon} />
+    } else if (status === WAITING_FOR_ACCEPTANCE || status === WAITING_FOR_SIGNATURE) {
       return <AValiderIcon className={classes.icon} />;
-    } else if (status === WAITING_FOR_MATCHING || status === WAITING_FOR_CUSTOMER_SELECTION) {
+    } else if (status === WAITING_FOR_MATCHING || status === WAITING_FOR_CUSTOMER_SELECTION || status === WAITING_FOR_QUOTES) {
       return <MatchingIcon className={classes.icon} />;
     } else {
+      if (mission?.invoices?.find(x => x.status === WAITING_FOR_PAYMENT && x.paymentDate < today)) {
+        return <RetardIcon className={classes.icon} /> // retard paiment
+      }
+      if (status === IN_PROGRESS && mission?.invoices?.find(x => x.status === WAITING_FOR_PAYMENT && x.lastInvoice)) {
+        return <TravailIcon className={classes.icon} />; // travail terminé
+      }
+      if (mission?.invoices?.find(x => x.status === WAITING_FOR_PAYMENT)) {
+        return <TravailIcon className={classes.icon} /> // facture à payer
+      }
+      if (mission?.invoices?.find(x => x.status === WAITING_FOR_VALIDATION)) {
+        return <EnCoursIcon className={classes.icon} /> // facture en attente de validation
+      }
       if (status === IN_PROGRESS && mission?.dateStart > today) {
-        return <DemarreIcon className={classes.icon} />
+        return <DemarreIcon className={classes.icon} /> // démarre dans X jours 
       }
-      if (!mission?.invoices?.find(x => x.status === WAITING_FOR_PAYMENT)) {
-        if (status === IN_PROGRESS) {
-          return <EnCoursIcon className={classes.icon} />;
-        } else {
-          if (mission?.dateEnd?.length < 1) {
-            return <TravailIcon className={classes.icon} />;
-          } else {
-            return <MissionHistoIcon className={classes.icon} />;
-          }
-        }
-      } else {
-        if (mission?.invoices?.find(x => x.paymentDate < today)) {
-          return <RetardIcon className={classes.icon} />
-        } else {
-          if (status === IN_PROGRESS && (getPath(mission?.invoices?.attachement).length > 0 || !mission?.invoices?.attachment)) {
-            return <EnCoursIcon className={classes.icon} />;
-          } else {
-            return <TravailIcon className={classes.icon} />;
-          }
-        }
+      if (status === FINISHED) {
+        return <MissionHistoIcon className={classes.icon} />; // mission finalisée (historique)
       }
+      return <EnCoursIcon className={classes.icon} />; // par défaut (mission en cours)
     }
   }
 
@@ -126,7 +124,7 @@ export const Mission = ({ mission, matching, today, ...props }) => {
           return {
             status: 'Validation du brief en cours',
             avatar: match,
-            title: ''
+            title: 'En attente de validation du brief'
           };
         case WAITING_FOR_MATCHING:
         case WAITING_FOR_QUOTES:
@@ -134,22 +132,22 @@ export const Mission = ({ mission, matching, today, ...props }) => {
             status: 'Matching en cours',
             avatar: match,
             title: 'Matching en cours',
-            subtext: `Garanti en 48h.\n Estimé au ${addTwoWorkingDays(startDate, 2)}`
+            subtext: `Garanti en 48h.\n Estimé au ${addTwoWorkingDays(matchingStartDate, 2)}`
           };
         case WAITING_FOR_CUSTOMER_SELECTION:
           return {
-            status: 'Faites votre sélection',
+            status: 'Faire votre sélection',
             avatar: '?',
             title: `Découvrir les profils`,
-            subtext: `Nous vous proposons ${quotes?.length ?? 0} top freelance!`,
+            subtext: `Nous vous proposons ${matching?.quote.length ?? 0} top freelance${matching?.quote.length > 1 ? 's' : ''} !`,
             buttonText: 'Valider et découvrir les profils'
           };
         case WAITING_FOR_SIGNATURE:
           return {
             status: 'Devis à valider',
             buttonText: 'Valider devis',
-            avatar: quotes?.brief.serviceProviderProfile.linkedinAvatar,
-            title: `${quotes?.brief.serviceProviderProfile.firstName} ${quotes?.brief.serviceProviderProfile.lastName} `,
+            avatar: quotes && quotes[0]?.serviceProviderProfile?.linkedinAvatar,
+            title: `${quotes && quotes[0]?.serviceProviderProfile?.firstName} ${quotes && quotes[0]?.serviceProviderProfile?.lastName} `,
           };
         default:
           break;
@@ -162,66 +160,66 @@ export const Mission = ({ mission, matching, today, ...props }) => {
   useEffect(() => {
     const getMissionStatus = (missionInvoiceStatus, mission) => {
 
-      const futureMission = mission?.dateStart > today;
-
-      if (futureMission) {
-        const startingPoint = new Date(mission?.dateStart).getTime();
-        const todayInTimestamp = new Date(today).getTime();
-        const days = Math.floor((startingPoint - todayInTimestamp) / 86400000);
-
+      if (mission?.status === REFUSED) { // Missions refusées
         return {
-          status: `Démarre dans ${days} jour${days > 2 ? 's' : ''} `,
+          status: t('dashboard.missions.refusedByAcracy'),
+          color: 'danger',
         }
       }
 
-      if (mission?.invoices?.find(x => x.status === WAITING_FOR_VALIDATION && (!x.attachment || getPath(x.attachment, "attachment").length === 0))) {
+      if (mission?.status === FINISHED) { // Missions finalisées
         return {
-          status: 'Facture en attente de validation',
-          buttonText: "Contrôler le compte rendu d'activité"
+          status: `Mission finalisée le ${formatDate(mission?.dateEnd)} `,
+          color: 'secondary'
         }
       }
 
-      // No invoice with "WAITING_FOR_PAYMENT" status
-      if (!mission?.invoices?.find(x => x.status === WAITING_FOR_PAYMENT)) {
-        if (mission?.status === FINISHED) {
-          if (mission?.dateEnd?.length > 1) {
-            return {
-              status: `Mission finalisée le ${formatDate(mission?.dateEnd)} `,
-              color: 'secondary'
-            }
-          }
-          else {
-            return {
-              status: 'Travail terminé'
-            }
-          }
-        } else if (mission?.status === IN_PROGRESS) {
+      // Missions en cours
+      if (mission?.status === IN_PROGRESS) {
+
+        // Missions futures
+        const futureMission = formatDateForComparaison(mission?.dateStart) > formatDateForComparaison(today);
+        if (futureMission) {
+          const startingPoint = new Date(mission?.dateStart).getTime();
+          const todayInTimestamp = new Date(today).getTime();
+          const days = Math.floor((startingPoint - todayInTimestamp) / 86400000);
           return {
-            status: 'Mission en cours'
-          }
-        }
-      } else {
-        // At least 1 invoice has "WAITING_FOR_PAYMENT" status
-        if (mission?.invoices?.find(x => x.paymentDate < today)) {
-          return {
-            status: 'Retard de paiement',
-            color: 'danger',
-            buttonText: 'Payer facture'
-          }
-        }
-        if (mission?.invoices?.find(x => x.attachment && getPath(x.attachment, "attachment").length === 0)) {
-          return {
-            status: 'Facture à payer',
-            buttonText: 'Payer facture'
+            status: `Démarre dans ${days} jour${days > 2 ? 's' : ''} `,
           }
         } else {
-          if (mission?.status === FINISHED) {
+
+          // Missions avec facture en attente
+          if (mission?.invoices?.find(x => x.status === WAITING_FOR_PAYMENT)) {
+            if (mission?.invoices?.find(x => x.paymentDate && (formatDateForComparaison(x.paymentDate) <= formatDateForComparaison(today)))) { // Avec retard de facture
+              return {
+                status: 'Retard de paiement',
+                color: 'danger',
+                buttonText: 'Payer facture'
+              }
+            } else {
+              if (mission?.invoices?.find(x => x.attachment)) { // Avec facture en PJ
+                return {
+                  status: 'Facture à payer',
+                  buttonText: 'Payer facture'
+                }
+              }
+            }
+          }
+          if (mission?.invoices?.find(x => x?.status === WAITING_FOR_VALIDATION)) {
             return {
-              status: 'Travail terminé'
+              status: 'Facture en attente de validation', // Sans facture en PJ
+              buttonText: "Il n'y a plus qu'à valider le compte-rendu d'activité pour lancer la facturation"
             }
           } else {
-            return {
-              status: 'Mission en cours'
+            // Missions sans facture en attente
+            if (mission?.invoices?.find(x => x?.latestInvoice)) {
+              return {
+                status: 'Travail terminé'
+              }
+            } else {
+              return {
+                status: 'Missions en cours'
+              }
             }
           }
         }
@@ -231,14 +229,14 @@ export const Mission = ({ mission, matching, today, ...props }) => {
     setMissionStatus(result);
   }, [mission, today]);
 
-  const handleClick = (status) => {
-    if (status === WAITING_FOR_SIGNATURE) {
+  const handleClick = (param) => {
+    if (param?.status === WAITING_FOR_SIGNATURE) {
       setInfosOpen(true)
     } else {
-      if (status?.invoices?.find(x => x.status === WAITING_FOR_VALIDATION)) {
+      if (param?.invoices?.find(x => x.status === WAITING_FOR_VALIDATION)) {
         setValidationModalOpen(true);
         setPreselectedFile(sortedCRA[0]);
-      } else if (status?.invoices?.find(x => x.status === WAITING_FOR_PAYMENT)) {
+      } else if (param?.invoices?.find(x => x.status === WAITING_FOR_PAYMENT)) {
         setInvoicesModalOpen(true);
         setPreselectedFile(sortedInvoices[0]);
       } else {
@@ -263,13 +261,18 @@ export const Mission = ({ mission, matching, today, ...props }) => {
     }
   }, [companiesDataFetched, companiesData, dispatch, loadingButton, mission, matching])
 
-  const renderMissionButton = (status) => {
-    if (status === WAITING_FOR_CUSTOMER_SELECTION || status === WAITING_FOR_SIGNATURE || status?.invoices?.find(x => x.status === WAITING_FOR_PAYMENT && x.attachment) || status?.invoices?.find(x => x.status === WAITING_FOR_VALIDATION && x.attachment)) {
+  const renderMissionButton = (param) => {
+    if (param?.status === REFUSED) {
+      return (
+        <Grid container className={classes.gridRightNoCursor}> {/* Add an empty navlink to fill the button space */}
+        </Grid>
+      )
+    } else if (param?.status === WAITING_FOR_CUSTOMER_SELECTION || param?.status === WAITING_FOR_SIGNATURE || param?.invoices?.find(x => x.status === WAITING_FOR_PAYMENT && x.attachment) || param?.invoices?.find(x => x.status === WAITING_FOR_VALIDATION)) {
       return (
         <Grid container
-          className={clsx(classes.gridRight, status?.invoices?.find(x => x.paymentDate < today) ? classes.rightRed : classes.primary)}
+          className={clsx(classes.gridRight, param?.invoices?.find(x => x.paymentDate < today) ? classes.rightRed : classes.primary)}
           alignItems={'center'} justify={'center'}
-          onClick={() => handleClick(status)}
+          onClick={() => handleClick(param)}
         >
           <Grid item>
             {loadingButton && companiesLoading
@@ -323,10 +326,11 @@ export const Mission = ({ mission, matching, today, ...props }) => {
                   </Typography>
                 </Grid>
                 <Grid item xs={2}>
-                  <IconButton className={classes.buttonIcon} aria-label="display more actions"
-                    onClick={() => setOpen(true)} color="secondary">
-                    <MenuIcon />
-                  </IconButton>
+                  {mission?.status !== REFUSED &&
+                    <IconButton className={classes.buttonIcon} aria-label="display more actions"
+                      onClick={() => setOpen(true)} color="secondary">
+                      <MenuIcon />
+                    </IconButton>}
                 </Grid>
               </Grid>
 
@@ -343,7 +347,8 @@ export const Mission = ({ mission, matching, today, ...props }) => {
 
             <NavLink
               to={mission ? `/mission/${mission?.externalId}` : `/brief/${matching?.externalId}`}
-              className={clsx(classes.gridCenter, missionDone ? classes.gridCenterFinished : null)}>
+              onClick={e => mission?.status === REFUSED ? e.preventDefault() : e}
+              className={clsx(classes.gridCenter, missionDone ? classes.gridCenterFinished : mission?.status === REFUSED ? classes.noCursor : null)}>
               <Grid container>  {/*RIGHT PART*/}
                 <Grid item container xs={12} direction='row'>
                   {/* 1st column */}
@@ -356,16 +361,16 @@ export const Mission = ({ mission, matching, today, ...props }) => {
                   {/* 2nd column */}
                   <Grid item xs={4}>
                     <Grid item className={classes.blocTypoUp}>
-                      <Typography variant={"h4"} className={classes.typo}>Format</Typography>
-                      <Typography variant={"body1"} className={classes.typo}>{mission?.brief?.missionContext?.format || matching?.missionContext?.format}</Typography>
+                      <Typography variant={"h4"} className={classes.typoH4}>Format</Typography>
+                      <Typography variant={"body1"} className={classes.typo}>{formatType(mission?.brief?.missionContext?.format || matching?.missionContext?.format)}</Typography>
                     </Grid>
                   </Grid>
 
                   {/* 3rd column */}
                   <Grid item xs={4}>
                     <Grid item className={classes.blocTypoUp}>
-                      <Typography variant={"h4"} className={classes.typo}>Taux journalier</Typography>
-                      <Typography variant={"body1"} className={classes.typo}>{Math.round((mission?.brief?.missionContext?.estimatedAverageDailyRate || matching?.missionContext?.estimatedAverageDailyRate) * 100) / 100} €/j</Typography>
+                      <Typography variant={"h4"} className={classes.typoH4}>Taux journalier</Typography>
+                      <Typography variant={"body1"} className={classes.typo}>{Math.ceil(matching?.missionContext?.budget?.dailyRateForCompany || mission?.brief?.missionContext?.budget?.dailyRateForCompany)} €/j</Typography>
                     </Grid>
                   </Grid>
                 </Grid>
@@ -373,7 +378,7 @@ export const Mission = ({ mission, matching, today, ...props }) => {
                   {/* 1st column */}
                   <Grid item xs={4}>
                     <Grid item className={classes.blocTypoDownAvatar}>
-                      <Typography variant={"h4"} className={classes.typo}>
+                      <Typography variant={"h4"} className={classes.typoH4}>
                         {mission?.serviceProviderProfile?.firstName || matching?.serviceProviderProfile?.firstName || matchingValues?.title}
                         {mission?.serviceProviderProfile?.lastName || matching?.serviceProviderProfile?.lastName}
                       </Typography>
@@ -385,7 +390,7 @@ export const Mission = ({ mission, matching, today, ...props }) => {
                   {/* 2nd column */}
                   <Grid item xs={4}>
                     <Grid item className={classes.blocTypoDown}>
-                      <Typography variant={"h4"} className={classes.typo}>Rythme</Typography>
+                      <Typography variant={"h4"} className={classes.typoH4}>Rythme</Typography>
                       <Typography variant={"body1"} className={classes.typo}>
                         {weekly === 5 ? 'Plein temps' : 'Temps partiel'} ({weekly} jours)
                   </Typography>
@@ -395,16 +400,16 @@ export const Mission = ({ mission, matching, today, ...props }) => {
                   {/* 3rd column */}
                   <Grid item xs={4}>
                     <Grid item className={classes.blocTypoDown}>
-                      <Typography variant={"h4"} className={classes.typo}>Durée</Typography>
+                      <Typography variant={"h4"} className={classes.typoH4}>Durée</Typography>
                       <Typography variant={"body1"} className={classes.typo}>
-                        {durationNb}{' '}{t(`dashboard.missions.${durationUnit?.toLowerCase()}`)}{durationNb > 1 && 's'} à partir du {formatDate(startDate)}
+                        {durationNb}{' '}{t(`dashboard.missions.${durationUnit?.toLowerCase()}`)}{(durationNb > 1 && durationUnit !== 'MONTH') && 's'} à partir du {formatDate(startDate)}
                       </Typography>
                     </Grid>
                   </Grid>
                 </Grid>
               </Grid>
             </NavLink>
-            {renderMissionButton(matching?.status || mission)}
+            {renderMissionButton(matching || mission)}
           </Grid>
           :
           <Grid container direction={'row'} justify={'center'} alignItems={'center'} className={classes.container}>

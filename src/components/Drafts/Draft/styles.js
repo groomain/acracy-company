@@ -1,16 +1,21 @@
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import { fade } from "@material-ui/core";
 
+const draftHeight = 200;
+
 export default makeStyles(theme => ({
   draft: {
     background: theme.palette.secondary.mid,
     borderRadius: 15,
     width: 339,
-    height: 200,
+    height: draftHeight,
     padding: '10px 20px',
     position: 'relative',
     margin: 15,
-    alignContent: 'space-between'
+    alignContent: 'space-between',
+    '&:hover': {
+      cursor: 'pointer'
+    }
   },
   titleBox: {
     margin: '0 20px 0 0',
@@ -36,14 +41,28 @@ export default makeStyles(theme => ({
     borderRadius: 15
   },
   newDraft: {
-    color: theme.palette.primary.main
+    color: theme.palette.primary.bright,
+    fontFamily: 'Basier Medium',
+  },
+  titleOfMission: {
+    fontFamily: 'Basier Medium',
+    fontSize: '22px',
+    fontWeight: 500,
+    lineHeight: 1.55,
+    color: '#ffffff'
   },
   toUppercase: {
+    fontFamily: 'Basier Regular',
     textTransform: 'uppercase',
-    fontSize: 15
+    fontSize: 14
+  },
+  demarrerBrief: {
+    fontFamily: 'Basier Regular',
+    fontSize: 14
   },
   firstBriefTitle: {
-    lineHeight: .5
+    lineHeight: .5,
+    fontFamily: 'Basier Medium',
   },
   draftLink: {
     textDecoration: 'none',
@@ -51,5 +70,17 @@ export default makeStyles(theme => ({
       transition: '.3s',
       opacity: '.85'
     }
+  },
+  buttonGroup: {
+    width: 213
+  },
+  statusLine: {
+    minHeight: (draftHeight - 30) / 12 * 3
+  },
+  titleLine: {
+    minHeight: (draftHeight - 30) / 12 * 8
+  },
+  searchLine: {
+    minHeight: (draftHeight - 30) / 12 * 1
   }
 }));

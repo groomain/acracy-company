@@ -9,12 +9,15 @@ import CustomSelect from "../../Inputs/CustomSelect";
 import CustomNavLink from "../../CustomNavLink";
 import CustomCheckbox from '../../CheckBox';
 import backToTop from '../../../utils/backToTop';
-import { checkLength } from '../../../utils/services/validationChecks';
 import { Typography, Grid, Stepper, Step, StepLabel, StepButton, Box, StepConnector } from "@material-ui/core";
 import areaCodes from "../../../utils/areaCodes.json";
-import styles from './styles';
 
 import { handleCurrentStep } from '../../App/reducer';
+import { openSnackBar } from '../../App/reducer';
+import { checkLength } from '../../../utils/services/validationChecks';
+import { handleNumberInput } from '../../../utils/services/format';
+
+import styles from './styles';
 
 const SignUpForm = ({ values, errors, touched, handleBlur, handleChange, handleSubmit }) => {
   const { t } = useTranslation();
@@ -44,6 +47,12 @@ const SignUpForm = ({ values, errors, touched, handleBlur, handleChange, handleS
     return [t('signup.personnalInfos'), t('password')];
   };
 
+  const handleDifferentPasswords = () => {
+    if (password !== confirmPassword) {
+      dispatch(openSnackBar({ message: "Les mots de passe doivent être identiques", error: true }))
+    }
+  };
+
   function getStepContent(step) {
     switch (step) {
       case 0:
@@ -71,6 +80,12 @@ const SignUpForm = ({ values, errors, touched, handleBlur, handleChange, handleS
   };
 
   const [disabledFirstStep, setDisabledFirstStep] = useState(true);
+
+  const handleNumberField = (e, limit) => {
+    const numberResult = handleNumberInput(e, limit);
+    handleChange(numberResult);
+  };
+  // console.log("phonePrefix", phonePrefix);
 
   useEffect(() => {
     if (
@@ -104,20 +119,19 @@ const SignUpForm = ({ values, errors, touched, handleBlur, handleChange, handleS
 
   const setPersonnalInfos = () => {
     return (
-      <Box className={classes.stepContent}>
-        <Typography variant={"h1"} >{t('signup.createAccount')}</Typography>
-        <br />
-        <br />
-        <Typography variant={"h4"} >{t('signup.alreadyHaveAccount')} &nbsp;
+      <Box>
+        <Box mt={'100px'}>
+          <Typography variant={"h1"} >{t('signup.createAccount')}</Typography>
+        </Box>
+        <Box my={'40px'}>
+          <Typography variant={"h4"} >{t('signup.alreadyHaveAccount')} &nbsp;
           <span><CustomNavLink to="/login" text={t('signup.loginLinkMsg')} theme='yellowLink'></CustomNavLink></span>
-        </Typography>
-        <br />
-        <br />
-        <Typography variant={"h2"} >{t('signup.accountCreation')}</Typography>
-        <Typography variant={"h1"} >{t('signup.personnalInfos')}</Typography>
-        <br />
-        <br />
-
+          </Typography>
+        </Box>
+        <Box my={'40px'}>
+          <Typography variant={"h2"} >{t('signup.accountCreation')}</Typography>
+          <Typography variant={"h1"} >{t('signup.personnalInfos')}</Typography>
+        </Box>
         <Grid container>
           <Grid item xs={12} className={classes.signupRows}>
             <CustomTextField
@@ -186,8 +200,8 @@ const SignUpForm = ({ values, errors, touched, handleBlur, handleChange, handleS
           </Grid>
 
           <Grid container item direction='column' className={classes.marginTop}>
-            <Box>
-              <Typography variant={'body1'} >{t('signup.phoneNumber') + '*'}</Typography>
+            <Box my={2}>
+              <Typography variant={'h4'} >{t('signup.phoneNumber') + '*'}</Typography>
             </Box>
             <Grid container spacing={2}>
 
@@ -195,7 +209,7 @@ const SignUpForm = ({ values, errors, touched, handleBlur, handleChange, handleS
                 <CustomSelect
                   name='phonePrefix'
                   optionsValues={optionsValues}
-                  value={values.phonePrefix}
+                  value={phonePrefix}
                   onBlur={handleBlur('phonePrefix')}
                   onChange={handleChange}
                   error={!!touched.phonePrefix && !!errors.phonePrefix}
@@ -208,7 +222,7 @@ const SignUpForm = ({ values, errors, touched, handleBlur, handleChange, handleS
                   type="text"
                   value={phoneNumber}
                   onBlur={handleBlur}
-                  onChange={handleChange}
+                  onChange={e => handleNumberField(e, 0)}
                   placeholder={t('signup.phoneNumberPlaceholder')}
                   error={!!touched.phoneNumber && !!errors.phoneNumber}
                 />
@@ -278,7 +292,7 @@ const SignUpForm = ({ values, errors, touched, handleBlur, handleChange, handleS
             <Grid item xs={10}>
               <Typography variant={"h4"}>
                 {t('signup.conditions1')}
-                <a href={'https://www.notion.so/La-charte-du-freelance-acracy-006d33f66b5041418ac22c4e54403eba'}
+                <a href={'https://acracy.co/cgu-cgv/'}
                   target="_blank"
                   className={classes.link}>
                   {t('signup.termsAndConditions')}
@@ -303,6 +317,7 @@ const SignUpForm = ({ values, errors, touched, handleBlur, handleChange, handleS
                 theme={disabledSecondStep ? "disabledFilled" : "filledButton"}
                 handleClick={() => {
                   handleStep(3);
+                  handleDifferentPasswords();
                   handleSubmit({ email, password })
                 }}
                 loading={signupLoading}

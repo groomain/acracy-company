@@ -3,13 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 export const styles = makeStyles(theme => ({
   container: {
-    [theme.breakpoints.up('sm')]: {
-      margin: 'auto'
-    },
-    [theme.breakpoints.down('sm')]: {
-      position: 'relative',
-      margin: 'auto'
-    }
+    margin: 'auto'
   },
   divider: {
     width: '100%',
@@ -24,58 +18,40 @@ export const styles = makeStyles(theme => ({
     height: 17,
     paddingLeft: 2
   },
-  bottomContainer: {
-
+  element: {
+    position: 'relative',
+    width: '100%'
   },
   firstMiddleContainer: {
-    height: '100vh',
-    minHeight: 900
+    padding: '2rem 0'
   },
   middleContainer: {
     paddingLeft: '6%',
-    marginTop: 100,
-    marginBottom: 200
+    marginTop: 150,
+    marginBottom: 100
   },
   loader: {
     width: '100vh',
     height: '100vh'
   },
   card: {
-    [theme.breakpoints.up('sm')]: {
-      backgroundColor: theme.palette.secondary.dark,
-      borderRadius: 15,
-      padding: 15,
-      width: 215,
-      height: 322,
-      marginTop: 100
-    },
-    [theme.breakpoints.down('sm')]: {
-      position: 'relative',
-      backgroundColor: '#fff',
-    },
     backgroundColor: theme.palette.secondary.dark,
     borderRadius: 15,
     padding: 15,
     width: 215,
     height: 322,
-    marginTop: 100
+    marginTop: 150
   },
   cardTitle: {
-    [theme.breakpoints.up('sm')]: {
-      paddingTop: 10,
-      paddingBottom: 10
-    },
-    [theme.breakpoints.down('sm')]: {
-      position: 'relative',
-      backgroundColor: '#fff',
-
-
-    },
-
+    paddingTop: 10,
+    paddingBottom: 10
   },
   mainTitle: {
     fontFamily: 'BodoniBook',
-    fontSize: 32,
+    fontSize: 68,
+    fontWeight: 100,
+    lineHeight: '88px',
+    maxWidth: '70%',
     marginBottom: 55
   },
   word: {
@@ -86,8 +62,8 @@ export const styles = makeStyles(theme => ({
     maxWidth: '70%'
   },
   authorContainer: {
-    marginTop: 8,
-    marginBottom: 35
+    marginTop: '1rem',
+    marginBottom: 35,
   },
   authorTypo: {
     marginLeft: 10
@@ -298,15 +274,11 @@ export const styles = makeStyles(theme => ({
     color: theme.palette.primary.main
   },
   firstGridElement: {
-    [theme.breakpoints.up('sm')]: {
-      position: 'absolute',
-      marginTop: 70,
-      width: 215,
-      left: '80%'
-    },
-    [theme.breakpoints.down('sm')]: {
-      position: 'relative'
-    },
+    position: 'sticky',
+    marginTop: 70,
+    top: 200,
+    width: 215,
+    right: 10
   },
   tjmSecondContainer: {
     backgroundColor: '#1b251c',
@@ -321,7 +293,8 @@ export const styles = makeStyles(theme => ({
     paddingTop: 70, paddingBottom: 70
   },
   briefContainer: {
-    width: '70%', marginLeft: '5%'
+    width: '70%',
+    marginLeft: '5%'
   },
   briefSeniority: {
     width: '100%',
@@ -350,10 +323,10 @@ export const styles = makeStyles(theme => ({
   },
   cartAvatar: {
     width: 46,
-    height: 46
+    height: 46,
   },
   cartList: {
-    width: 250
+    display: 'flex'
   },
   cartButton1: {
     width: 221, marginRight: 20
@@ -367,4 +340,21 @@ export const styles = makeStyles(theme => ({
   cartButton4: {
     width: 219, marginRight: 15
   },
+  selectedProfilesContainer: {
+    display: 'flex',
+    alignItems: 'center',
+    position: 'relative'
+  },
+  selectedProfileInfos: {
+    color: theme.palette.secondary.black,
+    margin: '0 1rem'
+  },
+  link: {
+    fontsize: 17,
+    color: theme.palette.primary.main,
+    textDecoration: 'none',
+    '&:hover': {
+      color: theme.palette.primary.bright
+    }
+  }
 }));

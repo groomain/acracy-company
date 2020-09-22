@@ -34,7 +34,7 @@ export const CustomSelect = ({ label, value, placeholder, type, error, isMulti, 
   }
 
   return (
-    <Box style={{ height: '140px' }} className={className}>
+    <Box className={className} style={{ height: '140px' }}>
       <Typography variant='h4'>{label}</Typography >
       <Select
         type={type}
@@ -43,7 +43,7 @@ export const CustomSelect = ({ label, value, placeholder, type, error, isMulti, 
         context={context}
         renderValue={isMulti
           && (context === 'deliverables' ? renderCounter : ((selected) => selected.join(' ')))}
-        value={isMulti ? options : (value?.type || value)}
+        value={isMulti ? options : (value?.type || value?.TEXT || value)}
         error={error}
         onOpen={() => setOpen(true)}
         onClose={() => setOpen(false)}

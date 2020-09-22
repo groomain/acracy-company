@@ -27,7 +27,7 @@ const SignUpPage = (props) => {
     email: '',
     password: '',
     confirmPassword: '',
-    phonePrefix: 'Fr : +33',
+    phonePrefix: 'FR : +33',
     searchValue: '',
     searchType: '',
     searchCode: '',

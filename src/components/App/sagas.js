@@ -38,6 +38,7 @@ import {
 import { handleCurrentStep } from "../App/reducer";
 import { config } from '../../conf/amplify';
 import { getPhonePrefixCode } from '../../utils/services/format';
+import React from "react";
 
 function* getCurrentSession(action) {
   const { fromPath } = action.payload;
@@ -146,7 +147,9 @@ function* doSignIn(action) {
               }
             }
             yield put(loginSuccess(errorLeadMessage));
-            yield put(openSnackBar({ message: errorLeadMessage, error: false }));
+            if (errorLeadMessage) {
+              yield put(openSnackBar({ message: errorLeadMessage, error: false }));
+            }
             yield put(getCurrentSessionLaunched({ fromPath: from || '/home' })); // Redirection with or without lead creation error message
           } else {
             yield put(loginFailure(translateSignInError("")));

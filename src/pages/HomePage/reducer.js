@@ -62,7 +62,7 @@ const { actions, reducer } = createSlice({
       .set('missionsData', null),
     getMissionsSuccess: (state, action) => state
       .set('missionsLoading', false)
-      .set('missionsData', action.payload.missions),
+      .set('missionsData', action.payload),
     getMissionsFailure: (state, action) => state
       .set('missionsLoading', false)
       .set('missionsData', null),
@@ -81,7 +81,7 @@ const { actions, reducer } = createSlice({
       .set('quotesLoading', true)
       .set('quotes', null),
     getQuotesSuccess: (state, action) => state
-      .set('quotes', [...state, action.payload.quotes])
+      .set('quotes', [action.payload.quotes])
       .set('quotesLoading', false),
     getQuotesFailure: (state, action) => state
       .set('quotes', null)
@@ -92,7 +92,7 @@ const { actions, reducer } = createSlice({
       .set('companiesData', null)
       .set('companiesLoading', true),
     getCompaniesSuccess: (state, action) => state
-      .set('companiesData', action.payload.companies)
+      .set('companiesData', action.payload)
       .set('companiesDataFetched', true)
       .set('companiesLoading', false),
     getCompaniesFailure: (state, action) => state

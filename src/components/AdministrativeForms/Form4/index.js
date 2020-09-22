@@ -1,17 +1,16 @@
 import React, { useEffect } from 'react';
-import {useDispatch, useSelector} from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
-import styles from "../styles";
-import CustomTextField from "../../Inputs/CustomTextField";
-import CustomButton from "../../Button";
-import Typography from "@material-ui/core/Typography";
-import CustomSelect from "../../Inputs/CustomSelect";
-import Grid from "@material-ui/core/Grid";
-import areaCodes from "../../../utils/areaCodes.json";
+import { Typography, Grid, Box } from "@material-ui/core";
 import { checkMissingInfosForm4 } from '../../../pages/AdministrativePage/reducer';
-import { getPhonePrefixCode } from "../../../utils/services/format.js";
-import {isNullOrEmpty} from "../isNullOrEmpty";
-import {getIn} from "formik";
+import { getIn } from "formik";
+import { getPhonePrefixCode, handleNumberInput } from "../../../utils/services/format.js";
+import areaCodes from "../../../utils/areaCodes.json";
+import { isNullOrEmpty } from "../isNullOrEmpty";
+import CustomTextField from "../../Inputs/CustomTextField";
+import CustomSelect from "../../Inputs/CustomSelect";
+import CustomButton from "../../Button";
+import styles from "../styles";
 
 export const Form4 = ({ values, errors, touched, handleBlur, handleChange, handleSubmit }) => {
   const { t } = useTranslation();
@@ -32,13 +31,18 @@ export const Form4 = ({ values, errors, touched, handleBlur, handleChange, handl
     companyUpdateLoading: state.getIn(['Administrative', 'companyUpdateLoading']),
   }));
 
+  const handleNumberField = (e, limit) => {
+    const numberResult = handleNumberInput(e, limit);
+    handleChange(numberResult);
+  };
+
   return (
     <Grid item container direction={'column'} className={classes.card}>
       <Typography variant={'h2'} className={classes.cardTitle}>Coordonnées de la personne en charge de
                 la facturation</Typography>
-      <Grid item container direction={'row'}>
-        <Grid item container direction={'column'} className={classes.columnContainer}>
-          <CustomTextField className={classes.textfield}
+      <Grid container direction="row" spacing={4} className={classes.card}>
+        <Grid item md={6}>
+          <CustomTextField
             label={'Prénom*'}
             placeholder={'Prénom'}
             name={'administrativeProfile.billing.firstName'}
@@ -47,23 +51,9 @@ export const Form4 = ({ values, errors, touched, handleBlur, handleChange, handl
             onChange={handleChange}
             error={!!getIn(touched, 'administrativeProfile.billing.firstName') && !!getIn(errors, 'administrativeProfile.billing.firstName')}
           />
-          <CustomTextField className={classes.textfield}
-            label={'Email*'}
-            placeholder={'Email'}
-            name={'administrativeProfile.billing.email'}
-            value={administrativeProfile.billing.email}
-            onBlur={handleBlur}
-            onChange={handleChange}
-            error={!!getIn(touched, 'administrativeProfile.billing.email') && !!getIn(errors, 'administrativeProfile.billing.email')}
-          />
-          <CustomButton title={'Sauvegarder'} theme={'filledButton'} className={classes.saveButton}
-            disabled={isNullOrEmpty(administrativeProfile.billing.firstName) || isNullOrEmpty(administrativeProfile.billing.lastName) || isNullOrEmpty(administrativeProfile.billing.email) || isNullOrEmpty(administrativeProfile.billing.phone.code) || isNullOrEmpty(administrativeProfile.billing.phone.number)}
-            handleClick={() => handleSubmit({ firstName: administrativeProfile.billing.firstName, lastName: administrativeProfile.billing.lastName, email: administrativeProfile.billing.email, code: getPhonePrefixCode(administrativeProfile.billing.phone.code), number: administrativeProfile.billing.phone.number })}
-                        loading={companyUpdateLoading}
-          />
         </Grid>
-        <Grid item container direction={'column'} className={classes.columnContainer}>
-          <CustomTextField className={classes.textfield}
+        <Grid item md={6}>
+          <CustomTextField
             label={'Nom*'}
             placeholder={'Nom'}
             name={'administrativeProfile.billing.lastName'}
@@ -72,34 +62,54 @@ export const Form4 = ({ values, errors, touched, handleBlur, handleChange, handl
             onChange={handleChange}
             error={!!getIn(touched, 'administrativeProfile.billing.lastName') && !!getIn(errors, 'administrativeProfile.billing.lastName')}
           />
-          <Grid item container direction={'row'}>
-            <Grid container item direction='column' className={classes.phoneMargin}>
-              <Typography variant={'body1'}>{t('signup.phoneNumber') + '*'}</Typography>
-              <Grid container spacing={2}>
-                <Grid item xs={5}>
-                  <CustomSelect
-                    name='administrativeProfile.billing.phone.code'
-                    optionsValues={areaCodes}
-                    value={administrativeProfile.billing.phone.code}
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    error={!!getIn(touched, 'administrativeProfile.billing.phone.code') && !!getIn(errors, 'administrativeProfile.billing.phone.code')}
-                  />
-                </Grid>
-                <Grid item xs={7}>
-                  <CustomTextField
-                    name="administrativeProfile.billing.phone.number"
-                    type="text"
-                    value={administrativeProfile.billing.phone.number}
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    placeholder={t('signup.phoneNumberPlaceholder')}
-                    error={!!getIn(touched, 'administrativeProfile.billing.phone.number') && !!getIn(errors, 'administrativeProfile.billing.phone.number')}
-                  />
-                </Grid>
+        </Grid>
+        <Grid item container spacing={2}>
+          <Grid item md={6}>
+            <CustomTextField
+              label={'Email*'}
+              placeholder={'Email'}
+              name={'administrativeProfile.billing.email'}
+              value={administrativeProfile.billing.email}
+              onBlur={handleBlur}
+              onChange={handleChange}
+              error={!!getIn(touched, 'administrativeProfile.billing.email') && !!getIn(errors, 'administrativeProfile.billing.email')}
+            />
+          </Grid>
+          <Grid item container direction={'row'} md={6} style={{ paddingLeft: 20 }}>
+            <Grid item>
+              <Typography variant={'h4'}>{t('signup.phoneNumber') + '*'}</Typography>
+            </Grid>
+            <Grid item container spacing={4} className={classes.phoneMargin}>
+              <Grid item md={5}>
+                <CustomSelect
+                  name='administrativeProfile.billing.phone.code'
+                  optionsValues={areaCodes}
+                  value={administrativeProfile.billing.phone.code}
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  error={!!getIn(touched, 'administrativeProfile.billing.phone.code') && !!getIn(errors, 'administrativeProfile.billing.phone.code')}
+                />
+              </Grid>
+              <Grid item md={7}>
+                <CustomTextField
+                  name="administrativeProfile.billing.phone.number"
+                  type="text"
+                  value={administrativeProfile.billing.phone.number}
+                  onBlur={handleBlur}
+                  onChange={e => handleNumberField(e, 0)}
+                  placeholder={t('signup.phoneNumberPlaceholder')}
+                  error={!!getIn(touched, 'administrativeProfile.billing.phone.number') && !!getIn(errors, 'administrativeProfile.billing.phone.number')}
+                />
               </Grid>
             </Grid>
           </Grid>
+        </Grid>
+        <Grid container direction="row" className={classes.card}>
+          <CustomButton title={'Sauvegarder'} theme={'filledButton'} className={classes.saveButton}
+            disabled={isNullOrEmpty(administrativeProfile.billing.firstName) || isNullOrEmpty(administrativeProfile.billing.lastName) || isNullOrEmpty(administrativeProfile.billing.email) || isNullOrEmpty(administrativeProfile.billing.phone.code) || isNullOrEmpty(administrativeProfile.billing.phone.number)}
+            handleClick={() => handleSubmit({ firstName: administrativeProfile.billing.firstName, lastName: administrativeProfile.billing.lastName, email: administrativeProfile.billing.email, code: getPhonePrefixCode(administrativeProfile.billing.phone.code), number: administrativeProfile.billing.phone.number })}
+            loading={companyUpdateLoading}
+          />
         </Grid>
       </Grid>
     </Grid>

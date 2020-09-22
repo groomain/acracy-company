@@ -19,7 +19,7 @@ export default makeStyles(theme => ({
   gridCenter: {
     display: 'flex',
     textDecoration: 'none',
-    paddingLeft: '2%',
+    paddingLeft: '31px',
     width: '62%',
   },
   gridCenterFinished: {
@@ -33,6 +33,18 @@ export default makeStyles(theme => ({
     width: '10%',
     '&:hover': {
       cursor: 'pointer',
+    },
+  },
+  gridRightNoCursor: {
+    borderRadius: '0 15px 15px 0',
+    width: '10%',
+    '&:hover': {
+      cursor: 'initial',
+    },
+  },
+  noCursor: {
+    '&:hover': {
+      cursor: 'initial',
     },
   },
   withoutButton: {
@@ -56,12 +68,17 @@ export default makeStyles(theme => ({
     letterSpacing: '0px',
   },
   blocAvatar: {
-    marginTop: '20%',
-    marginBottom: '4%',
+    paddingTop: '44px',
+    paddingBottom: '5px',
     width: '100%',
   },
   typo: {
-    padding: 5,
+    // padding: 5,
+    width: '100%',
+    textAlign: 'left'
+  },
+  typoH4: {
+    lineHeight: 2,
     width: '100%',
     textAlign: 'left'
   },
@@ -101,11 +118,11 @@ export default makeStyles(theme => ({
   },
   statusContainer: {
     height: '20%',
-    padding: '15px 5px 0',
+    padding: '8px 5px 0',
     position: 'relative',
   },
   titleContainer: {
-    padding: '15px 30px'
+    padding: '28px 30px 30px 30px'
   },
   title: {
     fontSize: 22,
@@ -117,7 +134,7 @@ export default makeStyles(theme => ({
     paddingRight: 38
   },
   outsideContainer: {
-    marginTop: 8
+    marginTop: 10
   },
   outsideTypo: {
     marginLeft: 10

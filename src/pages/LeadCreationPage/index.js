@@ -70,7 +70,7 @@ const LeadCreationPage = (props) => {
 
   useEffect(() => {
     if (leadCreationPageWithSearchResult?.TEXT || leadCreationPageWithSearchResult?.value) {
-      let newInitialValues = { "search": { "code": leadCreationPageWithSearchResult.KEY || "", "text": leadCreationPageWithSearchResult.TEXT || leadCreationPageWithSearchResult.value, "type": leadCreationPageWithSearchResult.TYPE || 'OTHER' } }
+      let newInitialValues = { ...initialValues, "search": { "code": leadCreationPageWithSearchResult.KEY || "", "text": leadCreationPageWithSearchResult.TEXT || leadCreationPageWithSearchResult.value, "type": leadCreationPageWithSearchResult.TYPE || 'OTHER' } }
       setInitialValues(newInitialValues)
     }
   }, [leadCreationPageWithSearchResult]);
@@ -120,7 +120,6 @@ const LeadCreationPage = (props) => {
   leadSave = async (values, redirect, redirectToMission) => {
     if (leadId) {
       const validationSchema = Yup.object().shape({
-        desireds: Yup.array().required(),
         search: Yup.object().required(),
         missionContext: Yup.object().shape({
           title: Yup.string().required(),
@@ -136,7 +135,6 @@ const LeadCreationPage = (props) => {
       }
     } else {
       const validationSchema = Yup.object().shape({
-        desireds: Yup.array().required(),
         search: Yup.object().required(),
         missionContext: Yup.object().shape({
           title: Yup.string().required(),
@@ -228,7 +226,7 @@ const LeadCreationPage = (props) => {
                       <Grid item className={classes.icon}>
                         <img src={phonecall} alt="Appel téléphonique" />
                       </Grid>
-                      <Typography variant='body1' className={classes.description}>Cliquez sur Cliquez sur «
+                      <Typography className={classes.description}>Cliquez sur «
                 <span className={classes.yellowText}> être rappelé.e. </span>»
                 en bas de page et nous finaliserons le brief ensemble.
               </Typography>

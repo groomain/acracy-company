@@ -49,7 +49,7 @@ function App() {
       <PrivateRoute exact path="/firstLogin" fixed component={FirstLoginPage} />
       <PrivateRoute exact path="/home" fixed component={HomePage} />
       <PrivateRoute exact path="/myProfile" fixed component={MyProfilePage} />
-      <PublicRoute exact path="/reveal/:id" fixed component={ProfileSelection} />
+      <PrivateRoute exact path="/reveal/:id" fixed component={ProfileSelection} />
       {/* REDIRECT WRONG PATH */}
       <Route render={() => <Redirect to="/home" />} />
     </Switch>
@@ -75,7 +75,7 @@ function App() {
       {/* </div> */}
       {/* /!* __NavbarEnd__ *!/ */}
       {
-        (location.pathname !== '/lead' && location.pathname !== '/login') && <CustomAppBar />
+        (!isAuthenticated && location.pathname !== '/lead') && <CustomAppBar />
       }
       <ProgressBar />
       {

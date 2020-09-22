@@ -87,15 +87,6 @@ export const Upload = (props) => {
     }
   };
 
-  useEffect(() => {
-    if (companyData?.administrativeProfile?.legalDocuments?.filter((file) => file.name === 'kbis' || file.name === 'cin1' || file.name === 'status').length === 3) {
-      dispatch(checkMissingFilesForm(false))
-    } else {
-      dispatch(checkMissingFilesForm(true))
-
-    }
-  }, [companyData]);
-
   const handleFileDelete = () => {
     setUploadedFiles([]);
     dispatch(deleteAttachmentLaunched(leadAttachmentId))

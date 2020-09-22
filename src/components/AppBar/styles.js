@@ -19,7 +19,7 @@ export default makeStyles(theme => ({
   div: {
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-end',
     alignContent: 'center',
     alignItems: 'center',
     width: 390,
@@ -71,5 +71,24 @@ export default makeStyles(theme => ({
   newbrief: {
     position: 'absolute',
     left: '35%'
+  },
+  missionNavButton: {
+    marginLeft: '7%',
+    cursor: 'pointer',
+    '& img:first-of-type': {
+      marginRight: '1rem'
+    },
+    '&:hover h2': {
+      color: theme.palette.secondary.lighter
+    }
+  },
+  missionNavImage: {
+    transform: 'rotate(180deg)'
+  },
+  pen: {
+    marginLeft: '1rem'
+  },
+  newBriefButton: {
+    paddingRight: '32px'
   }
 }));

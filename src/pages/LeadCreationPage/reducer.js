@@ -13,6 +13,7 @@ const initialState = Immutable.Map({
   //
   updateLeadDraftLoading: false,
   updateLeadDraftErrorMessage: null,
+  updateLeadDraftSuccess: false,
   updateResponse: null,
   //
   changeLeadStatusLoading: false,
@@ -80,13 +81,16 @@ const { actions, reducer } = createSlice({
     // PUT Draft  /leads/{leadId}
     putLeadDraftLaunched: (state, action) => state
       .set('updateLeadDraftLoading', true)
+      .set('updateLeadDraftSuccess', false)
       .set('updateLeadDraftErrorMessage', null),
     putLeadDraftSuccess: (state, action) => state
       .set('updateLeadDraftLoading', false)
       .set('updateLeadDraftErrorMessage', null)
+      .set('updateLeadDraftSuccess', true)
       .set('updateResponse', action.payload),
     putLeadDraftFailure: (state, action) => state
       .set('updateLeadDraftLoading', false)
+      .set('updateLeadDraftSuccess', false)
       .set('updateLeadDraftErrorMessage', action.payload),
     // POST status  /leads/{leadId}/actions
     changeLeadStatusLaunched: (state, action) => state

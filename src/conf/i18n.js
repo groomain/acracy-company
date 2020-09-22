@@ -80,7 +80,7 @@ i18n
           upload: {
             title: "Shared documents",
             subtitle: "Do you want to add documents ?",
-            confidentialityText: "We respect your privacy",
+            confidentialityText: "acracy undertakes to respect the confidentiality of shared information, and to sign an NDA if necessary.",
             addDocument: "Add document",
             maxFileSize: "Max file size : 5Mb"
           },
@@ -113,6 +113,10 @@ i18n
       fr: {
         // APP
         translation: {
+          profileSelection: {
+            tjmPopover1: 'Nous incluons dans le TJM des freelances les frais de ',
+            tjmPopover2: '% liés à l’affacturage. C’est un système qui leur permet d’être protégés avec un paiement rapide, et qui nous permet de fidéliser les meilleurs freelances.'
+          },
           loginPageTitle: 'Connexion',
           email: 'Email',
           password: 'Mot de Passe',
@@ -164,6 +168,7 @@ i18n
             briefsTitle: 'Brouillons',
             newBrief: 'Nouveau brief',
             firstBriefTitle: 'Créez votre premier \nbrief',
+            addBrief: "Créez un nouveau \nbrief",
             firstBriefButton: "C'est parti !",
             newBriefTitle: "Votre nouveau brief vous attend !",
             startBrief: "Démarrer brief",
@@ -174,18 +179,18 @@ i18n
             conditions1: "J'ai lu et j'accepte les ",
             termsAndConditions: 'conditions générales',
             conditions2: " du site et des missions acracy",
-            role: 'Votre Rôle',
-            emailPro: 'Email Professionnel',
-            phoneNumber: 'Numéro de téléphone',
-            companyNamePlaceholder: 'Nom d\'entreprise',
-            companyName: 'Votre entreprise',
+            role: 'Poste',
+            emailPro: 'Email',
+            phoneNumber: 'Numéro',
+            companyNamePlaceholder: 'Nom de votre entreprise',
+            companyName: 'Entreprise',
             companyNameRequired: 'Veuillez saisir le nom de votre entreprise',
             firstNamePlaceholder: 'Votre prénom',
             lastNamePlaceholder: 'Votre nom',
-            rolePlaceholder: 'Poste',
+            rolePlaceholder: 'Votre rôle dans votre entreprise',
             roleRequired: 'Veuillez renseigner votre rôle dans l\'entreprise',
             emailPlaceholder: 'Votre email professionnel',
-            phoneNumberPlaceholder: 'Votre téléphone',
+            phoneNumberPlaceholder: 'Votre numéro de téléphone',
             createAccount: 'Votre première mission en quelques clics',
             alreadyHaveAccount: 'J\'ai déjà un compte.',
             loginLinkMsg: 'Je me connecte.',
@@ -197,12 +202,12 @@ i18n
             createAccountButton: 'Créer mon compte',
           },
           savedResearch: 'Votre recherche a bien été sauvegardée',
-          collaborators: 'Ils collaborent déjà avec nous',
+          collaborators: 'Ils aiment nous briefer',
           searchbar: {
             placeholder: 'Quel profil ou livrable recherchez-vous ?',
             noOptions: 'Aucun résultat ne correspond à votre recherche.',
             profileLabel: 'Profil recherché',
-            briefsLabel: 'Livrable recherché',
+            briefsLabel: 'Livrable : le travail attendu',
             loading: 'Chargement...',
             createMessage: 'Créer',
             newOption: "ne figure pas dans notre liste de profils ou livrables mais nous allons faire notre maximum pour vous aider."
@@ -214,36 +219,40 @@ i18n
             fieldTitleStarted: "Modifier ma sélection",
             fieldTitleNewSelection: "Démarrer ma sélection",
             expertise: {
-              label: "Expertises clés du profil",
+              label: "Les expertises-clés du profil",
               minMaxInfo: "5 maximum dont 3 prioritaires",
             },
             sensitivity: {
-              label: "Sensibilité clé du profil",
+              label: "Son domaine de prédilection",
               minMaxInfo: "1 maximum"
             }
           },
+          incidentMessage: {
+            title: 'Envoyer',
+            placeholder: 'Un souci sur la mission ? Dites-nous tout.'
+          },
           leadCreation: {
-            synthesis: 'Synthèse Brief',
-            details: 'Détails Brief',
+            synthesis: 'La synthèse',
+            details: 'Les détails',
             missionLabel: 'Donnez un titre à votre mission*',
-            missionPlaceholder: 'Ex: Motion design pour stories Instagram',
-            workspaceLabel: 'Format souhaité*',
+            missionPlaceholder: 'Il sera partagé avec les freelances, donnez-leur envie. Ex : Nouvelle identité sur nos réseaux sociaux',
+            workspaceLabel: 'Quel format de mission souhaitez-vous ?*',
             locationLabel: 'Merci d’indiquer l\'adresse des locaux où la mission aura lieu*',
-            locationPlaceholder: '133 avenue des Champs Elysées - 75008 Paris',
-            frequencyLabel: 'Rythme hebdomadaire',
-            durationLabel: 'Durée de la mission',
-            durationPlaceholder: 'Indiquez nombre',
-            budgetLabel: 'Budget',
+            locationPlaceholder: '55 Rue du Faubourg Saint-Honoré, 75008 Paris, France',
+            frequencyLabel: 'Quel sera le rythme hebdomadaire ?',
+            durationLabel: 'Sur quelle durée au total ?',
+            durationPlaceholder: 'Indiquez un nombre',
+            budgetLabel: 'Les tarifs',
             budgetPlaceholder: 'Votre budget',
-            profilesLabel: 'Nombre de profils ou teams*',
+            profilesLabel: 'Le nombre de profils (ou teams) recherché *',
             callMe: 'Être rappelé.e.',
-            selectDeliverables: 'Sélectionner jusqu\'à 5 livrables souhaités*',
+            selectDeliverables: 'Travail attendu : sélectionnez jusqu\'à 5 livrables*',
             modifyDeliverables: 'Modifier ma sélection',
             customDeliverablePlaceholder: 'Livrable souhaité',
-            customDeliverableLabel: 'Précisez la nature du livrable qui ne figure pas dans la liste*',
-            selectProfile: 'Sélectionnez un profil souhaité pour la mission*',
-            calendarLabel: 'Date de démarrage*',
-            reseachLabel: 'Précisez votre recherche',
+            customDeliverableLabel: 'Un livrable n\'est pas dans la liste ?*',
+            selectProfile: 'Quel profil recherchez-vous pour cette mission ?*',
+            calendarLabel: 'Quand démarrera le travail ?*',
+            reseachLabel: 'De quoi/qui avez-vous besoin ?',
             finishBrief: 'Finaliser le brief',
             sendBriefButton: 'Déposer mon brief',
             tip1: "Donnez le plus d'informations possible sur la mission et vos attentes, mais aussi sur le contexte du projet (équipe, objectifs, format du travail, deadlines).",
@@ -251,20 +260,30 @@ i18n
             discoverTips: "Découvrez nos conseils pour les briefs parfaits",
             // step 2
             profileDetails: "Détails du profil recherché",
-            profileexpertises: "Expertises clés du profil*",
-            profileSensitivity: 'Sensibilité clé du profil',
-            profileLanguages: 'Langue principale',
-            profileSeniority: "Séniorité souhaitée",
-            deliverablesDetails: "Détails des livrables",
+            profileexpertises: "Les expertises-clés du profil*",
+            profileSensitivity: 'Son domaine de prédilection',
+            profileLanguages: 'Quelles langues sont nécessaires ?*',
+            profileSeniority: "Et quel niveau de séniorité ?",
+            deliverablesDetails: "Précisions sur le travail attendu",
+            estimatedAverageDailyRate1: 'Soit un taux journalier de ',
+            estimatedAverageDailyRate2: '€, une fois les frais d\'affacturage et la commission acracy ajoutés.',
+            estimatedAverageDailyRate3: 'Soit un montant global de ',
+            estimatedAverageDailyRate4: '€, une fois déduits les frais d’affacturage et la commission acracy.',
             textarea: {
               missionContext: {
-                label: "Contexte de la mission et tâches à réaliser*",
+                label: "Contexte et objectifs de la mission*",
                 placeholder: "Ex: \"Dans le cadre du lancement de notre nouvelle boisson \"Energy 3000\", nous cherchons un stratège Social Media pour définir un plan d'activation Instagram à destination des 18-25 ans.\""
               },
               deliverablesDetails: {
                 label: "Détail des livrables*",
-                placeholder: "C’est le moment de nous en dire le plus possible sur ce qui fait partie des livrables et quelles sont vos attentes exactes. Dites-nous-en le plus possible. \nEx: “Wireframes: 10 écrans (mobile et desktop) ; Format Sketch ; Possibilité de consulter sur Invision…”"
+                placeholder: "Donnez-nous le plus d'informations possibles sur le travail attendu (quantité, type, style...). Ex : 10 wireframes (mobile et desktop) sur Sketch / 3 scripts humoristiques pour des 30\" / 2 formats mobiles d'acquisition"
               }
+            },
+            callPopin: {
+              title: "Vous souhaitez être rappelé.e",
+              text: "Au clic sur “Confirmer”, le remplissage de brief se mettra en pause, et vous serez rappelé.e par l’un des account managers d’acracy qui le finalisera au téléphone avec vous.",
+              cancel: "Annuler et continuer mon brief",
+              confirm: "Confirmer"
             }
           },
           upload: {
@@ -273,7 +292,7 @@ i18n
               multiple: "Documents partagés"
             },
             subtitle: "N'hésitez pas à partager tout document utile (brief, job description, références)",
-            confidentialityText: "Acracy s’engage à respecter la confidentialité des informations partagées. Tum dicere exorsus est consecutus? laudem et via procedat oratio quaerimus igitur, quid.",
+            confidentialityText: "acracy s’engage à respecter la confidentialité des informations partagées. Nous pouvons évidemment signer un NDA si besoin.",
             addDocument: "Ajouter un document",
             maxFileSize: "Taille de fichier maximum : 5 Mo"
           },
@@ -296,7 +315,7 @@ i18n
           },
           dashboard: {
             welcome: "Bonjour, ",
-            subtitle: "Merci d’avoir rejoint acracy ! Ceci est votre tableau de bord. Vous y trouverez toute l’information nécessaire pour gérer vos missions.",
+            subtitle: "Nous sommes ravis de vous accueillir sur acracy. Voici votre tableau de bord, pour nous briefer et suivre vos missions",
             missions: {
               name: "Mission",
               missionsTitle: "Mes Missions",
@@ -304,13 +323,22 @@ i18n
               future: " à venir",
               finished: "Historique",
               profileMatching: "Matching de profil",
-              noMission: "Aucune mission en cours.\n Quand vous aurez finalisé votre brief et validé un ou plusieurs profils, la mission apparaîtra ici",
-              freelanceInfosModal: 'Voir coordonnées freelance',
+              noMissionTitle: "Aucune mission en cours.",
+              noMissionSubtitle: "Commencez par rechercher un type de profil ou livrable pour démarrer un brief.",
+              freelanceInfosModal: 'Coordonnées de votre freelance',
               incidentModalTitle: 'Déclarer un incident',
               day: 'jour',
               week: 'semaine',
-              month: 'mois'
+              month: 'mois',
+              refusedTitle: "Refus",
+              refusedByAcracy: "Refusé par acracy"
             }
+          },
+          profilMenu: {
+            profil: 'Mon Profil',
+            admin: 'L\'administratif',
+            contact: 'Contacter acracy',
+            logout: 'Me déconnecter'
           },
           header: {
             login: 'Se connecter',
@@ -341,6 +369,9 @@ i18n
             confirmNewPassword: "Confirmation du nouveau mot de passe",
             confirmNewPasswordPlaceholder: "Confirmez nouveau mot de passe",
             modifyPassword: "Modifier mon mot de passe"
+          },
+          adminPage: {
+            companyData: "Données de mon entreprise"
           }
         }
       }

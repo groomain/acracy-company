@@ -13,8 +13,8 @@ import { downloadFileLaunched } from "./reducer";
 
 export const DownloadModal = ({ open, setOpen, handleClose, files, type, ...props }) => {
   const classes = styles();
-  const filesName = files.map((file, index) => file.name);
-  const filesId = files.map((file, index) => file.externalId);
+  const filesName = files.map((file, index) => file?.name);
+  const filesId = files.map((file, index) => file?.externalId);
   const [file, setFile] = React.useState(null);
   const dispatch = useDispatch();
 
@@ -50,13 +50,13 @@ export const DownloadModal = ({ open, setOpen, handleClose, files, type, ...prop
           {type === "facture" && "Choisir ma facture à télécharger"}
           {type === "brief" && "Choisir mon brief à télécharger"}
         </Typography>
-        <CustomSelect label={""} optionsValues={filesName} onChange={(event) => handleSetFile(event.target.value)} />
+        <CustomSelect label={""} optionsValues={filesName} onChange={(event) => handleSetFile(event.target.value)} value={file?.name} />
         <Grid item container directtion={"row"}>
           <CustomButton title={"Télécharger"} theme={"filledButton"} style={{ position: "relative", bottom: 40 }} handleClick={() => downloadFile({ type: type, attachmentId: file.externalId })} />
           <Typography onClick={() => downloadFile({ type: type, attachmentId: filesId })} className={classes.navLink}>
-            {type === "devis" && "Télécharger tout les devis"}
+            {type === "devis" && "Télécharger tous les devis"}
             {type === "facture" && "Télécharger toutes les factures"}
-            {type === "brief" && "Télécharger tout les briefs"}
+            {type === "brief" && "Télécharger tous les briefs"}
           </Typography>
         </Grid>
       </Grid>

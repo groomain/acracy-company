@@ -33,7 +33,7 @@ export const Form5 = ({ values, errors, touched, handleBlur, handleChange, handl
     } else {
       dispatch(checkMissingInfosForm5(false))
     }
-  }, []);
+  }, [administrativeProfile.cguCheck]);
 
   useEffect(() => {
     setSwitchOrders(administrativeProfileFromDB?.purchaseOrder);
@@ -65,7 +65,10 @@ export const Form5 = ({ values, errors, touched, handleBlur, handleChange, handl
             checked={checked}
           />
           <Typography variant={'body1'}>J’ai lu et j’accepte la charte acracy</Typography>
-          <img src={charte} alt={'charte'} className={classes.chart} />
+          <a href={'https://www.notion.so/La-charte-entreprise-acracy-0d7903b401fa4a2aa37034c3485f5b6f'}
+            target="_blank">
+            <img src={charte} alt={'charte'} className={classes.chart} />
+          </a>
         </Grid>
         <CustomButton title={'Sauvegarder'} theme={'filledButton'} className={classes.saveButton}
           disabled={administrativeProfile.cguCheck === false}

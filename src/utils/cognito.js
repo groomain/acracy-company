@@ -8,14 +8,14 @@ const translateSignUpError = (errorCode) => {
     case 'TooManyRequestsException':
       return 'Trop de requêtes effectué.';
     case 'UsernameExistsException':
-      return 'Cet email existe déjà';
+      return 'Cet e-mail existe déjà sur acracy';
     default:
       return 'Erreur';
   }
 };
 
 const translateConfirmSignUpSuccess = () => {
-  return 'Merci pour votre validation. Votre compte est maintenant actif ! 👏'
+  return 'Merci, votre compte est désormais actif. Connectez-vous pour remplir un brief 👏'
 };
 
 const translateResendCodeSuccess = () => {
@@ -81,7 +81,7 @@ const translateForgotPassword = (errorCode) => {
 const translateConfirmForgotPassword = (errorCode) => {
   switch (errorCode) {
     case 'PasswordDoNotMatch':
-      return 'Les mots de passe doivent être identiques';
+      return 'Petit souci : les mots de passe doivent être identiques';
     case 'CodeMismatchException':
       return 'Mauvais code, revérifiez votre email';
     case 'ExpiredCodeException':

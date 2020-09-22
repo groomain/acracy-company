@@ -2,7 +2,8 @@ import makeStyles from '@material-ui/core/styles/makeStyles';
 
 export default makeStyles(theme => ({
   root: {
-    width: 705
+    width: 705,
+    minHeight: '100vh',
   },
   rootModeMission: {
     backgroundColor: '#151d15',
@@ -56,11 +57,13 @@ export default makeStyles(theme => ({
   },
   blackCard: {
     backgroundColor: theme.palette.secondary.mid,
-    height: 287,
+    minHeight: 287,
     maxWidth: 337,
     borderRadius: 15,
     padding: 20,
-    alignItems: 'center'
+    display: 'flex',
+    alignItems: 'center',
+    direction: "column"
   },
   blackCardModeMission: {
     height: 287,
@@ -89,6 +92,12 @@ export default makeStyles(theme => ({
   selected: {
     color: theme.palette.primary.main
   },
+  button: {
+    width: '100%'
+  },
+  middleButton: {
+    margin: '0 1rem'
+  },
   customButtonContainer: {
     width: '100%',
     marginTop: 80
@@ -116,24 +125,19 @@ export default makeStyles(theme => ({
     padding: 10,
     paddingTop: 25
   },
-  tagContainer: {
-    padding: 20,
-    paddingTop: 5
-  },
-  tag: {
-    width: 'auto',
-    margin: 5
-  },
   profilElementItem: {
     width: 357,
-    maxHeight: 87
+    minHeight: 87
+  },
+  middleProfilElementItem: {
+    margin: '.5rem auto'
   },
   profilElementItemModeMission: {
     width: 235,
-    maxHeight: 87
+    minHeight: 87
   },
   profilElementContainer: {
-    maxHeight: 287,
+    marginLeft: '.8rem'
   },
   profilElementContainerModeMission: {
     maxHeight: 287,
@@ -141,7 +145,7 @@ export default makeStyles(theme => ({
   },
   firstBlock: {
     width: "100%",
-    margin :'auto'
+    margin: 'auto'
   },
   firstBlockModeMission: {
     width: "90%",

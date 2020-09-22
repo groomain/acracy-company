@@ -5,18 +5,29 @@ import seniorite from '../../assets/icons/seniorite.svg';
 import { Grid, Typography } from '@material-ui/core';
 import styles from './styles';
 import clsx from "clsx";
+// Format
+import { formatLanguagesValues } from '../../utils/services/format';
 
-const ProfileElement = ({ category, item1, item2, modeMission }) => {
+const ProfileElement = ({ category, items, modeMission }) => {
   const classes = styles();
 
-  const renderIcon = () => {
+  const renderItems = () => {
     switch (category) {
       case 'Sensibilité':
-        return <img src={sensibilite} alt="Sensibilité" />
+        return {
+          icon: <img src={sensibilite} alt="Sensibilité" />,
+          list: items?.map((item, key) => `${item?.sensitivity?.text} ${key + 1 !== items.length ? ' ; ' : ''}`)
+        }
       case 'Langues':
-        return <img src={langues} alt="Langues" />
+        return {
+          icon: <img src={langues} alt="Langues" />,
+          list: items?.map((item, key) => `${formatLanguagesValues(item)} ${key + 1 !== items.length ? ' ; ' : ''}`)
+        }
       case 'Séniorité':
-        return <img src={seniorite} alt="Séniorité" />
+        return {
+          icon: <img src={seniorite} alt="Séniorité" />,
+          list: items
+        }
       default:
     };
   }
@@ -24,16 +35,15 @@ const ProfileElement = ({ category, item1, item2, modeMission }) => {
   return (
     <Grid container className={classes.root}>
       <Grid item container xs={3}>
-        {renderIcon()}
+        {renderItems().icon}
       </Grid>
-      <Grid item xs={9} container direction='column' className={clsx(classes.text, {[classes.textSmallSize]: modeMission})}>
+      <Grid item xs={9} container direction='column' className={clsx(classes.text, { [classes.textSmallSize]: modeMission })}>
         <Grid item>
           <Typography variant='h4'>{category}</Typography>
         </Grid>
         <Grid item>
-          <Typography variant='body2' className={clsx({[classes.smallSize]: modeMission})}>
-            {item1}
-            {item2 && ` ; ${item2}`}
+          <Typography variant='body2' className={clsx({ [classes.smallSize]: modeMission })}>
+            {renderItems().list}
           </Typography>
         </Grid>
       </Grid>

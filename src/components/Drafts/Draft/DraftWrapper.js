@@ -2,13 +2,23 @@ import React from 'react';
 import { Grid } from '@material-ui/core';
 
 import styles from './styles';
+import {useHistory} from "react-router-dom";
 
-const DraftWrapper = ({ children, ...props }) => {
+const DraftWrapper = ({ children, to, onClick, ...props }) => {
   const classes = styles();
+    const history = useHistory();
   return (
-    <Grid container className={classes.draft} {...props}>
+      onClick ?
+          <Grid className={classes.draft} onClick={() =>  {
+              history.push(to ? to : '/');
+              onClick()
+          }} {...props}>
       {children}
-    </Grid>
+          </Grid>
+          :
+          <Grid className={classes.draft} {...props}>
+              {children}
+          </Grid>
   );
 };
 

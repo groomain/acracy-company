@@ -25,6 +25,9 @@ export default makeStyles(theme => ({
     '& input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button': {
       '-webkit-appearance': 'none',
       margin: 0
+    },
+    '& input[type=number]': {
+      '-moz-appearance': 'textfield'
     }
   },
   switch: {
@@ -51,7 +54,7 @@ export default makeStyles(theme => ({
     width: '28%',
   },
   phoneMargin: {
-    marginTop: 10
+    marginTop: -20
   },
   charteContainer: {
     marginTop: 25,

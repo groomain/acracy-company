@@ -14,7 +14,7 @@ export const CustomTextField = ({ label, placeholder, type, onUpdateFieldValue, 
   };
 
   return (
-    <Box style={{ height: '140px' }} className={className}>
+    <Box className={className} style={{ height: '140px' }}>
       <Typography variant='h4'>{label}</Typography >
       <FilledInput
         type={type}
