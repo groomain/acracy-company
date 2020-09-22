@@ -54,7 +54,7 @@ export default makeStyles(theme => ({
   hrdivider: {
     height: "1px",
     backgroundColor: `${theme.palette.secondary.medium}`,
-    marginTop: 44,
+    marginTop: 40,
     marginBottom: 40,
 
   },
