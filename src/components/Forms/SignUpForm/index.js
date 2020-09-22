@@ -254,10 +254,9 @@ const SignUpForm = ({ values, errors, touched, handleBlur, handleChange, handleS
         <Box mt={'100px'}>
           <Typography variant={"h2"} >{t('signup.accountCreation')}</Typography>
         </Box>
-        <Typography variant={"h1"} >{t('signup.yourPassword')}</Typography>
-        <br />
-        <br />
-
+        <Box mb={'calc(40px - 16px)'}>
+          <Typography variant={"h1"} >{t('signup.yourPassword')}</Typography>
+        </Box>
         <Grid container>
           <Grid item xs={12} className={`${classes.signupRows} ${classes.marginTop}`}>
             <CustomPasswordField
