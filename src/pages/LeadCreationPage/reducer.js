@@ -165,7 +165,8 @@ const { actions, reducer } = createSlice({
     deleteAttachmentLaunched: (state, action) => state
       .set('deleteFileLoading', true),
     deleteAttachmentSuccess: (state, action) => state
-      .set('deleteFileLoading', false),
+      .set('deleteFileLoading', false)
+      .set('leadAttachmentId', null),
     deleteAttachmentFailure: (state, action) => state
       .set('deleteFileLoading', false),
     // Misc
