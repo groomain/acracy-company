@@ -62,7 +62,9 @@ const ConfirmSignUpPage = () => {
       >
         <Main>
           <Grid className={sharedClasses.pannelLayout}>
-            <Typography variant="h1">{t('confirmSignupPage.title')}</Typography>
+            <Box mt={'26px'}>
+              <Typography variant="h1">{t('confirmSignupPage.title')}</Typography>
+            </Box>
             <Box my={2}>
               <Typography variant="body1">{t('confirmSignupPage.subtitle')} <span className={sharedClasses.email}>{email}</span></Typography>
             </Box>
