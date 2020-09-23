@@ -20,7 +20,7 @@ export const Form1 = ({ values, errors, touched, handleBlur, handleChange, compa
   const classes = styles();
 
   const { administrativeProfile, webSite } = values;
-  const [switchTVA, setSwitchTVA] = useState(administrativeProfile.vatNumber !== '' && administrativeProfile.vatNumber !== null);
+  const [switchTVA, setSwitchTVA] = useState(administrativeProfile?.intraCommunityVAT);
   const legalFormValues = [
     { value: 'SA', label: 'SA Société Anonyme' },
     { value: 'SAS', label: 'SAS Société par Actions Simplifiées' },
