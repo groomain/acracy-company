@@ -19,7 +19,7 @@ import { config } from '../../conf/amplify';
 import { push } from "connected-react-router";
 import {clearSnackBar, closeSnackBar, openSnackBar} from "../../components/App/reducer";
 
-function* getCompany(action) {
+export function* getCompany(action) {
   try {
     // let companyData = companyMock;
     const companyData = yield API.get(config.apiGateway.NAME, `/companies/${action.payload}`, {

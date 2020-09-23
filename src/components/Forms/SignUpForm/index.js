@@ -33,7 +33,7 @@ const SignUpForm = ({ values, errors, touched, handleBlur, handleChange, handleS
 
   const [optionsValues] = useState(areaCodes);
 
-  const [activeStep, setActiveStep] = useState(0);
+  const [activeStep, setActiveStep] = useState(1);
 
   useEffect(() => {
     if (activeStep === 0) {
@@ -251,80 +251,87 @@ const SignUpForm = ({ values, errors, touched, handleBlur, handleChange, handleS
   const setPassword = () => {
     return (
       <Box className={classes.stepContent}>
-        <Typography variant={"h2"} >{t('signup.accountCreation')}</Typography>
-        <Typography variant={"h1"} >{t('signup.yourPassword')}</Typography>
-        <br />
-        <br />
-
+        <Box mt={'100px'}>
+          <Typography variant={"h2"} >{t('signup.accountCreation')}</Typography>
+        </Box>
+        <Box mb={'calc(40px - 16px)'}>
+          <Typography variant={"h1"} >{t('signup.yourPassword')}</Typography>
+        </Box>
         <Grid container>
           <Grid item xs={12} className={`${classes.signupRows} ${classes.marginTop}`}>
-            <CustomPasswordField
-              name="password"
-              value={password}
-              onBlur={handleBlur}
-              onChange={handleChange}
-              placeholder={t('signup.passwordPlaceholder')}
-              label={t('password') + '*'}
-              error={!!touched.password && !!errors.password}
-            />
+            <Box mb={'12px'}>
+              <CustomPasswordField
+                name="password"
+                value={password}
+                onBlur={handleBlur}
+                onChange={handleChange}
+                placeholder={t('signup.passwordPlaceholder')}
+                label={t('password') + '*'}
+                error={!!touched.password && !!errors.password}
+              />
+            </Box>
           </Grid>
 
           <Grid item xs={12} className={`${classes.signupRows} ${classes.marginTop}`}>
-            <CustomPasswordField
-              name="confirmPassword"
-              value={confirmPassword}
-              onBlur={handleBlur}
-              onChange={handleChange}
-              placeholder={t('signup.confirmPasswordPlaceholder')}
-              label={t('confirmPassword') + '*'}
-              error={!!touched.confirmPassword && !!errors.confirmPassword}
-            />
+            <Box mb={'48px'}>
+              <CustomPasswordField
+                name="confirmPassword"
+                value={confirmPassword}
+                onBlur={handleBlur}
+                onChange={handleChange}
+                placeholder={t('signup.confirmPasswordPlaceholder')}
+                label={t('confirmPassword') + '*'}
+                error={!!touched.confirmPassword && !!errors.confirmPassword}
+              />
+            </Box>
           </Grid>
 
-          <Grid container justify='space-between' alignItems='center' className={classes.marginTop}>
-            <Grid item xs={2}>
+          <Grid container alignItems='center' className={classes.marginTop}>
+            <Box mr={'20px'}>
               <CustomCheckbox
                 name="conditions"
                 value="true"
                 onChange={handleChange}
+                noPadding
               />
-            </Grid>
-            <Grid item xs={10}>
-              <Typography variant={"h4"}>
-                {t('signup.conditions1')}
-                <a href={'https://acracy.co/cgu-cgv/'}
-                  target="_blank"
-                  className={classes.link}>
-                  {t('signup.termsAndConditions')}
-                </a>
-                {t('signup.conditions2')}
-              </Typography>
-            </Grid>
+            </Box>
+            <Typography variant={"h4"}>
+              {t('signup.conditions1')}
+              <a href={'https://acracy.co/cgu-cgv/'}
+                target="_blank"
+                className={classes.link}>
+                {t('signup.termsAndConditions')}
+              </a>
+              {t('signup.conditions2')}
+            </Typography>
           </Grid>
-
           <Grid container justify='space-between' className={classes.marginTop}>
             <Grid item>
-              <CustomButton
-                type="button"
-                handleClick={handleBack}
-                title={t('buttonTitles.backButton')}
-              >
-              </CustomButton>
+              <Box mt={'44px'}>
+                <CustomButton
+                  type="button"
+                  handleClick={handleBack}
+                  title={t('buttonTitles.backButton')}
+                >
+                </CustomButton>
+              </Box>
             </Grid>
             <Grid item>
-              <CustomButton
-                type="submit"
-                theme={disabledSecondStep ? "disabledFilled" : "filledButton"}
-                handleClick={() => {
-                  handleStep(3);
-                  handleDifferentPasswords();
-                  handleSubmit({ email, password })
-                }}
-                loading={signupLoading}
-                title={t('signup.createAccountButton')}
-                disabled={disabledSecondStep || signupLoading}
-              >
-              </CustomButton>
+              <Box mt={'44px'}>
+                <CustomButton
+                  type="submit"
+                  theme={disabledSecondStep ? "disabledFilled" : "filledButton"}
+                  handleClick={() => {
+                    handleStep(3);
+                    handleDifferentPasswords();
+                    handleSubmit({ email, password })
+                  }}
+                  loading={signupLoading}
+                  title={t('signup.createAccountButton')}
+                  disabled={disabledSecondStep || signupLoading}
+                >
+                </CustomButton>
+              </Box>
             </Grid>
           </Grid>
 

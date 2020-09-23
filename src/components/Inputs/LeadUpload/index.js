@@ -70,9 +70,12 @@ export const LeadUpload = () => {
     }
   }
 
-  const handleFileDelete = () => {
+  const handleFileDelete = (id) => {
     setUploadedFiles([]);
-    dispatch(deleteAttachmentLaunched(leadAttachmentId || leadDraftData?.missionDetail?.sharedDocuments[0].externalId))
+    if (id) {
+      dispatch(deleteAttachmentLaunched(id))
+    }
+    setFileSizeError(false);
   };
 
   return (
@@ -97,7 +100,7 @@ export const LeadUpload = () => {
                         onMouseEnter={() => setHoveredClose(true)}
                         onMouseLeave={() => setHoveredClose(false)}
                         className={classes.closeButton}
-                        onClick={handleFileDelete}
+                        onClick={() => handleFileDelete(leadAttachmentId || leadDraftData?.missionDetail?.sharedDocuments[0]?.externalId)}
                       />
                     </div>
                     <Box my={1}>
