@@ -87,7 +87,7 @@ export const MyProfilePage = (props) => {
   };
 
   return (
-    <Grid item xs={12} container>
+    <Grid item xs={12} container className={classes.container}>
       <CustomAppbar path='/home' />
       <Grid item xs={3} container justify={'center'} className={classes.leftContainer}>
         <MyProfileMenu />

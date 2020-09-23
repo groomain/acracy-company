@@ -1,6 +1,9 @@
 import makeStyles from '@material-ui/core/styles/makeStyles';
 
 export default makeStyles(theme => ({
+  container: {
+    paddingTop: theme.navbar.height
+  },
   leftContainer: {
     backgroundColor: theme.palette.secondary.dark,
     top: 0,

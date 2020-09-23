@@ -3,13 +3,13 @@ import makeStyles from '@material-ui/core/styles/makeStyles';
 export default makeStyles(theme => ({
   container: {
     position: 'sticky',
-    paddingTop: 80,
+    paddingTop: 40,
     background: theme.palette.secondary.dark,
     height: 600,
     maxWidth: 600,
     marginLeft: 'auto',
     marginRight: 'auto',
-    top: 30
+    top: theme.navbar.height
   },
   primaryTitle: {
     paddingBottom: 25,

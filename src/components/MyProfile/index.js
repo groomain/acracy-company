@@ -11,7 +11,7 @@ const MyProfileInformation = ({ ...props }) => {
 
   return (
     <Grid className={classes.container} {...props}>
-      <Typography variant="body2" className={classes.title}>
+      <Typography className={classes.title} variant="h1" component="span">
         Mon profil
       </Typography>
       <Tabs
