@@ -9,7 +9,10 @@ export default makeStyles(theme => ({
     right: '100%',
     borderRadius: '15px 0 0 15px',
     maxHeight: 323,
-    padding: '54px 0'
+    padding: '54px 0',
+    '@media (max-width:960px)': {
+      borderRadius: '15px 15px 0 0',
+    },
   },
   row: {
     display: 'flex',

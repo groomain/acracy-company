@@ -303,9 +303,9 @@ export const Mission = ({ mission, matching, today, ...props }) => {
   const missionDone = mission?.status === FINISHED && mission?.invoices?.every(x => x.status === PAID)
   return (
     <Box mt={3} mb={6}>
-      <Grid container direction={'column'}>
+      <>
         {!quotesLoading ?
-          <Grid container direction={'row'} className={clsx(classes.container, missionDone ? classes.gridCenterFinished : null)}>
+          <Grid container className={clsx(classes.container, missionDone ? classes.gridCenterFinished : null)}>
             <Grid container className={clsx(classes.gridLeft, missionDone ? classes.gridLeftFinished : null)} // LEFT PART
               direction={'column'}>
               <Grid container item   // left part, top zone
@@ -350,16 +350,16 @@ export const Mission = ({ mission, matching, today, ...props }) => {
               onClick={e => mission?.status === REFUSED ? e.preventDefault() : e}
               className={clsx(classes.gridCenter, missionDone ? classes.gridCenterFinished : mission?.status === REFUSED ? classes.noCursor : null)}>
               <Grid container>  {/*RIGHT PART*/}
-                <Grid item container xs={12} direction='row'>
+                <Grid item container xs={6} md={12} className={classes.bloc}>
                   {/* 1st column */}
-                  <Grid item xs={4}>
+                  <Grid item xs={12} md={4}>
                     <Grid item className={classes.blocAvatar}>
                       <CircleImage theme={'avatarLarge'} src={mission?.serviceProviderProfile?.linkedinAvatar || matchingValues?.avatar} icon={matchingValues?.avatar} />
                     </Grid>
                   </Grid>
 
                   {/* 2nd column */}
-                  <Grid item xs={4}>
+                  <Grid item xs={12} md={4}>
                     <Grid item className={classes.blocTypoUp}>
                       <Typography variant={"h4"} className={classes.typoH4}>Format</Typography>
                       <Typography variant={"body1"} className={classes.typo}>{formatType(mission?.brief?.missionContext?.format || matching?.missionContext?.format)}</Typography>
@@ -367,16 +367,16 @@ export const Mission = ({ mission, matching, today, ...props }) => {
                   </Grid>
 
                   {/* 3rd column */}
-                  <Grid item xs={4}>
+                  <Grid item xs={12} md={4}>
                     <Grid item className={classes.blocTypoUp}>
                       <Typography variant={"h4"} className={classes.typoH4}>Taux journalier</Typography>
                       <Typography variant={"body1"} className={classes.typo}>{Math.ceil(matching?.missionContext?.budget?.dailyRateForCompany || mission?.brief?.missionContext?.budget?.dailyRateForCompany)} €/j</Typography>
                     </Grid>
                   </Grid>
                 </Grid>
-                <Grid item container xs={12} direction='row'>
+                <Grid item container xs={6} md={12}>
                   {/* 1st column */}
-                  <Grid item xs={4}>
+                  <Grid item xs={12} md={4}>
                     <Grid item className={classes.blocTypoDownAvatar}>
                       <Typography variant={"h4"} className={classes.typoH4}>
                         {mission?.serviceProviderProfile?.firstName || matching?.serviceProviderProfile?.firstName || matchingValues?.title}
@@ -388,7 +388,7 @@ export const Mission = ({ mission, matching, today, ...props }) => {
                   </Grid>
 
                   {/* 2nd column */}
-                  <Grid item xs={4}>
+                  <Grid item xs={12} md={4}>
                     <Grid item className={classes.blocTypoDown}>
                       <Typography variant={"h4"} className={classes.typoH4}>Rythme</Typography>
                       <Typography variant={"body1"} className={classes.typo}>
@@ -398,7 +398,7 @@ export const Mission = ({ mission, matching, today, ...props }) => {
                   </Grid>
 
                   {/* 3rd column */}
-                  <Grid item xs={4}>
+                  <Grid item xs={12} md={4}>
                     <Grid item className={classes.blocTypoDown}>
                       <Typography variant={"h4"} className={classes.typoH4}>Durée</Typography>
                       <Typography variant={"body1"} className={classes.typo}>
@@ -440,7 +440,7 @@ export const Mission = ({ mission, matching, today, ...props }) => {
             <CustomButton theme='filledButton' title="Compléter mes informations administratives" component={RouterLink} to='/administrative' />
           </CustomModal>
         }
-      </Grid>
+      </>
       {invoicesModalOpen && (
         <InvoiceManagementModal
           open={invoicesModalOpen}
