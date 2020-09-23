@@ -5,17 +5,19 @@ import 'react-multi-carousel/lib/styles.css';
 
 import ArrowBackRoundedIcon from '@material-ui/icons/ArrowBackRounded';
 import ArrowForwardRoundedIcon from '@material-ui/icons/ArrowForwardRounded';
+import { useWindowSize } from '../../../utils/hooks/windowSize';;
 
 const DraftsPagination = ({ goToSlide, carouselState }) => {
   const classes = styles();
   const { totalItems, currentSlide } = carouselState;
+  const windowSize = useWindowSize();
 
   let pages = [];
   for (let i = 0; i < totalItems; i++) {
     pages.push(<Typography variant='body2' key={i} style={{ color: i === currentSlide ? 'white' : '#565e56' }}>{i + 1} .&nbsp;</Typography>);
   }
 
-  if (totalItems > 3) {
+  if (totalItems > 3 || (totalItems > 1 && windowSize.width < 1100) || (totalItems > 2 && windowSize.width < 1600)) {
     return (
       <Box className={classes.pagination}>
         {/* // Pagination is not displayed but kept in case we need it some day */}
