@@ -7,7 +7,6 @@ export default makeStyles(theme => ({
   draft: {
     background: theme.palette.secondary.mid,
     borderRadius: 15,
-    width: 339,
     height: draftHeight,
     padding: '10px 20px',
     position: 'relative',
@@ -15,6 +14,9 @@ export default makeStyles(theme => ({
     alignContent: 'space-between',
     '&:hover': {
       cursor: 'pointer'
+    },
+    '@media (min-width:500px)': {
+      width: 339,
     }
   },
   titleBox: {
