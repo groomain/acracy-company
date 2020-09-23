@@ -76,6 +76,7 @@ export const theme = createMuiTheme({
       fontFamily: 'Basier Medium',
       color: '#ecf805',
       letterSpacing: '-0.45px',
+      lineHeight: 2,
       '@media (max-width:960px)': {
         fontSize: 15,
       }
@@ -93,6 +94,7 @@ export const theme = createMuiTheme({
       fontFamily: 'Basier Medium',
       color: '#fff',
       letterSpacing: '-0.45px',
+      lineHeight: 2,
       '@media (max-width:960px)': {
         fontSize: 15,
       }
