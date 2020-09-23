@@ -84,6 +84,19 @@ export default makeStyles(theme => ({
       justifyContent: 'flex-start'
     }
   },
+  asLinkResendCode: {
+    border: 'none',
+    color: theme.palette.primary.main,
+    textDecoration: 'underline',
+    margin: 0,
+    padding: 0,
+    height: '1.5rem',
+    fontFamily: 'Basier Regular',
+    fontSize: 17,
+    '& span': {
+      justifyContent: 'flex-start'
+    }
+  },
   outlinedBlackBorder: {
     borderColor: theme.palette.secondary.black,
     color: theme.palette.secondary.black
@@ -92,8 +105,8 @@ export default makeStyles(theme => ({
     borderColor: theme.palette.secondary.black,
     backgroundColor: theme.palette.secondary.black,
     color: theme.palette.primary.main,
-      '&:hover, &:active': {
-          background: `${theme.palette.secondary.dark}`
-      }
+    '&:hover, &:active': {
+      background: `${theme.palette.secondary.dark}`
+    }
   }
 }));
