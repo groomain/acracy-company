@@ -314,7 +314,7 @@ i18n
             validate: 'Valider'
           },
           dashboard: {
-            welcome: "Bonjour, ",
+            welcome: "Bonjour",
             subtitle: "Nous sommes ravis de vous accueillir sur acracy. Voici votre tableau de bord, pour nous briefer et suivre vos missions",
             missions: {
               name: "Mission",
