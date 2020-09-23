@@ -314,7 +314,7 @@ const ProfileSelection = (props) => {
                         <Grid item xs={9}>
                           <RevealProfil
                             profil={profile?.serviceProviderProfile}
-                            acracyBlurb={profile?.acracyBlurb}
+                            acracyBlurb={profile?.serviceProviderProfile?.acracyBlurb}
                             className={classes.revealProfil} index={i}
                             setCheckedProfiles={handleCheckedProfiles} />
                         </Grid>
