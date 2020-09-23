@@ -47,7 +47,7 @@ export const Dashboard = () => {
   return (
     <Grid className={clsx(sharedClasses.pannelLayout, sharedClasses.fullPage)}>
       <Grid item className={sharedClasses.midWidth}>
-        <Typography variant='h1'>{t('dashboard.welcome')}{userName || 'Pascal'}</Typography>
+        <Typography variant='h1'>{t('dashboard.welcome')} {userName || 'Pascal'},</Typography>
         <Box style={{ marginTop: '20px' }}>
           <Typography variant='body1'>{t('dashboard.subtitle')}</Typography>
         </Box>
