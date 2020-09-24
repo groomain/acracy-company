@@ -440,7 +440,7 @@ const ProfileSelection = ({ smallMobile, ...props }) => {
                   <Typography variant={"body1"}
                     className={classes.typo}>{formatType(briefData.missionContext.format)}</Typography>
                 </Grid>
-                <Grid item xs={5} className={classes.blocTypoUp}>
+                <Grid item xs={5} className={classes.blocTypoUp, classes.footerCardMobileDurée}>
                   <Typography variant={"h4"} className={classes.typo}>Durée</Typography>
                   <Typography variant={"body1"}
                     className={classes.typo}>{briefData.missionContext.duration.nb}

@@ -46,9 +46,9 @@ export const styles = makeStyles(theme => ({
     marginTop: 150,
     '@media (max-width: 950px)': {
       position: 'absolute',
-      right: '15%',
+      right: '10%',
       width: '80%',
-      height: '40%',
+      height: '30%',
       top: '2%',
     }
   },
@@ -69,7 +69,9 @@ export const styles = makeStyles(theme => ({
       position: 'absolute',
       marginBottom: '50%',
       bottom: '50%',
-      marginTop: '10%'
+      marginTop: '10%',
+      left: '15%',
+      textAlign: 'center'
     }
   },
   word: {
@@ -165,12 +167,13 @@ export const styles = makeStyles(theme => ({
   },
   footerCardMobileRythme: {
     '@media (max-width:960px)': {
-      marginLeft: '42%',
+      marginLeft: '55%',
     }
   },
-  footerCardMobileAdresse: {
+  footerCardMobileDurée: {
     '@media (max-width:960px)': {
-
+      marginLeft: '40%',
+      position: 'absolute'
     }
   },
   typo: {

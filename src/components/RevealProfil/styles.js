@@ -26,7 +26,7 @@ export default makeStyles(theme => ({
       width: '80%',
       height: '75%',
       marginTop: '20%',
-      right: '90%'
+      right: '65%'
     }
   },
   avatarModeMission: {
@@ -50,7 +50,10 @@ export default makeStyles(theme => ({
     width: 120
   },
   switch: {
-    width: 121
+    width: 121,
+    '@media (max-width:960px)': {
+      width: 2
+    }
   },
   profession: {
     fontFamily: 'basierRegular',
@@ -66,7 +69,8 @@ export default makeStyles(theme => ({
       position: 'absolute',
       marginTop: '30%',
       right: '52%',
-      width: '45%'
+      width: '45%',
+      textAlign: 'center'
     },
   },
   blackCard: {
