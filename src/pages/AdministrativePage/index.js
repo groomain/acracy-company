@@ -31,6 +31,8 @@ import CloseIcon from '@material-ui/icons/Close';
 import IconButton from "@material-ui/core/IconButton";
 import { Box } from "@material-ui/core";
 import DarkWrapper from "../../components/Layout/DarkWrapper";
+import { checkSiretValidity } from '../../utils/services/validationChecks';
+
 
 export const AdministrativePage = (props) => {
   const { t } = useTranslation();
@@ -90,7 +92,12 @@ export const AdministrativePage = (props) => {
     administrativeProfile: Yup.object().shape({
       legalForm: Yup.string().required(),
       socialReason: Yup.string().required(),
-      siret: Yup.string().required(),
+      siret:
+        Yup.string()
+          .trim().strict()
+          .min(14, '14 chiffres').max(14, '14 chiffres')
+          .required('Champ obligatoire')
+          .test('isSiretValid', 'Le SIRET n\'est pas valide', value => checkSiretValidity(value)),
       shareCapital: Yup.number().required(),
       cityOfRcsRegistration: Yup.string(),
       intraCommunityVAT: Yup.bool(),
