@@ -14,13 +14,15 @@ import { handleNumberInput } from '../../../utils/services/format';
 
 import styles from '../styles';
 
-export const Form1 = ({ values, errors, touched, handleBlur, handleChange, companyId }) => {
+export const Form1 = ({ values, errors, touched, handleBlur, handleChange, companyId, initialValues }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const classes = styles();
 
   const { administrativeProfile, webSite } = values;
   const [switchTVA, setSwitchTVA] = useState(administrativeProfile?.intraCommunityVAT);
+  const [disabled, setDisabled] = useState(true);
+
   const legalFormValues = [
     { value: 'SA', label: 'SA Société Anonyme' },
     { value: 'SAS', label: 'SAS Société par Actions Simplifiées' },
@@ -54,6 +56,23 @@ export const Form1 = ({ values, errors, touched, handleBlur, handleChange, compa
   const handleSubmit = (payload) => {
     dispatch(putCompanyLaunched({ ...payload, companyId }))
   };
+
+  useEffect(() => {
+    if (
+      administrativeProfile.legalForm !== initialValues?.administrativeProfile.legalForm ||
+      administrativeProfile.socialReason !== initialValues?.administrativeProfile.socialReason ||
+      administrativeProfile.siret !== initialValues?.administrativeProfile.siret ||
+      parseFloat(administrativeProfile.shareCapital) !== initialValues?.administrativeProfile.shareCapital ||
+      (switchTVA && administrativeProfile.vatNumber !== initialValues?.administrativeProfile?.vatNumber) ||
+      administrativeProfile.intraCommunityVAT !== initialValues?.administrativeProfile?.intraCommunityVAT ||
+      administrativeProfile.cityOfRcsRegistration !== initialValues?.administrativeProfile?.cityOfRcsRegistration ||
+      webSite !== initialValues?.webSite
+    ) {
+      setDisabled(false);
+    } else {
+      setDisabled(true);
+    }
+  }, [administrativeProfile, webSite])
 
   return (
     <Grid item container direction="row" className={classes.card}>
@@ -144,7 +163,7 @@ export const Form1 = ({ values, errors, touched, handleBlur, handleChange, compa
         </Grid>
         {switchTVA
           && (
-            <Grid item container direction="row">
+            <Grid item md={6}>
               <CustomTextField
                 label="Numéro de TVA"
                 placeholder="Numéro de TVA"
@@ -162,10 +181,11 @@ export const Form1 = ({ values, errors, touched, handleBlur, handleChange, compa
             title="Sauvegarder"
             theme="filledButton"
             className={classes.saveButton}
-            disabled={isNullOrEmpty(administrativeProfile.legalForm) || isNullOrEmpty(administrativeProfile.socialReason) || isNullOrEmpty(administrativeProfile.siret) || isNullOrEmpty(administrativeProfile.shareCapital) || !/\d/.test(administrativeProfile.shareCapital) || (isNullOrEmpty(administrativeProfile.vatNumber) && administrativeProfile.intraCommunityVAT === true)}
+            disabled={isNullOrEmpty(administrativeProfile.legalForm) || isNullOrEmpty(administrativeProfile.socialReason) || isNullOrEmpty(administrativeProfile.siret) || isNullOrEmpty(administrativeProfile.shareCapital) || !/\d/.test(administrativeProfile.shareCapital) || (isNullOrEmpty(administrativeProfile.vatNumber) && administrativeProfile.intraCommunityVAT === true) || disabled}
             handleClick={() => handleSubmit({
               administrativeProfile: {
                 ...administrativeProfile,
+                vatNumber: administrativeProfile.intraCommunityVAT ? administrativeProfile.vatNumber : null,
                 shareCapital: parseFloat(administrativeProfile.shareCapital)
               },
               webSite
