@@ -1,5 +1,4 @@
 import { createMuiTheme } from '@material-ui/core/styles';
-// import createBreakpoints from '@material-ui/core/styles/createBreakpoints';
 import BasierCircleRegular from '../assets/fonts/BasierCircleRegular.otf';
 import BasierCircleMedium from '../assets/fonts/BasierCircleMedium.otf';
 import BasierCircleBold from '../assets/fonts/BasierCircleBold.otf';
