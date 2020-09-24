@@ -67,14 +67,6 @@ export const theme = createMuiTheme({
         },
       },
     },
-    MuiGrid: {
-      item: {
-        border: 'purple solid 2px',
-      },
-      container: {
-        border: 'yellow solid 2px'
-      }
-    }
   },
   typography: {
     h1: {
