@@ -48,7 +48,8 @@ export const styles = makeStyles(theme => ({
       position: 'absolute',
       right: '15%',
       width: '80%',
-      height: '40%'
+      height: '40%',
+      top: '2%',
     }
   },
   cardTitle: {
@@ -225,6 +226,9 @@ export const styles = makeStyles(theme => ({
     backgroundColor: 'yellow',
     width: '100%',
     height: 104,
+    '@media (max-widht:960px)': {
+      height: 150
+    }
   },
   popover: {
     pointerEvents: 'none',
@@ -327,7 +331,7 @@ export const styles = makeStyles(theme => ({
     right: 10,
     '@media (max-width:960px)': {
       top: '28%',
-      right: '65%',
+      right: '58%',
       position: 'absolute',
       marginTop: '25%',
     }
@@ -355,7 +359,8 @@ export const styles = makeStyles(theme => ({
   briefContainerMobile: {
     '@media (max-width: 960px)': {
       marginTop: '2%',
-      height: '50%'
+      height: '50%',
+      textAlign: 'center'
     }
   },
   briefSeniority: {
