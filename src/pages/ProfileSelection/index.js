@@ -1,47 +1,41 @@
 import React, { useEffect, useRef, useState } from 'react';
-import Typography from '@material-ui/core/Typography';
-import Avatar from '@material-ui/core/Avatar';
-import { Grid, Box } from '@material-ui/core';
-import { styles } from './style';
-import CircleImage from "../../components/CircleImage";
-import RevealProfil from "../../components/RevealProfil";
-import acracy from "../../assets/icons/logo-acracy-a.svg";
-import groupe52copy from "../../assets/icons/group-52-copy.svg";
-import groupe52 from "../../assets/icons/group-52.svg";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemAvatar from "@material-ui/core/ListItemAvatar";
-import ListItemText from "@material-ui/core/ListItemText";
-import { useScrollPosition } from '@n8tb1t/use-scroll-position';
 import { useDispatch, useSelector } from "react-redux";
-import { contactAcracyLaunched, getBriefLaunched, setCheckedProfileStore, validateProfilesLaunched } from "./reducer";
-import { handleCurrentStep } from '../../components/App/reducer';
-import clsx from "clsx";
+import { Link, animateScroll as scroll } from 'react-scroll'
+import * as Scroll from 'react-scroll';
+import { useScrollPosition } from '@n8tb1t/use-scroll-position';
+import { useTranslation } from "react-i18next";
+
+import { Avatar, Box, Dialog, Grid, IconButton, List, ListItem, ListItemAvatar, ListItemText, Popover, Typography } from '@material-ui/core';
+import CloseIcon from '@material-ui/icons/Close';
+
+import CustomAppBar from '../../components/AppBar';
+import CustomLoader from "../../components/Loader";
+import RevealProfil from "../../components/RevealProfil";
 import CustomExpansionPanel from "../../components/CustomExpansionPanel";
 import Tag from "../../components/Tags/Tag";
-import CustomLoader from "../../components/Loader";
-import { Link, Element, animateScroll as scroll } from 'react-scroll'
-import * as Scroll from 'react-scroll';
-
+import CircleImage from "../../components/CircleImage";
 import CustomButton from "../../components/Button";
 import CustomSelect from "../../components/Inputs/CustomSelect";
 import CustomTextArea from "../../components/Inputs/CustomTextArea";
-import Dialog from '@material-ui/core/Dialog';
-import Popover from "@material-ui/core/Popover";
-import CloseIcon from '@material-ui/icons/Close';
-import IconButton from "@material-ui/core/IconButton";
 import ContactModale from '../../components/ContactModale';
-import CustomAppBar from '../../components/AppBar';
-// Pics
+
+import { handleCurrentStep } from '../../components/App/reducer';
+import { getMyProfilePersonalInformationsLaunched } from '../MyProfile/reducer';
+import { contactAcracyLaunched, getBriefLaunched, setCheckedProfileStore, validateProfilesLaunched } from "./reducer";
+
+import { formatLanguagesValues, formatType, formatFrequencyType, formatDate, formatDurationType, formatSeniorityType } from '../../utils/services/format';
+
+import acracy from "../../assets/icons/logo-acracy-a.svg";
+import groupe52copy from "../../assets/icons/group-52-copy.svg";
+import groupe52 from "../../assets/icons/group-52.svg";
 import severine from '../../assets/pics/severine/severine-small.png';
 import avatarPlaceholder from '../../assets/icons/profil-roll-out-black.svg';
 import checkStatus from "../../assets/icons/small-check.svg";
 import infosSmall from "../../assets/icons/infos-small-copy.svg";
 import miniSwitch from "../../assets/icons/mini-switch.svg";
-// Services
-import { formatLanguagesValues, formatType, formatFrequencyType, formatDate, formatDurationType, formatSeniorityType } from '../../utils/services/format';
-import { getMyProfilePersonalInformationsLaunched } from '../MyProfile/reducer';
-import { useTranslation } from "react-i18next";
+
+import clsx from "clsx";
+import { styles } from './style';
 
 const ProfileSelection = ({ smallMobile, ...props }) => {
   const quoteId = props?.match?.params;
@@ -51,13 +45,12 @@ const ProfileSelection = ({ smallMobile, ...props }) => {
 
   const classes = styles();
   const dispatch = useDispatch();
-  const { briefData, quotesData, validateCodeError, validateLoading, userDynamo, checkedProfilesStore, contactLoading, employeeId, myProfileData } = useSelector(state => ({
+  const { briefData, quotesData, validateCodeError, validateLoading, userDynamo, contactLoading, employeeId, myProfileData } = useSelector(state => ({
     briefData: state.getIn(['SelectionProfil', 'briefData']),
     quotesData: state.getIn(['SelectionProfil', 'quotesData']),
     validateCodeError: state.getIn(['SelectionProfil', 'validateCodeError']),
     validateLoading: state.getIn(['SelectionProfil', 'validateLoading']),
     userDynamo: state.getIn(['app', 'userDynamo']),
-    checkedProfilesStore: state.getIn(['SelectionProfil', 'checkedProfilesStore']),
     contactLoading: state.getIn(['SelectionProfil', 'contactLoading']),
     employeeId: state.getIn(['app', 'userDynamo', 'employeeId']),
     myProfileData: state.getIn(['MyProfile', 'myProfileData']),
@@ -71,7 +64,7 @@ const ProfileSelection = ({ smallMobile, ...props }) => {
   // console.log('ProfileSelection -> quotesData', quotesData)
 
   // Scroll
-  let [checkedProfiles, setCheckedProfiles] = React.useState(checkedProfilesStore);
+  let [checkedProfiles, setCheckedProfiles] = useState([]);
   const [elementPosition, setElementPosition] = useState({ x: 10, y: 450 });
   const [elementHeight, setElementHeight] = useState(0);
   const heightRef = useRef();
