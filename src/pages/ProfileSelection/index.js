@@ -51,13 +51,12 @@ const ProfileSelection = (props) => {
 
   const classes = styles();
   const dispatch = useDispatch();
-  const { briefData, quotesData, validateCodeError, validateLoading, userDynamo, checkedProfilesStore, contactLoading, employeeId, myProfileData } = useSelector(state => ({
+  const { briefData, quotesData, validateCodeError, validateLoading, userDynamo, contactLoading, employeeId, myProfileData } = useSelector(state => ({
     briefData: state.getIn(['SelectionProfil', 'briefData']),
     quotesData: state.getIn(['SelectionProfil', 'quotesData']),
     validateCodeError: state.getIn(['SelectionProfil', 'validateCodeError']),
     validateLoading: state.getIn(['SelectionProfil', 'validateLoading']),
     userDynamo: state.getIn(['app', 'userDynamo']),
-    checkedProfilesStore: state.getIn(['SelectionProfil', 'checkedProfilesStore']),
     contactLoading: state.getIn(['SelectionProfil', 'contactLoading']),
     employeeId: state.getIn(['app', 'userDynamo', 'employeeId']),
     myProfileData: state.getIn(['MyProfile', 'myProfileData']),
@@ -71,7 +70,7 @@ const ProfileSelection = (props) => {
   // console.log('ProfileSelection -> quotesData', quotesData)
 
   // Scroll
-  let [checkedProfiles, setCheckedProfiles] = React.useState(checkedProfilesStore);
+  let [checkedProfiles, setCheckedProfiles] = useState([]);
   const [elementPosition, setElementPosition] = useState({ x: 10, y: 450 });
   const [elementHeight, setElementHeight] = useState(0);
   const heightRef = useRef();
