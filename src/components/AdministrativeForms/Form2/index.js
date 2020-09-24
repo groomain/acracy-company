@@ -78,16 +78,18 @@ export const Form2 = ({ values, errors, touched, handleBlur, handleChange, handl
             error={!!getIn(touched, 'administrativeProfile.headOffice.city') && !!getIn(errors, 'administrativeProfile.headOffice.city')}
           />
         </Grid>
-        <CustomSelect className={classes.select}
-          label={'Pays*'}
-          optionsValues={countries}
-          placeholder={'Pays'}
-          name={'administrativeProfile.headOffice.country'}
-          value={administrativeProfile.headOffice.country}
-          onBlur={handleBlur}
-          onChange={handleChange}
-          error={!!getIn(touched, 'administrativeProfile.headOffice.country') && !!getIn(errors, 'administrativeProfile.headOffice.country')}
-        />
+        <Grid item md={7}>
+          <CustomSelect className={classes.select}
+            label={'Pays*'}
+            optionsValues={countries}
+            placeholder={'Pays'}
+            name={'administrativeProfile.headOffice.country'}
+            value={administrativeProfile.headOffice.country}
+            onBlur={handleBlur}
+            onChange={handleChange}
+            error={!!getIn(touched, 'administrativeProfile.headOffice.country') && !!getIn(errors, 'administrativeProfile.headOffice.country')}
+          />
+        </Grid>
         <CustomButton title={'Sauvegarder'} theme={'filledButton'} className={classes.saveButton}
           disabled={isNullOrEmpty(administrativeProfile.headOffice.address) || isNullOrEmpty(administrativeProfile.headOffice.zipCode) || isNullOrEmpty(administrativeProfile.headOffice.city) || isNullOrEmpty(administrativeProfile.headOffice.country) || disabled}
           handleClick={() => handleSubmit({

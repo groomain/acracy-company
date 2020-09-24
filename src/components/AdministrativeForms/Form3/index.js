@@ -98,16 +98,18 @@ export const Form3 = ({ values, errors, touched, handleBlur, handleChange, handl
                 error={!!getIn(touched, 'administrativeProfile.billing.city') && !!getIn(errors, 'administrativeProfile.billing.city')}
               />
             </Grid>
-            <CustomSelect className={classes.select}
-              label={'Pays*'}
-              optionsValues={countries}
-              placeholder={'Pays'}
-              name={'administrativeProfile.billing.country'}
-              value={administrativeProfile.billing.country}
-              onBlur={handleBlur}
-              onChange={handleChange}
-              error={!!getIn(touched, 'administrativeProfile.billing.country') && !!getIn(errors, 'administrativeProfile.billing.country')}
-            />
+            <Grid item md={7}>
+              <CustomSelect className={classes.select}
+                label={'Pays*'}
+                optionsValues={countries}
+                placeholder={'Pays'}
+                name={'administrativeProfile.billing.country'}
+                value={administrativeProfile.billing.country}
+                onBlur={handleBlur}
+                onChange={handleChange}
+                error={!!getIn(touched, 'administrativeProfile.billing.country') && !!getIn(errors, 'administrativeProfile.billing.country')}
+              />
+            </Grid>
           </Grid>
         }
         <CustomButton title={'Sauvegarder'} theme={'filledButton'} className={classes.saveButton}
