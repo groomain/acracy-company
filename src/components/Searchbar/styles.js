@@ -44,7 +44,6 @@ const reactSelectStyles = {
     ...base,
     borderRadius: 15,
     height: '100%',
-    minWidth: 400,
     display: 'flex',
     alignItems: 'center',
     cursor: 'text',

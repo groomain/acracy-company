@@ -3,27 +3,41 @@ import { basierRegular } from "../../../utils/configureMaterialTheme";
 
 export default makeStyles(theme => ({
   container: {
-    height: 323,
-    maxHeight: 323,
     width: '100%',
-    flexGrow: 1,
-    backgroundColor: "#283028",
+    backgroundColor: theme.palette.secondary.modalGreen,
     borderRadius: 15,
+    '@media (max-width:960px)': {
+      flexDirection: 'column'
+    },
+    '@media (min-width:960px)': {
+      minHeight: 323,
+    }
   },
   gridLeft: {
-    borderRadius: '15px 0 0 15px',
-    width: '28%',
-    backgroundColor: `${theme.palette.secondary.mid}`,
-    maxHeight: 323,
+    borderRadius: '15px 15px 0 0',
+    backgroundColor: theme.palette.secondary.mid,
+    '@media (min-width:960px)': {
+      width: '28%',
+      borderRadius: '15px 0 0 15px',
+    },
+    '@media (max-width:960px)': {
+      height: 323
+    }
   },
   gridCenter: {
     display: 'flex',
     textDecoration: 'none',
-    paddingLeft: '31px',
+    paddingLeft: 31,
     width: '62%',
+    '@media (max-width:960px)': {
+      flexDirection: 'column',
+      width: '100%',
+      height: 323,
+      justifyContent: 'space-around'
+    }
   },
   gridCenterFinished: {
-    backgroundColor: "#151d15"
+    backgroundColor: theme.palette.secondary.dark
   },
   gridLeftFinished: {
     backgroundColor: "#111711"
@@ -34,6 +48,10 @@ export default makeStyles(theme => ({
     '&:hover': {
       cursor: 'pointer',
     },
+    '@media (max-width:960px)': {
+      width: '100%',
+      borderRadius: '0 0 15px 15px'
+    }
   },
   gridRightNoCursor: {
     borderRadius: '0 15px 15px 0',
@@ -48,34 +66,37 @@ export default makeStyles(theme => ({
     },
   },
   withoutButton: {
-    backgroundColor: "#151d15",
+    backgroundColor: theme.palette.secondary.dark,
     '&:hover': {
       cursor: 'initial'
     },
   },
   primary: {
-    backgroundColor: `${theme.palette.primary.main}`,
+    backgroundColor: theme.palette.primary.main,
   },
   rightRed: {
-    backgroundColor: "#ff565c",
+    backgroundColor: theme.palette.primary.danger,
   },
   button: {
     padding: 20,
     textAlign: 'center',
     fontSize: 14,
     fontFamily: 'Basier Medium',
-    color: `${theme.palette.secondary.black}`,
+    color: theme.palette.secondary.black,
     letterSpacing: '0px',
   },
   blocAvatar: {
     paddingTop: '44px',
     paddingBottom: '5px',
-    width: '100%',
+    width: '100%'
   },
   typo: {
     // padding: 5,
     width: '100%',
     textAlign: 'left'
+  },
+  bloc: {
+    height: '55%'
   },
   typoH4: {
     lineHeight: 2,
@@ -83,15 +104,16 @@ export default makeStyles(theme => ({
     textAlign: 'left'
   },
   blocTypoUp: {
-    marginTop: '30%',
+    marginTop: '2rem',
     width: '100%',
+    '@media (min-width:960px)': {
+      marginTop: '30%',
+    }
   },
   blocTypoDown: {
-    // marginTop: '23%',
     width: '100%',
   },
   blocTypoDownAvatar: {
-    // marginTop: '3%',
     width: '100%',
   },
   icon: {
@@ -101,10 +123,10 @@ export default makeStyles(theme => ({
     textTransform: 'uppercase',
     fontSize: 14,
     fontFamily: basierRegular,
-    color: '#ecf805'
+    color: theme.palette.primary.main
   },
   statusTitleRed: {
-    color: '#ff565c',
+    color: theme.palette.primary.main,
   },
   buttonIcon: {
     width: 25,
@@ -141,5 +163,10 @@ export default makeStyles(theme => ({
   },
   finishedMission: {
     color: theme.palette.secondary.main
+  },
+  missionContent: {
+    '@media (max-width:960px)': {
+      flexDirection: 'column'
+    }
   }
 }));

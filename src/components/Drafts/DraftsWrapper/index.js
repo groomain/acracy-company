@@ -34,20 +34,25 @@ const Drafts = ({ ...props }) => {
   }, [dispatch])
 
   const responsive = {
-    desktop: {
-      breakpoint: { max: 3000, min: 1400 },
+    xl: {
+      breakpoint: { max: 3000, min: 1500 },
       items: 3,
       partialVisibilityGutter: 25,
     },
-    tablet: {
-      breakpoint: { max: 1400, min: 1000 },
+    desktop: {
+      breakpoint: { max: 1500, min: 800 },
       items: 2,
-      partialVisibilityGutter: 15
+      partialVisibilityGutter: 25
+    },
+    tablet: {
+      breakpoint: { max: 800, min: 0 },
+      items: 1,
+      partialVisibilityGutter: 100
     },
     mobile: {
-      breakpoint: { max: 1000, min: 0 },
+      breakpoint: { max: 500, min: 0 },
       items: 1,
-      partialVisibilityGutter: 5
+      partialVisibilityGutter: 0
     }
   };
 

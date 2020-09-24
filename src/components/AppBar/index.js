@@ -40,7 +40,9 @@ export const CustomAppBar = (props) => {
         return (
           <div className={clsx(classes.div, classes.login)}>
             <CustomButton theme={"filledButton"} title={t('header.signUp')} component={RouterLink} to="/createAccount" />
-            <CustomButton title={t('header.contactUs')} onClick={() => setContactModaleOpen(!contactOpen)} />
+            <Box ml={'20px'}>
+              <CustomButton title={t('header.contactUs')} onClick={() => setContactModaleOpen(!contactOpen)} />
+            </Box>
           </div>
         );
       case '/createAccount':
@@ -64,7 +66,9 @@ export const CustomAppBar = (props) => {
           <div className={clsx(classes.div, classes.password)}>
             <CustomNavLink to={'/login'} text={t('header.login')} theme="navLink" />
             <CustomButton theme={"filledButton"} title={<NavLink className={classes.navLink} to={'/createAccount'}>{t('header.signUp')}</NavLink>} />
-            <CustomButton title={t('header.contactUs')} onClick={() => setContactModaleOpen(!contactOpen)} />
+            <Box ml={'20px'}>
+              <CustomButton title={t('header.contactUs')} onClick={() => setContactModaleOpen(!contactOpen)} />
+            </Box>
           </div>
         );
       case '/brief':

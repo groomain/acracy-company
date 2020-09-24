@@ -8,8 +8,8 @@ export default makeStyles(theme => ({
     filter: 'saturate(0)',
   },
   avatarLarge: {
-    width: '123px',
-    height: '122px',
+    width: 'clamp(75px, 10vw, 123px)',
+    height: 'clamp(75px, 10vw, 122px)',
     backgroundColor: theme.palette.secondary.mid
   },
   avatarMedium: {

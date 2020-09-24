@@ -89,15 +89,20 @@ export const Upload = (props) => {
 
   const handleFileDelete = () => {
     setUploadedFiles([]);
-    dispatch(deleteAttachmentLaunched(leadAttachmentId))
+    if (leadAttachmentId) {
+      dispatch(deleteAttachmentLaunched(leadAttachmentId))
+    }
   };
 
   const handleFileDeleteFromData = (id) => {
     setUploadedFiles([]);
-    dispatch(deleteAttachmentLaunched(id));
-    const newLegalDocuments = companyData?.administrativeProfile?.legalDocuments?.filter((file) => file?.name !== props.name);
-    const newCompanyData = { ...companyData, administrativeProfile: { ...companyData.administrativeProfile, legalDocuments: newLegalDocuments } };
-    dispatch(changeAttachmentFromData(newCompanyData))
+    if (id) {
+      dispatch(deleteAttachmentLaunched(id));
+      const newLegalDocuments = companyData?.administrativeProfile?.legalDocuments?.filter((file) => file?.name !== props.name);
+      const newCompanyData = { ...companyData, administrativeProfile: { ...companyData.administrativeProfile, legalDocuments: newLegalDocuments } };
+      dispatch(changeAttachmentFromData(newCompanyData))
+    }
+    setFileSizeError(false)
   };
 
 

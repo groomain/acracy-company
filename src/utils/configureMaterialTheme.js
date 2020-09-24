@@ -82,43 +82,64 @@ export const theme = createMuiTheme({
       fontFamily: 'Basier Regular',
       color: '#fff',
       letterSpacing: '-1.26px',
+      '@media (max-width:960px)': {
+        fontSize: 27,
+      }
     },
     h2: {
       fontSize: 17,
       fontFamily: 'Basier Medium',
       color: '#ecf805',
       letterSpacing: '-0.45px',
-      lineHeight: 2
+      lineHeight: 2,
+      '@media (max-width:960px)': {
+        fontSize: 15,
+      }
     },
     h3: {
       fontSize: 22,
       fontFamily: 'Basier Bold',
       color: '#fff',
+      '@media (max-width:960px)': {
+        fontSize: 16,
+      }
     },
     h4: {
       fontSize: 17,
       fontFamily: 'Basier Medium',
       color: '#fff',
       letterSpacing: '-0.45px',
-      lineHeight: 2
+      lineHeight: 2,
+      '@media (max-width:960px)': {
+        fontSize: 15,
+      }
     },
     subtitle1: {
       fontSize: 21,
       fontFamily: 'Basier Medium',
       letterSpacing: '-0.75px',
-      color: '#ecf805'
+      color: '#ecf805',
+      '@media (max-width:960px)': {
+        fontSize: 16,
+      }
     },
     subtitle2: {
       fontSize: 21,
       fontFamily: 'Basier Regular',
       letterSpacing: '-0.75px',
-      color: '#fff'
+      color: '#fff',
+      '@media (max-width:960px)': {
+        fontSize: 16,
+      }
     },
     body1: {
       fontSize: 17,
       fontFamily: 'Basier Regular',
       color: '#fff',
       letterSpacing: '-0.45px',
+      '@media (max-width:960px)': {
+        fontSize: 15,
+      }
     },
     body2: {
       fontSize: 14,

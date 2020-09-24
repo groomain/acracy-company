@@ -54,7 +54,7 @@ export default makeStyles(theme => ({
   hrdivider: {
     height: "1px",
     backgroundColor: `${theme.palette.secondary.medium}`,
-    marginTop: 44,
+    marginTop: 40,
     marginBottom: 40,
 
   },
@@ -68,14 +68,20 @@ export default makeStyles(theme => ({
     paddingBottom: '10rem'
   },
   midWidth: {
-    width: '50%'
+    '@media (min-width:960px)': {
+      width: '50%',
+    }
   },
   email: {
     color: theme.palette.primary.main
   },
   fullPage: {
     paddingLeft: '14vw',
-    paddingRight: '14vw'
+    paddingRight: '14vw',
+    '@media (max-width:960px)': {
+      paddingLeft: '2rem',
+      paddingRight: '2rem',
+    }
   },
   disabledText: {
     textAlign: 'center',

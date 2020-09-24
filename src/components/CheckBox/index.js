@@ -3,12 +3,12 @@ import React from "react";
 import styles from './styles';
 import clsx from 'clsx';
 
-export const CustomCheckBox = ({ size, shape, checked, disabled, ...props }) => {
+export const CustomCheckBox = ({ size, shape, checked, disabled, noPadding, ...props }) => {
   const classes = styles();
 
   return (
     <Checkbox
-      className={classes.root}
+      className={clsx(classes.root, noPadding ? classes.noPadding : null)}
       disableRipple
       color="default"
       checked={checked}

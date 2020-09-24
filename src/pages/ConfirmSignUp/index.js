@@ -62,8 +62,10 @@ const ConfirmSignUpPage = () => {
       >
         <Main>
           <Grid className={sharedClasses.pannelLayout}>
-            <Typography variant="h1">{t('confirmSignupPage.title')}</Typography>
-            <Box my={2}>
+            <Box mt={'26px'}>
+              <Typography variant="h1">{t('confirmSignupPage.title')}</Typography>
+            </Box>
+            <Box mt={'10px'} mb={'60px'}>
               <Typography variant="body1">{t('confirmSignupPage.subtitle')} <span className={sharedClasses.email}>{email}</span></Typography>
             </Box>
             <Formik
@@ -74,7 +76,7 @@ const ConfirmSignUpPage = () => {
             />
             <div className={sharedClasses.hrdivider} />
             <Typography variant={'body1'} className={classes.typo} >{t('confirmSignupPage.resendCodeMessage')}</Typography>
-            <CustomButton theme="asLinkPrimary" title={t('confirmSignupPage.resendCodeButton')} rippleDisabled onClick={email => resendCode(email)} />
+            <CustomButton theme="asLinkResendCode" title={t('confirmSignupPage.resendCodeButton')} rippleDisabled onClick={email => resendCode(email)} />
             {resendCodeSuccessMessage && <Typography variant="body1">{resendCodeSuccessMessage}</Typography>}
           </Grid>
         </Main>
