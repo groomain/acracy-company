@@ -34,7 +34,7 @@ function* getBrief(action) {
     });
 
     // GET QUOTES DATA
-    const quotesData = yield API.get(config.apiGateway.NAME, `/quotes?briefId=${briefId.id}`, {
+    const quotesData = yield API.get(config.apiGateway.NAME, `/quotes?briefId=${briefId.id}&status=WAITING_FOR_CUSTOMER`, {
       headers: {
         'x-api-key': config.apiKey
       }
