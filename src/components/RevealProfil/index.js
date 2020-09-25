@@ -27,7 +27,6 @@ const RevealProfil = ({ setCheckedProfiles, index, modeMission, profil, acracyBl
   const PORTFOLIO_UPLOAD = profil?.portfolioUpload && profil?.portfolioUpload[0]?.externalId;
   const LINKEDIN_LINK = profil?.linkedinLink;
   const dispatch = useDispatch();
-
   const downloadFile = (payload) => {
     dispatch(downloadFileLaunched(payload));
   };
@@ -48,7 +47,7 @@ const RevealProfil = ({ setCheckedProfiles, index, modeMission, profil, acracyBl
                 <Avatar src={profil?.linkedinAvatar}
                   className={clsx(classes.avatar, { [classes.avatarModeMission]: modeMission })} />
               </Grid>
-              <Grid item xs={8} direction={"column"} justify={'center'}>
+              <Grid item xs={8} direction={"column"} className={classes.missionMobile} justify={'center'}>
                 <Grid item className={classes.tagPreSelect}>
                   {checked && <Grid container>
                     <Tag title="Profil pré-sélectionné" isPrimaryColor />
@@ -82,7 +81,7 @@ const RevealProfil = ({ setCheckedProfiles, index, modeMission, profil, acracyBl
               <Grid xs={4} item container justify={'center'}>
                 <CustomButton title={'Voir son CV'}
                   handleClick={() => { return window.open(LINKEDIN_LINK, '_blank') }}
-                  className={classes.button}
+                  className={classes.button, classes.topButton}
                   disabled={!LINKEDIN_LINK}
                   theme={!LINKEDIN_LINK && "disabledOutlined"}
                 />
@@ -101,7 +100,7 @@ const RevealProfil = ({ setCheckedProfiles, index, modeMission, profil, acracyBl
               <Grid xs={4} item container justify={'center'}>
                 <CustomButton title={'Voir son Site'}
                   handleClick={() => { return window.open(PORTFOLIO_LINK, '_blank') }}
-                  className={classes.button}
+                  className={classes.button, classes.buttonButton}
                   disabled={!PORTFOLIO_LINK}
                   theme={!PORTFOLIO_LINK && "disabledOutlined"}
                 />
@@ -125,8 +124,8 @@ const RevealProfil = ({ setCheckedProfiles, index, modeMission, profil, acracyBl
               }
             </Box>
           </Grid>
-          <Box my={1}>
-            <Grid container direction={"row"} xs={12}>
+          <Box my={1} className={classes.blackCardModeMissionMobile}>
+            <Grid container direction={"row"} xs={12} >
               <Grid item container xs={6} justify={'center'} alignItems="center" className={clsx(classes.blackCard, { [classes.blackCardModeMission]: modeMission })}>
                 <Grid container direction="column" justify="center" alignItems="center">
                   <Box my={1}>

@@ -3,7 +3,10 @@ import { makeStyles } from '@material-ui/core/styles';
 
 export const styles = makeStyles(theme => ({
   container: {
-    margin: 'auto'
+    margin: 'auto',
+    '@media (max-width:960px)': {
+      justifyContent: 'left'
+    }
   },
   divider: {
     width: '100%',
@@ -23,12 +26,12 @@ export const styles = makeStyles(theme => ({
     width: '100%'
   },
   firstMiddleContainer: {
-    padding: '2rem 0'
+    padding: '2rem 0',
   },
   middleContainer: {
     paddingLeft: '6%',
     marginTop: 150,
-    marginBottom: 100
+    marginBottom: 100,
   },
   loader: {
     width: '100vh',
@@ -40,26 +43,43 @@ export const styles = makeStyles(theme => ({
     padding: 15,
     width: 215,
     height: 322,
-    marginTop: 150
+    marginTop: 150,
+    '@media (max-width: 950px)': {
+      position: 'absolute',
+      right: '10%',
+      width: '80%',
+      height: '30%',
+      top: '2%',
+    }
   },
   cardTitle: {
     paddingTop: 10,
     paddingBottom: 10
   },
   mainTitle: {
-    fontFamily: "BodoniBook",
+    fontFamily: 'BodoniBook',
     fontSize: 68,
     fontWeight: 100,
     lineHeight: '88px',
     maxWidth: '70%',
-    marginBottom: 55
+    marginBottom: 55,
+    '@media (max-width: 950px)': {
+      fontSize: 30,
+      lineHeight: '20px',
+      position: 'absolute',
+      marginBottom: '50%',
+      bottom: '50%',
+      marginTop: '10%',
+      left: '15%',
+      textAlign: 'center'
+    }
   },
   word: {
-    fontFamily: "BodoniBook",
+    fontFamily: 'BodoniBook',
     fontWeight: 100,
     fontSize: 28,
     lineHeight: '46px',
-    maxWidth: "70%"
+    maxWidth: '70%'
   },
   authorContainer: {
     marginTop: '1rem',
@@ -73,7 +93,7 @@ export const styles = makeStyles(theme => ({
     maxWidth: 250,
     position: 'sticky',
     top: 0,
-    paddingTop: "30vh"
+    paddingTop: '30vh'
   },
   listItem: {
     marginBottom: 10,
@@ -95,7 +115,7 @@ export const styles = makeStyles(theme => ({
     size: 16
   },
   avatarCheck: {
-    position: "absolute",
+    position: 'absolute',
     zIndex: 3,
     left: 8,
     top: 5,
@@ -128,10 +148,33 @@ export const styles = makeStyles(theme => ({
     padding: 25,
     width: '80%',
     height: 263,
-    backgroundColor: "#283028",
+    backgroundColor: '#283028',
     borderRadius: 15,
     marginTop: 20,
-    marginBottom: 20
+    marginBottom: 20,
+    '@media (max-width:960px)': {
+      width: '90%',
+      height: '20%',
+      marginTop: '20%',
+      marginLeft: 15
+    }
+  },
+  footerCardMobile: {
+    '@media (max-width:960px)': {
+      position: 'absolute',
+      marginTop: '38%'
+    }
+  },
+  footerCardMobileRythme: {
+    '@media (max-width:960px)': {
+      marginLeft: '55%',
+    }
+  },
+  footerCardMobileDurée: {
+    '@media (max-width:960px)': {
+      marginLeft: '40%',
+      position: 'absolute'
+    }
   },
   typo: {
     padding: 3,
@@ -144,7 +187,6 @@ export const styles = makeStyles(theme => ({
     marginBottom: 20,
   },
   blocTypoDown: {
-    width: '100%',
     marginTop: 20,
     marginBottom: 20
   },
@@ -161,7 +203,7 @@ export const styles = makeStyles(theme => ({
   },
   titleFreelance: {
     marginBottom: 20,
-    marginLeft: "5%"
+    marginLeft: '5%',
   },
   waitingProfile: {
     width: '100%',
@@ -179,7 +221,7 @@ export const styles = makeStyles(theme => ({
   },
   waitingProfileText: {
     color: `${theme.palette.secondary.medium}`,
-    width: "70%"
+    width: '70%'
   },
   cart: {
     position: 'sticky',
@@ -187,6 +229,9 @@ export const styles = makeStyles(theme => ({
     backgroundColor: 'yellow',
     width: '100%',
     height: 104,
+    '@media (max-widht:960px)': {
+      height: 150
+    }
   },
   popover: {
     pointerEvents: 'none',
@@ -199,7 +244,8 @@ export const styles = makeStyles(theme => ({
     height: 213,
     borderRadius: '15px',
     position: 'absolute',
-    top: 10, right: 30
+    top: 10,
+    right: 30
   },
   popoverTypoTitle: {
     fontSize: 14,
@@ -215,7 +261,11 @@ export const styles = makeStyles(theme => ({
     letterSpacing: '-0.37px',
   },
   modale: {
-    backgroundColor: 'transparent'
+    backgroundColor: 'transparent',
+    '@media (max-width:960px)': {
+      marginRight: '50%',
+      width: '70%',
+    }
   },
   modaleContainer: {
     prosition: 'absolute',
@@ -224,7 +274,11 @@ export const styles = makeStyles(theme => ({
     width: 520,
     padding: 30,
     paddingTop: 40,
-    textAlign: 'left'
+    textAlign: 'left',
+    '@media (max-width:960px)': {
+      width: '100% !important',
+      height: '130%',
+    }
   },
   paperPopover: {
     padding: theme.spacing(1),
@@ -277,7 +331,13 @@ export const styles = makeStyles(theme => ({
     marginTop: 70,
     top: 200,
     width: 215,
-    right: 10
+    right: 10,
+    '@media (max-width:960px)': {
+      top: '28%',
+      right: '58%',
+      position: 'absolute',
+      marginTop: '25%',
+    }
   },
   tjmSecondContainer: {
     backgroundColor: '#1b251c',
@@ -293,7 +353,18 @@ export const styles = makeStyles(theme => ({
   },
   briefContainer: {
     width: '70%',
-    marginLeft: "5%"
+    marginLeft: '5%',
+    '@media (max-width: 960px)': {
+      width: '130%',
+      marginLeft: 5
+    }
+  },
+  briefContainerMobile: {
+    '@media (max-width: 960px)': {
+      marginTop: '2%',
+      height: '50%',
+      textAlign: 'center'
+    }
   },
   briefSeniority: {
     width: '100%',
@@ -318,7 +389,10 @@ export const styles = makeStyles(theme => ({
     textAlign: 'left',
     color: 'black',
     marginTop: 'auto',
-    marginBottom: 'auto'
+    marginBottom: 'auto',
+    '@media (max-width:960px)': {
+      fontSize: 15,
+    }
   },
   cartAvatar: {
     width: 46,
@@ -328,16 +402,36 @@ export const styles = makeStyles(theme => ({
     display: 'flex'
   },
   cartButton1: {
-    width: 221, marginRight: 20
+    width: 221,
+    marginRight: 20,
+    '@media (max-width:960px)': {
+      fontSize: 15,
+      right: '110%',
+    }
   },
   cartButton2: {
-    width: 172, marginRight: 20
+    width: 172,
+    marginRight: 20,
+    '@media (max-width:960px)': {
+      fontSize: 15,
+      right: '110%',
+    }
   },
   cartButton3: {
-    width: 219, marginRight: 20
+    width: 219,
+    marginRight: 20,
+    '@media (max-width:960px)': {
+      fontSize: 15,
+      right: '110%',
+    }
   },
   cartButton4: {
-    width: 219, marginRight: 15
+    width: 219,
+    marginRight: 15,
+    '@media (max-width:960px)': {
+      fontSize: 15,
+      right: '110%',
+    }
   },
   selectedProfilesContainer: {
     display: 'flex',
@@ -354,6 +448,16 @@ export const styles = makeStyles(theme => ({
     textDecoration: 'none',
     '&:hover': {
       color: theme.palette.primary.bright
+    }
+  },
+  smallMobile: {
+    '@media (max-width:960px)': {
+      display: 'none'
+    }
+  },
+  gridMobile: {
+    '@media (max-width:960px)': {
+      display: 'none'
     }
   }
 }));

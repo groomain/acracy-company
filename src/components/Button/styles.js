@@ -16,6 +16,9 @@ export default makeStyles(theme => ({
     '&.Mui-disabled': {
       color: theme.palette.secondary.medium,
       textDecoration: 'none'
+    },
+    '@media (max-width:960px)': {
+      minWidth: 165
     }
   },
   secondaryButton: {
@@ -40,7 +43,7 @@ export default makeStyles(theme => ({
     },
     '&:active': {
       background: `${theme.palette.primary.main}`,
-      border: `1px solid transparent`
+      border: '1px solid transparent'
     },
   },
   filledButton: {
@@ -54,7 +57,7 @@ export default makeStyles(theme => ({
       backgroundColor: theme.palette.secondary.medium,
       color: theme.palette.secondary.black,
       textDecoration: 'none',
-      border: `1px solid transparent`
+      border: '1px solid transparent'
 
     }
   },

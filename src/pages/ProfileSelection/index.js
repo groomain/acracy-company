@@ -203,9 +203,9 @@ const ProfileSelection = (props) => {
         className={classes.container}
       >
         {briefData &&
-          <Grid item container xs={3} direction={'row'} justify="center" alignItems="flex-start">
+          <Grid item container xs={3} direction={'row'} className={classes.gridMobile} justify="center" alignItems="flex-start">
             <List className={classes.list}>
-              <ListItem className={classes.listItem} onClick={() => scroll.scrollToTop()}>
+              <ListItem className={classes.listItem && classes.smallMobile} onClick={() => scroll.scrollToTop()}>
                 <ListItemAvatar>
                   <Avatar
                     className={clsx(classes.borderAvatarAcracy, { [classes.borderAvatarActive]: elementPosition.y > margin })}>
@@ -223,7 +223,7 @@ const ProfileSelection = (props) => {
               {quotesData.map((profile, index) => {
                 const isActive = elementPosition.y < margin - (index * heightProfilesContainer) && elementPosition.y > margin - ((index + 1) * heightProfilesContainer);
                 return (<Link to={index} smooth={true}>
-                  <ListItem className={classes.listItem}>
+                  <ListItem className={classes.listItem && classes.smallMobile}>
                     <ListItemAvatar>
                       {
                         checkedProfiles.includes(index) &&
@@ -244,7 +244,7 @@ const ProfileSelection = (props) => {
                 </Link>)
               })}
               <Link to="lastContainer" smooth={true}>
-                <ListItem className={classes.listItem}>
+                <ListItem className={classes.listItem && classes.smallMobile}>
                   <ListItemAvatar>
                     <Avatar className={classes.borderAvatar}>
                       {elementPosition.y < margin - elementHeight ?
@@ -358,7 +358,7 @@ const ProfileSelection = (props) => {
 
             {/* Requirements */}
             <Grid container direction="column" className={classes.briefContainer}>
-              <Box mt={15}>
+              <Box mt={15} className={classes.briefContainerMobile}>
                 <Grid xs={9}>
                   <Element name="lastContainer">
                     <div className={classes.bloc}>
@@ -433,7 +433,7 @@ const ProfileSelection = (props) => {
                   <Typography variant={"body1"}
                     className={classes.typo}>{formatType(briefData.missionContext.format)}</Typography>
                 </Grid>
-                <Grid item xs={5} className={classes.blocTypoUp}>
+                <Grid item xs={5} className={classes.blocTypoUp, classes.footerCardMobileDurée}>
                   <Typography variant={"h4"} className={classes.typo}>Durée</Typography>
                   <Typography variant={"body1"}
                     className={classes.typo}>{briefData.missionContext.duration.nb}
@@ -443,7 +443,7 @@ const ProfileSelection = (props) => {
                   à partir du {formatDate(briefData.missionContext.startDate)}
                   </Typography>
                 </Grid>
-                <Grid container item xs={2} direction={'column'}>
+                <Grid container item xs={2} direction={'column'} className={classes.footerCardMobile}>
                   <Grid item container className={classes.blocTypoUp}>
                     <Typography variant={"h4"} className={classes.typo}>TJM</Typography>
                     <Typography variant={"body1"}
@@ -452,7 +452,7 @@ const ProfileSelection = (props) => {
                 </Grid>
                 {/* Mission details 2nd row */}
                 <Grid container>
-                  <Grid container item xs={5}>
+                  <Grid container item xs={5} className={classes.footerCardMobileRythme}>
                     <Grid item className={classes.blocTypoDown}>
                       <Typography variant={"h4"} className={classes.typo}>Rythme</Typography>
                       <Typography variant={"body1"}
@@ -461,7 +461,7 @@ const ProfileSelection = (props) => {
                     </Grid>
                   </Grid>
                   {(briefData?.missionContext?.format === 'INPLACE_ONLY' || briefData?.missionContext?.format === 'BOTH'
-                    ? <Grid item className={classes.blocTypoDown}>
+                    ? <Grid item className={classes.blocTypoDown, classes.footerCardMobileAdresse}>
                       <Typography variant={"h4"} className={classes.typo}>Adresse</Typography>
                       <Typography variant={"body1"}
                         className={classes.typo}>{briefData.missionContext.address}</Typography>

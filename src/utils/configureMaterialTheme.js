@@ -28,6 +28,12 @@ export const basierBold = {
 };
 
 export const theme = createMuiTheme({
+  breakpoints: {
+    values: {
+      sm: 600,
+      md: 1000
+    },
+  },
   palette: {
     primary: {
       main: '#ecf805',
@@ -45,7 +51,7 @@ export const theme = createMuiTheme({
       black: '#162217',
       sidebarGreen: '#353f36',
       overlay: '#0d110d',
-      inputFadeFilter: '#585858', //add a filter that lightens a bg color
+      inputFadeFilter: '#585858', // add a filter that lightens a bg color
       modalGreen: '#283028',
       switchGreen: '#333d34',
       switchThumb: '#c5cab3'
@@ -56,7 +62,7 @@ export const theme = createMuiTheme({
       '@global': {
         body: {
           backgroundColor: '#162217',
-          fontFamily: "Basier Medium"
+          fontFamily: 'Basier Medium'
         },
       },
     },
@@ -131,6 +137,6 @@ export const theme = createMuiTheme({
       fontFamily: 'Basier Regular',
       color: '#fff',
     },
-    fontFamily: "Basier Medium"
+    fontFamily: 'Basier Medium'
   }
 });

@@ -6,9 +6,9 @@ export default makeStyles(theme => ({
     '& span': {
       textAlign: 'left',
       fontSize: 14,
-      fontFamily: "Basier Regular",
+      fontFamily: 'Basier Regular',
       color: theme.palette.secondary.medium,
-      border: `2px solid transparent`
+      border: '2px solid transparent'
     },
     '&:hover': {
       backgroundColor: 'transparent',
