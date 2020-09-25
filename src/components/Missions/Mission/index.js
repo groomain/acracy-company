@@ -286,7 +286,6 @@ export const Mission = ({ mission, matching, today, ...props }) => {
       return (
         <Grid container className={classes.gridRight}> {/* Add an empty navlink to fill the button space */}
           <NavLink to={mission ? `/mission/${mission?.externalId}` : `/brief/${matching?.externalId}`}
-            className={clsx(classes.gridCenter)}
           />
         </Grid>
       )
@@ -380,6 +379,7 @@ export const Mission = ({ mission, matching, today, ...props }) => {
                     <Grid item className={classes.blocTypoDownAvatar}>
                       <Typography variant={"h4"} className={classes.typoH4}>
                         {mission?.serviceProviderProfile?.firstName || matching?.serviceProviderProfile?.firstName || matchingValues?.title}
+                        {' '}
                         {mission?.serviceProviderProfile?.lastName || matching?.serviceProviderProfile?.lastName}
                       </Typography>
                       <Typography variant={"body1"} className={classes.typo}>{mission?.brief?.profile?.text}</Typography>
