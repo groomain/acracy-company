@@ -37,7 +37,7 @@ import miniSwitch from "../../assets/icons/mini-switch.svg";
 import clsx from "clsx";
 import { styles } from './style';
 
-const ProfileSelection = ({ smallMobile, ...props }) => {
+const ProfileSelection = (props) => {
   const quoteId = props?.match?.params;
   const { t } = useTranslation();
 
@@ -212,7 +212,7 @@ const ProfileSelection = ({ smallMobile, ...props }) => {
                     <img src={acracy} alt="acracyLogo" className={classes.logoAcracy} />
                   </Avatar>
                 </ListItemAvatar>
-                <ListItemText smallMobile primary="Recommandation globale"
+                <ListItemText primary="Recommandation globale"
                   primaryTypographyProps={{
                     className: {
                       [classes.listItemText]: elementPosition.y < margin,
