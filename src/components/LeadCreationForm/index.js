@@ -432,6 +432,7 @@ const LeadCreationForm = ({ values, errors, touched, handleBlur, handleChange, l
       leadSave(values, redirect, redirectToMission)
       dispatch(handleCurrentStep(2));
     }
+    backToTop();
   }
 
   const getWorkedDaysResult = (workDurationNb, workDurationUnit, weeklyRythm, profilNumber) => {
