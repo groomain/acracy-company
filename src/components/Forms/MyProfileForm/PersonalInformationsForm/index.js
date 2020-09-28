@@ -11,7 +11,7 @@ import { useTranslation } from 'react-i18next';
 import { checkLength } from '../../../../utils/services/validationChecks';
 import areaCodes from '../../../../utils/areaCodes.json';
 
-export const PersonalInformationsForm = ({ values, errors, touched, handleBlur, handleChange, handleSubmit }) => {
+export const PersonalInformationsForm = ({ values, errors, touched, handleBlur, handleChange, handleSubmit, initialValues, isValid }) => {
   const classes = styles();
   const { t } = useTranslation();
 
@@ -32,18 +32,18 @@ export const PersonalInformationsForm = ({ values, errors, touched, handleBlur, 
 
   useEffect(() => {
     if (
-      checkLength(firstName?.trim(), 0) &&
-      checkLength(lastName?.trim(), 0) &&
-      checkLength(email?.trim(), 0) &&
-      checkLength(phoneCode?.trim(), 0) &&
-      checkLength(phoneNumber?.trim(), 9) &&
-      checkLength(role?.trim(), 0)
+      firstName !== initialValues?.firstName ||
+      lastName !== initialValues?.lastName ||
+      email !== initialValues?.email ||
+      phoneCode !== initialValues?.phoneCode ||
+      phoneNumber !== initialValues?.phoneNumber ||
+      role !== initialValues?.role
     ) {
       setDisabledPersonalInformations(false);
     } else {
       setDisabledPersonalInformations(true);
     }
-  }, [employeeId, firstName, lastName, email, phoneCode, phoneNumber, role]);
+  }, [firstName, lastName, email, phoneCode, phoneNumber, role])
 
   return (
     <Grid item container className={classes.container}>
@@ -128,7 +128,9 @@ export const PersonalInformationsForm = ({ values, errors, touched, handleBlur, 
                   theme={disabledPersonalInformations ? "disabledFilled" : "filledButton"}
                   handleClick={() => handleSubmit({ employeeId, firstName, lastName, email, phoneCode, phoneNumber, role })}
                   loading={putMyProfileLoading}
-                  title={t('myProfile.save')} />
+                  title={t('myProfile.save')}
+                  disabled={disabledPersonalInformations || !isValid}
+                />
               </Grid>
             </Grid>
           </Grid>

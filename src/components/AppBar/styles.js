@@ -68,7 +68,7 @@ export default makeStyles(theme => ({
     textTransform: 'none',
     fontSize: 14,
     fontWeight: 500,
-    color: 'pink',
+    color: theme.palette.secondary.black,
     paddingLeft: 25,
     paddingRight: 25,
     textDecoration: 'none'

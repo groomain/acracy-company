@@ -7,7 +7,7 @@ import * as Yup from 'yup';
 
 import { Grid, Typography } from "@material-ui/core";
 import { IncidentIcon } from "../../../../assets/icons/IncidentIcon";
-import { AdresseIcon } from "../../../../assets/icons/AdresseIcon";
+import { CoordonneesIcon } from "../../../../assets/icons/Coordonnees";
 import { DownloadIcon } from "../../../../assets/icons/DownloadIcon";
 import { CloseIcon } from "../../../../assets/icons/CloseIcon";
 import CustomModal from '../../../Modal';
@@ -75,7 +75,7 @@ export const LeftOverlay = ({ matching, mission, ...props }) => {
             {mission.status !== FINISHED && (
               <Grid item container direction={'row'} className={classes.row}
                 onClick={() => setFreelanceInfosOpen(true)}>
-                <AdresseIcon />
+                <CoordonneesIcon />
               Voir coordonnées freelance
               </Grid>
             )}
@@ -117,13 +117,13 @@ export const LeftOverlay = ({ matching, mission, ...props }) => {
           handleClose={() => setFreelanceInfosOpen(false)}
         >
           <Grid container>
-            <Grid item container xs={4} alignItems='center'>
+            <Grid item xs={3} alignItems='center'>
               <CircleImage theme="avatarMedium" src={mission?.serviceProviderProfile.linkedinAvatar} />
             </Grid>
-            <Grid item>
+            <Grid item xs={9}>
               <Typography variant="subtitle1">{mission?.serviceProviderProfile.firstName}</Typography>
               <Typography>{mission?.serviceProviderProfile?.email}</Typography>
-              <Typography>(+{mission?.serviceProviderProfile?.phoneNumber?.code}) {mission?.serviceProviderProfile?.phoneNumber?.number.match(/.{2}/g).join(' ').substring(1)}</Typography>
+              <Typography>(+{mission?.serviceProviderProfile?.phone?.code}) {mission?.serviceProviderProfile?.phone?.number.match(/.{2}/g).join(' ').substring(1)}</Typography>
             </Grid>
           </Grid>
         </CustomModal>

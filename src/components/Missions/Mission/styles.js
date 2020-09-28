@@ -16,6 +16,7 @@ export default makeStyles(theme => ({
   gridLeft: {
     borderRadius: '15px 15px 0 0',
     backgroundColor: theme.palette.secondary.mid,
+    position: 'relative',
     '@media (min-width:960px)': {
       width: '28%',
       borderRadius: '15px 0 0 15px',
