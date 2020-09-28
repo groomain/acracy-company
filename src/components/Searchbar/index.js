@@ -22,7 +22,7 @@ import profilIconYellow from '../../assets/icons/profil-roll-out-yellow.svg';
 import livrableYellow from '../../assets/icons/livrable-yellow.svg';
 
 const CustomConfigure = connectStateResults(({ searchResults }) =>
-  <Configure hitsPerPage={Math.max(1000, searchResults?.nbHits)} />
+  <Configure hitsPerPage={searchResults?.nbHits || 1000} />
 );
 
 const Searchbar = ({ onUpdateChosenCategory, value, hideLabel }) => {
