@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { Typography, Grid, Box } from "@material-ui/core";
@@ -12,15 +12,16 @@ import CustomSelect from "../../Inputs/CustomSelect";
 import CustomButton from "../../Button";
 import styles from "../styles";
 
-export const Form4 = ({ values, errors, touched, handleBlur, handleChange, handleSubmit }) => {
+export const Form4 = ({ values, errors, touched, handleBlur, handleChange, handleSubmit, initialValues }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const classes = styles();
 
   const { administrativeProfile } = values;
+  const [disabled, setDisabled] = useState(true);
 
   useEffect(() => {
-    if (!isNullOrEmpty(administrativeProfile?.billing?.lastName?.trim()) && !isNullOrEmpty(administrativeProfile?.billing?.email) && !isNullOrEmpty(administrativeProfile?.billing?.phone?.code) && administrativeProfile?.billing?.phone?.number > 0) {
+    if (!isNullOrEmpty(administrativeProfile?.billing?.firstName?.trim()) && !isNullOrEmpty(administrativeProfile?.billing?.lastName?.trim()) && !isNullOrEmpty(administrativeProfile?.billing?.email) && !isNullOrEmpty(administrativeProfile?.billing?.phone?.code) && !isNullOrEmpty(administrativeProfile?.billing?.phone?.number)) {
       dispatch(checkMissingInfosForm4(true))
     } else {
       dispatch(checkMissingInfosForm4(false))
@@ -35,6 +36,20 @@ export const Form4 = ({ values, errors, touched, handleBlur, handleChange, handl
     const numberResult = handleNumberInput(e, limit);
     handleChange(numberResult);
   };
+
+  useEffect(() => {
+    if (
+      administrativeProfile.billing.firstName !== initialValues?.administrativeProfile.billing.firstName ||
+      administrativeProfile.billing.lastName !== initialValues?.administrativeProfile.billing.lastName ||
+      administrativeProfile.billing.email !== initialValues?.administrativeProfile.billing.email ||
+      administrativeProfile.billing.phone.code !== initialValues?.administrativeProfile?.billing.phone.code ||
+      administrativeProfile.billing.phone.number !== initialValues?.administrativeProfile?.billing.phone.number
+    ) {
+      setDisabled(false);
+    } else {
+      setDisabled(true);
+    }
+  }, [administrativeProfile])
 
   return (
     <Grid item container direction={'column'} className={classes.card}>
@@ -106,7 +121,7 @@ export const Form4 = ({ values, errors, touched, handleBlur, handleChange, handl
         </Grid>
         <Grid container direction="row" className={classes.card}>
           <CustomButton title={'Sauvegarder'} theme={'filledButton'} className={classes.saveButton}
-            disabled={isNullOrEmpty(administrativeProfile.billing.firstName) || isNullOrEmpty(administrativeProfile.billing.lastName) || isNullOrEmpty(administrativeProfile.billing.email) || isNullOrEmpty(administrativeProfile.billing.phone.code) || isNullOrEmpty(administrativeProfile.billing.phone.number)}
+            disabled={isNullOrEmpty(administrativeProfile.billing.firstName) || isNullOrEmpty(administrativeProfile.billing.lastName) || isNullOrEmpty(administrativeProfile.billing.email) || isNullOrEmpty(administrativeProfile.billing.phone.code) || isNullOrEmpty(administrativeProfile.billing.phone.number) || disabled}
             handleClick={() => handleSubmit({ firstName: administrativeProfile.billing.firstName, lastName: administrativeProfile.billing.lastName, email: administrativeProfile.billing.email, code: getPhonePrefixCode(administrativeProfile.billing.phone.code), number: administrativeProfile.billing.phone.number })}
             loading={companyUpdateLoading}
           />
