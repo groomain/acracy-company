@@ -109,7 +109,7 @@ const LeadCreationPage = (props) => {
     } else if (leadDraftId) {
       setLeadId(leadDraftId)
     }
-  }, [dispatch, location.search, location.pathname, leadDraftId, leadId]);
+  }, [dispatch, location.search, location.pathname, leadDraftId, leadId, activeStep]);
 
   useEffect(() => {
     if (leadDraftData?.externalId) {
