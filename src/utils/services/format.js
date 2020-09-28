@@ -231,3 +231,7 @@ export const handleNumberInput = (e, limit, min) => { // Ignore tous les caractÃ
   e.target.value = (t.indexOf(".") >= 0) ? (t.substr(0, t.indexOf(".")) + t.substr(t.indexOf("."), limit)) : t;
   return e
 }
+
+export const roundTwoDecimalPoints = (value) => {
+  return Math.ceil(value * 100) / 100;
+}
