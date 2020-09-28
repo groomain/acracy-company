@@ -10,7 +10,16 @@ export const CustomSelect = ({ label, value, placeholder, type, error, isMulti, 
   const [open, setOpen] = useState(false);
 
   // Keep state + handleChange for the multi-select component for now
-  const [options, setOptions] = useState(checkedArray?.map(x => x?.KEY || x?.text));
+  const [options, setOptions] = useState();
+
+  useEffect(() => {
+    if (checkedArray) {
+      setOptions(checkedArray?.map(x => x?.KEY || x?.text))
+    } else {
+      setOptions([])
+    }
+  }, [checkedArray]);
+
   const handleChange = (event) => {
     if (event.target.value.length <= 5) {
       setOptions(event.target.value);
