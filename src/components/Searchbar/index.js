@@ -22,7 +22,7 @@ import profilIconYellow from '../../assets/icons/profil-roll-out-yellow.svg';
 import livrableYellow from '../../assets/icons/livrable-yellow.svg';
 
 const CustomConfigure = connectStateResults(({ searchResults }) =>
-  <Configure hitsPerPage={searchResults?.nbHits} />
+  <Configure hitsPerPage={Math.max(1000, searchResults?.nbHits)} />
 );
 
 const Searchbar = ({ onUpdateChosenCategory, value, hideLabel }) => {
@@ -190,11 +190,11 @@ const SearchResults = ({ searchResults, onUpdateChosenCategory, value, hideLabel
   return (
     <Box my={4}>
       {!hideLabel &&
-      <Box my={2} style={{ height: 30 }}>
-        <Typography variant="h2">
-          {renderTitle(searchValue?.TYPE) || newOption?.title}
-        </Typography>
-      </Box>}
+        <Box my={2} style={{ height: 30 }}>
+          <Typography variant="h2">
+            {renderTitle(searchValue?.TYPE) || newOption?.title}
+          </Typography>
+        </Box>}
       <CreatableSelect
         onChange={handleOnChange}
         value={searchValue}

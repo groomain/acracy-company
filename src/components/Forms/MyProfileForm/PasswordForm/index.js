@@ -90,7 +90,7 @@ const PasswordForm = ({ values, errors, touched, handleBlur, handleChange, handl
               handleClick={() => handleSubmit({ user, oldPassword, newPassword })}
               loading={changePasswordLoading}
               title={t('myProfile.modifyPassword')}
-              disabled={changePasswordLoading}
+              disabled={changePasswordLoading || disabledPassword}
             ></CustomButton>
           </Grid>
         </Element>

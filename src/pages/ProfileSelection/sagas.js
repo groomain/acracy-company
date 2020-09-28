@@ -1,12 +1,14 @@
-import { all, put, takeLatest, delay } from 'redux-saga/effects';
+import {
+  all, put, takeLatest, delay
+} from 'redux-saga/effects';
 import { API } from 'aws-amplify';
+import { push } from 'connected-react-router';
 import {
   getBriefSuccess, getBriefFailure,
   validateProfilesSuccess, validateProfilesFailure, contactAcracySuccess, contactAcracyFailure
 } from './reducer';
-import { config } from "../../conf/amplify";
-import { openSnackBar } from "../../components/App/reducer";
-import { push } from 'connected-react-router';
+import { config } from '../../conf/amplify';
+import { openSnackBar } from '../../components/App/reducer';
 
 
 function* getBrief(action) {
@@ -32,22 +34,24 @@ function* getBrief(action) {
     });
 
     // GET QUOTES DATA
-    const quotesData = yield API.get(config.apiGateway.NAME, `/quotes?briefId=${briefId.id}`, {
+    const quotesData = yield API.get(config.apiGateway.NAME, `/quotes?briefId=${briefId.id}&status=WAITING_FOR_CUSTOMER`, {
       headers: {
         'x-api-key': config.apiKey
       }
     });
 
-    yield put(getBriefSuccess({ briefData: briefData, quotesData: quotesData }));
+    yield put(getBriefSuccess({ briefData, quotesData }));
   } catch (err) {
     yield put(getBriefFailure(err));
-    yield put(openSnackBar({ message: "Une erreur est survenue", error: true }));
+    yield put(openSnackBar({ message: 'Une erreur est survenue', error: true }));
   }
 }
 
 function* validateProfiles(action) {
   try {
-    const { type, listId, text, reason, quoteId } = action.payload;
+    const {
+      type, listId, text, reason, quoteId
+    } = action.payload;
     const body = {};
     if (type === 'ACCEPT_QUOTES') {
       body.type = type;
@@ -57,57 +61,58 @@ function* validateProfiles(action) {
       body.payload = {
         reasonForRefusal: reason,
         messageForRefusal: text
-      }
+      };
     }
     const validateProfiles = yield API.post(config.apiGateway.NAME, `/briefs/${quoteId}/actions`, {
       headers: {
         'x-api-key': config.apiKey
       },
-      body: body
+      body
     });
 
     yield put(validateProfilesSuccess(validateProfiles));
     yield put(push('/home'));
-
   } catch (err) {
     console.log(err);
     yield put(validateProfilesFailure(err));
-    yield put(openSnackBar({ message: "Une erreur est survenue", error: true }));
+    yield put(openSnackBar({ message: 'Une erreur est survenue', error: true }));
   }
 }
 
 function* contactAcracy(action) {
-  const { message, reason, interview, selectedProfiles } = action.payload;
+  const {
+    message, reason, interview, selectedProfiles
+  } = action.payload;
   let sendMessage;
 
   try {
     if (interview) {
-      sendMessage = yield API.post(config.apiGateway.NAME, `/messages`, {
+      sendMessage = yield API.post(config.apiGateway.NAME, '/messages', {
         headers: {
           'x-api-key': config.apiKey
         },
         body: {
-          type: "COMPANY_JOB_INTERVIEW",
+          type: 'COMPANY_JOB_INTERVIEW',
           payload: {
             message: selectedProfiles.toString()
           }
         }
-      })
-      yield put(openSnackBar({ message: "👉 N’oubliez pas de mettre à jour votre sélection de profils une fois les entretiens passés" }));
+      });
+      yield put(openSnackBar({ message: '👉 N’oubliez pas de mettre à jour votre sélection de profils une fois les entretiens passés' }));
     } else {
-      sendMessage = yield API.post(config.apiGateway.NAME, `/messages`, {
+      sendMessage = yield API.post(config.apiGateway.NAME, '/messages', {
         headers: {
           'x-api-key': config.apiKey
         },
         body: {
-          type: "COMPANY_EMPLOYEE_CONTACT",
+          type: 'COMPANY_EMPLOYEE_CONTACT',
           payload: {
-            reason: reason,
-            message: message
+            reason,
+            message
           }
         }
       });
-      yield put(openSnackBar({ message: "Votre message a été envoyé avec succès" }));
+      yield put(openSnackBar({ message: 'Votre message a été envoyé avec succès' }));
     }
     yield put(contactAcracySuccess(sendMessage));
   } catch (err) {

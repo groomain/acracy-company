@@ -14,6 +14,8 @@ import { formatDate } from '../../../../utils/services/format';
 import smallCheck from "../../../../assets/icons/small-check.svg";
 import styles from '../styles';
 
+import { roundTwoDecimalPoints } from '../../../../utils/services/format';
+
 export const ValidationModal = ({ open, handleClose, files, missionId, preselectedFile, setValidationModalOpen, setRefusalModalOpen, ...props }) => {
   const dispatch = useDispatch();
   const invoicesNames = files?.map(file => `${file.numero} du ${formatDate(file.paymentDate)}`);
@@ -84,23 +86,23 @@ export const ValidationModal = ({ open, handleClose, files, missionId, preselect
                     </Grid>
                     <Grid item container>
                       <Grid item xs={3}>
-                        <Typography>{preselectedFile?.amount - commission}€</Typography>
+                        <Typography>{roundTwoDecimalPoints(preselectedFile?.amount - commission)}€</Typography>
                       </Grid>
                       <Grid item xs={9}>
                         <Typography>{preselectedFile?.workedDays} jours travaillés, TJM</Typography>
                       </Grid>
                       <Grid item xs={3}>
-                        <Typography>{commission}€</Typography>
+                        <Typography>{roundTwoDecimalPoints(commission)}€</Typography>
                       </Grid>
                       <Grid item xs={9}>
-                        <Typography>{parseFloat(process.env.REACT_APP_ACRACY_COMMISSION_RATE)*100}% de commission acracy</Typography>
+                        <Typography>{parseFloat(process.env.REACT_APP_ACRACY_COMMISSION_RATE) * 100}% de commission acracy</Typography>
                       </Grid>
                     </Grid>
                   </Box>
                 </Grid>
                 <Grid item container>
                   <Box mt={2}>
-                    <Typography variant={'h1'} style={{ color: '#ecf805' }}>{(preselectedFile?.amount)}€ <span style={{ fontSize: '17px' }}>total HT</span></Typography>
+                    <Typography variant={'h1'} style={{ color: '#ecf805' }}>{roundTwoDecimalPoints(preselectedFile?.amount)}€ <span style={{ fontSize: '17px' }}>total HT</span></Typography>
                   </Box>
                 </Grid>
                 <Grid item>

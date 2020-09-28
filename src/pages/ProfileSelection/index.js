@@ -1,47 +1,41 @@
 import React, { useEffect, useRef, useState } from 'react';
-import Typography from '@material-ui/core/Typography';
-import Avatar from '@material-ui/core/Avatar';
-import { Grid, Box } from '@material-ui/core';
-import { styles } from './style';
-import CircleImage from "../../components/CircleImage";
-import RevealProfil from "../../components/RevealProfil";
-import acracy from "../../assets/icons/logo-acracy-a.svg";
-import groupe52copy from "../../assets/icons/group-52-copy.svg";
-import groupe52 from "../../assets/icons/group-52.svg";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemAvatar from "@material-ui/core/ListItemAvatar";
-import ListItemText from "@material-ui/core/ListItemText";
-import { useScrollPosition } from '@n8tb1t/use-scroll-position';
 import { useDispatch, useSelector } from "react-redux";
-import { contactAcracyLaunched, getBriefLaunched, setCheckedProfileStore, validateProfilesLaunched } from "./reducer";
-import { handleCurrentStep } from '../../components/App/reducer';
-import clsx from "clsx";
+import { Link, animateScroll as scroll } from 'react-scroll'
+import * as Scroll from 'react-scroll';
+import { useScrollPosition } from '@n8tb1t/use-scroll-position';
+import { useTranslation } from "react-i18next";
+
+import { Avatar, Box, Dialog, Grid, IconButton, List, ListItem, ListItemAvatar, ListItemText, Popover, Typography } from '@material-ui/core';
+import CloseIcon from '@material-ui/icons/Close';
+
+import CustomAppBar from '../../components/AppBar';
+import CustomLoader from "../../components/Loader";
+import RevealProfil from "../../components/RevealProfil";
 import CustomExpansionPanel from "../../components/CustomExpansionPanel";
 import Tag from "../../components/Tags/Tag";
-import CustomLoader from "../../components/Loader";
-import { Link, Element, animateScroll as scroll } from 'react-scroll'
-import * as Scroll from 'react-scroll';
-
+import CircleImage from "../../components/CircleImage";
 import CustomButton from "../../components/Button";
 import CustomSelect from "../../components/Inputs/CustomSelect";
 import CustomTextArea from "../../components/Inputs/CustomTextArea";
-import Dialog from '@material-ui/core/Dialog';
-import Popover from "@material-ui/core/Popover";
-import CloseIcon from '@material-ui/icons/Close';
-import IconButton from "@material-ui/core/IconButton";
 import ContactModale from '../../components/ContactModale';
-import CustomAppBar from '../../components/AppBar';
-// Pics
+
+import { handleCurrentStep } from '../../components/App/reducer';
+import { getMyProfilePersonalInformationsLaunched } from '../MyProfile/reducer';
+import { contactAcracyLaunched, getBriefLaunched, setCheckedProfileStore, validateProfilesLaunched } from "./reducer";
+
+import { formatLanguagesValues, formatType, formatFrequencyType, formatDate, formatDurationType, formatSeniorityType } from '../../utils/services/format';
+
+import acracy from "../../assets/icons/logo-acracy-a.svg";
+import groupe52copy from "../../assets/icons/group-52-copy.svg";
+import groupe52 from "../../assets/icons/group-52.svg";
 import severine from '../../assets/pics/severine/severine-small.png';
 import avatarPlaceholder from '../../assets/icons/profil-roll-out-black.svg';
 import checkStatus from "../../assets/icons/small-check.svg";
 import infosSmall from "../../assets/icons/infos-small-copy.svg";
 import miniSwitch from "../../assets/icons/mini-switch.svg";
-// Services
-import { formatLanguagesValues, formatType, formatFrequencyType, formatDate, formatDurationType, formatSeniorityType } from '../../utils/services/format';
-import { getMyProfilePersonalInformationsLaunched } from '../MyProfile/reducer';
-import { useTranslation } from "react-i18next";
+
+import clsx from "clsx";
+import { styles } from './style';
 
 const ProfileSelection = (props) => {
   const quoteId = props?.match?.params;
@@ -51,13 +45,12 @@ const ProfileSelection = (props) => {
 
   const classes = styles();
   const dispatch = useDispatch();
-  const { briefData, quotesData, validateCodeError, validateLoading, userDynamo, checkedProfilesStore, contactLoading, employeeId, myProfileData } = useSelector(state => ({
+  const { briefData, quotesData, validateCodeError, validateLoading, userDynamo, contactLoading, employeeId, myProfileData } = useSelector(state => ({
     briefData: state.getIn(['SelectionProfil', 'briefData']),
     quotesData: state.getIn(['SelectionProfil', 'quotesData']),
     validateCodeError: state.getIn(['SelectionProfil', 'validateCodeError']),
     validateLoading: state.getIn(['SelectionProfil', 'validateLoading']),
     userDynamo: state.getIn(['app', 'userDynamo']),
-    checkedProfilesStore: state.getIn(['SelectionProfil', 'checkedProfilesStore']),
     contactLoading: state.getIn(['SelectionProfil', 'contactLoading']),
     employeeId: state.getIn(['app', 'userDynamo', 'employeeId']),
     myProfileData: state.getIn(['MyProfile', 'myProfileData']),
@@ -71,7 +64,7 @@ const ProfileSelection = (props) => {
   console.log('ProfileSelection -> quotesData', quotesData)
 
   // Scroll
-  let [checkedProfiles, setCheckedProfiles] = React.useState(checkedProfilesStore);
+  let [checkedProfiles, setCheckedProfiles] = useState([]);
   const [elementPosition, setElementPosition] = useState({ x: 10, y: 450 });
   const [elementHeight, setElementHeight] = useState(0);
   const heightRef = useRef();
@@ -210,9 +203,9 @@ const ProfileSelection = (props) => {
         className={classes.container}
       >
         {briefData &&
-          <Grid item container xs={3} direction={'row'} justify="center" alignItems="flex-start">
+          <Grid item container xs={3} direction={'row'} className={classes.gridMobile} justify="center" alignItems="flex-start">
             <List className={classes.list}>
-              <ListItem className={classes.listItem} onClick={() => scroll.scrollToTop()}>
+              <ListItem className={classes.listItem && classes.smallMobile} onClick={() => scroll.scrollToTop()}>
                 <ListItemAvatar>
                   <Avatar
                     className={clsx(classes.borderAvatarAcracy, { [classes.borderAvatarActive]: elementPosition.y > margin })}>
@@ -230,7 +223,7 @@ const ProfileSelection = (props) => {
               {quotesData.map((profile, index) => {
                 const isActive = elementPosition.y < margin - (index * heightProfilesContainer) && elementPosition.y > margin - ((index + 1) * heightProfilesContainer);
                 return (<Link to={index} smooth={true}>
-                  <ListItem className={classes.listItem}>
+                  <ListItem className={classes.listItem && classes.smallMobile}>
                     <ListItemAvatar>
                       {
                         checkedProfiles.includes(index) &&
@@ -251,7 +244,7 @@ const ProfileSelection = (props) => {
                 </Link>)
               })}
               <Link to="lastContainer" smooth={true}>
-                <ListItem className={classes.listItem}>
+                <ListItem className={classes.listItem && classes.smallMobile}>
                   <ListItemAvatar>
                     <Avatar className={classes.borderAvatar}>
                       {elementPosition.y < margin - elementHeight ?
@@ -316,7 +309,7 @@ const ProfileSelection = (props) => {
                         <Grid item xs={9}>
                           <RevealProfil
                             profil={profile?.serviceProviderProfile}
-                            acracyBlurb={profile?.acracyBlurb}
+                            acracyBlurb={profile?.serviceProviderProfile?.acracyBlurb}
                             className={classes.revealProfil} index={i}
                             setCheckedProfiles={handleCheckedProfiles} />
                         </Grid>
@@ -367,7 +360,7 @@ const ProfileSelection = (props) => {
 
             {/* Requirements */}
             <Grid container direction="column" className={classes.briefContainer}>
-              <Box mt={15}>
+              <Box mt={15} className={classes.briefContainerMobile}>
                 <Grid xs={9}>
                   <Element name="lastContainer">
                     <div className={classes.bloc}>
@@ -442,7 +435,7 @@ const ProfileSelection = (props) => {
                   <Typography variant={"body1"}
                     className={classes.typo}>{formatType(briefData.missionContext.format)}</Typography>
                 </Grid>
-                <Grid item xs={5} className={classes.blocTypoUp}>
+                <Grid item xs={5} className={classes.blocTypoUp, classes.footerCardMobileDurée}>
                   <Typography variant={"h4"} className={classes.typo}>Durée</Typography>
                   <Typography variant={"body1"}
                     className={classes.typo}>{briefData.missionContext.duration.nb}
@@ -452,7 +445,7 @@ const ProfileSelection = (props) => {
                   à partir du {formatDate(briefData.missionContext.startDate)}
                   </Typography>
                 </Grid>
-                <Grid container item xs={2} direction={'column'}>
+                <Grid container item xs={2} direction={'column'} className={classes.footerCardMobile}>
                   <Grid item container className={classes.blocTypoUp}>
                     <Typography variant={"h4"} className={classes.typo}>TJM</Typography>
                     <Typography variant={"body1"}
@@ -461,7 +454,7 @@ const ProfileSelection = (props) => {
                 </Grid>
                 {/* Mission details 2nd row */}
                 <Grid container>
-                  <Grid container item xs={5}>
+                  <Grid container item xs={5} className={classes.footerCardMobileRythme}>
                     <Grid item className={classes.blocTypoDown}>
                       <Typography variant={"h4"} className={classes.typo}>Rythme</Typography>
                       <Typography variant={"body1"}
@@ -470,7 +463,7 @@ const ProfileSelection = (props) => {
                     </Grid>
                   </Grid>
                   {(briefData?.missionContext?.format === 'INPLACE_ONLY' || briefData?.missionContext?.format === 'BOTH'
-                    ? <Grid item className={classes.blocTypoDown}>
+                    ? <Grid item className={classes.blocTypoDown, classes.footerCardMobileAdresse}>
                       <Typography variant={"h4"} className={classes.typo}>Adresse</Typography>
                       <Typography variant={"body1"}
                         className={classes.typo}>{briefData.missionContext.address}</Typography>

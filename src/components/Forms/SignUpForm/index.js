@@ -33,7 +33,7 @@ const SignUpForm = ({ values, errors, touched, handleBlur, handleChange, handleS
 
   const [optionsValues] = useState(areaCodes);
 
-  const [activeStep, setActiveStep] = useState(1);
+  const [activeStep, setActiveStep] = useState(0);
 
   useEffect(() => {
     if (activeStep === 0) {

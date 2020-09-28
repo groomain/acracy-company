@@ -15,13 +15,19 @@ export default makeStyles(theme => ({
     height: 240
   },
   avatarContainer: {
-    position: "absolute",
+    position: 'absolute',
     zIndex: 3
   },
   avatar: {
     width: 214,
     height: 214,
-    backgroundColor: theme.palette.secondary.black
+    backgroundColor: theme.palette.secondary.black,
+    '@media (max-width: 960px)': {
+      width: '80%',
+      height: '75%',
+      marginTop: '20%',
+      right: '65%'
+    }
   },
   avatarModeMission: {
     width: 162,
@@ -44,7 +50,10 @@ export default makeStyles(theme => ({
     width: 120
   },
   switch: {
-    width: 121
+    width: 121,
+    '@media (max-width:960px)': {
+      width: 2
+    }
   },
   profession: {
     fontFamily: 'basierRegular',
@@ -53,7 +62,16 @@ export default makeStyles(theme => ({
   },
   checkContainer: {
     marginTop: 40,
-    maxWidth: 360
+    maxWidth: 360,
+  },
+  missionMobile: {
+    '@media (max-width:960px)': {
+      position: 'absolute',
+      marginTop: '30%',
+      right: '52%',
+      width: '45%',
+      textAlign: 'center'
+    },
   },
   blackCard: {
     backgroundColor: theme.palette.secondary.mid,
@@ -63,16 +81,28 @@ export default makeStyles(theme => ({
     padding: 20,
     display: 'flex',
     alignItems: 'center',
-    direction: "column"
+    direction: 'column',
+    '@media (max-width:960px)': {
+      minHeight: 10,
+      maxWidth: '50%',
+    }
   },
   blackCardModeMission: {
     height: 287,
     minWidth: 337,
   },
+  blackCardModeMissionMobile: {
+    '@media (max-width:960px)': {
+      display: 'none',
+    }
+  },
   name: {
-    fontFamily: "BodoniBook",
+    fontFamily: 'BodoniBook',
     fontSize: 68,
-    lineHeight: 1
+    lineHeight: 1,
+    '@media (max-width:960px)': {
+      fontSize: 35
+    }
   },
   nameModeMission: {
     fontSize: 34,
@@ -82,7 +112,7 @@ export default makeStyles(theme => ({
     marginBottom: 15
   },
   text: {
-    fontFamily: "BodoniBook",
+    fontFamily: 'BodoniBook',
     fontSize: 32,
     textAlign: 'justify'
   },
@@ -93,14 +123,38 @@ export default makeStyles(theme => ({
     color: theme.palette.primary.main
   },
   button: {
-    width: '100%'
+    width: '100%',
+    '@media (max-width: 960px)': {
+      right: '50%',
+      marginTop: '120%',
+      width: '80%'
+    }
+  },
+  topButton: {
+    '@media (max-width: 960px)': {
+      left: '110%',
+      marginBottom: '130%'
+    }
   },
   middleButton: {
-    margin: '0 1rem'
+    margin: '0 1rem',
+    '@media (max-width: 960px)': {
+      left: '10%',
+    }
+  },
+  buttonButton: {
+    '@media (max-width: 960px)': {
+      right: '90%',
+      marginTop: '130%'
+    }
   },
   customButtonContainer: {
     width: '100%',
-    marginTop: 80
+    marginTop: 80,
+    '@media (max-width:960px)': {
+      width: '50%',
+      marginTop: '75%'
+    }
   },
   customButtonContainerModeMission: {
     marginTop: 20
@@ -115,7 +169,7 @@ export default makeStyles(theme => ({
   },
   customButton: {
     margin: 'auto',
-    width: 215
+    width: 215,
   },
   customButtonModeMission: {
     marginLeft: 5,
@@ -144,10 +198,10 @@ export default makeStyles(theme => ({
     maxWidth: 235
   },
   firstBlock: {
-    width: "100%",
+    width: '100%',
     margin: 'auto'
   },
   firstBlockModeMission: {
-    width: "90%",
+    width: '90%',
   }
 }));

@@ -1,11 +1,14 @@
 import makeStyles from '@material-ui/core/styles/makeStyles';
-import { fade } from "@material-ui/core";
+import { fade } from '@material-ui/core';
 
 
 export default makeStyles(theme => ({
   root: {
     '& .MuiPaper-root': {
-      borderRadius: 16
+      borderRadius: 16,
+      '@media (max-width:960px)': {
+        width: '75%'
+      }
     }
   },
   panel: {
@@ -17,7 +20,7 @@ export default makeStyles(theme => ({
     alignItems: 'center',
     minHeight: 84,
     '& .MuiExpansionPanelSummary-expandIcon': {
-      transform: 'rotate(0)'
+      transform: 'rotate(0)',
     }
   },
   detailsContainer: {

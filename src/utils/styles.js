@@ -68,14 +68,20 @@ export default makeStyles(theme => ({
     paddingBottom: '10rem'
   },
   midWidth: {
-    width: '50%'
+    '@media (min-width:960px)': {
+      width: '50%',
+    }
   },
   email: {
     color: theme.palette.primary.main
   },
   fullPage: {
     paddingLeft: '14vw',
-    paddingRight: '14vw'
+    paddingRight: '14vw',
+    '@media (max-width:960px)': {
+      paddingLeft: '2rem',
+      paddingRight: '2rem',
+    }
   },
   disabledText: {
     textAlign: 'center',
