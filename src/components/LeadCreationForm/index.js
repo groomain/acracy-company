@@ -553,7 +553,7 @@ const LeadCreationForm = ({ values, errors, touched, handleBlur, handleChange, l
                   </Grid>
                   <Box mx={1} style={{ height: 1 }}>
                     {values?.missionContext?.duration?.nb && values?.missionContext?.duration?.unit && values?.missionContext?.duration?.unit !== FORMATTED_DAY &&
-                      <Typography variant="h2">Soit {' '}
+                      <Typography variant="h2" style={{ marginTop: '-2rem', marginBottom: '1rem', paddingLeft: '0.45rem' }}>Soit {' '}
                         {getWorkedDaysResult(values?.missionContext?.duration?.nb,
                           values?.missionContext?.duration?.unit,
                           values?.missionContext?.weeklyRythm,
