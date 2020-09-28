@@ -49,8 +49,7 @@ export const styles = makeStyles(theme => ({
       right: '10%',
       width: '80%',
       height: '30%',
-      top: '2%',
-      backgroundColor: '#162217'
+      top: '2%'
     }
   },
   cardTitle: {
