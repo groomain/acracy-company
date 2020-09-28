@@ -240,7 +240,7 @@ const LeadCreationForm = ({ values, errors, touched, handleBlur, handleChange, l
     } else if (e?.TEXT) {
       changeValue('search', { type: e?.TYPE || '', code: e?.KEY || '', text: e?.TEXT || '' })
     }
-    if (!e || e.TEXT !== values?.search.text) {
+    if (!e || e?.TEXT !== values?.search?.text) {
       changeValue('desireds', []);
       setDeliverables([]);
     }
