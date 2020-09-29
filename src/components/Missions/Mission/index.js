@@ -146,8 +146,8 @@ export const Mission = ({ mission, matching, today, ...props }) => {
           return {
             status: 'Devis à valider',
             buttonText: 'Valider devis',
-            avatar: quotes && quotes[0]?.serviceProviderProfile?.linkedinAvatar,
-            title: `${quotes && quotes[0]?.serviceProviderProfile?.firstName} ${quotes && quotes[0]?.serviceProviderProfile?.lastName} `,
+            avatar: matching?.serviceProviderProfile?.linkedinAvatar,
+            title: `${matching?.serviceProviderProfile?.firstName} ${matching?.serviceProviderProfile?.lastName} `
           };
         default:
           break;
@@ -345,7 +345,7 @@ export const Mission = ({ mission, matching, today, ...props }) => {
             </Grid>
 
             <NavLink
-              to={mission ? `/mission/${mission?.externalId}` : `/brief/${matching?.externalId}`}
+              to={matching && matching?.status === WAITING_FOR_SIGNATURE ? `/mission/${matching?.externalId}` : mission ? `/mission/${mission?.externalId}` : `/brief/${matching?.externalId}`}
               onClick={e => mission?.status === REFUSED ? e.preventDefault() : e}
               className={clsx(classes.gridCenter, missionDone ? classes.gridCenterFinished : mission?.status === REFUSED ? classes.noCursor : null)}>
               <Grid container>  {/*RIGHT PART*/}
@@ -382,7 +382,7 @@ export const Mission = ({ mission, matching, today, ...props }) => {
                         {' '}
                         {mission?.serviceProviderProfile?.lastName || matching?.serviceProviderProfile?.lastName}
                       </Typography>
-                      <Typography variant={"body1"} className={classes.typo}>{mission?.brief?.profile?.text}</Typography>
+                      <Typography variant={"body1"} className={classes.typo}>{mission?.brief?.profile?.text || matching?.serviceProviderProfile?.profile?.text}</Typography>
                       <Typography variant={"body1"} className={classes.typo}>{matchingValues?.subtext}</Typography>
                     </Grid>
                   </Grid>

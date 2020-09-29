@@ -49,6 +49,7 @@ export const Missions = () => {
 
   const missionAsMatchingProfile = toValidateMission?.map(x => {
     return {
+      ...x?.brief,
       externalId: x?.externalId,
       status: x?.status,
       brief: x?.brief,
@@ -85,11 +86,11 @@ export const Missions = () => {
         <DarkWrapper isBleed justify='center' alignItems='center'>
           <Grid className={classes.noMissionTitle}>
             {missionsLoading || briefsLoading
-                ? <CustomLoader size={70}/>
-                : <Grid container direction={'column'} justify='center' alignItems='center'>
-                  <Typography variant="h4" className={classes.noMissionTitle}>{t('dashboard.missions.noMissionTitle')}</Typography>
-                  <Typography variant="body1" className={classes.noMissionSubtitle}>{t('dashboard.missions.noMissionSubtitle')}</Typography>
-                </Grid>
+              ? <CustomLoader size={70} />
+              : <Grid container direction={'column'} justify='center' alignItems='center'>
+                <Typography variant="h4" className={classes.noMissionTitle}>{t('dashboard.missions.noMissionTitle')}</Typography>
+                <Typography variant="body1" className={classes.noMissionSubtitle}>{t('dashboard.missions.noMissionSubtitle')}</Typography>
+              </Grid>
             }
           </Grid>
         </DarkWrapper>
