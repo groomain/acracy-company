@@ -61,10 +61,10 @@ const SubmitForm = (props) => {
   return (
     <Grid>
       <Typography variant='h1' className={sharedClasses.titleSignIn}>{t('forgotPassword.newPasswordTitle')}</Typography>
-      <Typography variant="body1">{t('forgotPassword.newPasswordSubtitle')} <span className={sharedClasses.email}>{email}</span></Typography>
+      <Typography variant="body1" className={sharedClasses.forgotPasswordStep2Margin}>{t('forgotPassword.newPasswordSubtitle')} <span className={sharedClasses.email}>{email}</span></Typography>
       <Box my={8}>
         <form onSubmit={handleSubmit}>
-          <Box className={sharedClasses.midWidth}>
+          <Box className={`${sharedClasses.midWidth} ${sharedClasses.marginTextfield}`}>
             <CustomTextField
               value={code}
               name='code'
@@ -75,7 +75,7 @@ const SubmitForm = (props) => {
               error={!!touched.code && !!errors.code}
             />
           </Box>
-          <Box my={3}>
+          <Box className={sharedClasses.marginTextfield}>
             <CustomPasswordField
               value={password}
               name='password'
@@ -86,7 +86,7 @@ const SubmitForm = (props) => {
               error={!!touched.password && !!errors.password}
             />
           </Box>
-          <Box my={3}>
+          <Box className={sharedClasses.marginTextfield}>
             <CustomPasswordField
               value={confirmPassword}
               name='confirmPassword'
@@ -97,7 +97,7 @@ const SubmitForm = (props) => {
               error={!!touched.confirmPassword && !!errors.confirmPassword}
             />
           </Box>
-          <Grid container justify='flex-end'>
+          <Grid container justify='flex-end' className={sharedClasses.marginButton}>
             <CustomButton
               type="submit"
               loading={submitPasswordLoading}
