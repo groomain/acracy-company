@@ -83,6 +83,7 @@ export default makeStyles(theme => ({
     padding: 0,
     height: '1.5rem',
     fontSize: 17,
+    fontWeight: 'normal',
     '& span': {
       justifyContent: 'flex-start'
     }

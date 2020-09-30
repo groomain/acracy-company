@@ -95,5 +95,12 @@ export default makeStyles(theme => ({
   },
   marginTextfield: {
     marginTop: 28
+  },
+  forgotPasswordStep2Margin: {
+    marginBottom: 84
+  },
+  marginButton: {
+    marginTop: 32,
+    marginBottom: 4
   }
 }));

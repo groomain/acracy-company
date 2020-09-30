@@ -240,7 +240,7 @@ const LeadCreationForm = ({ values, errors, touched, handleBlur, handleChange, l
     } else if (e?.TEXT) {
       changeValue('search', { type: e?.TYPE || '', code: e?.KEY || '', text: e?.TEXT || '' })
     }
-    if (!e) {
+    if (!e || e?.TEXT !== values?.search?.text) {
       changeValue('desireds', []);
       setDeliverables([]);
     }
@@ -432,6 +432,7 @@ const LeadCreationForm = ({ values, errors, touched, handleBlur, handleChange, l
       leadSave(values, redirect, redirectToMission)
       dispatch(handleCurrentStep(2));
     }
+    backToTop();
   }
 
   const getWorkedDaysResult = (workDurationNb, workDurationUnit, weeklyRythm, profilNumber) => {
@@ -551,9 +552,9 @@ const LeadCreationForm = ({ values, errors, touched, handleBlur, handleChange, l
                       name='missionContext.duration.unit'
                     ></CustomSelect>
                   </Grid>
-                  <Box mx={1} style={{ height: 1 }}>
+                  <Box mx={1} style={{ height: 1, marginTop: '-2em' }}>
                     {values?.missionContext?.duration?.nb && values?.missionContext?.duration?.unit && values?.missionContext?.duration?.unit !== FORMATTED_DAY &&
-                      <Typography variant="h2">Soit {' '}
+                      <Typography variant="h2" style={{ marginTop: '-2rem', marginBottom: '1rem', paddingLeft: '0.45rem' }}>Soit {' '}
                         {getWorkedDaysResult(values?.missionContext?.duration?.nb,
                           values?.missionContext?.duration?.unit,
                           values?.missionContext?.weeklyRythm,

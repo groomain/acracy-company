@@ -58,10 +58,11 @@ const LeadCreationPage = (props) => {
   const [updatedValues, setUpdatedValues] = useState()
 
 
-  const { leadSaveLoading, leadDraftData, leadCreationPageWithSearchResult, leadCreationStep, leadDraftId,
+  const { leadSaveLoading, leadDraftData, getLeadDraftLoading, leadCreationPageWithSearchResult, leadCreationStep, leadDraftId,
     updateLeadDraftLoading } = useSelector(state => ({
       leadSaveLoading: state.getIn(['leadCreation', 'leadSaveLoading']),
       leadDraftData: state.getIn(['leadCreation', 'leadDraftData']),
+      getLeadDraftLoading: state.getIn(['leadCreation', 'getLeadDraftLoading']),
       leadCreationStep: state.getIn(['dashboard', 'leadCreationStep']),
       leadDraftId: state.getIn(['leadCreation', 'leadDraftId']),
       updateLeadDraftLoading: state.getIn(['leadCreation', 'updateLeadDraftLoading']),
@@ -108,7 +109,7 @@ const LeadCreationPage = (props) => {
     } else if (leadDraftId) {
       setLeadId(leadDraftId)
     }
-  }, [dispatch, location.search, location.pathname, leadDraftId, leadId]);
+  }, [dispatch, location.search, location.pathname, leadDraftId, leadId, activeStep]);
 
   useEffect(() => {
     if (leadDraftData?.externalId) {
@@ -186,25 +187,29 @@ const LeadCreationPage = (props) => {
         </Grid>
         : <>
           <Main>
-            <Formik
-              render={props => {
-                setUpdatedValues(props.values)
-                return (
-                  <Form>
-                    <LeadCreationForm
-                      leadId={leadId}
-                      onUpdateMissionTitle={e => setMissionTitle(e)}
-                      {...props}
-                    />
-                  </Form>
-                )
-              }
-              }
-              initialValues={initialValues}
-              onSubmit={(values, redirect, redirectToMission) => leadSave(values, redirect, redirectToMission)}
-              enableReinitialize
-            />
-
+            {getLeadDraftLoading ?
+              <Grid container alignItems='center' justify='center' style={{ height: '100vh' }}>
+                <CustomLoader size={70} />
+              </Grid> :
+              <Formik
+                render={props => {
+                  setUpdatedValues(props.values)
+                  return (
+                    <Form>
+                      <LeadCreationForm
+                        leadId={leadId}
+                        onUpdateMissionTitle={e => setMissionTitle(e)}
+                        {...props}
+                      />
+                    </Form>
+                  )
+                }
+                }
+                initialValues={initialValues}
+                onSubmit={(values, redirect, redirectToMission) => leadSave(values, redirect, redirectToMission)}
+                enableReinitialize
+              />
+            }
           </Main>
           <Sidebar>
             <Grid container style={{ position: 'sticky', top: '10rem' }}>

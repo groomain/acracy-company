@@ -89,8 +89,7 @@ const ForgotPassword = () => {
   };
 
   return (
-    <Grid className={`${sharedClasses.pannelLayout} ${sharedClasses.container}`}
-    >
+    <Grid className={`${sharedClasses.pannelLayout}`}>
       <Grid item xs={7} container>
         <Grid item xs={3} />
         <Grid item xs={7} >

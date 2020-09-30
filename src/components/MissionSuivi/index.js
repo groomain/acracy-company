@@ -1,6 +1,5 @@
 import React from 'react';
 import { useDispatch } from "react-redux";
-import styles from './styles';
 import Grid from "@material-ui/core/Grid";
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -23,6 +22,8 @@ import { BriefIcon } from "../../assets/icons/BriefIcon";
 import { DevisIcon } from "../../assets/icons/DevisIcon";
 import DownloadModal from "../DownloadModal";
 import { downloadFileLaunched } from '../DownloadModal/reducer';
+import { formatDate } from '../../utils/services/format';
+import styles from './styles';
 
 export const MissionSuivi = ({ data, pathname, ...props }) => {
   const classes = styles();
@@ -36,6 +37,7 @@ export const MissionSuivi = ({ data, pathname, ...props }) => {
     "WAITING_FOR_MATCHING": 1,
     "WAITING_FOR_QUOTES": 1,
     "WAITING_FOR_CUSTOMER_SELECTION": 2,
+    "WAITING_FOR_SIGNATURE": 3,
     "IN_PROGRESS": 3,
     "CLOSED": 4
   };
@@ -103,7 +105,7 @@ export const MissionSuivi = ({ data, pathname, ...props }) => {
             primaryTypographyProps={{ className: clsx(classes.text, { [classes.textDone]: step >= 3 }) }}
             secondaryTypographyProps={{ className: clsx(classes.secondaryText, { [classes.textDone]: step >= 3 }) }}
             primary="Début de la mission"
-            secondary={step >= 3 && data.brief.missionContext.startDate} />
+            secondary={step >= 3 ? data.status === 'WAITING_FOR_SIGNATURE' ? 'Devis à valider' : formatDate(data.brief.missionContext.startDate) : null} />
         </ListItem>
         <ListItem className={classes.listItem}>
           <ListItemAvatar className={classes.avatar}>
