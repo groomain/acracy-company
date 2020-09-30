@@ -44,7 +44,7 @@ export const styles = makeStyles(theme => ({
     width: 215,
     position: 'sticky',
     top: 100,
-    marginTop: 150
+    marginTop: 150,
     '@media (max-width: 950px)': {
       position: 'absolute',
       right: '10%',
@@ -199,7 +199,7 @@ export const styles = makeStyles(theme => ({
     marginBottom: 20
   },
   secondTitle: {
-    marginTop: 100,
+    marginTop: theme.navbar.height,
     marginBottom: 20
   },
   titleFreelance: {
