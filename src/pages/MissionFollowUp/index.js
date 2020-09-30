@@ -100,7 +100,9 @@ const MissionFollowUp = (props) => {
                             pour démarrer un brief.</Typography>
           </Grid>
         );
+      case 'WAITING_FOR_SIGNATURE':
       case 'IN_PROGRESS':
+      case 'CLOSED':
         return (
           <div className={classes.bloc}>
             <Grid item container direction={'row'} justify={"space-between"} className={classes.infoContainer}>
