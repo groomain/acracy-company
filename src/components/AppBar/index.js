@@ -120,7 +120,7 @@ export const CustomAppBar = (props) => {
       {renderSnackbar()}
       <Toolbar className={classes.toolbar}>
         <NavLink to="/" className={classes.logo}>
-          <img src={acracyLogo} alt="acracyLogo" />
+          <img src={acracyLogo} className={classes.logoImage} alt="acracyLogo" />
         </NavLink>
         {(props.path || location.path) !== '/brief' && <div className={classes.grow} />}
         {renderButtons()}

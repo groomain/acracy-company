@@ -37,11 +37,11 @@ const ConfirmSignupForm = (props) => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <Grid container>
-        <Grid item>
+      <Grid container spacing={2} alignItems="flex-end">
+        <Grid item xs={4}>
           <CustomTextField
             id="code"
-            type='text'
+            type="text"
             label={t('confirmSignupPage.label')}
             placeholder={t('confirmSignupPage.placeholder')}
             value={code}
@@ -57,8 +57,9 @@ const ConfirmSignupForm = (props) => {
             title={t('confirmSignupPage.buttonTitle')}
             theme={disabled ? 'disabledOutlined' : 'primaryButton'}
             disabled={disabled}
-            style={{ margin: '60px 0 0 20px' }}
-          /></Grid>
+            style={{ marginTop: 0, marginBottom: 5 }}
+          />
+        </Grid>
       </Grid>
     </form>
   );

@@ -5,6 +5,7 @@ import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { signupLaunched } from '../../components/App/reducer';
 import Grid from '@material-ui/core/Grid';
+import Container from '@material-ui/core/Container';
 import Sidebar from '../../components/Layout/Sidebar';
 import Main from '../../components/Layout/Main';
 import SignUpForm from '../../components/Forms/SignUpForm';
@@ -89,10 +90,12 @@ const SignUpPage = (props) => {
           />
         </Main>
         <Sidebar>
-          <Grid className={classes.pannel}>
-            <SearchResultPannel searchValue={initialValues.searchValue} />
-            <PartnersList />
-          </Grid>
+          <Container>
+            <Grid className={classes.pannel}>
+              <SearchResultPannel searchValue={initialValues.searchValue} />
+              <PartnersList />
+            </Grid>
+          </Container>
         </Sidebar>
       </Grid>
     </Grid>

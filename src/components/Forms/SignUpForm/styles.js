@@ -21,10 +21,7 @@ export default makeStyles(theme => ({
     paddingLeft: ".5rem",
   },
   step: {
-    width: '40%',
-    '&:not(:first-child)': {
-      marginLeft: '2rem'
-    }
+    // width: '40%',
   },
   stepButton: {
     padding: 0

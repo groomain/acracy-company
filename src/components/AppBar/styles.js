@@ -11,13 +11,13 @@ export default makeStyles((theme) => ({
   },
   toolbar: {
     height: theme.navbar.height,
-    paddingLeft: 40,
-    paddingRight: 40,
-    "@media (max-width:960px)": {
-      width: "55%",
-      paddingLeft: 10,
-      paddingRight: 1,
-    },
+    // paddingLeft: 40,
+    // paddingRight: 40,
+    // "@media (max-width:960px)": {
+    //   width: "55%",
+    //   paddingLeft: 10,
+    //   paddingRight: 1,
+    // },
   },
   grow: {
     flexGrow: 1,
@@ -59,7 +59,13 @@ export default makeStyles((theme) => ({
     color: "black",
   },
   logo: {
-    outlineStyle: "none",
+    outlineStyle: 'none',
+    '@media (max-width:960px)': {
+      width: 90
+    }
+  },
+  logoImage: {
+    width: '100%'
   },
   iconButton: {
     marginTop: "auto",

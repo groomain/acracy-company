@@ -286,7 +286,7 @@ const SignUpForm = ({ values, errors, touched, handleBlur, handleChange, handleS
             </Box>
           </Grid>
 
-          <Grid container alignItems='center' className={classes.marginTop}>
+          <Grid item container align="left" alignItems="center" wrap="nowrap" className={classes.marginTop}>
             <Box mr={'20px'}>
               <CustomCheckbox
                 name="conditions"

@@ -18,7 +18,7 @@ export default makeStyles(theme => ({
       textDecoration: 'none'
     },
     '@media (max-width:960px)': {
-      minWidth: 165
+      minWidth: 'auto',
     }
   },
   secondaryButton: {
@@ -37,12 +37,12 @@ export default makeStyles(theme => ({
     border: `1px solid ${theme.palette.primary.main}`,
     color: '#fff',
     '&:hover': {
-      background: `${theme.palette.primary.bright}`,
+      background: `${theme.palette.primary.main}`,
       border: '1px solid transparent',
       color: `${theme.palette.secondary.black}`
     },
     '&:active': {
-      background: `${theme.palette.primary.main}`,
+      background: `${theme.palette.primary.bright}`,
       border: '1px solid transparent'
     },
   },
@@ -82,21 +82,7 @@ export default makeStyles(theme => ({
     margin: 0,
     padding: 0,
     height: '1.5rem',
-    fontSize: 17,
-    fontWeight: 'normal',
-    '& span': {
-      justifyContent: 'flex-start'
-    }
-  },
-  asLinkResendCode: {
-    border: 'none',
-    color: theme.palette.primary.main,
-    textDecoration: 'underline',
-    margin: 0,
-    padding: 0,
-    height: '1.5rem',
-    fontFamily: 'Basier Regular',
-    fontSize: 17,
+    fontSize: theme.typography.h4.fontSize,
     '& span': {
       justifyContent: 'flex-start'
     }

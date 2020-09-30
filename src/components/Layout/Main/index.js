@@ -1,14 +1,17 @@
 import React from 'react';
 import Grid from '@material-ui/core/Grid';
+import Container from '@material-ui/core/Container';
 
 const Main = ({ children }) => {
   return (
-    <Grid item xs={7} container>
-      <Grid item xs={3}></Grid>
-      <Grid item xs={7} >
-        {children}
-      </Grid>
-      <Grid item xs={2}></Grid>
+    <Grid item xs={12} md={6}>
+      <Container>
+        <Grid container justify="center">
+          <Grid item xs={12} md={9}>
+            {children}
+          </Grid>
+        </Grid>
+      </Container>
     </Grid>
   );
 };

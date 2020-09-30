@@ -5,7 +5,7 @@ import { Formik } from 'formik';
 import * as Yup from 'yup';
 
 import { confirmSignupLaunched, resendCodeLaunched, handleCurrentStep } from '../../components/App/reducer';
-import { Grid, Typography, Box, Divider } from '@material-ui/core/';
+import { Grid, Typography, Box, Hidden } from '@material-ui/core/';
 import Sidebar from '../../components/Layout/Sidebar';
 import Main from '../../components/Layout/Main';
 import CustomButton from '../../components/Button';
@@ -80,11 +80,13 @@ const ConfirmSignUpPage = () => {
             {resendCodeSuccessMessage && <Typography variant="body1">{resendCodeSuccessMessage}</Typography>}
           </Grid>
         </Main>
-        <Sidebar>
-          <Grid className={sharedClasses.pannelLayout}>
-            {initialValues.searchValue && <SearchResultPannel searchValue={initialValues.searchValue} />}
-          </Grid>
-        </Sidebar>
+        <Hidden only={['xs', 'sm']}>
+          <Sidebar>
+            <Grid className={sharedClasses.pannelLayout}>
+              {initialValues.searchValue && <SearchResultPannel searchValue={initialValues.searchValue} />}
+            </Grid>
+          </Sidebar>
+        </Hidden>
       </Grid>
     </>
   );
