@@ -103,7 +103,7 @@ export const MissionSuivi = ({ data, pathname, ...props }) => {
             primaryTypographyProps={{ className: clsx(classes.text, { [classes.textDone]: step >= 3 }) }}
             secondaryTypographyProps={{ className: clsx(classes.secondaryText, { [classes.textDone]: step >= 3 }) }}
             primary="Début de la mission"
-            secondary={step >= 3 && data.brief.missionContext.startDate} />
+            secondary={step >= 3 && data.status === 'WAITING_FOR_SIGNATURE' ? 'Devis à valider' : data.brief.missionContext.startDate} />
         </ListItem>
         <ListItem className={classes.listItem}>
           <ListItemAvatar className={classes.avatar}>
