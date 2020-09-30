@@ -36,6 +36,7 @@ export const MissionSuivi = ({ data, pathname, ...props }) => {
     "WAITING_FOR_MATCHING": 1,
     "WAITING_FOR_QUOTES": 1,
     "WAITING_FOR_CUSTOMER_SELECTION": 2,
+    "WAITING_FOR_SIGNATURE": 3,
     "IN_PROGRESS": 3,
     "CLOSED": 4
   };
